@@ -1,0 +1,19 @@
+{
+  "name": "tag-bridge-website",
+  "version": "1.0.0",
+  "description": "Tag Bridge - Professional PDF Books Store",
+  "scripts": {
+    "start": "serve .",
+    "build": "echo 'No build required for static site'"
+  },
+  "keywords": [
+    "pdf",
+    "books",
+    "forex",
+    "crypto",
+    "youtube",
+    "amharic"
+  ],
+  "author": "Tag Bridge",
+  "license": "MIT"
+}

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ታግ ብሪጅ - Tag Bridge</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <i class="fas fa-book-open"></i>
+                    <span data-en="Tag Bridge" data-am="ታግ ብሪጅ">ታግ ብሪጅ</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#home" data-en="Home" data-am="መነሻ">መነሻ</a></li>
+                    <li><a href="#products" data-en="Products" data-am="ምርቶች">ምርቶች</a></li>
+                    <li><a href="#contact" data-en="Contact" data-am="አግኙን">አግኙን</a></li>
+                </ul>
+                <div class="lang-switch">
+                    <input type="checkbox" id="langToggle" class="lang-toggle-checkbox">
+                    <label for="langToggle" class="lang-toggle-label">
+                        <span class="lang-option" data-lang="am">አማ</span>
+                        <span class="lang-option" data-lang="en">EN</span>
+                        <span class="lang-slider"></span>
+                    </label>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="container">
+            <h1 class="animated-text" data-en="Welcome to Tag Bridge" data-am="እንኳን ወደ ታግ ብሪጅ በደህና መጡ">እንኳን ወደ ታግ ብሪጅ በደህና መጡ</h1>
+            <p data-en="We provide professional content focused on digital applications, cryptocurrency, Forex trading, AI and online business" data-am="በዲጂታል መተግበሪያዎች፤ክሪፕቶ ከረንሲ ፣ፎሬክስ ትሬዲንግ፤AI እና የኦንላይን ቢዝነስ ላይ ያተኮሩ ሙያዊ ይዘቶችን እናቀርባለን፡፡">በዲጂታል መተግበሪያዎች፤ክሪፕቶ ከረንሲ ፣ፎሬክስ ትሬዲንግ፤AI እና የኦንላይን ቢዝነስ ላይ ያተኮሩ ሙያዊ ይዘቶችን እናቀርባለን፡፡</p>
+            
+            <div class="social-links">
+                <h2 data-en="Follow Us on Social Media" data-am="በማህበራዊ ሚዲያዎቻችን ይከታተሉን">በማህበራዊ ሚዲያዎቻችን ይከታተሉን</h2>
+                <div class="social-icons">
+                    <a href="https://t.me/tagbridge" target="_blank" class="social-btn telegram">
+                        <i class="fab fa-telegram"></i>
+                        <span data-en="Join Our Telegram Channel" data-am="የቴሌግራም ቻናላችን ይቀላቀሉ">የቴሌግራም ቻናላችን ይቀላቀሉ</span>
+                    </a>
+                    <a href="https://youtube.com/@tagbridge" target="_blank" class="social-btn youtube">
+                        <i class="fab fa-youtube"></i>
+                        <span>YouTube</span>
+                    </a>
+                    <a href="https://www.tiktok.com/@tagbridge" target="_blank" class="social-btn tiktok">
+                        <i class="fab fa-tiktok"></i>
+                        <span>TikTok</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="products" class="products">
+        <div class="container">
+            <h2 data-en="Our Professional PDF Books" data-am="መጽሃፍቶች">መጽሃፍቶች</h2>
+            <div class="products-grid">
+                <!-- Row 1: Forex and Crypto -->
+                <div class="product-card">
+                    <div class="product-image forex-img">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 data-en="Forex Trading in Amharic" data-am="የፎሬክስ ትሬዲንግ በአማርኛ">የፎሬክስ ትሬዲንግ በአማርኛ</h3>
+                    <p data-en="Complete Forex trading guide fully prepared in Amharic" data-am="ሙሉ በሙሉ በአማርኛ የተዘጋጀ የፎሬክስ ትሬዲንግ መጽሃፍ">ሙሉ በሙሉ በአማርኛ የተዘጋጀ የፎሬክስ ትሬዲንግ መጽሃፍ</p>
+                    <div class="price">450 ብር</div>
+                    <button class="btn-buy" data-order-msg="ሰላም! የፎሬክስ ትሬዲንግ መማሪያ መጽሃፍ በ 450 ብር ማዘዝ እፈልጋለሁ" data-en="Buy Now" data-am="አሁኑኑ ይዘዙ">አሁኑኑ ይዘዙ</button>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image crypto-img">
+                        <i class="fab fa-bitcoin"></i>
+                    </div>
+                    <h3 data-en="Crypto Trading in Amharic" data-am="የክሪፕቶ ትሬዲንግ በአማርኛ">የክሪፕቶ ትሬዲንግ በአማርኛ</h3>
+                    <p data-en="Complete cryptocurrency trading guide fully prepared in Amharic" data-am="ሙሉ በሙሉ በአማርኛ የተዘጋጀ የክሪፕቶ ከረንሲ ትሬዲንግ መጽሃፍ">ሙሉ በሙሉ በአማርኛ የተዘጋጀ የክሪፕቶ ከረንሲ ትሬዲንግ መጽሃፍ</p>
+                    <div class="price">500 ብር</div>
+                    <button class="btn-buy" data-order-msg="ሰላም! በአማርኛ የተዘጋጀ የክሪፕቶ ከረንሲ ትሬዲንግ መጽሃፍ በ 500 ብር ማዘዝ እፈልጋለሁ" data-en="Buy Now" data-am="አሁኑኑ ይዘዙ">አሁኑኑ ይዘዙ</button>
+                </div>
+
+                <!-- Row 2: Bundle and YouTube -->
+                <div class="product-card bundle">
+                    <div class="bundle-badge" data-en="BUNDLE OFFER" data-am="ጥቅል ቅናሽ">ጥቅል ቅናሽ</div>
+                    <div class="product-image bundle-img">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <h3 data-en="Forex + Crypto Trading Bundle" data-am="የፎሬክስ እና ክሪፕቶ ትሬዲንግ ጥቅል">የፎሬክስ እና ክሪፕቶ ትሬዲንግ ጥቅል</h3>
+                    <p data-en="Get both Forex and Crypto trading books together at a special price" data-am="ሁለቱንም የፎሬክስ እና ክሪፕቶ ትሬዲንግ መጽሃፍት በልዩ ዋጋ አንድ ላይ ያግኙ">ሁለቱንም የፎሬክስ እና ክሪፕቶ ትሬዲንግ መጽሃፍት በልዩ ዋጋ አንድ ላይ ያግኙ</p>
+                    <div class="price-bundle">
+                        <span class="old-price">900 ብር</span>
+                        <span class="price">700 ብር</span>
+                    </div>
+                    <button class="btn-buy" data-order-msg="ሰላም! የክሪፕቶ እና ፎሬክስ ትሬዲንግ መጽሃፍ ጥቅል በ 700 ብር ማዘዝ እፈልጋለሁ።" data-en="Buy Now" data-am="አሁኑኑ ይዘዙ">አሁኑኑ ይዘዙ</button>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image youtube-img">
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                    <h3 data-en="YouTube Secrets" data-am="የዩቲዩብ ሚስጥሮች">የዩቲዩብ ሚስጥሮች</h3>
+                    <p data-en="From opening a YouTube channel to monetization and understanding YouTube algorithm" data-am="የዩቲዩብ ቻናል ከመክፈት ጀምሮ እንዴት በዩቱብ ሞኒታይዝ መደረግ እንደሚቻል እና አጠቃላይ ስለዩቱብ አልጎሪዝም የሚያስተምር">የዩቲዩብ ቻናል ከመክፈት ጀምሮ እንዴት በዩቱብ ሞኒታይዝ መደረግ እንደሚቻል እና አጠቃላይ ስለዩቱብ አልጎሪዝም የሚያስተምር</p>
+                    <div class="price">350 ብር</div>
+                    <button class="btn-buy" data-order-msg="ሰላም! በአማርኛ የተዘጋጀ ሙሉ የዩቱብ መማሪያ መጽሃፍ በ 350 ብር ማዘዝ እፈልጋለሁ።" data-en="Buy Now" data-am="አሁኑኑ ይዘዙ">አሁኑኑ ይዘዙ</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 data-en="Contact Us" data-am="ያግኙን">ያግኙን</h2>
+            <p data-en="Have questions? Send us any question or feedback and we will reply immediately!" data-am="ጥያቄዎች አሉዎት? ማንኛውንም ጥያቄ እና አስተያየትዎን ይላኩልን ወዲያውኑ እንመልሳለን">ጥያቄዎች አሉዎት? ማንኛውንም ጥያቄ እና አስተያየትዎን ይላኩልን ወዲያውኑ እንመልሳለን</p>
+            
+            <div class="whatsapp-quick">
+                <h3 data-en="Send Quick Message" data-am="ፈጣን መልእክት ይላኩ">ፈጣን መልእክት ይላኩ</h3>
+                <div class="message-box">
+                    <input type="text" id="quickMessage" class="message-input" placeholder="መልእክትዎን ይጻፉ..." data-placeholder-en="Write your message..." data-placeholder-am="መልእክትዎን ይጻፉ...">
+                    <button onclick="sendQuickMessage()" class="whatsapp-send-btn">
+                        <i class="fab fa-whatsapp"></i>
+                        <span data-en="Send" data-am="ላክ">ላክ</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p data-en="&copy; 2026 Tag Bridge. All rights reserved." data-am="&copy; 2026 ታግ ብሪጅ። ሁሉም መብቶች የተጠበቁ ናቸው።">&copy; 2026 ታግ ብሪጅ። ሁሉም መብቶች የተጠበቁ ናቸው።</p>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/251991856292" target="_blank" class="whatsapp-float" id="whatsappBtn" title="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script src="script.js"></script>
+</body>
+</html>
