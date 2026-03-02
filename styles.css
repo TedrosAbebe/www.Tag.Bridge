@@ -193,9 +193,33 @@ body {
 
 .social-icons {
     display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.social-row {
+    display: flex;
+    gap: 1.5rem;
     justify-content: center;
-    gap: 2rem;
-    flex-wrap: wrap;
+}
+
+.telegram-full {
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    padding: 25px 40px;
+    font-size: 1.2rem;
+}
+
+.telegram-full i {
+    font-size: 3rem;
+    margin-right: 15px;
+}
+
+.telegram-full span {
+    font-size: 1.3rem;
 }
 
 .social-btn {
@@ -211,6 +235,7 @@ body {
     min-width: 120px;
     position: relative;
     overflow: hidden;
+    flex: 1;
 }
 
 .social-btn::before {
@@ -954,11 +979,31 @@ footer p {
     
     .social-icons {
         gap: 1rem;
+        padding: 0 15px;
+    }
+    
+    .social-row {
+        gap: 1rem;
+        width: 100%;
+    }
+    
+    .telegram-full {
+        padding: 20px 25px;
+        font-size: 1rem;
+    }
+    
+    .telegram-full i {
+        font-size: 2.5rem;
+        margin-right: 10px;
+    }
+    
+    .telegram-full span {
+        font-size: 1.1rem;
     }
     
     .social-btn {
         padding: 15px 18px;
-        min-width: 90px;
+        min-width: 0;
     }
     
     .social-btn i {
