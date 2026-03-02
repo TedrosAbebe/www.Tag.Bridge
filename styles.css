@@ -35,6 +35,27 @@ body {
     align-items: center;
 }
 
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: transform 0.3s;
+}
+
+.mobile-menu-btn:hover {
+    transform: scale(1.1);
+}
+
 .logo {
     display: flex;
     align-items: center;
@@ -831,34 +852,58 @@ footer p {
     }
     
     .navbar .container {
-        flex-wrap: wrap;
-        gap: 15px;
+        position: relative;
     }
     
-    .logo {
-        font-size: 1.3rem;
+    .mobile-menu-btn {
+        display: block;
+        order: 2;
     }
     
-    .logo i {
-        font-size: 1.5rem;
+    .nav-right {
+        gap: 1rem;
     }
     
     .nav-links {
-        order: 3;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        flex-direction: column;
+        gap: 0;
+        padding: 0;
+        margin-top: 1rem;
+        border-radius: 10px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease, padding 0.3s ease;
+    }
+    
+    .nav-links.active {
+        max-height: 300px;
+        padding: 1rem 0;
+    }
+    
+    .nav-links li {
         width: 100%;
-        flex-direction: row;
-        justify-content: center;
-        gap: 2rem;
-        padding-top: 15px;
-        border-top: 1px solid rgba(255,255,255,0.2);
+        text-align: center;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .nav-links li:last-child {
+        border-bottom: none;
     }
     
     .nav-links a {
+        display: block;
+        padding: 1rem;
         font-size: 1.1rem;
     }
     
     .lang-switch {
-        order: 2;
+        order: 3;
     }
     
     .lang-toggle-label {
