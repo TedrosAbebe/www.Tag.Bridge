@@ -1102,32 +1102,45 @@ footer p {
         line-height: 1.5;
     }
     
+    .whatsapp-quick {
+        margin-top: 2rem;
+        padding-bottom: 2rem;
+    }
+    
     .whatsapp-quick h3 {
         font-size: 1.4rem;
         margin-bottom: 1.2rem;
     }
     
     .message-box {
-        flex-direction: column;
+        flex-direction: row;
         padding: 0 20px;
-        gap: 15px;
+        gap: 10px;
+        align-items: stretch;
     }
     
     .message-input {
-        width: 100%;
+        flex: 1;
         font-size: 1rem;
         padding: 14px 20px;
+        min-height: 50px;
     }
     
     .whatsapp-send-btn {
-        width: 100%;
-        justify-content: center;
-        padding: 14px 35px;
-        font-size: 1.1rem;
+        width: auto;
+        min-width: 60px;
+        padding: 0 20px;
+        font-size: 0;
+        flex-shrink: 0;
     }
     
     .whatsapp-send-btn i {
-        font-size: 1.4rem;
+        font-size: 1.5rem;
+        margin: 0;
+    }
+    
+    .whatsapp-send-btn span {
+        display: none;
     }
     
     footer {
