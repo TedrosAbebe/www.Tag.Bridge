@@ -840,7 +840,7 @@ footer p {
     align-items: center;
     justify-content: center;
     transition: all 0.3s;
-    cursor: move;
+    cursor: pointer;
     animation: whatsappPulse 2s ease-in-out infinite;
 }
 

@@ -79,65 +79,8 @@ document.getElementById('quickMessage').addEventListener('keypress', function(e)
     }
 });
 
-// WhatsApp Button Draggable
+// WhatsApp Button - Remove draggable, just open WhatsApp
 const whatsappBtn = document.getElementById('whatsappBtn');
-let isDragging = false;
-let currentX;
-let currentY;
-let initialX;
-let initialY;
-let xOffset = 0;
-let yOffset = 0;
-
-whatsappBtn.addEventListener('mousedown', dragStart);
-whatsappBtn.addEventListener('touchstart', dragStart);
-document.addEventListener('mousemove', drag);
-document.addEventListener('touchmove', drag);
-document.addEventListener('mouseup', dragEnd);
-document.addEventListener('touchend', dragEnd);
-
-function dragStart(e) {
-    if (e.type === 'touchstart') {
-        initialX = e.touches[0].clientX - xOffset;
-        initialY = e.touches[0].clientY - yOffset;
-    } else {
-        initialX = e.clientX - xOffset;
-        initialY = e.clientY - yOffset;
-    }
-
-    if (e.target === whatsappBtn || e.target.parentElement === whatsappBtn) {
-        isDragging = true;
-    }
-}
-
-function drag(e) {
-    if (isDragging) {
-        e.preventDefault();
-        
-        if (e.type === 'touchmove') {
-            currentX = e.touches[0].clientX - initialX;
-            currentY = e.touches[0].clientY - initialY;
-        } else {
-            currentX = e.clientX - initialX;
-            currentY = e.clientY - initialY;
-        }
-
-        xOffset = currentX;
-        yOffset = currentY;
-
-        setTranslate(currentX, currentY, whatsappBtn);
-    }
-}
-
-function dragEnd(e) {
-    initialX = currentX;
-    initialY = currentY;
-    isDragging = false;
-}
-
-function setTranslate(xPos, yPos, el) {
-    el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
-}
 
 // Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
