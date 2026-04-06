@@ -1101,7 +1101,9 @@ footer p { font-size: 0.85rem; }
 .whatsapp-float {
     position: fixed;
     width: 58px; height: 58px;
-    bottom: 35px; right: 35px;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
     background: linear-gradient(135deg, #25d366, #128c7e);
     color: white;
     border-radius: 50%;
@@ -1111,10 +1113,11 @@ footer p { font-size: 0.85rem; }
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s;
-    cursor: pointer;
+    transition: box-shadow 0.3s, background 0.3s;
+    cursor: grab;
     animation: whatsappPulse 2.5s ease-in-out infinite;
     text-decoration: none;
+    user-select: none;
 }
 
 @keyframes whatsappPulse {

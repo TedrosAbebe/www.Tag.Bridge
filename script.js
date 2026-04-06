@@ -180,8 +180,75 @@ document.getElementById('telegramMessage').addEventListener('keypress', function
     if (e.key === 'Enter') sendTelegramMessage();
 });
 
-// WhatsApp Button - Remove draggable, just open WhatsApp
+// WhatsApp Button - Draggable, default center bottom
 const whatsappBtn = document.getElementById('whatsappBtn');
+let isDragging = false;
+let hasMoved = false;
+let startX, startY, startLeft, startTop;
+
+whatsappBtn.addEventListener('mousedown', dragStart);
+whatsappBtn.addEventListener('touchstart', dragStart, { passive: true });
+document.addEventListener('mousemove', dragMove);
+document.addEventListener('touchmove', dragMove, { passive: false });
+document.addEventListener('mouseup', dragEnd);
+document.addEventListener('touchend', dragEnd);
+
+function dragStart(e) {
+    isDragging = true;
+    hasMoved = false;
+    whatsappBtn.style.animation = 'none';
+    whatsappBtn.style.cursor = 'grabbing';
+    whatsappBtn.style.transition = 'none';
+
+    var rect = whatsappBtn.getBoundingClientRect();
+    startLeft = rect.left;
+    startTop = rect.top;
+
+    if (e.type === 'touchstart') {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+    } else {
+        startX = e.clientX;
+        startY = e.clientY;
+    }
+}
+
+function dragMove(e) {
+    if (!isDragging) return;
+    if (e.type === 'touchmove') e.preventDefault();
+
+    var clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
+    var clientY = e.type === 'touchmove' ? e.touches[0].clientY : e.clientY;
+
+    var dx = clientX - startX;
+    var dy = clientY - startY;
+
+    if (Math.abs(dx) > 5 || Math.abs(dy) > 5) hasMoved = true;
+
+    var newLeft = startLeft + dx;
+    var newTop = startTop + dy;
+
+    // Keep within screen bounds
+    newLeft = Math.max(10, Math.min(window.innerWidth - 68, newLeft));
+    newTop = Math.max(10, Math.min(window.innerHeight - 68, newTop));
+
+    whatsappBtn.style.left = newLeft + 'px';
+    whatsappBtn.style.top = newTop + 'px';
+    whatsappBtn.style.bottom = 'auto';
+    whatsappBtn.style.transform = 'none';
+}
+
+function dragEnd(e) {
+    if (!isDragging) return;
+    isDragging = false;
+    whatsappBtn.style.cursor = 'grab';
+    whatsappBtn.style.animation = 'whatsappPulse 2.5s ease-in-out infinite';
+
+    // If not moved, treat as click
+    if (!hasMoved) {
+        openWhatsApp('ሰላም ታግ ብሪጅ !ተጨማሪ ማብራሪያዎችን እፈልጋለሁ።');
+    }
+}
 
 // Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
