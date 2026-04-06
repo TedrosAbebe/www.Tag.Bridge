@@ -338,13 +338,13 @@ body::before {
     text-align: center;
     font-size: 2.2rem;
     margin-bottom: 2.5rem;
-    color: white;
+    color: #111;
     font-weight: 800;
     position: relative;
     display: inline-block;
     left: 50%;
     transform: translateX(-50%);
-    text-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    text-shadow: none;
 }
 
 .products h2::after {
@@ -353,10 +353,10 @@ body::before {
     bottom: -10px; left: 50%;
     transform: translateX(-50%);
     width: 60px; height: 3px;
-    background: linear-gradient(90deg, var(--accent), var(--primary));
+    background: linear-gradient(90deg, #5b7de8, #6b6bb8);
     border-radius: 2px;
     animation: lineExpand 2s ease-in-out infinite;
-    box-shadow: 0 0 10px rgba(56,239,125,0.5);
+    box-shadow: none;
 }
 
 @keyframes lineExpand {
@@ -367,9 +367,10 @@ body::before {
 .products-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 1.2rem;
+    gap: 1.8rem;
     max-width: 860px;
     margin: 0 auto;
+    padding: 0 15px;
 }
 
 /* Glass card with edge glow */
@@ -437,19 +438,32 @@ body::before {
 
 .product-card.bundle h3 {
     color: white;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
 .product-card.bundle p {
-    color: rgba(255,255,255,0.9);
+    color: rgba(255,255,255,0.95);
+    font-style: italic;
+    font-weight: 700;
 }
 
 .product-card.bundle .price-bundle .old-price {
-    color: rgba(255,255,255,0.6);
+    color: rgba(255,255,255,0.7);
+    text-decoration: line-through;
 }
 
 .product-card.bundle .price-bundle .price {
     color: white;
+    font-size: 1.6rem;
+    font-weight: 900;
     text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.product-card.bundle .btn-buy {
+    background: white;
+    color: #ff6b35;
+    font-weight: 800;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
 .product-card::before {
