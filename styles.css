@@ -1101,9 +1101,10 @@ footer p { font-size: 0.85rem; }
 .whatsapp-float {
     position: fixed;
     width: 58px; height: 58px;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
+    right: 25px;
+    left: auto;
+    bottom: 80px;
+    transform: none;
     background: linear-gradient(135deg, #25d366, #128c7e);
     color: white;
     border-radius: 50%;
@@ -1113,11 +1114,16 @@ footer p { font-size: 0.85rem; }
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: box-shadow 0.3s, background 0.3s;
     cursor: grab;
-    animation: whatsappPulse 2.5s ease-in-out infinite;
+    animation: floatUpDown 4s ease-in-out infinite;
     text-decoration: none;
     user-select: none;
+}
+
+@keyframes floatUpDown {
+    0%   { bottom: 60px; box-shadow: 0 4px 20px rgba(37,211,102,0.5); }
+    50%  { bottom: 220px; box-shadow: 0 8px 30px rgba(37,211,102,0.8), 0 0 0 10px rgba(37,211,102,0.08); }
+    100% { bottom: 60px; box-shadow: 0 4px 20px rgba(37,211,102,0.5); }
 }
 
 @keyframes whatsappPulse {
