@@ -1089,7 +1089,7 @@ footer p { font-size: 0.85rem; }
     .lang-slider { width: 40px; height: 30px; }
     .lang-toggle-checkbox:checked + .lang-toggle-label .lang-slider { transform: translateX(37px); }
 
-    .hero { padding: 60px 0; margin-top: 100px; }
+    .hero { padding: 25px 0 40px; margin-top: 0; }
     .hero h1 { font-size: 1.8rem; }
     .hero p { font-size: 0.9rem; padding: 0 10px; }
 
