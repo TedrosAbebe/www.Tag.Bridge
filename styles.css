@@ -69,16 +69,7 @@ body::before {
     box-shadow: 0 4px 30px rgba(0,0,0,0.2);
 }
 
-.divider-line {
-    position: fixed;
-    top: 70px;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: white;
-    z-index: 999;
-    box-shadow: 0 0 10px rgba(255,255,255,0.8);
-}
+.divider-line { display: none; }
 
 .navbar .container {
     display: flex;
@@ -412,13 +403,13 @@ body::before {
 .product-card h3 {
     font-size: 0.9rem;
     margin-bottom: 0.4rem;
-    color: #333;
-    font-weight: 700;
+    color: #1a1a3e;
+    font-weight: 800;
     line-height: 1.3;
 }
 
 .product-card p {
-    color: #555;
+    color: #333;
     margin-bottom: 0.8rem;
     font-size: 0.72rem;
     line-height: 1.4;
@@ -432,7 +423,7 @@ body::before {
 .price {
     font-size: 1.4rem;
     font-weight: 800;
-    color: #667eea;
+    color: #5b7de8;
     margin-bottom: 0.8rem;
 }
 
