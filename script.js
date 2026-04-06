@@ -1,26 +1,22 @@
 // Service Dropdown Toggle
-function toggleService(header) {
-    const list = header.nextElementSibling;
-    const isOpen = list.classList.contains('open');
-    
-    // Close all open lists first
-    document.querySelectorAll('.service-list').forEach(l => l.classList.remove('open'));
-    document.querySelectorAll('.service-header').forEach(h => h.classList.remove('open'));
-    
-    // If it was closed, open it
-    if (!isOpen) {
-        list.classList.add('open');
-        header.classList.add('open');
-    }
-}
+document.querySelectorAll('.service-header').forEach(function(header) {
+    header.addEventListener('click', function() {
+        var list = this.nextElementSibling;
+        var isOpen = list.classList.contains('open');
 
-// Also allow clicking anywhere on the card
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.service-card').forEach(card => {
-        card.addEventListener('click', function(e) {
-            const header = this.querySelector('.service-header');
-            toggleService(header);
+        // Close all
+        document.querySelectorAll('.service-list').forEach(function(l) {
+            l.classList.remove('open');
         });
+        document.querySelectorAll('.service-header').forEach(function(h) {
+            h.classList.remove('open');
+        });
+
+        // Open clicked one if it was closed
+        if (!isOpen) {
+            list.classList.add('open');
+            this.classList.add('open');
+        }
     });
 });
 
