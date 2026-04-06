@@ -22,15 +22,7 @@ body {
     line-height: 1.6;
     color: #e0e0ff;
     overflow-x: hidden;
-    background:
-        linear-gradient(180deg,
-            #5b7de8 0%,
-            #5b7de8 49.8%,
-            white 49.8%,
-            white 50.2%,
-            #6b6bb8 50.2%,
-            #6b6bb8 100%
-        );
+    background: #5b7de8;
     min-height: 100vh;
 }
 
@@ -56,7 +48,7 @@ body::before {
 
 /* ===== NAVBAR ===== */
 .navbar {
-    background: rgba(91,125,232,0.85);
+    background: #4a6fd4;
     padding: 1rem 0;
     position: fixed;
     width: 100%;
@@ -65,7 +57,7 @@ body::before {
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
     border-bottom: 3px solid white;
-    box-shadow: 0 4px 30px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
 }
 
 .divider-line { display: none; }
@@ -198,7 +190,7 @@ body::before {
 .hero {
     margin-top: 0;
     padding: 90px 0 80px;
-    background: transparent;
+    background: linear-gradient(135deg, #5b7de8 0%, #6b6bb8 100%);
     color: white;
     text-align: center;
     position: relative;
@@ -333,18 +325,12 @@ body::before {
 /* ===== PRODUCTS ===== */
 .products {
     padding: 80px 0;
-    background: transparent;
+    background: #f0f4ff;
     position: relative;
     overflow: hidden;
 }
 
-.products::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.05);
-    pointer-events: none;
-}
+.products::before { display: none; }
 
 .products .container { position: relative; z-index: 1; }
 
@@ -643,7 +629,7 @@ body::before {
 /* ===== SERVICES ===== */
 .services {
     padding: 80px 0;
-    background: rgba(0,0,0,0.08);
+    background: linear-gradient(135deg, #6b6bb8 0%, #5b7de8 100%);
     position: relative;
     overflow: hidden;
 }
@@ -811,39 +797,22 @@ body::before {
 /* ===== STATS ===== */
 .stats {
     padding: 50px 0;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    background: white;
     position: relative;
     overflow: hidden;
 }
 
-.stats::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(90deg, rgba(0,0,0,0.2) 0%, transparent 20%, transparent 80%, rgba(0,0,0,0.2) 100%);
-}
-
 .stats .container { position: relative; z-index: 1; }
-
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
-    text-align: center;
-    max-width: 400px;
-    margin: 0 auto;
-}
-
-.stat-item { color: white; }
-.stat-item i { font-size: 2rem; margin-bottom: 0.5rem; display: block; opacity: 0.9; }
-.stat-item .stat-number { font-size: 2.5rem; font-weight: 900; display: inline; }
-.stat-item span { font-size: 2rem; font-weight: 900; }
-.stat-item p { font-size: 0.9rem; opacity: 0.85; margin-top: 5px; }
+.stat-item { color: #333; }
+.stat-item i { color: #5b7de8; }
+.stat-item .stat-number { color: #5b7de8; font-size: 2.5rem; font-weight: 900; display: inline; }
+.stat-item span { font-size: 2rem; font-weight: 900; color: #5b7de8; }
+.stat-item p { font-size: 0.9rem; color: #555; margin-top: 5px; }
 
 /* ===== FAQ ===== */
 .faq {
     padding: 80px 0;
-    background: rgba(0,0,0,0.06);
+    background: #f0f4ff;
     position: relative;
 }
 
@@ -851,13 +820,13 @@ body::before {
     text-align: center;
     font-size: 2.2rem;
     margin-bottom: 2.5rem;
-    color: white;
+    color: #333;
     font-weight: 800;
     position: relative;
     display: inline-block;
     left: 50%;
     transform: translateX(-50%);
-    text-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    text-shadow: none;
 }
 
 .faq h2::after {
@@ -925,7 +894,7 @@ body::before {
 /* ===== CONTACT ===== */
 .contact {
     padding: 80px 0;
-    background: rgba(0,0,0,0.1);
+    background: linear-gradient(135deg, #5b7de8 0%, #6b6bb8 100%);
     color: white;
     position: relative;
     overflow: hidden;
@@ -1048,11 +1017,11 @@ body::before {
 
 /* ===== FOOTER ===== */
 footer {
-    background: rgba(0,0,0,0.2);
+    background: #3a5bc4;
     color: white;
     text-align: center;
     padding: 2rem 0;
-    border-top: 1px solid rgba(255,255,255,0.15);
+    border-top: 3px solid white;
 }
 
 footer p { font-size: 0.85rem; }
