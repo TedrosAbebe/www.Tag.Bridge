@@ -195,7 +195,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    max-width: 600px;
+    max-width: 500px;
     margin: 0 auto;
 }
 
@@ -205,37 +205,19 @@ body {
     justify-content: center;
 }
 
-.telegram-full {
-    width: 100%;
-    flex-direction: row;
-    justify-content: center;
-    padding: 25px 40px;
-    font-size: 1.2rem;
-}
-
-.telegram-full i {
-    font-size: 3.5rem;
-    margin-right: 20px;
-}
-
-.telegram-full span {
-    font-size: 1.3rem;
-}
-
 .social-btn {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    padding: 20px 30px;
+    gap: 8px;
+    padding: 18px 25px;
     border-radius: 15px;
     text-decoration: none;
     color: white;
     transition: all 0.3s;
-    min-width: 120px;
+    flex: 1;
     position: relative;
     overflow: hidden;
-    flex: 1;
 }
 
 .social-btn::before {
