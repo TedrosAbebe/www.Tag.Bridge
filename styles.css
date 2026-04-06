@@ -1,32 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+:root {
+    --primary: #667eea;
+    --secondary: #764ba2;
+    --accent: #38ef7d;
+    --gold: #ffd200;
+    --dark: #0a0a1a;
+    --glass: rgba(255,255,255,0.08);
+    --glass-border: rgba(255,255,255,0.15);
+    --glow-blue: rgba(102,126,234,0.4);
+    --glow-green: rgba(56,239,125,0.4);
+}
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
     line-height: 1.6;
     color: #333;
     overflow-x: hidden;
+    background: #0a0a1a;
+}
+
+/* Edge Curve Effect on main wrapper */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        radial-gradient(ellipse at 0% 50%, rgba(102,126,234,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 100% 50%, rgba(118,75,162,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 0%, rgba(56,239,125,0.05) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 0;
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+    position: relative;
+    z-index: 1;
 }
 
 /* Navbar */
 .navbar {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: rgba(10,10,26,0.85);
     padding: 1rem 0;
     position: fixed;
     width: 100%;
     top: 0;
     z-index: 1000;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(102,126,234,0.2);
+    box-shadow:
+        0 4px 30px rgba(0,0,0,0.3),
+        0 0 60px rgba(102,126,234,0.05),
+        inset 0 -1px 0 rgba(255,255,255,0.05);
 }
 
 .navbar .container {
@@ -124,7 +162,7 @@ body {
 .hero {
     margin-top: 70px;
     padding: 80px 0;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0a0a1a 0%, #1a1040 40%, #0d1b3e 100%);
     color: white;
     text-align: center;
     position: relative;
@@ -134,13 +172,26 @@ body {
 .hero::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.1)" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,138.7C960,139,1056,117,1152,101.3C1248,85,1344,75,1392,69.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
-    background-size: cover;
-    opacity: 0.3;
+    top: -50%; left: 50%;
+    transform: translateX(-50%);
+    width: 120%; height: 200%;
+    background: radial-gradient(ellipse at center,
+        rgba(102,126,234,0.3) 0%,
+        rgba(118,75,162,0.15) 35%,
+        transparent 70%);
+    pointer-events: none;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(90deg,
+        rgba(102,126,234,0.12) 0%,
+        transparent 15%,
+        transparent 85%,
+        rgba(118,75,162,0.12) 100%);
+    pointer-events: none;
 }
 
 .hero .container {
@@ -151,16 +202,16 @@ body {
 .hero h1 {
     font-size: 3rem;
     margin-bottom: 1rem;
+    font-weight: 800;
 }
 
 .animated-text {
-    animation: fadeInScale 2s ease-in-out infinite alternate;
-    background: linear-gradient(45deg, #fff, #f0f0f0, #fff);
-    background-size: 200% 200%;
+    background: linear-gradient(135deg, #fff 0%, #a8c8ff 40%, #38ef7d 70%, #fff 100%);
+    background-size: 300% 300%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: gradientShift 3s ease infinite, fadeInScale 2s ease-in-out infinite alternate;
+    animation: gradientShift 4s ease infinite, fadeInScale 2s ease-in-out infinite alternate;
 }
 
 @keyframes gradientShift {
@@ -170,20 +221,18 @@ body {
 }
 
 @keyframes fadeInScale {
-    0% {
-        opacity: 0.8;
-        transform: scale(0.98);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
+    0% { opacity: 0.85; transform: scale(0.99); }
+    100% { opacity: 1; transform: scale(1); }
 }
 
 .hero p {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     margin-bottom: 3rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    color: rgba(255,255,255,0.75);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.7;
 }
 
 /* Social Links */
