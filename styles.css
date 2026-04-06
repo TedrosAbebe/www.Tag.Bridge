@@ -488,6 +488,12 @@ body::before {
     border-left: 5px solid #f7971e;
 }
 
+.product-card:nth-child(2) .btn-buy {
+    background: linear-gradient(135deg, #f7971e, #ffd200);
+    color: #333;
+    font-weight: 800;
+}
+
 .product-card:nth-child(3) {
     background: white;
     border-left: 5px solid #ff0000;
