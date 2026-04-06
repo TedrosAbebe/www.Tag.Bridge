@@ -409,7 +409,7 @@ body::before {
 .price {
     font-size: 1.4rem;
     font-weight: 800;
-    color: #5b7de8;
+    color: #111;
     margin-bottom: 0.8rem;
 }
 
@@ -431,9 +431,9 @@ body::before {
 }
 
 .product-card.bundle {
-    background: linear-gradient(135deg, #ff6b35, #f7c948);
+    background: linear-gradient(135deg, #5b7de8, #6b6bb8);
     border: none;
-    box-shadow: 0 10px 40px rgba(255,107,53,0.4);
+    box-shadow: 0 10px 40px rgba(91,125,232,0.4);
 }
 
 .product-card.bundle h3 {
@@ -442,26 +442,26 @@ body::before {
 }
 
 .product-card.bundle p {
-    color: rgba(255,255,255,0.95);
+    color: #111;
     font-style: italic;
     font-weight: 700;
 }
 
 .product-card.bundle .price-bundle .old-price {
-    color: rgba(255,255,255,0.7);
+    color: #222;
     text-decoration: line-through;
 }
 
 .product-card.bundle .price-bundle .price {
-    color: white;
+    color: #111;
     font-size: 1.6rem;
     font-weight: 900;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    text-shadow: none;
 }
 
 .product-card.bundle .btn-buy {
     background: white;
-    color: #ff6b35;
+    color: #5b7de8;
     font-weight: 800;
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
