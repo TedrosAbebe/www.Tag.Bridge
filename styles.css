@@ -409,15 +409,16 @@ body::before {
 .price {
     font-size: 1.4rem;
     font-weight: 800;
-    color: #111;
+    color: #111 !important;
     margin-bottom: 0.8rem;
+    text-shadow: none !important;
 }
 
 .price-bundle { margin-bottom: 0.8rem; }
 
 .old-price {
     font-size: 0.82rem;
-    color: #aaa;
+    color: #888 !important;
     text-decoration: line-through;
     display: block;
     margin-bottom: 0.2rem;
@@ -426,8 +427,9 @@ body::before {
 .price-bundle .price {
     font-size: 1.5rem;
     font-weight: 800;
-    color: #ff9800;
+    color: #111 !important;
     margin: 0;
+    text-shadow: none !important;
 }
 
 .product-card.bundle {
