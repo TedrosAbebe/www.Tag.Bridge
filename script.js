@@ -1,9 +1,28 @@
 // Service Dropdown Toggle
 function toggleService(header) {
     const list = header.nextElementSibling;
-    header.classList.toggle('open');
-    list.classList.toggle('open');
+    const isOpen = list.classList.contains('open');
+    
+    // Close all open lists first
+    document.querySelectorAll('.service-list').forEach(l => l.classList.remove('open'));
+    document.querySelectorAll('.service-header').forEach(h => h.classList.remove('open'));
+    
+    // If it was closed, open it
+    if (!isOpen) {
+        list.classList.add('open');
+        header.classList.add('open');
+    }
 }
+
+// Also allow clicking anywhere on the card
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.service-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+            const header = this.querySelector('.service-header');
+            toggleService(header);
+        });
+    });
+});
 
 // Mobile Menu Toggle
 const mobileMenuBtn = document.getElementById('mobileMenuBtn');
