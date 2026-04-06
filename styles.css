@@ -1275,14 +1275,14 @@ footer p {
         gap: 5px;
         flex-shrink: 0;
         width: auto;
-        max-width: 160px;
+        max-width: 180px;
     }
 
     .message-input {
-        font-size: 0.75rem;
+        font-size: 0.8rem;
         padding: 7px 10px;
         min-height: 34px;
-        width: 100px;
+        width: 130px;
         min-width: 0;
     }
 
