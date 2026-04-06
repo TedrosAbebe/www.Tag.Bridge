@@ -121,15 +121,32 @@
         <div class="container">
             <h2 data-en="Contact Us" data-am="ያግኙን">ያግኙን</h2>
             <p data-en="Have questions? Send us any question or feedback and we will reply immediately!" data-am="ጥያቄዎች አሉዎት? ማንኛውንም ጥያቄ እና አስተያየትዎን ይላኩልን ወዲያውኑ እንመልሳለን">ጥያቄዎች አሉዎት? ማንኛውንም ጥያቄ እና አስተያየትዎን ይላኩልን ወዲያውኑ እንመልሳለን</p>
-            
-            <div class="whatsapp-quick">
-                <h3 data-en="Send Quick Message" data-am="ፈጣን መልእክት ይላኩ">ፈጣን መልእክት ይላኩ</h3>
-                <div class="message-box">
-                    <input type="text" id="quickMessage" class="message-input" placeholder="መልእክትዎን ይጻፉ..." data-placeholder-en="Write your message..." data-placeholder-am="መልእክትዎን ይጻፉ...">
-                    <button onclick="sendQuickMessage()" class="whatsapp-send-btn">
-                        <i class="fas fa-paper-plane"></i>
-                        <span data-en="Send" data-am="ላክ">ላክ</span>
-                    </button>
+
+            <div class="contact-options">
+                <!-- Telegram Contact -->
+                <div class="contact-card telegram-card">
+                    <i class="fab fa-telegram"></i>
+                    <h3 data-en="Contact via Telegram" data-am="በቴሌግራም ያግኙን">በቴሌግራም ያግኙን</h3>
+                    <a href="https://t.me/tagbridge123" target="_blank" class="contact-btn telegram-btn">
+                        <i class="fab fa-telegram"></i>
+                        <span data-en="Open Telegram" data-am="ቴሌግራም ይክፈቱ">ቴሌግራም ይክፈቱ</span>
+                    </a>
+                </div>
+
+                <!-- WhatsApp Contact -->
+                <div class="contact-card whatsapp-card">
+                    <i class="fab fa-whatsapp"></i>
+                    <h3 data-en="Contact via WhatsApp" data-am="በዋትስአፕ ያግኙን">በዋትስአፕ ያግኙን</h3>
+                    <div class="whatsapp-quick">
+                        <h4 data-en="Send Quick Message" data-am="ፈጣን መልእክት ይላኩ">ፈጣን መልእክት ይላኩ</h4>
+                        <div class="message-box">
+                            <input type="text" id="quickMessage" class="message-input" placeholder="መልእክትዎን ይጻፉ..." data-placeholder-en="Write your message..." data-placeholder-am="መልእክትዎን ይጻፉ...">
+                            <button onclick="sendQuickMessage()" class="whatsapp-send-btn">
+                                <i class="fas fa-paper-plane"></i>
+                                <span data-en="Send" data-am="ላክ">ላክ</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
