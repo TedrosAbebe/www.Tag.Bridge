@@ -338,6 +338,18 @@ body {
     gap: 15px;
     padding: 20px 25px;
     color: white;
+    cursor: pointer;
+    user-select: none;
+}
+
+.toggle-icon {
+    margin-left: auto;
+    font-size: 1rem !important;
+    transition: transform 0.3s ease;
+}
+
+.service-header.open .toggle-icon {
+    transform: rotate(180deg);
 }
 
 .forex-header {
@@ -359,10 +371,19 @@ body {
 
 .service-list {
     list-style: none;
-    padding: 20px 25px;
+    padding: 0 25px;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s ease;
+}
+
+.service-list.open {
+    max-height: 1000px;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 .service-list li {

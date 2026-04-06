@@ -1,3 +1,10 @@
+// Service Dropdown Toggle
+function toggleService(header) {
+    const list = header.nextElementSibling;
+    header.classList.toggle('open');
+    list.classList.toggle('open');
+}
+
 // Mobile Menu Toggle
 const mobileMenuBtn = document.getElementById('mobileMenuBtn');
 const navLinks = document.getElementById('navLinks');
