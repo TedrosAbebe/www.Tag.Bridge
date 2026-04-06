@@ -123,10 +123,12 @@
                 <div class="contact-row">
                     <i class="fab fa-telegram"></i>
                     <span data-en="Contact via Telegram" data-am="በቴሌግራም ያግኙን">በቴሌግራም ያግኙን</span>
-                    <a href="https://t.me/tagbridge123" target="_blank" class="contact-btn telegram-btn">
-                        <i class="fab fa-telegram"></i>
-                        <span data-en="Open Telegram" data-am="ቴሌግራም ይክፈቱ">ቴሌግራም ይክፈቱ</span>
-                    </a>
+                    <div class="message-box">
+                        <input type="text" id="telegramMessage" class="message-input" placeholder="መልእክት..." data-placeholder-en="Message..." data-placeholder-am="መልእክት...">
+                        <button onclick="sendTelegramMessage()" class="telegram-send-btn">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- WhatsApp Row -->

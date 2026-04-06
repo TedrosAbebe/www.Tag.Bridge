@@ -67,16 +67,29 @@ function sendQuickMessage() {
         return;
     }
     const encodedMessage = encodeURIComponent(message);
-    const whatsappURL = `https://wa.me/251991856292?text=${encodedMessage}`;
-    window.open(whatsappURL, '_blank');
+    window.location.href = `https://wa.me/251991856292?text=${encodedMessage}`;
     document.getElementById('quickMessage').value = '';
 }
 
-// Allow Enter key to send message
-document.getElementById('quickMessage').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        sendQuickMessage();
+// Quick Telegram Message Function
+function sendTelegramMessage() {
+    const message = document.getElementById('telegramMessage').value;
+    if (message.trim() === '') {
+        alert('እባክዎ መልእክትዎን ይጻፉ / Please write your message');
+        return;
     }
+    const encodedMessage = encodeURIComponent(message);
+    window.location.href = `https://t.me/tagbridge123?text=${encodedMessage}`;
+    document.getElementById('telegramMessage').value = '';
+}
+
+// Allow Enter key to send messages
+document.getElementById('quickMessage').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') sendQuickMessage();
+});
+
+document.getElementById('telegramMessage').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') sendTelegramMessage();
 });
 
 // WhatsApp Button - Remove draggable, just open WhatsApp

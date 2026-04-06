@@ -637,14 +637,27 @@ body {
     flex-shrink: 0;
 }
 
-.telegram-btn {
+.telegram-send-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
     background: linear-gradient(135deg, #0088cc, #00a0e9);
-    box-shadow: 0 4px 12px rgba(0, 136, 204, 0.4);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 3px 10px rgba(0, 136, 204, 0.4);
+    flex-shrink: 0;
 }
 
-.telegram-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 18px rgba(0, 136, 204, 0.6);
+.telegram-send-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(0, 136, 204, 0.6);
 }
 
 .contact-card {
