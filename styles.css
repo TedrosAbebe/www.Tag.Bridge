@@ -1190,15 +1190,15 @@ footer p { font-size: 0.85rem; }
     .products { padding: 50px 0; }
     .products h2 { font-size: 1.6rem; margin-bottom: 1.5rem; }
     .products-grid {
-        grid-template-columns: 1fr;
-        gap: 1.2rem;
-        padding: 0 20px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+        padding: 0 12px;
     }
     .product-card.bundle {
-        grid-column: 1;
+        grid-column: 1 / -1;
         max-width: 100%;
     }
-    .product-card { padding: 1.2rem 1rem; border-radius: 14px; }
+    .product-card { padding: 1rem 0.8rem; border-radius: 14px; }
     .product-image { width: 48px; height: 48px; margin: 0 auto 0.6rem; }
     .product-image i { font-size: 1.3rem; }
     .product-card h3 { font-size: 0.75rem; margin-bottom: 0.3rem; }
