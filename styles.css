@@ -638,8 +638,21 @@ body::before {
 }
 
 .btn-buy {
-    background: linear-gradient(135deg, #11998e, #38ef7d);
+    background: linear-gradient(135deg, #25d366, #128c7e);
     color: white;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(37,211,102,0.4);
+    width: 100%;
+    letter-spacing: 0.3px;
+}
     border: none;
     padding: 9px 22px;
     border-radius: 25px;
