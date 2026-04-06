@@ -589,6 +589,7 @@ body {
     gap: 2rem;
     max-width: 900px;
     margin: 0 auto;
+    justify-items: center;
 }
 
 .contact-card {
@@ -1154,12 +1155,15 @@ footer p {
 
     .contact-options {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
-        padding: 0 15px;
+        gap: 1.2rem;
+        padding: 0 20px;
+        max-width: 400px;
+        margin: 0 auto;
     }
 
     .contact-card {
         padding: 1.5rem;
+        text-align: center;
     }
 
     .contact-card > i {
