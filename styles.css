@@ -196,7 +196,7 @@ body::before {
 
 /* ===== HERO - SAMSUNG EDGE INSPIRED ===== */
 .hero {
-    margin-top: 70px;
+    margin-top: 0;
     padding: 90px 0 80px;
     background: transparent;
     color: white;
