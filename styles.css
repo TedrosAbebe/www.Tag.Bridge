@@ -973,19 +973,25 @@ body::before {
     display: flex;
     align-items: center;
     gap: 1rem;
-    background: rgba(255,255,255,0.05);
     border-radius: 50px;
     padding: 12px 20px;
-    border: 1px solid rgba(255,255,255,0.1);
-    backdrop-filter: blur(10px);
+    border: none;
     transition: all 0.3s;
 }
 
+.contact-row.telegram-row {
+    background: linear-gradient(135deg, #0088cc, #00a0e9);
+    box-shadow: 0 5px 20px rgba(0,136,204,0.4);
+}
+
+.contact-row.whatsapp-row {
+    background: linear-gradient(135deg, #25d366, #128c7e);
+    box-shadow: 0 5px 20px rgba(37,211,102,0.4);
+}
+
 .contact-row:hover {
-    background: rgba(255,255,255,0.09);
     transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    border-color: rgba(255,255,255,0.2);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
 }
 
 .contact-row > i { font-size: 1.5rem; color: white; flex-shrink: 0; }
@@ -1000,14 +1006,21 @@ body::before {
 .message-input {
     flex: 1;
     padding: 10px 16px;
-    border: 1px solid rgba(255,255,255,0.15);
+    border: none;
     border-radius: 50px;
     font-size: 0.9rem;
     outline: none;
     transition: all 0.3s;
-    background: rgba(255,255,255,0.08);
-    color: white;
+    background: white;
+    color: #333;
     min-width: 0;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.message-input::placeholder { color: #999; }
+.message-input:focus {
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.1), 0 0 0 3px rgba(255,255,255,0.4);
+}
 }
 
 .message-input::placeholder { color: rgba(255,255,255,0.4); }
