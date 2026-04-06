@@ -522,7 +522,7 @@ body {
 /* Products Section */
 .products {
     padding: 80px 0;
-    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     position: relative;
     overflow: hidden;
 }
@@ -531,8 +531,8 @@ body {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: radial-gradient(ellipse at 20% 50%, rgba(102,126,234,0.2) 0%, transparent 60%),
-                radial-gradient(ellipse at 80% 50%, rgba(118,75,162,0.2) 0%, transparent 60%);
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.05)" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,138.7C960,139,1056,117,1152,101.3C1248,85,1344,75,1392,69.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+    background-size: cover;
 }
 
 .products .container {
@@ -549,7 +549,7 @@ body {
     display: inline-block;
     left: 50%;
     transform: translateX(-50%);
-    text-shadow: 0 0 30px rgba(102,126,234,0.6);
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
 }
 
 .products h2::after {
@@ -560,7 +560,7 @@ body {
     transform: translateX(-50%);
     width: 80px;
     height: 4px;
-    background: linear-gradient(90deg, #38ef7d, #667eea, #ffd200);
+    background: rgba(255,255,255,0.6);
     border-radius: 2px;
     animation: lineExpand 2s ease-in-out infinite;
 }
@@ -579,16 +579,14 @@ body {
 }
 
 .product-card {
-    background: rgba(255,255,255,0.07);
-    border-radius: 24px;
-    padding: 2rem 1.5rem;
+    background: white;
+    border-radius: 20px;
+    padding: 1.8rem 1.5rem;
     text-align: center;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
     overflow: hidden;
-    backdrop-filter: blur(10px);
 }
 
 .product-card::before {
@@ -596,7 +594,7 @@ body {
     position: absolute;
     top: 0; left: -100%;
     width: 100%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
     transition: left 0.6s;
 }
 
@@ -604,14 +602,13 @@ body {
 
 .product-card:hover {
     transform: translateY(-12px) scale(1.02);
-    box-shadow: 0 25px 60px rgba(0,0,0,0.4);
-    border-color: rgba(255,255,255,0.25);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.3);
 }
 
 .product-card.bundle {
-    background: linear-gradient(135deg, rgba(255,152,0,0.15), rgba(255,87,34,0.15));
-    border: 2px solid rgba(255,152,0,0.5);
-    box-shadow: 0 10px 40px rgba(255,152,0,0.2);
+    background: linear-gradient(135deg, #fff8e1, #fff3cd);
+    border: 3px solid #ffd200;
+    box-shadow: 0 15px 40px rgba(255,210,0,0.3);
 }
 
 .bundle-badge {
@@ -634,15 +631,15 @@ body {
 }
 
 .product-image {
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
     margin: 0 auto 1.2rem;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
     animation: float 3s ease-in-out infinite;
 }
 
@@ -652,8 +649,8 @@ body {
     top: -5px; left: -5px; right: -5px; bottom: -5px;
     border-radius: 50%;
     background: inherit;
-    filter: blur(12px);
-    opacity: 0.6;
+    filter: blur(10px);
+    opacity: 0.5;
     z-index: -1;
 }
 
@@ -664,11 +661,11 @@ body {
 
 .forex-img { background: linear-gradient(135deg, #11998e, #38ef7d); }
 .crypto-img { background: linear-gradient(135deg, #f7971e, #ffd200); }
-.bundle-img { background: linear-gradient(135deg, #ff6b6b, #ee5a6f); }
+.bundle-img { background: linear-gradient(135deg, #667eea, #764ba2); }
 .youtube-img { background: linear-gradient(135deg, #ff0000, #ff4444); }
 
 .product-image i {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     color: white;
     filter: drop-shadow(0 3px 6px rgba(0,0,0,0.3));
 }
@@ -676,11 +673,57 @@ body {
 .product-card h3 {
     font-size: 1.1rem;
     margin-bottom: 0.8rem;
-    color: white;
+    color: #333;
     font-weight: 700;
 }
 
 .product-card p {
+    color: #666;
+    margin-bottom: 1.2rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.price {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #667eea;
+    margin-bottom: 1.2rem;
+}
+
+.price-bundle {
+    margin-bottom: 1.2rem;
+}
+
+.old-price {
+    font-size: 1.1rem;
+    color: #999;
+    text-decoration: line-through;
+    display: block;
+    margin-bottom: 0.3rem;
+}
+
+.price-bundle .price {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ff9800;
+    margin: 0;
+}
+
+.btn-buy {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 25px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}.product-card p {
     color: rgba(255,255,255,0.7);
     margin-bottom: 1.2rem;
     font-size: 0.9rem;
