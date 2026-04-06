@@ -656,12 +656,60 @@ body {
 
 .whatsapp-quick {
     margin-top: 0;
+    width: 100%;
 }
 
 .whatsapp-quick h4 {
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: rgba(255,255,255,0.9);
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
+}
+
+.message-box {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    width: 100%;
+}
+
+.message-input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50px;
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.3s;
+    background: rgba(255,255,255,0.95);
+    min-width: 0;
+}
+
+.message-input:focus {
+    box-shadow: 0 0 15px rgba(255,255,255,0.4);
+    border-color: rgba(255,255,255,0.8);
+}
+
+.whatsapp-send-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    background: linear-gradient(135deg, #25d366, #128c7e);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 3px 10px rgba(37, 211, 102, 0.4);
+    flex-shrink: 0;
+}
+
+.whatsapp-send-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(37, 211, 102, 0.6);
 }
 
 .message-box {
