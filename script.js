@@ -134,17 +134,14 @@ langToggle.addEventListener('change', (e) => {
 // Fast WhatsApp redirect - works in TikTok/Instagram browsers
 function openWhatsApp(message) {
     var encoded = encodeURIComponent(message);
-    var waUrl = 'https://wa.me/251991856292?text=' + encoded;
-    
-    // Try to detect TikTok/Instagram in-app browser
     var ua = navigator.userAgent || '';
-    var isInApp = /TikTok|BytedanceWebview|musical_ly|Instagram|FBAN|FBAV/i.test(ua);
-    
-    if (isInApp) {
-        // Force open in external browser
-        window.location.href = waUrl;
+    var isTikTok = /TikTok|BytedanceWebview|musical_ly|Instagram|FBAN|FBAV/i.test(ua);
+
+    if (isTikTok) {
+        // Use redirect page to bypass TikTok block
+        window.location.href = '/wa.html?msg=' + encoded;
     } else {
-        window.open(waUrl, '_blank');
+        window.open('https://wa.me/251991856292?text=' + encoded, '_blank');
     }
 }
 
