@@ -434,8 +434,8 @@ body::before {
 
 .product-card.bundle {
     background: #ffffff;
-    border: 4px solid #5b7de8;
-    box-shadow: 0 10px 40px rgba(91,125,232,0.3);
+    border: 4px solid #25d366;
+    box-shadow: 0 10px 40px rgba(37,211,102,0.3);
 }
 
 .product-card.bundle h3 {
@@ -462,7 +462,7 @@ body::before {
 }
 
 .product-card.bundle .btn-buy {
-    background: linear-gradient(135deg, #5b7de8, #6b6bb8);
+    background: linear-gradient(135deg, #25d366, #128c7e);
     color: white;
     font-weight: 800;
     box-shadow: 0 4px 15px rgba(91,125,232,0.4);
