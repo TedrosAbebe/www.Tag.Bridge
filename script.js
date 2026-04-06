@@ -176,6 +176,17 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
+// Make entire product card clickable
+document.querySelectorAll('.product-card').forEach(function(card) {
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', function(e) {
+        // Don't trigger if clicking the button itself
+        if (e.target.classList.contains('btn-buy') || e.target.closest('.btn-buy')) return;
+        var btn = this.querySelector('.btn-buy');
+        if (btn) btn.click();
+    });
+});
+
 // Buy button functionality - fast redirect
 document.querySelectorAll('.btn-buy').forEach(function(button) {
     button.addEventListener('click', function() {
