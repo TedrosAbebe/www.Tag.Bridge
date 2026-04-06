@@ -466,6 +466,10 @@ body::before {
     color: white;
     font-weight: 800;
     box-shadow: 0 4px 15px rgba(91,125,232,0.4);
+    border: none;
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 1rem;
 }
 .product-card:nth-child(1) {
     background: white;
