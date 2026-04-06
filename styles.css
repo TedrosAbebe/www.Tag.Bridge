@@ -433,7 +433,7 @@ body::before {
 }
 
 .product-card.bundle {
-    background: white;
+    background: #ffffff;
     border: 4px solid #5b7de8;
     box-shadow: 0 10px 40px rgba(91,125,232,0.3);
 }
