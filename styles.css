@@ -278,6 +278,10 @@ body {
     background: linear-gradient(135deg, #000000, #ee1d52);
 }
 
+.whatsapp-channel {
+    background: linear-gradient(135deg, #25d366, #128c7e);
+}
+
 /* Products Section */
 .products {
     padding: 80px 0;
