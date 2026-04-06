@@ -131,17 +131,12 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Buy button functionality
-document.querySelectorAll('.btn-buy').forEach(button => {
-    button.addEventListener('click', function(e) {
-        const orderMessage = this.getAttribute('data-order-msg');
-        
-        // Encode message for WhatsApp URL
-        const encodedMessage = encodeURIComponent(orderMessage);
-        const whatsappURL = `https://wa.me/251991856292?text=${encodedMessage}`;
-        
-        // Open WhatsApp immediately
-        window.location.href = whatsappURL;
+// Buy button functionality - fast redirect
+document.querySelectorAll('.btn-buy').forEach(function(button) {
+    button.addEventListener('click', function() {
+        var orderMessage = this.getAttribute('data-order-msg');
+        var encodedMessage = encodeURIComponent(orderMessage);
+        window.open('https://wa.me/251991856292?text=' + encodedMessage, '_blank');
     });
 });
 
