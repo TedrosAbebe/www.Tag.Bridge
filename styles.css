@@ -812,18 +812,28 @@ body::before {
 
 /* ===== STATS ===== */
 .stats {
-    padding: 50px 0;
+    padding: 25px 0;
     background: white;
     position: relative;
     overflow: hidden;
 }
 
 .stats .container { position: relative; z-index: 1; }
-.stat-item { color: #333; }
-.stat-item i { color: #5b7de8; }
-.stat-item .stat-number { color: #5b7de8; font-size: 2.5rem; font-weight: 900; display: inline; }
+
+.stats-grid {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 4rem;
+    text-align: center;
+}
+
+.stat-item { color: #333; display: flex; align-items: center; gap: 12px; }
+.stat-item i { font-size: 1.8rem; color: #5b7de8; flex-shrink: 0; }
+.stat-item .stat-number { font-size: 2rem; font-weight: 900; display: inline; color: #5b7de8; }
 .stat-item span { font-size: 2rem; font-weight: 900; color: #5b7de8; }
-.stat-item p { font-size: 0.9rem; color: #555; margin-top: 5px; }
+.stat-item p { font-size: 0.9rem; color: #555; margin: 0; font-weight: 600; }
 
 /* ===== FAQ ===== */
 .faq {
