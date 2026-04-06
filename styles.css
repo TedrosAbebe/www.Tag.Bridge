@@ -67,9 +67,14 @@ body {
     animation: logoGlow 3s ease-in-out infinite;
 }
 
-@keyframes logoGlow {
-    0%, 100% { text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
-    50% { text-shadow: 0 0 20px rgba(255,255,255,0.5), 2px 2px 4px rgba(0,0,0,0.2); }
+.logo-tag {
+    color: #38ef7d;
+    text-shadow: 0 0 10px rgba(56, 239, 125, 0.5);
+}
+
+.logo-bridge {
+    color: #ffd200;
+    text-shadow: 0 0 10px rgba(255, 210, 0, 0.5);
 }
 
 .logo i {

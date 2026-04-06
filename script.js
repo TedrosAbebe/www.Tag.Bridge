@@ -54,21 +54,22 @@ const messageInput = document.getElementById('quickMessage');
 function switchLanguage(lang) {
     document.documentElement.lang = lang;
     localStorage.setItem('preferredLanguage', lang);
-    
+
     elementsWithLang.forEach(element => {
         const text = element.getAttribute(`data-${lang}`);
         if (text) {
-            element.textContent = text;
+            if (text.includes('<span')) {
+                element.innerHTML = text;
+            } else {
+                element.textContent = text;
+            }
         }
     });
-    
-    // Update input placeholder
-    if (messageInput) {
-        const placeholder = messageInput.getAttribute(`data-placeholder-${lang}`);
-        if (placeholder) {
-            messageInput.placeholder = placeholder;
-        }
-    }
+
+    // Update input placeholders
+    document.querySelectorAll('[data-placeholder-' + lang + ']').forEach(el => {
+        el.placeholder = el.getAttribute('data-placeholder-' + lang);
+    });
 }
 
 // Load saved language preference or default to Amharic
