@@ -377,6 +377,13 @@ body::before {
     padding: 0 20px;
 }
 
+.product-card.bundle {
+    grid-column: 1 / -1;
+    max-width: 500px;
+    margin: 0 auto;
+    width: 100%;
+}
+
 /* Glass card with edge glow */
 .product-card {
     background: white;
@@ -1186,6 +1193,10 @@ footer p { font-size: 0.85rem; }
         grid-template-columns: 1fr;
         gap: 1.2rem;
         padding: 0 20px;
+    }
+    .product-card.bundle {
+        grid-column: 1;
+        max-width: 100%;
     }
     .product-card { padding: 1.2rem 1rem; border-radius: 14px; }
     .product-image { width: 48px; height: 48px; margin: 0 auto 0.6rem; }
