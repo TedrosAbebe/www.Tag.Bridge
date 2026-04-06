@@ -1234,3 +1234,38 @@ footer p { font-size: 0.85rem; }
 
     .whatsapp-float { width: 52px; height: 52px; bottom: 20px; right: 20px; font-size: 24px; }
 }
+
+/* ===== 360px SMALL PHONE FIX ===== */
+@media (max-width: 380px) {
+    .logo { font-size: 1rem; }
+    .logo i { font-size: 1.2rem; }
+
+    .lang-toggle-label { width: 72px; height: 34px; }
+    .lang-slider { width: 36px; height: 28px; }
+    .lang-toggle-checkbox:checked + .lang-toggle-label .lang-slider { transform: translateX(33px); }
+    .lang-option { font-size: 0.75rem; }
+
+    .hero h1 { font-size: 1.4rem; }
+    .hero p { font-size: 0.82rem; }
+
+    .social-btn { padding: 10px 8px; }
+    .social-btn i { font-size: 1.3rem; }
+    .social-btn span { font-size: 0.65rem; }
+
+    .products-grid { gap: 0.5rem; padding: 0 6px; }
+    .product-card { padding: 0.7rem 0.5rem; }
+    .product-card h3 { font-size: 0.78rem !important; }
+    .product-card p { font-size: 0.65rem !important; }
+    .price { font-size: 1rem !important; }
+    .btn-buy { padding: 7px 10px; font-size: 0.72rem; }
+
+    .services-grid { padding: 0 10px; }
+    .service-header h3 { font-size: 0.88rem; }
+
+    .contact-row { padding: 8px 10px; gap: 0.4rem; }
+    .message-input { font-size: 0.75rem; padding: 7px 10px; }
+
+    .faq-question { padding: 12px 15px; font-size: 0.8rem; }
+
+    .whatsapp-float { width: 48px; height: 48px; font-size: 22px; right: 15px; bottom: 25px; }
+}
