@@ -1,3 +1,47 @@
+// Stats Counter Animation
+function animateCounters() {
+    document.querySelectorAll('.stat-number').forEach(function(counter) {
+        var target = parseInt(counter.getAttribute('data-target'));
+        var duration = 2000;
+        var step = target / (duration / 16);
+        var current = 0;
+        var timer = setInterval(function() {
+            current += step;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            counter.textContent = Math.floor(current);
+        }, 16);
+    });
+}
+
+var statsObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+            animateCounters();
+            statsObserver.disconnect();
+        }
+    });
+}, { threshold: 0.5 });
+
+var statsSection = document.querySelector('.stats');
+if (statsSection) statsObserver.observe(statsSection);
+
+// FAQ Toggle
+function toggleFaq(question) {
+    var answer = question.nextElementSibling;
+    var isOpen = answer.classList.contains('open');
+
+    document.querySelectorAll('.faq-answer').forEach(function(a) { a.classList.remove('open'); });
+    document.querySelectorAll('.faq-question').forEach(function(q) { q.classList.remove('open'); });
+
+    if (!isOpen) {
+        answer.classList.add('open');
+        question.classList.add('open');
+    }
+}
+
 // Service Dropdown Toggle
 document.querySelectorAll('.service-header').forEach(function(header) {
     header.addEventListener('click', function() {
