@@ -723,20 +723,20 @@ body {
     position: relative;
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-}.product-card p {
-    color: rgba(255,255,255,0.7);
-    margin-bottom: 1.2rem;
-    font-size: 0.9rem;
-    line-height: 1.5;
 }
+
+.product-card p {
+    color: #444;
+    margin-bottom: 1.2rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
 }
 
 .price {
     font-size: 1.8rem;
     font-weight: bold;
-    color: #38ef7d;
+    color: #667eea;
     margin-bottom: 1.2rem;
-    text-shadow: 0 0 15px rgba(56,239,125,0.4);
 }
 
 .price-bundle {
@@ -745,7 +745,7 @@ body {
 
 .old-price {
     font-size: 1.1rem;
-    color: rgba(255,255,255,0.4);
+    color: #999;
     text-decoration: line-through;
     display: block;
     margin-bottom: 0.3rem;
@@ -754,24 +754,24 @@ body {
 .price-bundle .price {
     font-size: 2rem;
     font-weight: bold;
-    color: #ffd200;
+    color: #ff9800;
     margin: 0;
-    text-shadow: 0 0 15px rgba(255,210,0,0.4);
 }
 
 .btn-buy {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #11998e, #38ef7d);
     color: white;
     border: none;
-    padding: 12px 28px;
+    padding: 13px 30px;
     border-radius: 25px;
-    font-size: 0.95rem;
-    font-weight: 600;
+    font-size: 1rem;
+    font-weight: 700;
     cursor: pointer;
     transition: all 0.3s;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.5);
+    box-shadow: 0 4px 20px rgba(17, 153, 142, 0.5);
+    letter-spacing: 0.5px;
 }
 
 .btn-buy::before {
