@@ -1250,36 +1250,49 @@ footer p {
     }
 
     .contact-row {
-        padding: 10px 15px;
-        gap: 0.8rem;
+        padding: 10px 12px;
+        gap: 0.6rem;
+        border-radius: 15px;
+        flex-wrap: nowrap;
+        overflow: hidden;
     }
 
     .contact-row > i {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
+        flex-shrink: 0;
     }
 
     .contact-row > span {
-        font-size: 0.85rem;
-    }
-
-    .contact-btn {
-        padding: 8px 14px;
-        font-size: 0.8rem;
+        font-size: 0.75rem;
+        flex: 1;
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .message-box {
-        gap: 6px;
+        gap: 5px;
+        flex-shrink: 0;
+        width: auto;
+        max-width: 160px;
     }
 
     .message-input {
-        font-size: 0.8rem;
-        padding: 8px 12px;
+        font-size: 0.75rem;
+        padding: 7px 10px;
+        min-height: 34px;
+        width: 100px;
+        min-width: 0;
     }
 
-    .whatsapp-send-btn {
-        width: 36px;
-        height: 36px;
-        min-width: 36px;
+    .whatsapp-send-btn,
+    .telegram-send-btn {
+        width: 34px;
+        height: 34px;
+        min-width: 34px;
+        font-size: 0.85rem;
+        flex-shrink: 0;
     }
     
     .whatsapp-quick h3 {
