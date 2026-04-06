@@ -116,37 +116,58 @@ function switchLanguage(lang) {
     });
 }
 
-// Load saved language preference or default to Amharic
+// Load saved language preference - ALWAYS default to Amharic
 const savedLang = localStorage.getItem('preferredLanguage') || 'am';
 langToggle.checked = (savedLang === 'en');
 switchLanguage(savedLang);
+
+// Clear any saved English preference on first visit
+if (!localStorage.getItem('preferredLanguage')) {
+    localStorage.setItem('preferredLanguage', 'am');
+}
 
 langToggle.addEventListener('change', (e) => {
     const lang = e.target.checked ? 'en' : 'am';
     switchLanguage(lang);
 });
 
+// Fast WhatsApp redirect - works in TikTok/Instagram browsers
+function openWhatsApp(message) {
+    var encoded = encodeURIComponent(message);
+    var waUrl = 'https://wa.me/251991856292?text=' + encoded;
+    
+    // Try to detect TikTok/Instagram in-app browser
+    var ua = navigator.userAgent || '';
+    var isInApp = /TikTok|BytedanceWebview|musical_ly|Instagram|FBAN|FBAV/i.test(ua);
+    
+    if (isInApp) {
+        // Force open in external browser
+        window.location.href = waUrl;
+    } else {
+        window.open(waUrl, '_blank');
+    }
+}
+
 // Quick WhatsApp Message Function
 function sendQuickMessage() {
-    const message = document.getElementById('quickMessage').value;
+    var message = document.getElementById('quickMessage').value;
     if (message.trim() === '') {
         alert('እባክዎ መልእክትዎን ይጻፉ / Please write your message');
         return;
     }
-    const encodedMessage = encodeURIComponent(message);
-    window.location.href = `https://wa.me/251991856292?text=${encodedMessage}`;
+    openWhatsApp(message);
     document.getElementById('quickMessage').value = '';
 }
 
 // Quick Telegram Message Function
 function sendTelegramMessage() {
-    const message = document.getElementById('telegramMessage').value;
+    var message = document.getElementById('telegramMessage').value;
     if (message.trim() === '') {
         alert('እባክዎ መልእክትዎን ይጻፉ / Please write your message');
         return;
     }
-    const encodedMessage = encodeURIComponent(message);
-    window.location.href = `https://t.me/tagbridge123?text=${encodedMessage}`;
+    var encoded = encodeURIComponent(message);
+    window.location.href = 'https://t.me/tagbridge123?text=' + encoded;
     document.getElementById('telegramMessage').value = '';
 }
 
@@ -189,10 +210,10 @@ document.querySelectorAll('.product-card').forEach(function(card) {
 
 // Buy button functionality - fast redirect
 document.querySelectorAll('.btn-buy').forEach(function(button) {
-    button.addEventListener('click', function() {
+    button.addEventListener('click', function(e) {
+        e.stopPropagation();
         var orderMessage = this.getAttribute('data-order-msg');
-        var encodedMessage = encodeURIComponent(orderMessage);
-        window.open('https://wa.me/251991856292?text=' + encodedMessage, '_blank');
+        openWhatsApp(orderMessage);
     });
 });
 
