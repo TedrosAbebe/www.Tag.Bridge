@@ -1245,53 +1245,47 @@ footer p {
     }
 
     .contact-options {
-        padding: 0 15px;
-        gap: 1rem;
+        padding: 0 10px;
+        gap: 0.8rem;
     }
 
     .contact-row {
-        padding: 10px 12px;
-        gap: 0.6rem;
+        padding: 8px 10px;
+        gap: 0.5rem;
         border-radius: 15px;
-        flex-wrap: nowrap;
-        overflow: hidden;
     }
 
     .contact-row > i {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
         flex-shrink: 0;
     }
 
     .contact-row > span {
-        font-size: 0.75rem;
-        flex: 1;
-        min-width: 0;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        display: none;
     }
 
     .message-box {
         gap: 5px;
-        flex-shrink: 0;
-        width: auto;
-        max-width: 180px;
+        flex: 1;
+        width: 100%;
+        max-width: 100%;
     }
 
     .message-input {
-        font-size: 0.8rem;
-        padding: 7px 10px;
-        min-height: 34px;
-        width: 130px;
+        font-size: 0.85rem;
+        padding: 8px 12px;
+        min-height: 36px;
+        width: 100%;
         min-width: 0;
+        flex: 1;
     }
 
     .whatsapp-send-btn,
     .telegram-send-btn {
-        width: 34px;
-        height: 34px;
-        min-width: 34px;
-        font-size: 0.85rem;
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        font-size: 0.9rem;
         flex-shrink: 0;
     }
     
