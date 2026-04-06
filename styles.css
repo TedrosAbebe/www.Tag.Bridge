@@ -282,6 +282,151 @@ body {
     background: linear-gradient(135deg, #25d366, #128c7e);
 }
 
+/* Services Section */
+.services {
+    padding: 80px 0;
+    background: linear-gradient(180deg, #ffffff 0%, #f0f4ff 100%);
+}
+
+.services h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    color: #333;
+    position: relative;
+    display: inline-block;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.services h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    border-radius: 2px;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.service-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.service-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.service-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px 25px;
+    color: white;
+}
+
+.forex-header {
+    background: linear-gradient(135deg, #11998e, #38ef7d);
+}
+
+.crypto-header {
+    background: linear-gradient(135deg, #f7971e, #ffd200);
+}
+
+.service-header i {
+    font-size: 2rem;
+}
+
+.service-header h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.service-list {
+    list-style: none;
+    padding: 20px 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.service-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+    color: #444;
+    padding: 6px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.service-list li:last-child {
+    border-bottom: none;
+}
+
+.service-list li i.fa-check {
+    color: #667eea;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+
+.service-list li.more {
+    color: #999;
+    font-style: italic;
+}
+
+.service-list li.more i {
+    color: #999;
+}
+
+@media (max-width: 768px) {
+    .services-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 0 15px;
+    }
+
+    .services h2 {
+        font-size: 1.8rem;
+    }
+
+    .service-header {
+        padding: 15px 20px;
+    }
+
+    .service-header i {
+        font-size: 1.5rem;
+    }
+
+    .service-header h3 {
+        font-size: 1.1rem;
+    }
+
+    .service-list {
+        padding: 15px 20px;
+        gap: 8px;
+    }
+
+    .service-list li {
+        font-size: 0.85rem;
+    }
+}
+
 /* Products Section */
 .products {
     padding: 80px 0;
