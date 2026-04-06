@@ -32,7 +32,6 @@ body {
             #5b7de8 100%
         );
     min-height: 100vh;
-    background-attachment: fixed;
 }
 
 /* Samsung Edge ambient light */
