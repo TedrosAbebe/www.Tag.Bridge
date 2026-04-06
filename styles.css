@@ -444,9 +444,26 @@ body::before {
 }
 
 .product-card.bundle {
-    background: linear-gradient(135deg, #fff8e1, #fff3cd);
-    border: 2px solid #ffd200;
-    box-shadow: 0 10px 40px rgba(255,210,0,0.2);
+    background: linear-gradient(135deg, #ff6b35, #f7c948);
+    border: none;
+    box-shadow: 0 10px 40px rgba(255,107,53,0.4);
+}
+
+.product-card.bundle h3 {
+    color: white;
+}
+
+.product-card.bundle p {
+    color: rgba(255,255,255,0.9);
+}
+
+.product-card.bundle .price-bundle .old-price {
+    color: rgba(255,255,255,0.6);
+}
+
+.product-card.bundle .price-bundle .price {
+    color: white;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
 .product-card::before {
