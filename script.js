@@ -187,7 +187,9 @@ function handleYouTubeFlow() {
 document.addEventListener('DOMContentLoaded', function() {
     var ytBtn = document.getElementById('youtube-guide-btn');
     if (ytBtn) {
-        ytBtn.addEventListener('click', handleYouTubeFlow);
+        ytBtn.addEventListener('click', function() {
+            window.open('https://www.youtube.com/@tagbridge?sub_confirmation=1', '_blank');
+        });
     }
 });
 
