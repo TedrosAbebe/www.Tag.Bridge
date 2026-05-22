@@ -331,9 +331,9 @@ document.querySelectorAll('.product-card').forEach(function(card) {
         if (e.target.classList.contains('btn-buy') || e.target.closest('.btn-buy')) return;
         if (e.target.closest('a')) return;
 
-        // YouTube guide card goes to WhatsApp channel
+        // YouTube guide card goes to Telegram channel
         if (this.classList.contains('yt-guide-card')) {
-            window.open('https://whatsapp.com/channel/0029VbC9h9Z4o7qIBVOmFE1j', '_blank');
+            window.open('https://t.me/+fdg-mxF5Nlc5M2E0', '_blank');
             return;
         }
 
