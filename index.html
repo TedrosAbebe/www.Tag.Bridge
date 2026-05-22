@@ -110,15 +110,18 @@
                 </div>
 
                 <!-- YouTube Guide Free Card -->
-                <div class="product-card yt-guide-card" onclick="openYtModal()">
+                <div class="product-card yt-guide-card">
                     <div class="free-badge" data-en="FREE" data-am="ነጻ">ነጻ</div>
                     <div class="product-image youtube-img">
                         <i class="fab fa-youtube"></i>
                     </div>
-                    <h3 data-en="YouTube Trading Guide" data-am="የዩቲዩብ ትሬዲንግ ጋይድ">የዩቲዩብ ትሬዲንግ ጋይድ</h3>
-                    <p data-en="Subscribe to our YouTube channel and get this guide FREE on WhatsApp!" data-am="ዩቲዩብ ቻናላችንን ሰብስክራይብ አድርገው ይህን ጋይድ ነጻ በዋትሳፕ ያግኙ!">ዩቲዩብ ቻናላችንን ሰብስክራይብ አድርገው ይህን ጋይድ ነጻ በዋትሳፕ ያግኙ!</p>
+                    <h3 data-en="Free YouTube Guide" data-am="ነጻ የዩቲዩብ ጋይድ">ነጻ የዩቲዩብ ጋይድ</h3>
+                    <p data-en="A book explaining everything from opening a YouTube channel to monetization" data-am="ከይቱብ ቻናል አከፋፈት እስከ ሞኒታይዜሽን የሚያስረዳ መጽሃፍ">ከይቱብ ቻናል አከፋፈት እስከ ሞኒታይዜሽን የሚያስረዳ መጽሃፍ</p>
                     <div class="price" style="color:#25d366;" data-en="FREE 🎁" data-am="ነጻ 🎁">ነጻ 🎁</div>
-                    <button class="btn-buy" style="background:linear-gradient(135deg,#ff0000,#ff4444);" data-en="Get Free Guide" data-am="ነጻ ጋይድ ያግኙ">ነጻ ጋይድ ያግኙ</button>
+                    <a href="https://whatsapp.com/channel/0029VbC9h9Z4o7qIBVOmFE1j" target="_blank" class="btn-buy" style="background:linear-gradient(135deg,#25d366,#128c7e); display:flex; align-items:center; justify-content:center; gap:8px; text-decoration:none;">
+                        <i class="fab fa-whatsapp"></i>
+                        <span data-en="Get Free on WhatsApp" data-am="በዋትሳፕ ያግኙ">በዋትሳፕ ያግኙ</span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -272,31 +275,6 @@
             </div>
         </div>
     </section>
-
-    <!-- YouTube Guide Modal -->
-    <div id="ytModal" class="yt-modal-overlay" style="display:none;">
-        <div class="yt-modal-box">
-            <button class="yt-modal-close" onclick="closeYtModal()">✕</button>
-            <div class="yt-modal-icon">🎁</div>
-            <h2 data-en="Get Your FREE YouTube Guide!" data-am="ነጻ የዩቲዩብ ጋይድ ያግኙ!">ነጻ የዩቲዩብ ጋይድ ያግኙ!</h2>
-            <p data-en="Subscribe to our YouTube channel and receive your FREE YouTube Guide on WhatsApp instantly!" data-am="የዩቲዩብ ቻናላችንን ሰብስክራይብ አድርገው ነጻ የዩቲዩብ ጋይድ ወዲያውኑ በዋትሳፕ ይቀበሉ!">የዩቲዩብ ቻናላችንን ሰብስክራይብ አድርገው ነጻ የዩቲዩብ ጋይድ ወዲያውኑ በዋትሳፕ ይቀበሉ!</p>
-            <div class="yt-modal-steps">
-                <div class="yt-step">
-                    <span class="yt-step-num">1</span>
-                    <span data-en="Subscribe to our YouTube channel" data-am="ዩቲዩብ ቻናላችንን ሰብስክራይብ ያድርጉ">ዩቲዩብ ቻናላችንን ሰብስክራይብ ያድርጉ</span>
-                </div>
-                <div class="yt-step">
-                    <span class="yt-step-num">2</span>
-                    <span data-en="Click the button below to get your free guide on WhatsApp" data-am="ከዚህ በታች ያለውን ቁልፍ ጫኑ ነጻ ጋይዱን በዋትሳፕ ያግኙ">ከዚህ በታች ያለውን ቁልፍ ጫኑ ነጻ ጋይዱን በዋትሳፕ ያግኙ</span>
-                </div>
-            </div>
-            <a href="https://www.youtube.com/@tagbridge?sub_confirmation=1" target="_blank" class="yt-subscribe-btn" id="ytSubscribeBtn" onclick="subscribeAndNotify()">
-                <i class="fab fa-youtube"></i>
-                <span data-en="Subscribe & Get Free Guide" data-am="ሰብስክራይብ አድርጉ እና ጋይዱን ያግኙ">ሰብስክራይብ አድርጉ እና ጋይዱን ያግኙ</span>
-            </a>
-            <p class="yt-modal-note" data-en="After subscribing, your free guide will be sent to WhatsApp automatically!" data-am="ሰብስክራይብ ካደረጉ በኋላ ነጻ ጋይዱ ወዲያውኑ ወደ ዋትሳፕ ይላካል!">ሰብስክራይብ ካደረጉ በኋላ ነጻ ጋይዱ ወዲያውኑ ወደ ዋትሳፕ ይላካል!</p>
-        </div>
-    </div>
 
     <footer>
         <div class="container">
