@@ -193,21 +193,25 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// Fast Telegram redirect
+function openTelegram(message) {
+    var encoded = encodeURIComponent(message);
+    window.location.href = 'https://t.me/tagbridge123?text=' + encoded;
+}
+
 // Fast WhatsApp redirect - works in TikTok/Instagram browsers
 function openWhatsApp(message) {
     var encoded = encodeURIComponent(message);
     var ua = navigator.userAgent || '';
     var isTikTok = /TikTok|BytedanceWebview|musical_ly|Instagram|FBAN|FBAV/i.test(ua);
-
     if (isTikTok) {
-        // Use redirect page to bypass TikTok block
         window.location.href = '/wa.html?msg=' + encoded;
     } else {
         window.open('https://wa.me/251991856292?text=' + encoded, '_blank');
     }
 }
 
-// Quick WhatsApp Message Function
+// Quick WhatsApp Message Function (contact section)
 function sendQuickMessage() {
     var message = document.getElementById('quickMessage').value;
     if (message.trim() === '') {
@@ -305,7 +309,7 @@ function dragEnd(e) {
 
     // If not moved, treat as click
     if (!hasMoved) {
-        openWhatsApp('ሰላም ታግ ብሪጅ !ተጨማሪ ማብራሪያዎችን እፈልጋለሁ።');
+        openTelegram('ሰላም ታግ ብሪጅ! ተጨማሪ ማብራሪያ እፈልጋለሁ።');
     }
 }
 
@@ -337,18 +341,20 @@ document.querySelectorAll('.product-card').forEach(function(card) {
             return;
         }
 
-        // Other cards go to personal WhatsApp
+        // Other cards go to Telegram
         var btn = this.querySelector('.btn-buy');
         if (btn) btn.click();
     });
 });
 
-// Buy button functionality - fast redirect
+// Buy button functionality - redirect to Telegram
 document.querySelectorAll('.btn-buy').forEach(function(button) {
     button.addEventListener('click', function(e) {
         e.stopPropagation();
         var orderMessage = this.getAttribute('data-order-msg');
-        openWhatsApp(orderMessage);
+        if (orderMessage) {
+            openTelegram(orderMessage);
+        }
     });
 });
 
