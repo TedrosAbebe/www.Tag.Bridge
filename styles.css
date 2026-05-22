@@ -1198,7 +1198,7 @@ footer p { font-size: 0.85rem; }
         padding: 0 12px;
     }
     .product-card.bundle {
-        grid-column: 1 / -1;
+        grid-column: auto;
         max-width: 100%;
     }
     .product-card { padding: 1rem 0.8rem; border-radius: 14px; }
