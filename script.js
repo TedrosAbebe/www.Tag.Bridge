@@ -328,20 +328,11 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // Make entire product card clickable
-document.querySelectorAll('.product-card').forEach(function(card) {
+document.querySelectorAll('.product-card:not(.yt-guide-card)').forEach(function(card) {
     card.style.cursor = 'pointer';
     card.addEventListener('click', function(e) {
-        // Don't trigger if clicking the button/link itself
         if (e.target.classList.contains('btn-buy') || e.target.closest('.btn-buy')) return;
         if (e.target.closest('a')) return;
-
-        // YouTube guide card goes to Telegram channel
-        if (this.classList.contains('yt-guide-card')) {
-            window.open('https://t.me/+fdg-mxF5Nlc5M2E0', '_blank');
-            return;
-        }
-
-        // Other cards go to Telegram
         var btn = this.querySelector('.btn-buy');
         if (btn) btn.click();
     });
