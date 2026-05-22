@@ -327,8 +327,17 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 document.querySelectorAll('.product-card').forEach(function(card) {
     card.style.cursor = 'pointer';
     card.addEventListener('click', function(e) {
-        // Don't trigger if clicking the button itself
+        // Don't trigger if clicking the button/link itself
         if (e.target.classList.contains('btn-buy') || e.target.closest('.btn-buy')) return;
+        if (e.target.closest('a')) return;
+
+        // YouTube guide card goes to WhatsApp channel
+        if (this.classList.contains('yt-guide-card')) {
+            window.open('https://whatsapp.com/channel/0029VbC9h9Z4o7qIBVOmFE1j', '_blank');
+            return;
+        }
+
+        // Other cards go to personal WhatsApp
         var btn = this.querySelector('.btn-buy');
         if (btn) btn.click();
     });
