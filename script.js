@@ -131,6 +131,57 @@ langToggle.addEventListener('change', (e) => {
     switchLanguage(lang);
 });
 
+// YouTube Guide Modal
+function openYtModal() {
+    document.getElementById('ytModal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeYtModal() {
+    document.getElementById('ytModal').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+function getYtGuideOnWhatsApp() {
+    var msg = 'ሰላም ታግ ብሪጅ! ዩቲዩብ ቻናሉን ሰብስክራይብ አድርጌያለሁ። ነጻ የዩቲዩብ ጋይዱን ይላኩልኝ።';
+    openWhatsApp(msg);
+    closeYtModal();
+}
+
+// Close modal when clicking outside
+document.addEventListener('click', function(e) {
+    var modal = document.getElementById('ytModal');
+    if (e.target === modal) closeYtModal();
+});
+
+// YouTube Guide Flow
+function handleYouTubeFlow() {
+    var ytUrl = 'https://www.youtube.com/@tagbridge?sub_confirmation=1';
+    var waUrl = 'https://whatsapp.com/channel/0029VbC9h9Z4o7qIBVOmFE1j';
+
+    // Try to open YouTube in a new tab
+    var ytWindow = window.open(ytUrl, '_blank');
+
+    // Gracefully handle popup blockers
+    if (!ytWindow || ytWindow.closed || typeof ytWindow.closed === 'undefined') {
+        // Popup was blocked — navigate current tab to YouTube, skip WhatsApp redirect
+        window.location.href = ytUrl;
+        return;
+    }
+
+    // After 2 seconds, redirect current page to WhatsApp Channel
+    setTimeout(function() {
+        window.location.href = waUrl;
+    }, 2000);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    var ytBtn = document.getElementById('youtube-guide-btn');
+    if (ytBtn) {
+        ytBtn.addEventListener('click', handleYouTubeFlow);
+    }
+});
+
 // Fast WhatsApp redirect - works in TikTok/Instagram browsers
 function openWhatsApp(message) {
     var encoded = encodeURIComponent(message);

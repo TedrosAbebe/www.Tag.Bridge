@@ -60,6 +60,10 @@
                             <i class="fab fa-whatsapp"></i>
                             <span data-en="WhatsApp Channel" data-am="ዋትስአፕ ቻናል">ዋትስአፕ ቻናል</span>
                         </a>
+                        <button id="youtube-guide-btn" class="social-btn youtube-guide" onclick="openYtModal()">
+                            <i class="fab fa-youtube"></i>
+                            <span data-en="Free YouTube Guide" data-am="ነጻ የዩቲዩብ ጋይድ">ነጻ የዩቲዩብ ጋይድ</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -256,6 +260,34 @@
             </div>
         </div>
     </section>
+
+    <!-- YouTube Guide Modal -->
+    <div id="ytModal" class="yt-modal-overlay" style="display:none;">
+        <div class="yt-modal-box">
+            <button class="yt-modal-close" onclick="closeYtModal()">✕</button>
+            <div class="yt-modal-icon">🎁</div>
+            <h2 data-en="Get Your FREE YouTube Guide!" data-am="ነጻ የዩቲዩብ ጋይድ ያግኙ!">ነጻ የዩቲዩብ ጋይድ ያግኙ!</h2>
+            <p data-en="Subscribe to our YouTube channel and receive your FREE YouTube Guide on WhatsApp instantly!" data-am="የዩቲዩብ ቻናላችንን ሰብስክራይብ አድርገው ነጻ የዩቲዩብ ጋይድ ወዲያውኑ በዋትሳፕ ይቀበሉ!">የዩቲዩብ ቻናላችንን ሰብስክራይብ አድርገው ነጻ የዩቲዩብ ጋይድ ወዲያውኑ በዋትሳፕ ይቀበሉ!</p>
+            <div class="yt-modal-steps">
+                <div class="yt-step">
+                    <span class="yt-step-num">1</span>
+                    <span data-en="Subscribe to our YouTube channel" data-am="ዩቲዩብ ቻናላችንን ሰብስክራይብ ያድርጉ">ዩቲዩብ ቻናላችንን ሰብስክራይብ ያድርጉ</span>
+                </div>
+                <div class="yt-step">
+                    <span class="yt-step-num">2</span>
+                    <span data-en="Click the button below to get your free guide on WhatsApp" data-am="ከዚህ በታች ያለውን ቁልፍ ጫኑ ነጻ ጋይዱን በዋትሳፕ ያግኙ">ከዚህ በታች ያለውን ቁልፍ ጫኑ ነጻ ጋይዱን በዋትሳፕ ያግኙ</span>
+                </div>
+            </div>
+            <a href="https://www.youtube.com/@tagbridge?sub_confirmation=1" target="_blank" class="yt-subscribe-btn" id="ytSubscribeBtn">
+                <i class="fab fa-youtube"></i>
+                <span data-en="Subscribe Now" data-am="አሁን ሰብስክራይብ ያድርጉ">አሁን ሰብስክራይብ ያድርጉ</span>
+            </a>
+            <button class="yt-whatsapp-btn" id="ytGetGuideBtn" onclick="getYtGuideOnWhatsApp()">
+                <i class="fab fa-whatsapp"></i>
+                <span data-en="Get Free Guide on WhatsApp" data-am="ነጻ ጋይድ በዋትሳፕ ያግኙ">ነጻ ጋይድ በዋትሳፕ ያግኙ</span>
+            </button>
+        </div>
+    </div>
 
     <footer>
         <div class="container">
