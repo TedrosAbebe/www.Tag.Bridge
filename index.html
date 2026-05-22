@@ -108,6 +108,18 @@
                     </div>
                     <button class="btn-buy" data-order-msg="ሰላም! የፎሬክስ + ክሪፕቶ ጥቅል መጽሃፍ በ 600 ብር ማዘዝ እፈልጋለሁ።" data-en="Order Now" data-am="አሁኑኑ ይዘዙ">አሁኑኑ ይዘዙ</button>
                 </div>
+
+                <!-- YouTube Guide Free Card -->
+                <div class="product-card yt-guide-card" onclick="openYtModal()">
+                    <div class="free-badge" data-en="FREE" data-am="ነጻ">ነጻ</div>
+                    <div class="product-image youtube-img">
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                    <h3 data-en="YouTube Trading Guide" data-am="የዩቲዩብ ትሬዲንግ ጋይድ">የዩቲዩብ ትሬዲንግ ጋይድ</h3>
+                    <p data-en="Subscribe to our YouTube channel and get this guide FREE on WhatsApp!" data-am="ዩቲዩብ ቻናላችንን ሰብስክራይብ አድርገው ይህን ጋይድ ነጻ በዋትሳፕ ያግኙ!">ዩቲዩብ ቻናላችንን ሰብስክራይብ አድርገው ይህን ጋይድ ነጻ በዋትሳፕ ያግኙ!</p>
+                    <div class="price" style="color:#25d366;" data-en="FREE 🎁" data-am="ነጻ 🎁">ነጻ 🎁</div>
+                    <button class="btn-buy" style="background:linear-gradient(135deg,#ff0000,#ff4444);" data-en="Get Free Guide" data-am="ነጻ ጋይድ ያግኙ">ነጻ ጋይድ ያግኙ</button>
+                </div>
             </div>
         </div>
     </section>
@@ -278,14 +290,11 @@
                     <span data-en="Click the button below to get your free guide on WhatsApp" data-am="ከዚህ በታች ያለውን ቁልፍ ጫኑ ነጻ ጋይዱን በዋትሳፕ ያግኙ">ከዚህ በታች ያለውን ቁልፍ ጫኑ ነጻ ጋይዱን በዋትሳፕ ያግኙ</span>
                 </div>
             </div>
-            <a href="https://www.youtube.com/@tagbridge?sub_confirmation=1" target="_blank" class="yt-subscribe-btn" id="ytSubscribeBtn">
+            <a href="https://www.youtube.com/@tagbridge?sub_confirmation=1" target="_blank" class="yt-subscribe-btn" id="ytSubscribeBtn" onclick="subscribeAndNotify()">
                 <i class="fab fa-youtube"></i>
-                <span data-en="Subscribe Now" data-am="አሁን ሰብስክራይብ ያድርጉ">አሁን ሰብስክራይብ ያድርጉ</span>
+                <span data-en="Subscribe & Get Free Guide" data-am="ሰብስክራይብ አድርጉ እና ጋይዱን ያግኙ">ሰብስክራይብ አድርጉ እና ጋይዱን ያግኙ</span>
             </a>
-            <button class="yt-whatsapp-btn" id="ytGetGuideBtn" onclick="getYtGuideOnWhatsApp()">
-                <i class="fab fa-whatsapp"></i>
-                <span data-en="Get Free Guide on WhatsApp" data-am="ነጻ ጋይድ በዋትሳፕ ያግኙ">ነጻ ጋይድ በዋትሳፕ ያግኙ</span>
-            </button>
+            <p class="yt-modal-note" data-en="After subscribing, your free guide will be sent to WhatsApp automatically!" data-am="ሰብስክራይብ ካደረጉ በኋላ ነጻ ጋይዱ ወዲያውኑ ወደ ዋትሳፕ ይላካል!">ሰብስክራይብ ካደረጉ በኋላ ነጻ ጋይዱ ወዲያውኑ ወደ ዋትሳፕ ይላካል!</p>
         </div>
     </div>
 

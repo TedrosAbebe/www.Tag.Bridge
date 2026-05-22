@@ -142,6 +142,15 @@ function closeYtModal() {
     document.body.style.overflow = '';
 }
 
+function subscribeAndNotify() {
+    // Send WhatsApp message after 1.5 seconds (while YouTube opens in new tab)
+    setTimeout(function() {
+        var msg = 'ሰላም ታግ ብሪጅ! የዩቲዩብ ቻናሉን ሰብስክራይብ አድርጌያለሁ። ነጻ የዩቲዩብ ጋይዱን ይላኩልኝ 🙏';
+        openWhatsApp(msg);
+        closeYtModal();
+    }, 1500);
+}
+
 function getYtGuideOnWhatsApp() {
     var msg = 'ሰላም ታግ ብሪጅ! ዩቲዩብ ቻናሉን ሰብስክራይብ አድርጌያለሁ። ነጻ የዩቲዩብ ጋይዱን ይላኩልኝ።';
     openWhatsApp(msg);
