@@ -1456,6 +1456,9 @@ html[lang="en"] .lang-en-only { display: inline-block; }
 .yt-guide-card {
     border: 3px solid #ff0000 !important;
     cursor: pointer;
+    grid-column: 1 / -1;
+    max-width: 340px;
+    margin: 0 auto;
 }
 
 .yt-guide-card:hover {
