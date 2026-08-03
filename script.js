@@ -179,22 +179,8 @@ document.addEventListener('click', function(e) {
 // YouTube Guide Flow
 function handleYouTubeFlow() {
     var ytUrl = 'https://www.youtube.com/@tagbridge?sub_confirmation=1';
-    var waUrl = 'https://whatsapp.com/channel/0029VbC9h9Z4o7qIBVOmFE1j';
-
-    // Try to open YouTube in a new tab
-    var ytWindow = window.open(ytUrl, '_blank');
-
-    // Gracefully handle popup blockers
-    if (!ytWindow || ytWindow.closed || typeof ytWindow.closed === 'undefined') {
-        // Popup was blocked — navigate current tab to YouTube, skip WhatsApp redirect
-        window.location.href = ytUrl;
-        return;
-    }
-
-    // After 2 seconds, redirect current page to WhatsApp Channel
-    setTimeout(function() {
-        window.location.href = waUrl;
-    }, 2000);
+    // Open YouTube in new tab only — do NOT redirect current page
+    window.open(ytUrl, '_blank');
 }
 
 document.addEventListener('DOMContentLoaded', function() {
