@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ታግ ብሪጅ - Tag Bridge</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #5b7de8 0%, #6b6bb8 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            text-align: center;
+            color: white;
+        }
+
+        /* Animated arrow pointing top-right */
+        .arrow-wrap {
+            position: fixed;
+            top: 0; right: 0;
+            padding: 10px 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .arrow-icon {
+            font-size: 2.4rem;
+            animation: arrowBounce 0.9s ease-in-out infinite;
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+        }
+        .arrow-label {
+            background: #ff6600;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 20px;
+            white-space: nowrap;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+        }
+        @keyframes arrowBounce {
+            0%, 100% { transform: translateY(0) rotate(-30deg); }
+            50% { transform: translateY(-8px) rotate(-30deg); }
+        }
+
+        /* Main card */
+        .card {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 28px;
+            padding: 36px 28px;
+            max-width: 360px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .logo {
+            font-size: 2.4rem;
+            margin-bottom: 6px;
+        }
+
+        .brand {
+            font-size: 1.6rem;
+            font-weight: 900;
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
+        }
+        .brand .tag { color: #38ef7d; }
+        .brand .bridge { color: #ffd200; }
+
+        .tagline {
+            font-size: 0.85rem;
+            opacity: 0.85;
+            margin-bottom: 28px;
+            line-height: 1.6;
+        }
+
+        /* Instruction card */
+        .instruction {
+            background: rgba(255,255,255,0.18);
+            border-radius: 18px;
+            padding: 20px 18px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .instruction-title {
+            font-size: 0.9rem;
+            font-weight: 800;
+            margin-bottom: 14px;
+            text-align: center;
+            opacity: 0.9;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .step:last-child { margin-bottom: 0; }
+
+        .step-num {
+            background: white;
+            color: #5b7de8;
+            font-weight: 900;
+            font-size: 0.9rem;
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .step-text {
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+        .step-text strong {
+            display: block;
+            font-size: 0.95rem;
+        }
+
+        .dots-badge {
+            display: inline-block;
+            background: white;
+            color: #333;
+            font-weight: 900;
+            font-size: 0.85rem;
+            padding: 2px 9px;
+            border-radius: 8px;
+            vertical-align: middle;
+            letter-spacing: 2px;
+        }
+
+        /* If already in real browser — show go button */
+        .btn-go {
+            display: none;
+            background: white;
+            color: #5b7de8;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 800;
+            text-decoration: none;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            width: 100%;
+            margin-top: 4px;
+        }
+
+        .note {
+            font-size: 0.75rem;
+            opacity: 0.65;
+            margin-top: 16px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Bouncing arrow pointing to ••• -->
+    <div class="arrow-wrap">
+        <div class="arrow-icon">☝️</div>
+        <div class="arrow-label">ይጫኑ</div>
+    </div>
+
+    <div class="card">
+        <div class="logo">📚</div>
+        <div class="brand"><span class="tag">ታግ</span> <span class="bridge">ብሪጅ</span></div>
+        <div class="tagline">የፎሬክስ እና ክሪፕቶ ትሬዲንግ መጽሃፍት</div>
+
+        <div class="instruction">
+            <div class="instruction-title">🌐 ለማዘዝ Browser ውስጥ ክፈት</div>
+
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-text">
+                    <strong>ከላይ ቀኝ <span class="dots-badge">•••</span> ጫኑ</strong>
+                    Web browser ከሚለው ቀጥሎ
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-text">
+                    <strong>🌐 "Open in browser" ምረጡ</strong>
+                    ከሚወጣው ምናሌ ይምረጡ
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-text">
+                    <strong>✅ ዌብሳይቱ ይከፈታል!</strong>
+                    አሁኑኑ ይዘዙ ቁልፍ ይጫኑ
+                </div>
+            </div>
+        </div>
+
+        <!-- Shown only when opened in real browser -->
+        <a href="/" class="btn-go" id="btnGo">🛒 ወደ ዌብሳይቱ ሂድ</a>
+
+        <p class="note">TikTok browser ውስጥ ነዎት?<br>ከላይ ••• → Open in browser ይጫኑ</p>
+    </div>
+
+    <script>
+        var ua = navigator.userAgent || '';
+        var isRestricted = /TikTok|BytedanceWebview|musical_ly|Instagram|FBAN|FBAV/i.test(ua);
+
+        if (!isRestricted) {
+            // Real browser — just go to main site directly
+            window.location.replace('/');
+        }
+        // else: TikTok browser — show the instruction card
+    </script>
+</body>
+</html>
