@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ወደ Telegram በመሄድ ላይ...</title>
+    <title>Telegram ለመክፈት</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -19,63 +19,114 @@
         }
         .card {
             background: rgba(255,255,255,0.15);
-            border-radius: 20px;
-            padding: 40px 30px;
-            max-width: 400px;
-            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 36px 28px;
+            max-width: 380px;
+            width: 100%;
             border: 1px solid rgba(255,255,255,0.3);
         }
-        .tg-icon { font-size: 5rem; margin-bottom: 20px; }
-        h1 { font-size: 1.5rem; margin-bottom: 10px; font-weight: 800; }
-        p { font-size: 1rem; opacity: 0.9; margin-bottom: 25px; line-height: 1.6; }
-        .btn {
-            display: inline-block;
+        .icon { font-size: 4rem; margin-bottom: 16px; }
+        h1 { font-size: 1.4rem; font-weight: 800; margin-bottom: 10px; }
+        .sub { font-size: 0.9rem; opacity: 0.85; margin-bottom: 28px; line-height: 1.6; }
+
+        /* Step box */
+        .steps { text-align: left; margin-bottom: 24px; }
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+        }
+        .num {
             background: white;
             color: #0088cc;
-            padding: 15px 35px;
-            border-radius: 50px;
+            font-weight: 900;
+            font-size: 1rem;
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .step-text { font-size: 0.92rem; line-height: 1.5; padding-top: 4px; }
+        .step-text strong { display: block; font-size: 1rem; margin-bottom: 2px; }
+
+        /* Arrow pointing to top-right */
+        .arrow-hint {
+            position: fixed;
+            top: 14px; right: 14px;
+            font-size: 2.8rem;
+            animation: bounce 1s ease-in-out infinite;
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .dots-img {
+            background: white;
+            color: #0088cc;
+            border-radius: 10px;
+            padding: 4px 10px;
+            font-weight: 900;
             font-size: 1.1rem;
-            font-weight: 800;
-            text-decoration: none;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            margin: 8px;
+            display: inline-block;
+            margin: 0 2px;
+            vertical-align: middle;
         }
-        .btn-outline {
-            background: transparent;
+
+        .btn-back {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
             color: white;
-            border: 2px solid white;
-        }
-        .note {
-            margin-top: 20px;
-            font-size: 0.85rem;
-            opacity: 0.7;
-        }
-        .step {
-            background: rgba(255,255,255,0.1);
-            border-radius: 12px;
-            padding: 12px 16px;
-            margin-bottom: 12px;
+            padding: 12px 28px;
+            border-radius: 50px;
             font-size: 0.9rem;
-            text-align: left;
+            font-weight: 700;
+            text-decoration: none;
+            border: 2px solid rgba(255,255,255,0.5);
+            margin-top: 8px;
         }
-        .step strong { display: block; margin-bottom: 4px; font-size: 1rem; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <div class="tg-icon">✈️</div>
-        <h1>ወደ Telegram ለመሄድ</h1>
-        <p>TikTok browser ቀጥታ ወደ Telegram ማስተላለፍ ስለሚከለክል፣ ከዚህ በታች ያለውን ቁልፍ ይጫኑ።</p>
 
-        <div class="step">
-            <strong>📋 መልእክቱ ተዘጋጅቷል</strong>
-            ቁልፉን ከጫኑ በኋላ Telegram ይከፈትና መልእክቱ ዝግጁ ሆኖ ያገኙታል።
+    <!-- Arrow pointing to the ••• button top-right -->
+    <div class="arrow-hint">☝️</div>
+
+    <div class="card">
+        <div class="icon">✈️</div>
+        <h1>Telegram ለመክፈት</h1>
+        <p class="sub">TikTok ቀጥታ ወደ Telegram ሊልክ አይችልም። ከዚህ በታች ያሉትን ደረጃዎች ይከተሉ።</p>
+
+        <div class="steps">
+            <div class="step">
+                <div class="num">1</div>
+                <div class="step-text">
+                    <strong>⋯ ሶስት ነጥቦቹን ጫኑ</strong>
+                    ከላይ በቀኝ ጥግ ያለውን <span class="dots-img">•••</span> ቁልፍ ይጫኑ
+                </div>
+            </div>
+            <div class="step">
+                <div class="num">2</div>
+                <div class="step-text">
+                    <strong>🌐 "Open in browser" ይምረጡ</strong>
+                    ከሚወጣው ምናሌ "Open in browser" የሚለውን ይጫኑ
+                </div>
+            </div>
+            <div class="step">
+                <div class="num">3</div>
+                <div class="step-text">
+                    <strong>✈️ Telegram ይከፈታል</strong>
+                    Browser ውስጥ ሲከፈት ቁልፉን ጫኑ — Telegram ይከፈትና ትዕዛዙ ዝግጁ ይሆናል
+                </div>
+            </div>
         </div>
 
-        <a href="#" id="tgBtn" class="btn">✈️ Telegram ክፈት</a>
-        <br>
-        <a href="/" class="btn btn-outline">← ወደ ድረ-ገጽ ተመለስ</a>
-        <p class="note">Telegram ካልተከፈተ፦ @tagbridge123 ይፈልጉ</p>
+        <a href="/" class="btn-back">← ወደ ድረ-ገጽ ተመለስ</a>
     </div>
 
     <script>
@@ -84,16 +135,11 @@
         var encoded = encodeURIComponent(msg);
         var tgUrl = 'https://t.me/tagbridge123?text=' + encoded;
 
-        document.getElementById('tgBtn').href = tgUrl;
-
-        // Auto-redirect if not in a restricted in-app browser
+        // If opened in a real browser (not TikTok), auto-redirect to Telegram
         var ua = navigator.userAgent || '';
         var isRestricted = /TikTok|BytedanceWebview|musical_ly|Instagram|FBAN|FBAV/i.test(ua);
-
         if (!isRestricted) {
-            setTimeout(function() {
-                window.location.href = tgUrl;
-            }, 800);
+            window.location.href = tgUrl;
         }
     </script>
 </body>
