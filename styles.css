@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-
 /* ===== RESET & ROOT ===== */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -367,6 +365,16 @@ body::before {
 @keyframes lineExpand {
     0%, 100% { width: 60px; }
     50% { width: 120px; }
+}
+
+.products-subtitle {
+    text-align: center;
+    font-size: 0.78rem;
+    color: #666;
+    max-width: 700px;
+    margin: -0.5rem auto 2rem auto;
+    line-height: 1.7;
+    font-style: italic;
 }
 
 .products-grid {
@@ -1303,6 +1311,54 @@ footer p { font-size: 0.85rem; }
 .lang-en-only { display: none; }
 html[lang="en"] .lang-en-only { display: inline-block; }
 
+/* Bundle package card */
+.bundle-card {
+    position: relative;
+    background: linear-gradient(135deg, #fff9f0, #fff3e0);
+    border: 2px solid #f59e0b;
+}
+
+.bundle-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    box-shadow: 0 3px 10px rgba(245,158,11,0.4);
+    z-index: 2;
+}
+
+.bundle-img {
+    background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+}
+
+.price-bundle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0.5rem 0;
+}
+
+.price-old {
+    font-size: 1rem;
+    color: #999;
+    text-decoration: line-through;
+}
+
+.btn-bundle {
+    background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+}
+
+.btn-bundle:hover {
+    background: linear-gradient(135deg, #d97706, #b45309) !important;
+}
+
 /* ===== YOUTUBE GUIDE MODAL ===== */
 .yt-modal-overlay {
     position: fixed;
@@ -1473,4 +1529,63 @@ html[lang="en"] .lang-en-only { display: inline-block; }
     padding: 10px;
     background: rgba(37,211,102,0.08);
     border-radius: 10px;
+}
+
+/* ===== PERFORMANCE: prefers-reduced-motion ===== */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ===== MOBILE: overflow-wrap for all text ===== */
+.product-card p,
+.product-card h3,
+.faq-answer p,
+.faq-question span,
+.hero p,
+.hero h1,
+.products-subtitle,
+.service-list li {
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+/* ===== MOBILE: single column products at ≤480px ===== */
+@media (max-width: 480px) {
+    .products-grid {
+        grid-template-columns: 1fr !important;
+        max-width: 340px;
+        margin: 0 auto;
+        gap: 1rem;
+    }
+    .product-card {
+        padding: 1rem !important;
+    }
+    .product-card h3 {
+        font-size: 1rem !important;
+    }
+    .product-card p {
+        font-size: 0.82rem !important;
+        -webkit-line-clamp: unset !important;
+        overflow: visible !important;
+    }
+    .price { font-size: 1.2rem !important; }
+    .btn-buy { padding: 10px 18px; font-size: 0.85rem; }
+    .bundle-badge, .ebook-badge { font-size: 0.62rem; }
+}
+
+/* ===== MOBILE: stats grid fix — use grid not flex ===== */
+.stats-grid {
+    display: grid !important;
+}
+
+/* ===== MOBILE: contact label stays visible small ===== */
+@media (max-width: 768px) {
+    .contact-row > span {
+        display: inline;
+        font-size: 0.72rem;
+    }
 }

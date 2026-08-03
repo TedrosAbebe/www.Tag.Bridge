@@ -196,7 +196,13 @@ document.addEventListener('DOMContentLoaded', function() {
 // Fast Telegram redirect
 function openTelegram(message) {
     var encoded = encodeURIComponent(message);
-    window.location.href = 'https://t.me/tagbridge123?text=' + encoded;
+    var ua = navigator.userAgent || '';
+    var isRestricted = /TikTok|BytedanceWebview|musical_ly|Instagram|FBAN|FBAV/i.test(ua);
+    if (isRestricted) {
+        window.location.href = '/tg.html?msg=' + encoded;
+    } else {
+        window.location.href = 'https://t.me/tagbridge123?text=' + encoded;
+    }
 }
 
 // Fast WhatsApp redirect - works in TikTok/Instagram browsers
@@ -229,8 +235,7 @@ function sendTelegramMessage() {
         alert('እባክዎ መልእክትዎን ይጻፉ / Please write your message');
         return;
     }
-    var encoded = encodeURIComponent(message);
-    window.location.href = 'https://t.me/tagbridge123?text=' + encoded;
+    openTelegram(message);
     document.getElementById('telegramMessage').value = '';
 }
 

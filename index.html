@@ -12,9 +12,14 @@
     <meta name="twitter:card" content="summary_large_image">
     <title>ታግ ብሪጅ - Tag Bridge</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preload" href="/styles.css" as="style">
     <link rel="stylesheet" href="/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap"></noscript>
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
 </head>
 <body>
     <header>
@@ -30,8 +35,8 @@
                     </button>
                     <ul class="nav-links" id="navLinks">
                         <li><a href="#home" data-en="Home" data-am="መነሻ">መነሻ</a></li>
-                        <li><a href="#products" data-en="Products" data-am="ምርቶች">ምርቶች</a></li>
-                        <li><a href="#services" data-en="Services" data-am="አገልግሎት">አገልግሎት</a></li>
+                        <li><a href="#products" data-en="Books" data-am="መጽሃፍቶች">መጽሃፍቶች</a></li>
+                        <li><a href="#services" data-en="Contents" data-am="ይዘቶች">ይዘቶች</a></li>
                         <li><a href="#contact" data-en="Contact" data-am="አግኙን">አግኙን</a></li>
                     </ul>
                     <div class="lang-switch">
@@ -83,6 +88,7 @@
     <section id="products" class="products">
         <div class="container">
             <h2 data-en="Our Books" data-am="መጽሃፍቶች">መጽሃፍቶች</h2>
+            <p class="products-subtitle" data-en="To truly learn Forex and Crypto trading, you need to understand the real secrets of the market — not social media myths. By reading and practicing this book, you can make confident, self-researched decisions in the market without relying on others' guesses. Get your hands on the amazing book they call &quot;My Starting Point&quot;!" data-am="የፎሬክስ እና የክሪፕቶ ትሬዲንግን በጥልቀት ለመማር የሶሻል ሚዲያ ተረቶችን ሳይሆን እውነተኛውን የማርኬቱን ምስጢር ማወቅ በጥልቀት መረዳት ያስፈልጋል። ይህንን መጽሐፍ በማንበብ እና በመለማመድ፣ በሌሎች ግምት ሳይሆን በራስዎ ምርምርና ውሳኔ በማርኬት ውስጥ በራስ መተማመን መወሰን የሚችሉበትን &quot;መነሻየ&quot; ብልው የሚጠሩትን አስገራሚ መጽሃፍ በእጅዎ ያስገቡ!!">የፎሬክስ እና የክሪፕቶ ትሬዲንግን በጥልቀት ለመማር የሶሻል ሚዲያ ተረቶችን ሳይሆን እውነተኛውን የማርኬቱን ምስጢር ማወቅ በጥልቀት መረዳት ያስፈልጋል። ይህንን መጽሐፍ በማንበብ እና በመለማመድ፣ በሌሎች ግምት ሳይሆን በራስዎ ምርምርና ውሳኔ በማርኬት ውስጥ በራስ መተማመን መወሰን የሚችሉበትን &quot;መነሻየ&quot; ብልው የሚጠሩትን አስገራሚ መጽሃፍ በእጅዎ ያስገቡ!!</p>
             <div class="products-grid">
                 <div class="product-card">
                     <span class="ebook-badge lang-en-only">E-Book</span>
@@ -91,8 +97,8 @@
                     </div>
                     <h3 data-en="Forex Trading in Amharic" data-am="የፎሬክስ ትሬዲንግ በአማርኛ">የፎሬክስ ትሬዲንግ በአማርኛ</h3>
                     <p data-en="Complete Forex trading guide fully prepared in Amharic" data-am="ሙሉ በሙሉ በአማርኛ የተዘጋጀ የፎሬክስ ትሬዲንግ መጽሃፍ">ሙሉ በሙሉ በአማርኛ የተዘጋጀ የፎሬክስ ትሬዲንግ መጽሃፍ</p>
-                    <div class="price" data-en="290 Birr" data-am="290 ብር">290 ብር</div>
-                    <button class="btn-buy" data-order-msg="ሰላም! የፎሬክስ ትሬዲንግ መማሪያ መጽሃፍ በ 290 ብር ማዘዝ እፈልጋለሁ።" data-en="Order Now" data-am="አሁኑኑ ይዘዙ">አሁኑኑ ይዘዙ</button>
+                    <div class="price" data-en="350 Birr" data-am="350 ብር">350 ብር</div>
+                    <button class="btn-buy" data-order-msg="ሰላም! የፎሬክስ ትሬዲንግ መማሪያ መጽሃፍ በ 350 ብር ማዘዝ እፈልጋለሁ።" data-en="Order Now" data-am="አሁኑኑ ይዘዙ">አሁኑኑ ይዘዙ</button>
                 </div>
                 <div class="product-card">
                     <span class="ebook-badge lang-en-only">E-Book</span>
@@ -101,24 +107,26 @@
                     </div>
                     <h3 data-en="Crypto Trading in Amharic" data-am="የክሪፕቶ ትሬዲንግ በአማርኛ">የክሪፕቶ ትሬዲንግ በአማርኛ</h3>
                     <p data-en="Complete cryptocurrency trading guide fully prepared in Amharic" data-am="ሙሉ በሙሉ በአማርኛ የተዘጋጀ የክሪፕቶ ከረንሲ ትሬዲንግ መጽሃፍ">ሙሉ በሙሉ በአማርኛ የተዘጋጀ የክሪፕቶ ከረንሲ ትሬዲንግ መጽሃፍ</p>
-                    <div class="price" data-en="350 Birr" data-am="350 ብር">350 ብር</div>
-                    <button class="btn-buy" data-order-msg="ሰላም! በአማርኛ የተዘጋጀ የክሪፕቶ ከረንሲ ትሬዲንግ መጽሃፍ በ 350 ብር ማዘዝ እፈልጋለሁ" data-en="Order Now" data-am="አሁኑኑ ይዘዙ">አሁኑኑ ይዘዙ</button>
+                    <div class="price" data-en="400 Birr" data-am="400 ብር">400 ብር</div>
+                    <button class="btn-buy" data-order-msg="ሰላም! በአማርኛ የተዘጋጀ የክሪፕቶ ከረንሲ ትሬዲንግ መጽሃፍ በ 400 ብር ማዘዝ እፈልጋለሁ" data-en="Order Now" data-am="አሁኑኑ ይዘዙ">አሁኑኑ ይዘዙ</button>
                 </div>
 
-                <!-- YouTube Guide Free Card -->
-                <div class="product-card yt-guide-card" style="cursor:pointer;">
-                    <div class="free-badge" data-en="FREE" data-am="ነጻ">ነጻ</div>
-                    <div class="product-image youtube-img">
-                        <i class="fab fa-youtube"></i>
+                <!-- Bundle Package Card -->
+                <div class="product-card bundle-card">
+                    <span class="bundle-badge" data-en="BUNDLE" data-am="ጥቅል">ጥቅል</span>
+                    <div class="product-image bundle-img">
+                        <i class="fas fa-layer-group"></i>
                     </div>
-                    <h3 data-en="YouTube Guide Book" data-am="የዩቱብ መማሪያ መጽሃፍ">የዩቱብ መማሪያ መጽሃፍ</h3>
-                    <p data-en="An amazing book explaining everything from YouTube channel setup to monetization" data-am="የዩቱብ ቻናል አከፋፈት እስከ ሞኒታይዜሽን የሚያስረዳ አስገራሚ መጽሃፍ">የዩቱብ ቻናል አከፋፈት እስከ ሞኒታይዜሽን የሚያስረዳ አስገራሚ መጽሃፍ</p>
-                    <div class="price" style="color:#0088cc;" data-en="FREE 🎁" data-am="ነጻ 🎁">ነጻ 🎁</div>
-                    <a href="https://t.me/+fdg-mxF5Nlc5M2E0" target="_blank" rel="noopener noreferrer" class="btn-buy" style="background:linear-gradient(135deg,#0088cc,#00a0e9); display:flex; align-items:center; justify-content:center; gap:8px; text-decoration:none; color:white;" onclick="event.stopPropagation();">
-                        <i class="fab fa-telegram"></i>
-                        <span data-en="Get for Free" data-am="በነጻ ይዘዙ">በነጻ ይዘዙ</span>
-                    </a>
+                    <h3 data-en="Forex + Crypto Bundle" data-am="ፎሬክስ + ክሪፕቶ ጥቅል">ፎሬክስ + ክሪፕቶ ጥቅል</h3>
+                    <p data-en="Get both Forex and Crypto trading books together at a special price" data-am="ሁለቱንም የፎሬክስ እና ክሪፕቶ ትሬዲንግ መጽሃፍት በልዩ ዋጋ ያግኙ">ሁለቱንም የፎሬክስ እና ክሪፕቶ ትሬዲንግ መጽሃፍት በልዩ ዋጋ ያግኙ</p>
+                    <div class="price-bundle">
+                        <span class="price-old" data-en="750 Birr" data-am="750 ብር">750 ብር</span>
+                        <span class="price" data-en="500 Birr" data-am="500 ብር">500 ብር</span>
+                    </div>
+                    <button class="btn-buy btn-bundle" data-order-msg="ሰላም! የፎሬክስ እና ክሪፕቶ ትሬዲንግ መጽሃፍት ጥቅል በ 500 ብር ማዘዝ እፈልጋለሁ።" data-en="Order Bundle" data-am="ጥቅሉን ይዘዙ">ጥቅሉን ይዘዙ</button>
                 </div>
+
+
             </div>
         </div>
     </section>
@@ -126,12 +134,12 @@
     <!-- SERVICES -->
     <section id="services" class="services">
         <div class="container">
-            <h2 data-en="Our Services" data-am="አገልግሎቶቻችን">አገልግሎቶቻችን</h2>
+            <h2 data-en="Book Contents" data-am="የመጽሃፉ ይዘቶች">የመጽሃፉ ይዘቶች</h2>
             <div class="services-grid">
                 <div class="service-card">
                     <div class="service-header forex-header">
                         <i class="fas fa-chart-line"></i>
-                        <h3 data-en="Forex Trading Training" data-am="የፎሬክስ ትሬዲንግ ስልጠና">የፎሬክስ ትሬዲንግ ስልጠና</h3>
+                        <h3 data-en="Forex Trading" data-am="ፎሬክስ ትሬዲንግ">ፎሬክስ ትሬዲንግ</h3>
                         <i class="fas fa-chevron-down toggle-icon"></i>
                     </div>
                     <ul class="service-list">
@@ -162,7 +170,7 @@
                 <div class="service-card">
                     <div class="service-header crypto-header">
                         <i class="fab fa-bitcoin"></i>
-                        <h3 data-en="Crypto Trading Training" data-am="የክሪፕቶ ትሬዲንግ ስልጠና">የክሪፕቶ ትሬዲንግ ስልጠና</h3>
+                        <h3 data-en="Crypto Trading" data-am="ክሪፕቶ ትሬዲንግ">ክሪፕቶ ትሬዲንግ</h3>
                         <i class="fas fa-chevron-down toggle-icon"></i>
                     </div>
                     <ul class="service-list">
@@ -282,6 +290,6 @@
         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <script src="/script.js"></script>
+    <script src="/script.js" defer></script>
 </body>
 </html>
