@@ -23,7 +23,12 @@
 </head>
 <body>
     <header>
-        <nav class="navbar">
+        <!-- TikTok/Instagram in-app browser banner -->
+        <div id="browserBanner" style="display:none; background:#ff6600; color:white; text-align:center; padding:10px 16px; font-size:0.82rem; font-weight:700; position:fixed; top:0; left:0; right:0; z-index:9999; line-height:1.5;">
+            ☝️ ለማዘዝ፦ ከላይ <strong>••• → Open in browser</strong> ይጫኑ
+            <button onclick="document.getElementById('browserBanner').style.display='none'" style="background:none;border:none;color:white;font-size:1.1rem;margin-left:10px;cursor:pointer;vertical-align:middle;">✕</button>
+        </div>
+        <nav class="navbar" id="mainNav">
             <div class="container">
                 <div class="logo">
                     <i class="fas fa-book-open"></i>

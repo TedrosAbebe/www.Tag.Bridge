@@ -1,4 +1,17 @@
-// Stats Counter Animation
+// Show banner if opened inside TikTok / Instagram in-app browser
+(function() {
+    var ua = navigator.userAgent || '';
+    var isRestricted = /TikTok|BytedanceWebview|musical_ly|Instagram|FBAN|FBAV/i.test(ua);
+    if (isRestricted) {
+        var banner = document.getElementById('browserBanner');
+        if (banner) {
+            banner.style.display = 'block';
+            // Push navbar down to make room for banner
+            var nav = document.getElementById('mainNav');
+            if (nav) nav.style.top = banner.offsetHeight + 'px';
+        }
+    }
+})();
 function animateCounters() {
     document.querySelectorAll('.stat-number').forEach(function(counter) {
         var target = parseInt(counter.getAttribute('data-target'));
