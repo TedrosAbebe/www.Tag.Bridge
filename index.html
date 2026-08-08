@@ -238,6 +238,17 @@
                         <span data-en="Copy" data-am="ቅዳ">ቅዳ</span>
                     </button>
                 </div>
+                <script>
+                    (function(){
+                        var stored = localStorage.getItem('refCode');
+                        if (!stored) {
+                            stored = Math.random().toString(36).substring(2,8).toUpperCase();
+                            localStorage.setItem('refCode', stored);
+                        }
+                        var el = document.getElementById('referralLinkInput');
+                        if (el) el.value = 'https://www-tag-bridge.vercel.app/?ref=' + stored;
+                    })();
+                </script>
                 <button class="btn-share-ref" onclick="shareReferral()">
                     <i class="fab fa-telegram"></i>
                     <span data-en="Share via Telegram" data-am="በቴሌግራም ያጋሩ">በቴሌግራም ያጋሩ</span>
