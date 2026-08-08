@@ -1,5 +1,11 @@
-// Show banner if opened inside TikTok / Instagram in-app browser
-(function() {
+// Register Service Worker (PWA)
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
+}
+
+// Show banner if opened inside TikTok / Instagram in-app browser(function() {
     var ua = navigator.userAgent || '';
     var isRestricted = /TikTok|BytedanceWebview|musical_ly|Instagram|FBAN|FBAV/i.test(ua);
     if (isRestricted) {
