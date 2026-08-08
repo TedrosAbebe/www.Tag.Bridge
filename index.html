@@ -216,46 +216,6 @@
         </div>
     </section>
 
-    <!-- REFERRAL SECTION -->
-    <section class="referral">
-        <div class="container">
-            <div class="referral-card">
-                <div class="referral-icon">🎁</div>
-                <h2 data-en="Invite Friends &amp; Earn 100 Birr" data-am="ጓደኛ ጋብዝ — 100 ብር አግኝ">ጓደኛ ጋብዝ — 100 ብር አግኝ</h2>
-                <p data-en="Share your unique link. When your friend buys a book using your link, you earn 100 Birr!" data-am="የእርስዎን ልዩ link ያጋሩ። ጓደኛዎ ያ link ተጠቅሞ መጽሃፍ ሲገዛ — 100 ብር ያገኛሉ!">የእርስዎን ልዩ link ያጋሩ። ጓደኛዎ ያ link ተጠቅሞ መጽሃፍ ሲገዛ — 100 ብር ያገኛሉ!</p>
-                <div class="referral-steps">
-                    <div class="ref-step"><span class="ref-num">1</span><span data-en="Copy link" data-am="Link ቅዱ">Link ቅዱ</span></div>
-                    <div class="ref-arrow">→</div>
-                    <div class="ref-step"><span class="ref-num">2</span><span data-en="Share to friend" data-am="ለጓደኛ ያጋሩ">ለጓደኛ ያጋሩ</span></div>
-                    <div class="ref-arrow">→</div>
-                    <div class="ref-step"><span class="ref-num">3</span><span data-en="Earn 100 Birr 🎉" data-am="100 ብር አግኙ 🎉">100 ብር አግኙ 🎉</span></div>
-                </div>
-                <div class="referral-link-box">
-                    <span class="ref-code-label">🔗</span>
-                    <input type="text" id="referralLinkInput" class="referral-input" readonly placeholder="link እየተዘጋጀ ነው...">
-                    <button id="copyRefBtn" class="btn-copy" onclick="copyReferralLink()">
-                        <i class="fas fa-copy"></i>
-                        <span data-en="Copy" data-am="ቅዳ">ቅዳ</span>
-                    </button>
-                </div>
-                <script>
-                    (function(){
-                        var stored = localStorage.getItem('refCode');
-                        if (!stored) {
-                            stored = Math.random().toString(36).substring(2,8).toUpperCase();
-                            localStorage.setItem('refCode', stored);
-                        }
-                        var el = document.getElementById('referralLinkInput');
-                        if (el) el.value = 'https://www-tag-bridge.vercel.app/?ref=' + stored;
-                    })();
-                </script>
-                <button class="btn-share-ref" onclick="shareReferral()">
-                    <i class="fab fa-telegram"></i>
-                    <span data-en="Share via Telegram" data-am="በቴሌግራም ያጋሩ">በቴሌግራም ያጋሩ</span>
-                </button>
-            </div>
-        </div>
-    </section>
     <section class="stats">
         <div class="container">
             <div class="stats-grid">
