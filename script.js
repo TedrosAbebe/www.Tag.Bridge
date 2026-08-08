@@ -1,5 +1,46 @@
 // PWA Install prompt
 let deferredPrompt = null;
+
+// ===== REFERRAL SYSTEM =====
+function generateRefCode() {
+    var stored = localStorage.getItem('refCode');
+    if (stored) return stored;
+    var code = Math.random().toString(36).substring(2, 8).toUpperCase();
+    localStorage.setItem('refCode', code);
+    return code;
+}
+
+function getReferralLink() {
+    var code = generateRefCode();
+    return 'https://www-tag-bridge.vercel.app/?ref=' + code;
+}
+
+function copyReferralLink() {
+    var link = getReferralLink();
+    navigator.clipboard.writeText(link).then(function() {
+        var btn = document.getElementById('copyRefBtn');
+        btn.classList.add('copied');
+        var span = btn.querySelector('span');
+        var prev = span.textContent;
+        span.textContent = '✓ ተቀድቷል!';
+        setTimeout(function() {
+            btn.classList.remove('copied');
+            span.textContent = prev;
+        }, 2000);
+    }).catch(function() {
+        var input = document.getElementById('referralLinkInput');
+        input.select();
+        document.execCommand('copy');
+    });
+}
+
+function shareReferral() {
+    var link = getReferralLink();
+    var code = generateRefCode();
+    var msg = '📚 ታግ ብሪጅ — የፎሬክስ እና ክሪፕቶ ትሬዲንግ መጽሃፍት!\n\nይህን link ተጠቅመህ ብትገዛ ልዩ ቅናሽ ታገኛለህ 👇\n' + link + '\n\n(Referral: ' + code + ')';
+    openTelegram(msg);
+}
+// ===== END REFERRAL =====
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
@@ -8,6 +49,14 @@ window.addEventListener('beforeinstallprompt', (e) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Set referral link input
+    var refInput = document.getElementById('referralLinkInput');
+    if (refInput) refInput.value = getReferralLink();
+
+    // Store referral code if visited via ref link
+    var params = new URLSearchParams(window.location.search);
+    var ref = params.get('ref');
+    if (ref) sessionStorage.setItem('referredBy', ref);
     const installBtn = document.getElementById('installBtn');
     if (installBtn) {
         installBtn.addEventListener('click', async () => {
@@ -231,10 +280,17 @@ function openTelegram(message) {
     var encoded = encodeURIComponent(message);
     var ua = navigator.userAgent || '';
     var isRestricted = /TikTok|BytedanceWebview|musical_ly|Instagram|FBAN|FBAV/i.test(ua);
+    // Append referral info if present
+    var refBy = sessionStorage.getItem('referredBy');
+    var finalMsg = message;
+    if (refBy && !message.includes('Referral:')) {
+        finalMsg = message + '\n[Ref: ' + refBy + ']';
+    }
+    var encodedFinal = encodeURIComponent(finalMsg);
     if (isRestricted) {
-        window.location.href = '/tg.html?msg=' + encoded;
+        window.location.href = '/tg.html?msg=' + encodedFinal;
     } else {
-        window.location.href = 'https://t.me/tagbridge123?text=' + encoded;
+        window.location.href = 'https://t.me/tagbridge123?text=' + encodedFinal;
     }
 }
 
