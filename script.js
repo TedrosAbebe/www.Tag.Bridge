@@ -49,9 +49,11 @@ window.addEventListener('beforeinstallprompt', (e) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Set referral link input
+    // Set referral link input immediately
     var refInput = document.getElementById('referralLinkInput');
-    if (refInput) refInput.value = getReferralLink();
+    if (refInput) {
+        refInput.value = getReferralLink();
+    }
 
     // Store referral code if visited via ref link
     var params = new URLSearchParams(window.location.search);
