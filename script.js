@@ -84,7 +84,8 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-// Show banner if opened inside TikTok / Instagram in-app browser(function() {
+// Show banner if opened inside TikTok / Instagram in-app browser
+(function() {
     var ua = navigator.userAgent || '';
     var isRestricted = /TikTok|BytedanceWebview|musical_ly|Instagram|FBAN|FBAV/i.test(ua);
     if (isRestricted) {
@@ -231,12 +232,16 @@ langToggle.addEventListener('change', (e) => {
 
 // YouTube Guide Modal
 function openYtModal() {
-    document.getElementById('ytModal').style.display = 'flex';
+    var modal = document.getElementById('ytModal');
+    if (!modal) return;
+    modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 }
 
 function closeYtModal() {
-    document.getElementById('ytModal').style.display = 'none';
+    var modal = document.getElementById('ytModal');
+    if (!modal) return;
+    modal.style.display = 'none';
     document.body.style.overflow = '';
 }
 
@@ -258,7 +263,7 @@ function getYtGuideOnWhatsApp() {
 // Close modal when clicking outside
 document.addEventListener('click', function(e) {
     var modal = document.getElementById('ytModal');
-    if (e.target === modal) closeYtModal();
+    if (modal && e.target === modal) closeYtModal();
 });
 
 // YouTube Guide Flow
@@ -292,7 +297,7 @@ function openTelegram(message) {
     if (isRestricted) {
         window.location.href = '/tg.html?msg=' + encodedFinal;
     } else {
-        window.location.href = 'https://t.me/tagbridge123?text=' + encodedFinal;
+        window.open('https://t.me/tagbridge123?text=' + encodedFinal, '_blank');
     }
 }
 
