@@ -150,6 +150,25 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// ===== DROPDOWN MENU =====
+document.querySelectorAll('.dropdown-toggle').forEach(function(toggle) {
+    toggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        var li = this.closest('.dropdown-li');
+        var isOpen = li.classList.contains('open');
+        // Close all
+        document.querySelectorAll('.dropdown-li').forEach(function(d) { d.classList.remove('open'); });
+        if (!isOpen) li.classList.add('open');
+    });
+});
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.dropdown-li')) {
+        document.querySelectorAll('.dropdown-li').forEach(function(d) { d.classList.remove('open'); });
+    }
+});
+
 // ===== STAT COUNTERS =====
 function animateCounters() {
     document.querySelectorAll('.stat-number').forEach(function(counter) {
