@@ -25,16 +25,13 @@
 </head>
 <body>
 
-    <!-- PWA Install Overlay -->
-    <div id="installOverlay">
-        <div id="installBox">
-            <div class="install-icon">📚</div>
-            <h2 class="install-title">Tag Bridge App</h2>
-            <p class="install-desc">Download the App &amp; get the best experience! Faster, easier, always at your fingertips.</p>
-            <button id="overlayInstallBtn" class="install-btn">📲 Download App</button>
-            <br>
-            <button id="overlaySkipBtn" class="install-skip">Continue to website →</button>
+    <!-- PWA Install Banner (top) -->
+    <div id="installBanner" style="display:none; position:fixed; top:0; left:0; right:0; background:linear-gradient(135deg,#5b7de8,#3a4fc4); color:white; padding:10px 16px; z-index:100000; align-items:center; justify-content:space-between; gap:12px; box-shadow:0 2px 10px rgba(0,0,0,0.3);">
+        <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:1.4rem;">📚</span>
+            <span style="font-weight:700; font-size:0.9rem;">Install Tag Bridge App</span>
         </div>
+        <button id="overlayInstallBtn" style="background:white; color:#5b7de8; border:none; padding:7px 18px; border-radius:50px; font-weight:800; font-size:0.85rem; cursor:pointer; flex-shrink:0;">Install</button>
     </div>
     <header>
         <!-- Force Update Banner -->

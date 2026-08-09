@@ -9,45 +9,33 @@ function sendTelegramNotification(msg) {
     }).catch(function() {});
 }
 
-// ===== PWA INSTALL OVERLAY =====
+// ===== PWA INSTALL BANNER (top bar) =====
 let deferredPrompt = null;
 
-function showInstallOverlay() {
-    var overlay = document.getElementById('installOverlay');
-    if (!overlay) return;
+function showInstallBanner() {
+    var banner = document.getElementById('installBanner');
+    if (!banner) return;
 
-    // Don't show if already installed (standalone mode)
-    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
-        overlay.classList.add('hidden');
-        return;
-    }
+    // Don't show if already installed
+    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) return;
 
-    // Don't show on desktop
+    // Mobile only
     var ua = navigator.userAgent || '';
-    var isMobile = /Android|iPhone|iPad|iPod/i.test(ua);
-    if (!isMobile) {
-        overlay.classList.add('hidden');
-        return;
-    }
+    if (!/Android|iPhone|iPad|iPod/i.test(ua)) return;
 
-    // Don't show if user already skipped (persisted)
-    if (localStorage.getItem('installSkipped') === '1') {
-        overlay.classList.add('hidden');
-        return;
-    }
-
-    overlay.classList.remove('hidden');
+    banner.style.display = 'flex';
 }
 
-function hideInstallOverlay() {
-    var overlay = document.getElementById('installOverlay');
-    if (overlay) overlay.classList.add('hidden');
+function hideInstallBanner() {
+    var banner = document.getElementById('installBanner');
+    if (banner) banner.style.display = 'none';
 }
 
 // Single beforeinstallprompt listener
 window.addEventListener('beforeinstallprompt', function(e) {
     e.preventDefault();
     deferredPrompt = e;
+    showInstallBanner();
 });
 
 // Single appinstalled listener
@@ -129,9 +117,6 @@ document.addEventListener('DOMContentLoaded', function() {
     var ref = params.get('ref');
     if (ref) sessionStorage.setItem('referredBy', ref);
 
-    // --- Show install overlay ---
-    showInstallOverlay();
-
     // --- Install button ---
     var overlayInstallBtn = document.getElementById('overlayInstallBtn');
     if (overlayInstallBtn) {
@@ -144,17 +129,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     sendTelegramNotification('✅ <b>User accepted install prompt!</b>\n🌍 Tag Bridge PWA');
                 }
             }
-            hideInstallOverlay();
-        });
-    }
-
-    // --- Skip button — persist so overlay doesn't show again ---
-    var overlaySkipBtn = document.getElementById('overlaySkipBtn');
-    if (overlaySkipBtn) {
-        overlaySkipBtn.addEventListener('click', function() {
-            localStorage.setItem('installSkipped', '1');
-            sendTelegramNotification('⏭ <b>User skipped install</b>\n🌍 Tag Bridge PWA');
-            hideInstallOverlay();
+            hideInstallBanner();
         });
     }
 
