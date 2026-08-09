@@ -664,18 +664,6 @@ body::before {
     width: 100%;
     letter-spacing: 0.3px;
 }
-    border: none;
-    padding: 9px 22px;
-    border-radius: 25px;
-    font-size: 0.82rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(56,239,125,0.35);
-    letter-spacing: 0.3px;
-}
 
 .btn-buy::before {
     content: '';
@@ -1066,14 +1054,6 @@ body::before {
 .message-input::placeholder { color: #999; }
 .message-input:focus {
     box-shadow: inset 0 2px 5px rgba(0,0,0,0.1), 0 0 0 3px rgba(255,255,255,0.4);
-}
-}
-
-.message-input::placeholder { color: rgba(255,255,255,0.4); }
-.message-input:focus {
-    border-color: rgba(102,126,234,0.6);
-    background: rgba(255,255,255,0.12);
-    box-shadow: 0 0 15px rgba(102,126,234,0.2);
 }
 
 .whatsapp-send-btn, .telegram-send-btn {

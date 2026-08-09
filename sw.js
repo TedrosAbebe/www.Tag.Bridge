@@ -17,15 +17,11 @@ self.addEventListener('install', e => {
 
 self.addEventListener('activate', e => {
   e.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-    ).then(() => {
-      // Notify all clients that a new version is available
-      self.clients.matchAll({ includeUncontrolled: true }).then(clients => {
-        clients.forEach(client => client.postMessage({ type: 'SW_UPDATED' }));
-      });
-      return self.clients.claim();
-    })
+    caches.keys()
+      .then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
+      .then(() => self.clients.claim())
+      .then(() => self.clients.matchAll({ includeUncontrolled: true }))
+      .then(clients => clients.forEach(c => c.postMessage({ type: 'SW_UPDATED' })))
   );
 });
 
