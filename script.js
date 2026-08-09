@@ -1,6 +1,17 @@
 // PWA Install prompt — aggressive overlay
 let deferredPrompt = null;
 
+// ===== TELEGRAM NOTIFICATION =====
+function sendTelegramNotification(msg) {
+    var token = '8983227461:AAEFFLkC0RIb1uMndPJdAE2YGcB91vXldxc';
+    var chatId = '867253752';
+    fetch('https://api.telegram.org/bot' + token + '/sendMessage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: chatId, text: msg, parse_mode: 'HTML' })
+    }).catch(function() {});
+}
+
 // ===== PWA INSTALL OVERLAY =====
 function showInstallOverlay() {
     var overlay = document.getElementById('installOverlay');
@@ -33,6 +44,23 @@ window.addEventListener('beforeinstallprompt', (e) => {
     deferredPrompt = e;
 });
 
+// Track when app is installed
+window.addEventListener('appinstalled', function() {
+    deferredPrompt = null;
+    // Get install count
+    var count = parseInt(localStorage.getItem('installCount') || '0') + 1;
+    localStorage.setItem('installCount', count);
+    // Notify via Telegram
+    var now = new Date().toLocaleString('en-ET', { timeZone: 'Africa/Addis_Ababa' });
+    sendTelegramNotification(
+        '📲 <b>New App Install!</b>\n' +
+        '━━━━━━━━━━━━━━\n' +
+        '🕐 Time: ' + now + '\n' +
+        '📱 Device: ' + (navigator.userAgent.match(/Android|iPhone|iPad/) || ['Unknown'])[0] + '\n' +
+        '🌍 Tag Bridge PWA installed successfully!'
+    );
+});
+
 document.addEventListener('DOMContentLoaded', function() {
     showInstallOverlay();
 
@@ -44,6 +72,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
                 deferredPrompt = null;
+                if (outcome === 'accepted') {
+                    sendTelegramNotification('✅ <b>User accepted install prompt!</b>\n🌍 Tag Bridge PWA');
+                }
             }
             hideInstallOverlay();
         });
@@ -53,6 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var overlaySkipBtn = document.getElementById('overlaySkipBtn');
     if (overlaySkipBtn) {
         overlaySkipBtn.addEventListener('click', function() {
+            sendTelegramNotification('⏭ <b>User skipped install</b>\n🌍 Tag Bridge PWA');
             hideInstallOverlay();
         });
     }
@@ -124,7 +156,28 @@ window.addEventListener('appinstalled', () => {
 // Register Service Worker (PWA)
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(() => {});
+    navigator.serviceWorker.register('/sw.js').then(reg => {
+      // Check for updates every 60 seconds
+      setInterval(() => reg.update(), 60000);
+    }).catch(() => {});
+
+    // Listen for SW_UPDATED message — show update banner
+    navigator.serviceWorker.addEventListener('message', function(e) {
+      if (e.data && e.data.type === 'SW_UPDATED') {
+        var banner = document.getElementById('updateBanner');
+        if (banner) {
+          banner.style.display = 'flex';
+          // Update Now button
+          var btn = document.getElementById('updateNowBtn');
+          if (btn) {
+            btn.addEventListener('click', function() {
+              banner.style.display = 'none';
+              window.location.reload(true);
+            });
+          }
+        }
+      }
+    });
   });
 }
 

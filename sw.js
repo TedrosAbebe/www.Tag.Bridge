@@ -1,7 +1,6 @@
-const CACHE = 'tagbridge-v3';
+const CACHE = 'tagbridge-v4';
 const OFFLINE_URL = '/offline.html';
 
-// Files to cache on install
 const PRECACHE = [
   '/',
   '/index.html',
@@ -17,29 +16,32 @@ self.addEventListener('install', e => {
 });
 
 self.addEventListener('activate', e => {
-  // Remove ALL old caches immediately
   e.waitUntil(
     caches.keys().then(keys =>
       Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-    ).then(() => self.clients.claim())
+    ).then(() => {
+      // Notify all clients that a new version is available
+      self.clients.matchAll({ includeUncontrolled: true }).then(clients => {
+        clients.forEach(client => client.postMessage({ type: 'SW_UPDATED' }));
+      });
+      return self.clients.claim();
+    })
   );
 });
 
 self.addEventListener('fetch', e => {
   if (e.request.mode === 'navigate') {
-    // Always fetch fresh HTML from network first
     e.respondWith(
       fetch(e.request).catch(() => caches.match(OFFLINE_URL))
     );
     return;
   }
 
-  // Network first for JS and CSS — always get latest version
+  // Network first for JS and CSS
   if (e.request.url.match(/\.(js|css)$/)) {
     e.respondWith(
       fetch(e.request)
         .then(response => {
-          // Update cache with fresh version
           var clone = response.clone();
           caches.open(CACHE).then(c => c.put(e.request, clone));
           return response;
