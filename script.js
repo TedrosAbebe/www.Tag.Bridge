@@ -23,7 +23,7 @@ function showInstallBanner() {
     var ua = navigator.userAgent || '';
     if (!/Android|iPhone|iPad|iPod/i.test(ua)) return;
 
-    banner.style.display = 'flex';
+    banner.style.display = 'block';
 }
 
 function hideInstallBanner() {

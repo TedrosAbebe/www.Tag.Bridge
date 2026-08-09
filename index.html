@@ -25,76 +25,108 @@
 </head>
 <body>
 
-    <!-- PWA Install Popup (notification style) -->
-    <div id="installBanner" style="display:none; position:fixed; bottom:80px; right:16px; width:280px; background:white; border-radius:16px; padding:14px 16px; z-index:100000; box-shadow:0 8px 30px rgba(0,0,0,0.18); border:1px solid rgba(91,125,232,0.15); animation:popupSlideIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);">
+    <!-- PWA Install: thin blinking bar (top) + popup (bottom-right) -->
+    <div id="installBanner" style="display:none;">
         <style>
+            /* Thin blinking bar at top */
+            #installTopBar {
+                position: fixed;
+                top: 0; left: 0; right: 0;
+                height: 3px;
+                background: linear-gradient(90deg, #5b7de8, #38ef7d, #ffd200, #5b7de8);
+                background-size: 200% 100%;
+                z-index: 100001;
+                animation: barBlink 1.2s ease-in-out infinite, barShimmer 2s linear infinite;
+            }
+            @keyframes barBlink {
+                0%,100% { opacity: 1; }
+                50% { opacity: 0.3; }
+            }
+            @keyframes barShimmer {
+                0% { background-position: 0% 0%; }
+                100% { background-position: 200% 0%; }
+            }
+            /* Popup card */
+            #installPopup {
+                position: fixed;
+                bottom: 80px; right: 16px;
+                width: 240px;
+                background: white;
+                border-radius: 14px;
+                padding: 12px 14px;
+                z-index: 100000;
+                box-shadow: 0 6px 24px rgba(0,0,0,0.15);
+                border: 1px solid rgba(91,125,232,0.12);
+                animation: popupSlideIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+            }
             @keyframes popupSlideIn {
-                from { transform: translateY(20px) scale(0.95); opacity: 0; }
+                from { transform: translateY(16px) scale(0.95); opacity: 0; }
                 to { transform: translateY(0) scale(1); opacity: 1; }
             }
-            @keyframes logoPulse {
-                0%,100% { transform: scale(1); }
-                50% { transform: scale(1.08); }
-            }
-            #installBanner .ib-logo {
-                width: 36px; height: 36px;
-                border-radius: 10px;
-                box-shadow: 0 2px 8px rgba(91,125,232,0.3);
-                animation: logoPulse 2.5s ease-in-out infinite;
+            #installPopup .ib-logo {
+                width: 30px; height: 30px;
+                border-radius: 8px;
+                box-shadow: 0 2px 6px rgba(91,125,232,0.25);
                 flex-shrink: 0;
             }
-            #installBanner .ib-close {
-                position: absolute;
-                top: 10px; right: 10px;
-                background: #f0f0f0;
-                border: none;
-                width: 22px; height: 22px;
-                border-radius: 50%;
-                font-size: 0.7rem;
-                cursor: pointer;
-                color: #888;
-                display: flex; align-items: center; justify-content: center;
-                line-height: 1;
-            }
-            #installBanner .ib-close:hover { background: #e0e0e0; color: #444; }
-            #installBanner .ib-brand {
+            #installPopup .ib-brand {
                 font-weight: 900;
-                font-size: 0.88rem;
+                font-size: 0.85rem;
                 color: #111;
                 letter-spacing: -0.3px;
             }
-            #installBanner .ib-brand .tag { color: #5b7de8; }
-            #installBanner .ib-brand .bridge { color: #f59e0b; }
-            #installBanner .ib-desc {
-                font-size: 0.75rem;
-                color: #777;
+            #installPopup .ib-brand .tag { color: #5b7de8; }
+            #installPopup .ib-brand .bridge { color: #f59e0b; }
+            #installPopup .ib-desc {
+                font-size: 0.72rem;
+                color: #888;
                 margin: 6px 0 10px;
-                line-height: 1.5;
+                line-height: 1.4;
             }
+            #installPopup .ib-close {
+                position: absolute;
+                top: 8px; right: 8px;
+                background: #f0f0f0;
+                border: none;
+                width: 20px; height: 20px;
+                border-radius: 50%;
+                font-size: 0.65rem;
+                cursor: pointer;
+                color: #888;
+                display: flex; align-items: center; justify-content: center;
+            }
+            #installPopup .ib-close:hover { background: #e0e0e0; }
             #overlayInstallBtn {
                 background: linear-gradient(135deg, #5b7de8, #3a4fc4);
                 color: white;
                 border: none;
-                padding: 8px 0;
+                padding: 7px 0;
                 border-radius: 50px;
                 font-weight: 800;
-                font-size: 0.8rem;
+                font-size: 0.78rem;
                 cursor: pointer;
                 width: 100%;
-                box-shadow: 0 3px 10px rgba(91,125,232,0.35);
-                transition: transform 0.2s, box-shadow 0.2s;
+                box-shadow: 0 3px 10px rgba(91,125,232,0.3);
+                transition: transform 0.2s;
                 letter-spacing: 0.3px;
             }
-            #overlayInstallBtn:hover { transform: translateY(-1px); box-shadow: 0 5px 15px rgba(91,125,232,0.45); }
+            #overlayInstallBtn:hover { transform: translateY(-1px); }
             #overlayInstallBtn:active { transform: scale(0.97); }
         </style>
-        <button class="ib-close" id="installBannerClose">✕</button>
-        <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
-            <img src="/icon-192.png" alt="Tag Bridge" class="ib-logo">
-            <div class="ib-brand"><span class="tag">ታግ</span> <span class="bridge">ብሪጅ</span></div>
+
+        <!-- Thin blinking bar -->
+        <div id="installTopBar"></div>
+
+        <!-- Popup card -->
+        <div id="installPopup">
+            <button class="ib-close" id="installBannerClose">✕</button>
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                <img src="/icon-192.png" alt="Tag Bridge" class="ib-logo">
+                <div class="ib-brand"><span class="tag">ታግ</span> <span class="bridge">ብሪጅ</span></div>
+            </div>
+            <div class="ib-desc">Install Tag Bridge App</div>
+            <button id="overlayInstallBtn">📲 Install</button>
         </div>
-        <div class="ib-desc">Install Tag Bridge App for the best experience!</div>
-        <button id="overlayInstallBtn">📲 Install App</button>
     </div>
     <header>
         <!-- Force Update Banner -->
