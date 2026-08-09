@@ -1,4 +1,4 @@
-// PWA Install prompt
+// PWA Install prompt — disabled (let browser handle natively)
 let deferredPrompt = null;
 
 // ===== REFERRAL SYSTEM =====
@@ -41,11 +41,11 @@ function shareReferral() {
     openTelegram(msg);
 }
 // ===== END REFERRAL =====
+// PWA install prompt suppressed — no banner shown
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    const banner = document.getElementById('installBanner');
-    if (banner) banner.style.display = 'flex';
+    // Banner removed — do not show install prompt automatically
 });
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -59,21 +59,9 @@ document.addEventListener('DOMContentLoaded', () => {
     var params = new URLSearchParams(window.location.search);
     var ref = params.get('ref');
     if (ref) sessionStorage.setItem('referredBy', ref);
-    const installBtn = document.getElementById('installBtn');
-    if (installBtn) {
-        installBtn.addEventListener('click', async () => {
-            if (!deferredPrompt) return;
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            deferredPrompt = null;
-            document.getElementById('installBanner').style.display = 'none';
-        });
-    }
 });
 
 window.addEventListener('appinstalled', () => {
-    const banner = document.getElementById('installBanner');
-    if (banner) banner.style.display = 'none';
     deferredPrompt = null;
 });
 
