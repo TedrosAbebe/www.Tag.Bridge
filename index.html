@@ -25,63 +25,76 @@
 </head>
 <body>
 
-    <!-- PWA Install Banner (top) -->
-    <div id="installBanner" style="display:none; position:fixed; top:0; left:0; right:0; background:linear-gradient(135deg,#5b7de8,#3a4fc4); color:white; padding:8px 16px; z-index:100000; align-items:center; justify-content:space-between; gap:10px; box-shadow:0 2px 12px rgba(0,0,0,0.25); animation:bannerSlideDown 0.4s cubic-bezier(0.175,0.885,0.32,1.275);">
+    <!-- PWA Install Popup (notification style) -->
+    <div id="installBanner" style="display:none; position:fixed; bottom:80px; right:16px; width:280px; background:white; border-radius:16px; padding:14px 16px; z-index:100000; box-shadow:0 8px 30px rgba(0,0,0,0.18); border:1px solid rgba(91,125,232,0.15); animation:popupSlideIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);">
         <style>
-            @keyframes bannerSlideDown {
-                from { transform: translateY(-100%); opacity: 0; }
-                to { transform: translateY(0); opacity: 1; }
+            @keyframes popupSlideIn {
+                from { transform: translateY(20px) scale(0.95); opacity: 0; }
+                to { transform: translateY(0) scale(1); opacity: 1; }
             }
             @keyframes logoPulse {
                 0%,100% { transform: scale(1); }
                 50% { transform: scale(1.08); }
             }
-            #installBanner .logo-wrap img {
-                width: 32px; height: 32px;
-                border-radius: 8px;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            #installBanner .ib-logo {
+                width: 36px; height: 36px;
+                border-radius: 10px;
+                box-shadow: 0 2px 8px rgba(91,125,232,0.3);
                 animation: logoPulse 2.5s ease-in-out infinite;
+                flex-shrink: 0;
             }
-            #installBanner .brand-name {
-                font-weight: 900;
-                font-size: 0.9rem;
-                letter-spacing: -0.3px;
-                line-height: 1.1;
-            }
-            #installBanner .brand-name .tag { color: #38ef7d; }
-            #installBanner .brand-name .bridge { color: #ffd200; }
-            #installBanner .brand-sub {
-                font-size: 0.68rem;
-                opacity: 0.8;
-                font-weight: 500;
-            }
-            #installBanner .install-now-btn {
-                background: white;
-                color: #5b7de8;
+            #installBanner .ib-close {
+                position: absolute;
+                top: 10px; right: 10px;
+                background: #f0f0f0;
                 border: none;
-                padding: 6px 16px;
+                width: 22px; height: 22px;
+                border-radius: 50%;
+                font-size: 0.7rem;
+                cursor: pointer;
+                color: #888;
+                display: flex; align-items: center; justify-content: center;
+                line-height: 1;
+            }
+            #installBanner .ib-close:hover { background: #e0e0e0; color: #444; }
+            #installBanner .ib-brand {
+                font-weight: 900;
+                font-size: 0.88rem;
+                color: #111;
+                letter-spacing: -0.3px;
+            }
+            #installBanner .ib-brand .tag { color: #5b7de8; }
+            #installBanner .ib-brand .bridge { color: #f59e0b; }
+            #installBanner .ib-desc {
+                font-size: 0.75rem;
+                color: #777;
+                margin: 6px 0 10px;
+                line-height: 1.5;
+            }
+            #overlayInstallBtn {
+                background: linear-gradient(135deg, #5b7de8, #3a4fc4);
+                color: white;
+                border: none;
+                padding: 8px 0;
                 border-radius: 50px;
                 font-weight: 800;
                 font-size: 0.8rem;
                 cursor: pointer;
-                flex-shrink: 0;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+                width: 100%;
+                box-shadow: 0 3px 10px rgba(91,125,232,0.35);
                 transition: transform 0.2s, box-shadow 0.2s;
-                letter-spacing: 0.2px;
+                letter-spacing: 0.3px;
             }
-            #installBanner .install-now-btn:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-            #installBanner .install-now-btn:active { transform: scale(0.97); }
+            #overlayInstallBtn:hover { transform: translateY(-1px); box-shadow: 0 5px 15px rgba(91,125,232,0.45); }
+            #overlayInstallBtn:active { transform: scale(0.97); }
         </style>
-        <div style="display:flex; align-items:center; gap:10px;">
-            <div class="logo-wrap">
-                <img src="/icon-192.png" alt="Tag Bridge">
-            </div>
-            <div>
-                <div class="brand-name"><span class="tag">ታግ</span> <span class="bridge">ብሪጅ</span></div>
-                <div class="brand-sub">Install Tag Bridge App</div>
-            </div>
+        <button class="ib-close" id="installBannerClose">✕</button>
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+            <img src="/icon-192.png" alt="Tag Bridge" class="ib-logo">
+            <div class="ib-brand"><span class="tag">ታግ</span> <span class="bridge">ብሪጅ</span></div>
         </div>
-        <button id="overlayInstallBtn" class="install-now-btn">Install</button>
+        <div class="ib-desc">Install Tag Bridge App for the best experience!</div>
+        <button id="overlayInstallBtn">📲 Install App</button>
     </div>
     <header>
         <!-- Force Update Banner -->

@@ -133,6 +133,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // --- Close button ---
+    var installBannerClose = document.getElementById('installBannerClose');
+    if (installBannerClose) {
+        installBannerClose.addEventListener('click', function() {
+            hideInstallBanner();
+        });
+    }
+
     // --- YouTube button ---
     var ytBtn = document.getElementById('youtube-guide-btn');
     if (ytBtn) {
