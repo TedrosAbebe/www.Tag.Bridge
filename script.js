@@ -435,7 +435,7 @@ document.querySelectorAll('.product-card:not(.yt-guide-card)').forEach(function(
         if (e.target.classList.contains('btn-buy') || e.target.closest('.btn-buy')) return;
         if (e.target.closest('a')) return;
         var btn = this.querySelector('.btn-buy');
-        if (btn) btn.click();
+        if (btn) btn.dispatchEvent(new MouseEvent('click', { bubbles: false }));
     });
 });
 
@@ -444,8 +444,26 @@ document.querySelectorAll('.btn-buy').forEach(function(button) {
     button.addEventListener('click', function(e) {
         e.stopPropagation();
         var orderMessage = this.getAttribute('data-order-msg');
-        if (orderMessage) {
-            openTelegram(orderMessage);
+        if (!orderMessage) return;
+
+        var ua = navigator.userAgent || '';
+        var isRestricted = /TikTok|BytedanceWebview|musical_ly|Instagram|FBAN|FBAV/i.test(ua);
+        var refBy = sessionStorage.getItem('referredBy');
+        var finalMsg = orderMessage;
+        if (refBy) finalMsg = orderMessage + '\n[Ref: ' + refBy + ']';
+        var encodedMsg = encodeURIComponent(finalMsg);
+
+        if (isRestricted) {
+            window.location.href = '/tg.html?msg=' + encodedMsg;
+        } else {
+            // Direct link — most reliable across all browsers and mobile
+            var a = document.createElement('a');
+            a.href = 'https://t.me/tagbridge123?text=' + encodedMsg;
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         }
     });
 });
