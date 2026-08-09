@@ -284,20 +284,36 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Fast Telegram redirect
 function openTelegram(message) {
-    var encoded = encodeURIComponent(message);
     var ua = navigator.userAgent || '';
     var isRestricted = /TikTok|BytedanceWebview|musical_ly|Instagram|FBAN|FBAV/i.test(ua);
-    // Append referral info if present
     var refBy = sessionStorage.getItem('referredBy');
     var finalMsg = message;
     if (refBy && !message.includes('Referral:')) {
         finalMsg = message + '\n[Ref: ' + refBy + ']';
     }
     var encodedFinal = encodeURIComponent(finalMsg);
+
     if (isRestricted) {
         window.location.href = '/tg.html?msg=' + encodedFinal;
     } else {
-        window.open('https://t.me/tagbridge123?text=' + encodedFinal, '_blank');
+        // tg:// opens Telegram app directly
+        var tgDeep = 'tg://resolve?domain=tagbridge123&text=' + encodedFinal;
+        var tgWeb  = 'https://t.me/tagbridge123?text=' + encodedFinal;
+
+        var a = document.createElement('a');
+        a.href = tgDeep;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        // Fallback to web if app not installed
+        setTimeout(function() {
+            if (!document.hidden) {
+                window.open(tgWeb, '_blank');
+            }
+        }, 1500);
     }
 }
 
@@ -456,14 +472,24 @@ document.querySelectorAll('.btn-buy').forEach(function(button) {
         if (isRestricted) {
             window.location.href = '/tg.html?msg=' + encodedMsg;
         } else {
-            // Direct link — most reliable across all browsers and mobile
+            // Try tg:// deep link first — opens Telegram app directly without browser prompt
+            var tgDeep = 'tg://resolve?domain=tagbridge123&text=' + encodedMsg;
+            var tgWeb  = 'https://t.me/tagbridge123?text=' + encodedMsg;
+
             var a = document.createElement('a');
-            a.href = 'https://t.me/tagbridge123?text=' + encodedMsg;
+            a.href = tgDeep;
             a.target = '_blank';
             a.rel = 'noopener noreferrer';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
+
+            // Fallback: if app not installed, open web after short delay
+            setTimeout(function() {
+                if (!document.hidden) {
+                    window.open(tgWeb, '_blank');
+                }
+            }, 1500);
         }
     });
 });
