@@ -286,21 +286,10 @@ function openTelegram(message) {
     if (isRestricted) {
         window.location.href = '/tg.html?msg=' + encodedFinal;
     } else if (isMobile) {
-        // Mobile: tg:// opens Telegram app directly
-        var tgDeep = 'tg://resolve?domain=tagbridge123&text=' + encodedFinal;
-        var a = document.createElement('a');
-        a.href = tgDeep;
-        a.target = '_blank';
-        a.rel = 'noopener noreferrer';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        // Fallback to web if app not installed
-        setTimeout(function() {
-            if (!document.hidden) window.open(tgWeb, '_blank');
-        }, 1500);
+        // Mobile: tg:// opens Telegram app instantly, no delay
+        window.location.href = 'tg://resolve?domain=tagbridge123&text=' + encodedFinal;
     } else {
-        // Desktop: open t.me directly in new tab
+        // Desktop: open t.me in new tab
         window.open(tgWeb, '_blank');
     }
 }
@@ -460,21 +449,10 @@ document.querySelectorAll('.btn-buy').forEach(function(button) {
         if (isRestricted) {
             window.location.href = '/tg.html?msg=' + encodedMsg;
         } else if (/Android|iPhone|iPad|iPod/i.test(ua)) {
-            // Mobile: tg:// deep link opens Telegram app directly
-            var tgDeep = 'tg://resolve?domain=tagbridge123&text=' + encodedMsg;
-            var tgWeb  = 'https://t.me/tagbridge123?text=' + encodedMsg;
-            var a = document.createElement('a');
-            a.href = tgDeep;
-            a.target = '_blank';
-            a.rel = 'noopener noreferrer';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            setTimeout(function() {
-                if (!document.hidden) window.open(tgWeb, '_blank');
-            }, 1500);
+            // Mobile: instant redirect to Telegram app
+            window.location.href = 'tg://resolve?domain=tagbridge123&text=' + encodedMsg;
         } else {
-            // Desktop: open t.me directly in new tab
+            // Desktop: open t.me in new tab
             window.open('https://t.me/tagbridge123?text=' + encodedMsg, '_blank');
         }
     });

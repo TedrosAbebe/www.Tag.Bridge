@@ -132,14 +132,16 @@
     <script>
         var params = new URLSearchParams(window.location.search);
         var msg = params.get('msg') || 'ሰላም ታግ ብሪጅ! ተጨማሪ ማብራሪያ እፈልጋለሁ።';
-        var encoded = encodeURIComponent(msg);
-        var tgUrl = 'https://t.me/tagbridge123?text=' + encoded;
+        var tgUrl = 'https://t.me/tagbridge123?text=' + msg;
 
-        // If opened in a real browser (not TikTok), auto-redirect to Telegram
+        // Store for use when user clicks after opening in browser
+        window._tgUrl = tgUrl;
+
+        // If opened in a real browser (not TikTok), auto-redirect to Telegram immediately
         var ua = navigator.userAgent || '';
         var isRestricted = /TikTok|BytedanceWebview|musical_ly|Instagram|FBAN|FBAV/i.test(ua);
         if (!isRestricted) {
-            window.location.href = tgUrl;
+            window.location.replace(tgUrl);
         }
     </script>
 </body>
