@@ -1,5 +1,62 @@
-// PWA Install prompt — disabled (let browser handle natively)
+// PWA Install prompt — aggressive overlay
 let deferredPrompt = null;
+
+// ===== PWA INSTALL OVERLAY =====
+function showInstallOverlay() {
+    var overlay = document.getElementById('installOverlay');
+    if (!overlay) return;
+
+    // Don't show if already installed (standalone mode)
+    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+        overlay.classList.add('hidden');
+        return;
+    }
+
+    // Don't show on desktop
+    var ua = navigator.userAgent || '';
+    var isMobile = /Android|iPhone|iPad|iPod/i.test(ua);
+    if (!isMobile) {
+        overlay.classList.add('hidden');
+        return;
+    }
+
+    overlay.classList.remove('hidden');
+}
+
+function hideInstallOverlay() {
+    var overlay = document.getElementById('installOverlay');
+    if (overlay) overlay.classList.add('hidden');
+}
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    showInstallOverlay();
+
+    // Install button
+    var overlayInstallBtn = document.getElementById('overlayInstallBtn');
+    if (overlayInstallBtn) {
+        overlayInstallBtn.addEventListener('click', async function() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                deferredPrompt = null;
+            }
+            hideInstallOverlay();
+        });
+    }
+
+    // Skip button
+    var overlaySkipBtn = document.getElementById('overlaySkipBtn');
+    if (overlaySkipBtn) {
+        overlaySkipBtn.addEventListener('click', function() {
+            hideInstallOverlay();
+        });
+    }
+});
 
 // ===== REFERRAL SYSTEM =====
 function generateRefCode() {
@@ -60,7 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
     var ref = params.get('ref');
     if (ref) sessionStorage.setItem('referredBy', ref);
 });
-
 window.addEventListener('appinstalled', () => {
     deferredPrompt = null;
 });

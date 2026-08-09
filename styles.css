@@ -1751,3 +1751,120 @@ html[lang="en"] .lang-en-only { display: inline-block; }
     .referral-steps { gap: 5px; }
     .ref-step { font-size: 0.75rem; padding: 6px 10px; }
 }
+
+/* ===== PWA INSTALL OVERLAY ===== */
+#installOverlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, #5b7de8 0%, #3a4fc4 100%);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    animation: overlayFadeIn 0.4s ease;
+}
+
+#installOverlay.hidden {
+    display: none;
+}
+
+@keyframes overlayFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+#installBox {
+    background: white;
+    border-radius: 28px;
+    padding: 40px 32px;
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+    animation: boxSlideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes boxSlideUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.install-icon {
+    font-size: 4rem;
+    margin-bottom: 12px;
+    animation: float 3s ease-in-out infinite;
+}
+
+.install-title {
+    font-size: 1.7rem;
+    font-weight: 900;
+    color: #111;
+    margin-bottom: 10px;
+    letter-spacing: -0.5px;
+}
+
+.install-desc {
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.install-features {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.install-features span {
+    background: #f0f4ff;
+    color: #5b7de8;
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.install-btn {
+    background: linear-gradient(135deg, #5b7de8, #3a4fc4);
+    color: white;
+    border: none;
+    padding: 16px 36px;
+    border-radius: 50px;
+    font-size: 1.05rem;
+    font-weight: 800;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.3s;
+    box-shadow: 0 6px 20px rgba(91,125,232,0.45);
+    letter-spacing: 0.3px;
+    margin-bottom: 16px;
+}
+
+.install-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(91,125,232,0.55);
+}
+
+.install-btn:active { transform: scale(0.97); }
+
+.install-skip {
+    background: none;
+    border: none;
+    color: #aaa;
+    font-size: 0.82rem;
+    cursor: pointer;
+    padding: 8px 16px;
+    transition: color 0.2s;
+    font-family: inherit;
+}
+
+.install-skip:hover { color: #777; }
+
+/* Hide overlay on desktop — PWA install only makes sense on mobile */
+@media (min-width: 1024px) {
+    #installOverlay { display: none !important; }
+}
