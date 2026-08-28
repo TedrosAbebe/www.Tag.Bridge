@@ -1974,14 +1974,14 @@ html[lang="en"] .lang-en-only { display: inline-block; }
 .resources-toggle.open i { transform: rotate(180deg); }
 
 .resources-body {
-    display: none;
+    display: none !important;
     margin-top: 8px;
     background: rgba(0,0,0,0.15);
     border-radius: 10px;
     overflow: hidden;
 }
 
-.resources-body.open { display: block; }
+.resources-body.open { display: block !important; }
 
 .res-item {
     display: flex;
