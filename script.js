@@ -150,6 +150,19 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// ===== RESOURCES ACCORDION =====
+function toggleResources(btn) {
+    var body = btn.nextElementSibling;
+    var isOpen = body.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.resources-body').forEach(function(b) { b.classList.remove('open'); });
+    document.querySelectorAll('.resources-toggle').forEach(function(b) { b.classList.remove('open'); });
+    if (!isOpen) {
+        body.classList.add('open');
+        btn.classList.add('open');
+    }
+}
+
 // ===== DROPDOWN MENU =====
 document.querySelectorAll('.dropdown-toggle').forEach(function(toggle) {
     toggle.addEventListener('click', function(e) {
