@@ -150,6 +150,47 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// ===== RESOURCE LINKS — app deep link on mobile =====
+var APP_DEEP_LINKS = {
+    'tradingview.com':    'tradingview://',
+    'coinmarketcap.com':  'coinmarketcap://',
+    'coingecko.com':      'coingecko://',
+    'binance.com':        'binance://',
+    'academy.binance.com':'binance://',
+    'bingxdao.com':       'bingx://',
+    'forexfactory.com':   'forexfactory://',
+    'tradezella.com':     'tradezella://',
+    'myfxbook.com':       'myfxbook://',
+    'investing.com':      'investing://',
+    'babypips.com':       'babypips://'
+};
+
+document.querySelectorAll('.res-item, .dropdown-menu a').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+        var ua = navigator.userAgent || '';
+        var isMobile = /Android|iPhone|iPad|iPod/i.test(ua);
+        if (!isMobile) return; // desktop — normal browser open
+
+        var href = this.getAttribute('href') || '';
+        var matched = null;
+
+        Object.keys(APP_DEEP_LINKS).forEach(function(domain) {
+            if (href.indexOf(domain) !== -1) matched = APP_DEEP_LINKS[domain];
+        });
+
+        if (matched) {
+            e.preventDefault();
+            var webUrl = href;
+            // Try app first, fallback to browser after 1.2s
+            window.location.href = matched;
+            setTimeout(function() {
+                window.open(webUrl, '_blank');
+            }, 1200);
+        }
+        // else — no deep link known, open normally
+    });
+});
+
 // ===== RESOURCES ACCORDION =====
 function toggleResources(btn) {
     var body = btn.nextElementSibling;
@@ -256,6 +297,8 @@ mobileMenuBtn.addEventListener('click', function() {
 
 navLinks.querySelectorAll('a').forEach(function(link) {
     link.addEventListener('click', function() {
+        // Don't close menu when clicking dropdown toggle
+        if (this.classList.contains('dropdown-toggle')) return;
         navLinks.classList.remove('active');
         const icon = mobileMenuBtn.querySelector('i');
         icon.classList.remove('fa-times');
