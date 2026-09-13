@@ -549,11 +549,11 @@ document.querySelectorAll('.btn-buy').forEach(function(button) {
         e.stopPropagation();
         var book = this.getAttribute('data-book') || 'forex';
         var bookNames = {
-            'forex': 'የፎሬክስ ትሬዲንግ መጽሃፍ — 350 ብር',
-            'crypto': 'የክሪፕቶ ትሬዲንግ መጽሃፍ — 400 ብር',
-            'bundle': 'ፎሬክስ + ክሪፕቶ ጥቅል — 500 ብር'
+            'forex': 'የፎሬክስ ትሬዲንግ መጽሃፍ በ 350 ብር ማዘዝ እፈልጋለሁ።',
+            'crypto': 'የክሪፕቶ ትሬዲንግ መጽሃፍ በ 400 ብር ማዘዝ እፈልጋለሁ።',
+            'bundle': 'ፎሬክስ + ክሪፕቶ ጥቅል በ 500 ብር ማዘዝ እፈልጋለሁ።'
         };
-        var msg = 'ሰላም ታግ ብሪጅ! ' + (bookNames[book] || bookNames['forex']) + ' ማዘዝ እፈልጋለሁ።';
+        var msg = 'ሰላም! ' + (bookNames[book] || bookNames['forex']);
         openTelegram(msg);
     });
 });
