@@ -196,6 +196,14 @@
             width: 100%;
             border: none;
             background: #222;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* Block right-click context menu on viewer */
+        #viewerScreen {
+            -webkit-user-select: none;
+            user-select: none;
         }
     </style>
 </head>
@@ -242,14 +250,16 @@
             <div class="viewer-title" id="viewerTitle">📚 <span>ታግ ብሪጅ</span> — የፎሬክስ ትሬዲንግ</div>
             <button class="btn-close-viewer" onclick="closeViewer()">✕ ዝጋ</button>
         </div>
-        <iframe id="pdfFrame" src="" allowfullscreen></iframe>
+        <iframe id="pdfFrame" src="" allowfullscreen
+            sandbox="allow-scripts allow-same-origin"
+            style="pointer-events: auto;"></iframe>
     </div>
 
     <script>
         var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxUsDWtmGOgG6ZyUNklXPagVIa_vq4WVe1awZtLVOTDztcQccpOkNW_07mTWcoOfi7g0g/exec';
 
         var PDF_LINKS = {
-            'forex':  'https://drive.google.com/file/d/1r3UEZCWXOOPogC672VqEKMaaJR1Fo_XN/preview',
+            'forex':  'https://drive.google.com/file/d/1r3UEZCWXOOPogC672VqEKMaaJR1Fo_XN/preview#toolbar=0&navpanes=0&scrollbar=0',
             'crypto': '',
             'bundle': ''
         };
@@ -341,6 +351,11 @@
             document.getElementById('deviceMsg').style.display = 'block';
             document.getElementById('errorMsg').style.display = 'none';
         }
+
+        // Prevent right-click on viewer
+        document.getElementById('viewerScreen').addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
 
         // Allow Enter key
         document.getElementById('passwordInput').addEventListener('keypress', function(e) {
