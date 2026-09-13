@@ -3,207 +3,361 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📖 መጽሃፍ ክፈት — Tag Bridge</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap">
+    <title>📖 Tag Bridge — መጽሃፍ ንባብ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        :root {
+            --bg: #0d0d1a;
+            --bg2: #13131f;
+            --surface: rgba(255,255,255,0.04);
+            --border: rgba(255,255,255,0.08);
+            --accent: #5b7de8;
+            --green: #38ef7d;
+            --gold: #ffd200;
+            --text: rgba(255,255,255,0.9);
+            --muted: rgba(255,255,255,0.4);
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            background: var(--bg);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            overflow: hidden;
         }
 
-        /* PASSWORD SCREEN */
+        /* Ambient background glow */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -40%; left: -20%;
+            width: 80%; height: 80%;
+            background: radial-gradient(ellipse, rgba(91,125,232,0.12) 0%, transparent 65%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -30%; right: -10%;
+            width: 60%; height: 60%;
+            background: radial-gradient(ellipse, rgba(56,239,125,0.07) 0%, transparent 65%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ===== PASSWORD SCREEN ===== */
         #passwordScreen {
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 24px;
-            padding: 40px 32px;
-            max-width: 420px;
+            position: relative;
+            z-index: 1;
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 28px;
+            padding: 44px 36px;
+            max-width: 400px;
             width: 100%;
             text-align: center;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
-            animation: fadeIn 0.4s ease;
+            box-shadow: 0 32px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06);
+            animation: cardIn 0.5s cubic-bezier(0.175,0.885,0.32,1.275);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        .lock-icon { font-size: 3rem; margin-bottom: 16px; }
+        .lock-wrap {
+            width: 72px; height: 72px;
+            background: linear-gradient(135deg, rgba(91,125,232,0.2), rgba(56,239,125,0.1));
+            border: 1px solid rgba(91,125,232,0.3);
+            border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 20px;
+            animation: lockFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes lockFloat {
+            0%,100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        .lock-wrap i {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--accent), var(--green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
         .screen-title {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 900;
             color: white;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
         }
 
         .screen-subtitle {
-            font-size: 0.85rem;
-            color: rgba(255,255,255,0.5);
+            font-size: 0.82rem;
+            color: var(--muted);
             margin-bottom: 28px;
-            line-height: 1.5;
+            line-height: 1.6;
+        }
+
+        .input-wrap {
+            position: relative;
+            margin-bottom: 14px;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 16px; top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+            font-size: 0.9rem;
         }
 
         .password-input {
             width: 100%;
-            padding: 14px 18px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.15);
-            background: rgba(255,255,255,0.08);
+            padding: 14px 18px 14px 42px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.05);
             color: white;
             font-size: 1rem;
             font-family: 'Inter', sans-serif;
             font-weight: 600;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             text-transform: uppercase;
             outline: none;
-            transition: border 0.2s;
-            margin-bottom: 14px;
+            transition: all 0.25s;
             text-align: center;
         }
 
         .password-input:focus {
-            border-color: rgba(91,125,232,0.6);
-            background: rgba(255,255,255,0.12);
+            border-color: rgba(91,125,232,0.5);
+            background: rgba(91,125,232,0.08);
+            box-shadow: 0 0 0 3px rgba(91,125,232,0.12);
         }
 
         .password-input::placeholder {
-            color: rgba(255,255,255,0.3);
-            letter-spacing: 0;
+            color: var(--muted);
+            letter-spacing: 1px;
             text-transform: none;
+            font-weight: 500;
         }
 
         .btn-open {
             width: 100%;
             padding: 14px;
-            border-radius: 12px;
+            border-radius: 14px;
             background: linear-gradient(135deg, #5b7de8, #3a4fc4);
             color: white;
             border: none;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 800;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 15px rgba(91,125,232,0.4);
+            transition: all 0.25s;
+            box-shadow: 0 6px 24px rgba(91,125,232,0.35);
             font-family: 'Inter', sans-serif;
+            letter-spacing: 0.3px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .btn-open:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(91,125,232,0.5); }
-        .btn-open:active { transform: scale(0.97); }
-        .btn-open:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .btn-open::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
 
-        .error-msg {
+        .btn-open:hover::before { left: 100%; }
+        .btn-open:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(91,125,232,0.45); }
+        .btn-open:active { transform: scale(0.98); }
+        .btn-open:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .status-msg {
             display: none;
-            margin-top: 14px;
-            padding: 12px 16px;
-            background: rgba(255,80,80,0.15);
-            border: 1px solid rgba(255,80,80,0.3);
-            border-radius: 10px;
+            margin-top: 12px;
+            padding: 11px 16px;
+            border-radius: 12px;
+            font-size: 0.83rem;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .status-msg.error {
+            background: rgba(255,80,80,0.1);
+            border: 1px solid rgba(255,80,80,0.25);
             color: #ff8080;
-            font-size: 0.85rem;
-            font-weight: 600;
         }
 
-        .device-msg {
-            display: none;
-            margin-top: 14px;
-            padding: 14px 16px;
-            background: rgba(255,165,0,0.15);
-            border: 1px solid rgba(255,165,0,0.3);
-            border-radius: 10px;
+        .status-msg.loading {
+            background: rgba(91,125,232,0.1);
+            border: 1px solid rgba(91,125,232,0.2);
+            color: rgba(255,255,255,0.6);
+        }
+
+        .status-msg.device {
+            background: rgba(255,165,0,0.1);
+            border: 1px solid rgba(255,165,0,0.25);
             color: #ffb347;
-            font-size: 0.85rem;
-            font-weight: 600;
-            line-height: 1.6;
         }
 
-        .loading {
-            display: none;
-            margin-top: 14px;
-            color: rgba(255,255,255,0.5);
-            font-size: 0.85rem;
-        }
-
-        .loading i { animation: spin 1s linear infinite; margin-right: 6px; }
+        .status-msg .spin { animation: spin 1s linear infinite; display: inline-block; margin-right: 6px; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
         .back-link {
-            display: block;
+            display: inline-block;
             margin-top: 20px;
-            color: rgba(255,255,255,0.35);
-            font-size: 0.8rem;
+            color: var(--muted);
+            font-size: 0.78rem;
             text-decoration: none;
             transition: color 0.2s;
+            padding: 4px 8px;
+            border-radius: 8px;
         }
-        .back-link:hover { color: rgba(255,255,255,0.6); }
 
-        /* PDF VIEWER SCREEN */
+        .back-link:hover { color: rgba(255,255,255,0.65); background: var(--surface); }
+
+        /* ===== VIEWER SCREEN ===== */
         #viewerScreen {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: #111;
+            background: var(--bg);
             flex-direction: column;
             z-index: 1000;
         }
 
         #viewerScreen.active { display: flex; }
 
-        .viewer-header {
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
-            padding: 12px 20px;
+        /* Top bar */
+        .viewer-bar {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding: 0 16px;
+            height: 56px;
+            background: var(--bg2);
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+            gap: 12px;
+        }
+
+        .viewer-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             flex-shrink: 0;
         }
 
-        .viewer-title {
+        .viewer-logo-icon {
+            width: 30px; height: 30px;
+            background: linear-gradient(135deg, var(--accent), #3a4fc4);
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.85rem;
             color: white;
-            font-weight: 800;
-            font-size: 0.95rem;
         }
 
-        .viewer-title span { color: #38ef7d; }
+        .viewer-logo-text {
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -0.3px;
+        }
+
+        .viewer-logo-text .t { color: var(--green); }
+        .viewer-logo-text .b { color: var(--gold); }
+
+        .viewer-book-title {
+            flex: 1;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: rgba(255,255,255,0.6);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .viewer-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
 
         .btn-close-viewer {
-            background: rgba(255,255,255,0.1);
-            border: none;
-            color: white;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,80,80,0.12);
+            border: 1px solid rgba(255,80,80,0.2);
+            color: #ff8080;
             padding: 6px 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.82rem;
-            font-family: 'Inter', sans-serif;
+            border-radius: 10px;
+            font-size: 0.78rem;
             font-weight: 700;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
         }
 
-        .btn-close-viewer:hover { background: rgba(255,255,255,0.2); }
+        .btn-close-viewer:hover {
+            background: rgba(255,80,80,0.2);
+            color: #ff6060;
+        }
 
+        /* PDF iframe */
         #pdfFrame {
             flex: 1;
             width: 100%;
             border: none;
-            background: #222;
+            background: #1a1a1a;
             user-select: none;
             -webkit-user-select: none;
         }
 
-        /* Block right-click context menu on viewer */
-        #viewerScreen {
-            -webkit-user-select: none;
-            user-select: none;
+        /* Bottom bar */
+        .viewer-footer {
+            height: 36px;
+            background: var(--bg2);
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .viewer-footer-text {
+            font-size: 0.68rem;
+            color: var(--muted);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .viewer-footer-text span { color: var(--green); }
+
+        /* Mobile */
+        @media (max-width: 480px) {
+            #passwordScreen { padding: 32px 24px; border-radius: 22px; }
+            .screen-title { font-size: 1.2rem; }
+            .viewer-bar { height: 50px; padding: 0 12px; }
         }
     </style>
 </head>
@@ -211,48 +365,60 @@
 
     <!-- PASSWORD SCREEN -->
     <div id="passwordScreen">
-        <div class="lock-icon">🔐</div>
+        <div class="lock-wrap">
+            <i class="fas fa-book-open"></i>
+        </div>
         <div class="screen-title">መጽሃፍ ክፈት</div>
         <div class="screen-subtitle">
-            የተላከልዎትን password ያስገቡ<br>
-            <small style="opacity:0.6;">Enter your book password</small>
+            የተላከልዎትን password ያስገቡ
+            <br><small>Enter your book access password</small>
         </div>
 
-        <input type="text" id="passwordInput" class="password-input"
-            placeholder="TB-F-XXXXXX" maxlength="12"
-            oninput="this.value=this.value.toUpperCase()">
+        <div class="input-wrap">
+            <i class="fas fa-key input-icon"></i>
+            <input type="text" id="passwordInput" class="password-input"
+                placeholder="Password ያስገቡ" maxlength="20"
+                oninput="this.value=this.value.toUpperCase()" autocomplete="off">
+        </div>
 
         <button class="btn-open" id="openBtn" onclick="checkPassword()">
-            <i class="fas fa-book-open"></i> &nbsp;ክፈት / Open
+            <i class="fas fa-unlock-alt"></i> &nbsp; ክፈት
         </button>
 
-        <div class="loading" id="loadingMsg">
-            <i class="fas fa-spinner"></i> እያረጋገጠ ነው...
-        </div>
+        <div class="status-msg" id="statusMsg"></div>
 
-        <div class="error-msg" id="errorMsg"></div>
-
-        <div class="device-msg" id="deviceMsg">
-            ⚠️ ይህ password ሌላ device ላይ ጥቅም ላይ ውሏል።<br>
-            ለማፅደቅ ታግ ብሪጅን ያናግሩ።<br><br>
-            <a href="https://t.me/tagbridge123" target="_blank"
-               style="color:#38ef7d; font-weight:800;">
-                📩 @tagbridge123
-            </a>
-        </div>
-
-        <a href="/" class="back-link">← ወደ ዌብሳይቱ ተመለሱ</a>
+        <a href="/" class="back-link">
+            <i class="fas fa-arrow-left" style="font-size:0.7rem; margin-right:4px;"></i>
+            ወደ ዌብሳይቱ ተመለሱ
+        </a>
     </div>
 
-    <!-- PDF VIEWER -->
+    <!-- VIEWER SCREEN -->
     <div id="viewerScreen">
-        <div class="viewer-header">
-            <div class="viewer-title" id="viewerTitle">📚 <span>ታግ ብሪጅ</span> — የፎሬክስ ትሬዲንግ</div>
-            <button class="btn-close-viewer" onclick="closeViewer()">✕ ዝጋ</button>
+        <!-- Top bar -->
+        <div class="viewer-bar">
+            <div class="viewer-logo">
+                <div class="viewer-logo-icon"><i class="fas fa-book-open"></i></div>
+                <div class="viewer-logo-text"><span class="t">ታግ</span> <span class="b">ብሪጅ</span></div>
+            </div>
+            <div class="viewer-book-title" id="viewerTitle">—</div>
+            <div class="viewer-actions">
+                <button class="btn-close-viewer" onclick="closeViewer()">
+                    <i class="fas fa-times"></i> ዝጋ
+                </button>
+            </div>
         </div>
+
+        <!-- PDF -->
         <iframe id="pdfFrame" src="" allowfullscreen
-            sandbox="allow-scripts allow-same-origin"
-            style="pointer-events: auto;"></iframe>
+            sandbox="allow-scripts allow-same-origin"></iframe>
+
+        <!-- Bottom bar -->
+        <div class="viewer-footer">
+            <div class="viewer-footer-text">
+                🔒 Protected by <span>Tag Bridge</span> — ለግል አጠቃቀም ብቻ
+            </div>
+        </div>
     </div>
 
     <script>
@@ -264,7 +430,13 @@
             'bundle': ''
         };
 
-        // Generate unique device fingerprint
+        var BOOK_TITLES = {
+            'forex':  'የፎሬክስ ትሬዲንግ መማሪያ መጽሃፍ',
+            'crypto': 'የክሪፕቶ ትሬዲንግ መማሪያ መጽሃፍ',
+            'bundle': 'ፎሬክስ + ክሪፕቶ ጥቅል'
+        };
+
+        // Device fingerprint
         function getDeviceId() {
             var id = localStorage.getItem('tb_device_id');
             if (!id) {
@@ -274,54 +446,63 @@
             return id;
         }
 
+        function showStatus(type, msg) {
+            var el = document.getElementById('statusMsg');
+            el.className = 'status-msg ' + type;
+            el.innerHTML = msg;
+            el.style.display = 'block';
+        }
+
+        function hideStatus() {
+            document.getElementById('statusMsg').style.display = 'none';
+        }
+
         function checkPassword() {
             var password = document.getElementById('passwordInput').value.trim();
-            if (!password || password.length < 6) {
-                showError('እባክዎ ትክክለኛ password ያስገቡ');
+            if (!password || password.length < 3) {
+                showStatus('error', '❌ እባክዎ password ያስገቡ');
                 return;
             }
 
             var deviceId = getDeviceId();
-            setLoading(true);
+            document.getElementById('openBtn').disabled = true;
+            showStatus('loading', '<i class="fas fa-spinner spin"></i> እያረጋገጠ ነው...');
 
             var url = SCRIPT_URL + '?action=verify&password=' + encodeURIComponent(password) + '&device_id=' + encodeURIComponent(deviceId);
 
             fetch(url)
                 .then(function(r) { return r.json(); })
                 .then(function(data) {
-                    setLoading(false);
+                    document.getElementById('openBtn').disabled = false;
+                    hideStatus();
                     if (data.success) {
                         openPDF(data.book);
                     } else if (data.reason === 'different_device') {
-                        showDeviceError();
+                        showStatus('device',
+                            '⚠️ ይህ password ሌላ device ላይ ጥቅም ላይ ውሏል።<br>' +
+                            'ለማፅደቅ ታግ ብሪጅን ያናግሩ — ' +
+                            '<a href="https://t.me/tagbridge123" target="_blank" style="color:#38ef7d; font-weight:800;">@tagbridge123</a>'
+                        );
                     } else if (data.reason === 'expired') {
-                        showError('❌ Password ጊዜው አልፏል። ታግ ብሪጅን ያናግሩ።');
+                        showStatus('error', '❌ Password ጊዜው አልፏል። ታግ ብሪጅን ያናግሩ።');
                     } else {
-                        showError('❌ Password ትክክለኛ አይደለም። እንደገና ይሞክሩ።');
+                        showStatus('error', '❌ Password ትክክለኛ አይደለም። እንደገና ይሞክሩ።');
                     }
                 })
                 .catch(function() {
-                    setLoading(false);
-                    showError('❌ Connection error. እንደገና ይሞክሩ።');
+                    document.getElementById('openBtn').disabled = false;
+                    showStatus('error', '❌ Connection error. እንደገና ይሞክሩ።');
                 });
         }
 
         function openPDF(book) {
             var link = PDF_LINKS[book] || PDF_LINKS['forex'];
             if (!link) {
-                showError('PDF አልተዘጋጀም። ታግ ብሪጅን ያናግሩ።');
+                showStatus('error', 'PDF አልተዘጋጀም። ታግ ብሪጅን ያናግሩ — <a href="https://t.me/tagbridge123" target="_blank" style="color:#38ef7d;">@tagbridge123</a>');
                 return;
             }
-            // Update viewer title based on book type
-            var titles = {
-                'forex':  'የፎሬክስ ትሬዲንግ መጽሃፍ',
-                'crypto': 'የክሪፕቶ ትሬዲንግ መጽሃፍ',
-                'bundle': 'ፎሬክስ + ክሪፕቶ ጥቅል'
-            };
             var titleEl = document.getElementById('viewerTitle');
-            if (titleEl) {
-                titleEl.innerHTML = '📚 <span>ታግ ብሪጅ</span> — ' + (titles[book] || titles['forex']);
-            }
+            if (titleEl) titleEl.textContent = BOOK_TITLES[book] || BOOK_TITLES['forex'];
             document.getElementById('pdfFrame').src = link;
             document.getElementById('viewerScreen').classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -333,31 +514,10 @@
             document.body.style.overflow = '';
         }
 
-        function setLoading(on) {
-            document.getElementById('loadingMsg').style.display = on ? 'block' : 'none';
-            document.getElementById('openBtn').disabled = on;
-            document.getElementById('errorMsg').style.display = 'none';
-            document.getElementById('deviceMsg').style.display = 'none';
-        }
+        // Block right-click
+        document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
 
-        function showError(msg) {
-            var el = document.getElementById('errorMsg');
-            el.textContent = msg;
-            el.style.display = 'block';
-            document.getElementById('deviceMsg').style.display = 'none';
-        }
-
-        function showDeviceError() {
-            document.getElementById('deviceMsg').style.display = 'block';
-            document.getElementById('errorMsg').style.display = 'none';
-        }
-
-        // Prevent right-click on viewer
-        document.getElementById('viewerScreen').addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-        });
-
-        // Allow Enter key
+        // Enter key
         document.getElementById('passwordInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') checkPassword();
         });
