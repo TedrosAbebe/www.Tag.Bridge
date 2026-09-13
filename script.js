@@ -350,8 +350,8 @@ document.querySelectorAll('.btn-buy').forEach(function(button) {
         e.stopPropagation();
         var book = this.getAttribute('data-book') || 'forex';
         var bookNames = {
-            'forex':  'የፎሬክስ ትሬዲንግ መጽሃፍ በ 350 ብር ማዘዝ እፈልጋለሁ።',
-            'crypto': 'የክሪፕቶ ትሬዲንግ መጽሃፍ በ 400 ብር ማዘዝ እፈልጋለሁ።',
+            'forex':  'የፎሬክስ ትሬዲንግ መማሪያ መጽሃፍ በ 350 ብር ማዘዝ እፈልጋለሁ።',
+            'crypto': 'የክሪፕቶ ትሬዲንግ መማሪያ መጽሃፍ በ 400 ብር ማዘዝ እፈልጋለሁ።',
             'bundle': 'ፎሬክስ + ክሪፕቶ ጥቅል በ 500 ብር ማዘዝ እፈልጋለሁ።'
         };
         openTelegram('ሰላም! ' + (bookNames[book] || bookNames['forex']));
