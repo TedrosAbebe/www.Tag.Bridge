@@ -11,7 +11,7 @@ from telegram.ext import (
 )
 
 # ===== CONFIG =====
- BOT_TOKEN = "8781481681:AAE6IfF9QGbYdfaf9e7WotDBWvy5_lHCFr8"
+BOT_TOKEN = "8781481681:AAE6IfF9QGbYdfaf9e7WotDBWvy5_lHCFr8"
 ADMIN_CHAT_ID = 867253752
 SCRIPT_URL = "https://script.google.com/macros/s/AKfycby3pGZBdEcvJHEMC5ANAV2w9V60GMa0hwa_5e8WAhfsgLL-jsuApZ5ALRcCs5uxJa0wgQ/exec"
 SITE_URL = "https://www-tag-bridge.vercel.app"
