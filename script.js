@@ -150,6 +150,66 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// ===== SCROLL PROGRESS BAR =====
+var progressBar = document.getElementById('scrollProgress');
+var backToTopBtn = document.getElementById('backToTop');
+
+window.addEventListener('scroll', function() {
+    // Progress bar
+    var scrollTop = window.scrollY || document.documentElement.scrollTop;
+    var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    var progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    if (progressBar) progressBar.style.width = progress + '%';
+
+    // Back to top
+    if (backToTopBtn) {
+        if (scrollTop > 400) {
+            backToTopBtn.classList.add('visible');
+        } else {
+            backToTopBtn.classList.remove('visible');
+        }
+    }
+});
+
+// Back to top click
+if (backToTopBtn) {
+    backToTopBtn.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+}
+
+// ===== DARK / LIGHT MODE =====
+var themeToggle = document.getElementById('themeToggle');
+var themeIcon = document.getElementById('themeIcon');
+
+function applyTheme(mode) {
+    if (mode === 'light') {
+        document.body.classList.add('light-mode');
+        if (themeIcon) {
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        }
+    } else {
+        document.body.classList.remove('light-mode');
+        if (themeIcon) {
+            themeIcon.classList.remove('fa-sun');
+            themeIcon.classList.add('fa-moon');
+        }
+    }
+    localStorage.setItem('theme', mode);
+}
+
+// Load saved theme
+var savedTheme = localStorage.getItem('theme') || 'dark';
+applyTheme(savedTheme);
+
+if (themeToggle) {
+    themeToggle.addEventListener('click', function() {
+        var current = document.body.classList.contains('light-mode') ? 'light' : 'dark';
+        applyTheme(current === 'light' ? 'dark' : 'light');
+    });
+}
+
 // ===== RESOURCE LINKS — app deep link on mobile =====
 var APP_DEEP_LINKS = {
     'tradingview.com':    'tradingview://',

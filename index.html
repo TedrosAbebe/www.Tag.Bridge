@@ -157,8 +157,7 @@
             })();
         </script>
         <nav class="navbar" id="mainNav">
-            <div class="container">
-                <div class="logo">
+            <div class="container">                <div class="logo">
                     <img src="/logo.png.png" alt="Tag Bridge" style="width:38px; height:38px; object-fit:contain; border-radius:50%; background:white; padding:2px; box-shadow:0 2px 8px rgba(0,0,0,0.2);">
                     <span data-en="<span class='logo-tag'>Tag</span> <span class='logo-bridge'>Bridge</span>" data-am="<span class='logo-tag'>ታግ</span> <span class='logo-bridge'>ብሪጅ</span>"><span class="logo-tag">ታግ</span> <span class="logo-bridge">ብሪጅ</span></span>
                 </div>
@@ -180,10 +179,22 @@
                             <span class="lang-slider"></span>
                         </label>
                     </div>
+                    <!-- Dark/Light Mode Toggle -->
+                    <button id="themeToggle" class="theme-toggle-btn" title="Toggle theme">
+                        <i class="fas fa-moon" id="themeIcon"></i>
+                    </button>
                 </div>
             </div>
         </nav>
     </header>
+
+    <!-- Scroll Progress Bar -->
+    <div id="scrollProgress"></div>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" title="Back to top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
     <!-- White separator band -->
     <div style="height: 8px; background: white; margin-top: 70px; position: relative; z-index: 1;"></div>
 
