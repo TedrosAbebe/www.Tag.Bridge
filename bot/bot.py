@@ -76,13 +76,33 @@ def generate_password(book_key, customer_name):
 
 # ===== /start — show books immediately =====
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    # Check if came from website with book pre-selected
+    args = context.args
+    if args and args[0].startswith('order_'):
+        book_key = args[0].replace('order_', '')
+        if book_key in BOOKS:
+            book = BOOKS[book_key]
+            context.user_data["book"] = book_key
+            keyboard = [
+                [InlineKeyboardButton("🏦 CBE Birr", callback_data="pay_cbe")],
+                [InlineKeyboardButton("� Telebirr", callback_data="pay_telebirr")],
+            ]
+            await update.message.reply_text(
+                f"✅ {book['name_am']}\n"
+                f"💰 ዋጋ: {book['price']} ብር\n\n"
+                f"እንዴት ይከፍላሉ?",
+                reply_markup=InlineKeyboardMarkup(keyboard)
+            )
+            return SELECT_PAYMENT
+
+    # Default — show book selection
     keyboard = [
-        [InlineKeyboardButton("📈 Forex — 350 ብር", callback_data="book_forex")],
+        [InlineKeyboardButton("�📈 Forex — 350 ብር", callback_data="book_forex")],
         [InlineKeyboardButton("₿ Crypto — 400 ብር", callback_data="book_crypto")],
         [InlineKeyboardButton("📚 Bundle (ሁለቱም) — 500 ብር", callback_data="book_bundle")],
     ]
     await update.message.reply_text(
-        " የትኛውን መጽሃፍ ይዘዛሉ?",
+        "📚 የትኛውን መጽሃፍ ይዘዛሉ?",
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
     return SELECT_BOOK
