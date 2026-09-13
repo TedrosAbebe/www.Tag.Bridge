@@ -411,13 +411,13 @@ function openTelegram(message) {
         finalMsg = message + '\n[Ref: ' + refBy + ']';
     }
     var encodedFinal = encodeURIComponent(finalMsg);
-    var tgWeb = 'https://t.me/tagbridge_book_bot?text=' + encodedFinal;
+    var tgWeb = 'https://t.me/tagbridge123?text=' + encodedFinal;
 
     if (isRestricted) {
         window.location.href = '/tg.html?msg=' + encodedFinal;
     } else if (isMobile) {
         // tg:// deep link — opens app directly; fallback to web if not installed
-        window.location.href = 'tg://resolve?domain=tagbridge_book_bot&text=' + encodedFinal;
+        window.location.href = 'tg://resolve?domain=tagbridge123&text=' + encodedFinal;
         setTimeout(function() {
             if (!document.hidden) window.open(tgWeb, '_blank');
         }, 1500);
@@ -548,24 +548,13 @@ document.querySelectorAll('.btn-buy').forEach(function(button) {
     button.addEventListener('click', function(e) {
         e.stopPropagation();
         var book = this.getAttribute('data-book') || 'forex';
-        var ua = navigator.userAgent || '';
-        var isRestricted = /TikTok|BytedanceWebview|musical_ly|Instagram|FBAN|FBAV|FBIOS/i.test(ua);
-        var isMobile = /Android|iPhone|iPad|iPod/i.test(ua);
-        var msg = 'order_' + book;
-        var encoded = encodeURIComponent(msg);
-        var tgWeb = 'https://t.me/tagbridge_book_bot?start=' + msg;
-        var tgDeep = 'tg://resolve?domain=tagbridge_book_bot&start=' + msg;
-
-        if (isRestricted) {
-            window.location.href = '/tg.html?msg=' + encoded;
-        } else if (isMobile) {
-            window.location.href = tgDeep;
-            setTimeout(function() {
-                if (!document.hidden) window.open(tgWeb, '_blank');
-            }, 1500);
-        } else {
-            window.open(tgWeb, '_blank');
-        }
+        var bookNames = {
+            'forex': 'የፎሬክስ ትሬዲንግ መጽሃፍ — 350 ብር',
+            'crypto': 'የክሪፕቶ ትሬዲንግ መጽሃፍ — 400 ብር',
+            'bundle': 'ፎሬክስ + ክሪፕቶ ጥቅል — 500 ብር'
+        };
+        var msg = 'ሰላም ታግ ብሪጅ! ' + (bookNames[book] || bookNames['forex']) + ' ማዘዝ እፈልጋለሁ።';
+        openTelegram(msg);
     });
 });
 
