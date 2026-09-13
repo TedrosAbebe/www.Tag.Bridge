@@ -409,9 +409,13 @@
             </div>
         </div>
 
-        <!-- PDF -->
-        <iframe id="pdfFrame" src="" allowfullscreen
-            sandbox="allow-scripts allow-same-origin"></iframe>
+        <!-- PDF + Overlay to block pop-out button -->
+        <div style="position:relative; flex:1; display:flex; flex-direction:column;">
+            <iframe id="pdfFrame" src="" allowfullscreen
+                sandbox="allow-scripts allow-same-origin"></iframe>
+            <!-- Block top-right pop-out button -->
+            <div style="position:absolute; top:0; right:0; width:50px; height:50px; z-index:10; background:var(--bg2);"></div>
+        </div>
 
         <!-- Bottom bar -->
         <div class="viewer-footer">
@@ -470,7 +474,7 @@
 
             var url = SCRIPT_URL + '?action=verify&password=' + encodeURIComponent(password) + '&device_id=' + encodeURIComponent(deviceId);
 
-            fetch(url)
+            fetch(url, { mode: 'cors' })
                 .then(function(r) { return r.json(); })
                 .then(function(data) {
                     document.getElementById('openBtn').disabled = false;
