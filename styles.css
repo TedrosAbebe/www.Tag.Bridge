@@ -1631,7 +1631,7 @@ html[lang="en"] .lang-en-only { display: inline-block; }
     background: #323248;
 }
 
-.chat-input::placeholder { color: rgba(255,255,255,0.3); }
+.chat-input::placeholder { color: rgba(255,255,255,0.6); }
 
 .chat-send-btn {
     width: 38px; height: 38px;
