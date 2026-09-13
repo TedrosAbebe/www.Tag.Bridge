@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📖 መጽሃፍ ክፈት — Tag Bridge</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* PASSWORD SCREEN */
+        #passwordScreen {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px;
+            padding: 40px 32px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .lock-icon { font-size: 3rem; margin-bottom: 16px; }
+
+        .screen-title {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .screen-subtitle {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 28px;
+            line-height: 1.5;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.08);
+            color: white;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            outline: none;
+            transition: border 0.2s;
+            margin-bottom: 14px;
+            text-align: center;
+        }
+
+        .password-input:focus {
+            border-color: rgba(91,125,232,0.6);
+            background: rgba(255,255,255,0.12);
+        }
+
+        .password-input::placeholder {
+            color: rgba(255,255,255,0.3);
+            letter-spacing: 0;
+            text-transform: none;
+        }
+
+        .btn-open {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #5b7de8, #3a4fc4);
+            color: white;
+            border: none;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(91,125,232,0.4);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-open:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(91,125,232,0.5); }
+        .btn-open:active { transform: scale(0.97); }
+        .btn-open:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        .error-msg {
+            display: none;
+            margin-top: 14px;
+            padding: 12px 16px;
+            background: rgba(255,80,80,0.15);
+            border: 1px solid rgba(255,80,80,0.3);
+            border-radius: 10px;
+            color: #ff8080;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .device-msg {
+            display: none;
+            margin-top: 14px;
+            padding: 14px 16px;
+            background: rgba(255,165,0,0.15);
+            border: 1px solid rgba(255,165,0,0.3);
+            border-radius: 10px;
+            color: #ffb347;
+            font-size: 0.85rem;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+        .loading {
+            display: none;
+            margin-top: 14px;
+            color: rgba(255,255,255,0.5);
+            font-size: 0.85rem;
+        }
+
+        .loading i { animation: spin 1s linear infinite; margin-right: 6px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            color: rgba(255,255,255,0.35);
+            font-size: 0.8rem;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .back-link:hover { color: rgba(255,255,255,0.6); }
+
+        /* PDF VIEWER SCREEN */
+        #viewerScreen {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #111;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        #viewerScreen.active { display: flex; }
+
+        .viewer-header {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            flex-shrink: 0;
+        }
+
+        .viewer-title {
+            color: white;
+            font-weight: 800;
+            font-size: 0.95rem;
+        }
+
+        .viewer-title span { color: #38ef7d; }
+
+        .btn-close-viewer {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.82rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+        }
+
+        .btn-close-viewer:hover { background: rgba(255,255,255,0.2); }
+
+        #pdfFrame {
+            flex: 1;
+            width: 100%;
+            border: none;
+            background: #222;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PASSWORD SCREEN -->
+    <div id="passwordScreen">
+        <div class="lock-icon">🔐</div>
+        <div class="screen-title">መጽሃፍ ክፈት</div>
+        <div class="screen-subtitle">
+            የተላከልዎትን password ያስገቡ<br>
+            <small style="opacity:0.6;">Enter your book password</small>
+        </div>
+
+        <input type="text" id="passwordInput" class="password-input"
+            placeholder="TB-F-XXXXXX" maxlength="12"
+            oninput="this.value=this.value.toUpperCase()">
+
+        <button class="btn-open" id="openBtn" onclick="checkPassword()">
+            <i class="fas fa-book-open"></i> &nbsp;ክፈት / Open
+        </button>
+
+        <div class="loading" id="loadingMsg">
+            <i class="fas fa-spinner"></i> እያረጋገጠ ነው...
+        </div>
+
+        <div class="error-msg" id="errorMsg"></div>
+
+        <div class="device-msg" id="deviceMsg">
+            ⚠️ ይህ password ሌላ device ላይ ጥቅም ላይ ውሏል።<br>
+            ለማፅደቅ ታግ ብሪጅን ያናግሩ።<br><br>
+            <a href="https://t.me/tagbridge123" target="_blank"
+               style="color:#38ef7d; font-weight:800;">
+                📩 @tagbridge123
+            </a>
+        </div>
+
+        <a href="/" class="back-link">← ወደ ዌብሳይቱ ተመለሱ</a>
+    </div>
+
+    <!-- PDF VIEWER -->
+    <div id="viewerScreen">
+        <div class="viewer-header">
+            <div class="viewer-title">📚 <span>ታግ ብሪጅ</span> — የፎሬክስ ትሬዲንግ</div>
+            <button class="btn-close-viewer" onclick="closeViewer()">✕ ዝጋ</button>
+        </div>
+        <iframe id="pdfFrame" src="" allowfullscreen></iframe>
+    </div>
+
+    <script>
+        var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby3pGZBdEcvJHEMC5ANAV2w9V60GMa0hwa_5e8WAhfsgLL-jsuApZ5ALRcCs5uxJa0wgQ/exec';
+
+        var PDF_LINKS = {
+            'forex':  'https://drive.google.com/file/d/1r3UEZCWXOOPogC672VqEKMaaJR1Fo_XN/preview',
+            'crypto': '',
+            'bundle': ''
+        };
+
+        // Generate unique device fingerprint
+        function getDeviceId() {
+            var id = localStorage.getItem('tb_device_id');
+            if (!id) {
+                id = 'dev_' + Date.now() + '_' + Math.random().toString(36).substring(2, 10);
+                localStorage.setItem('tb_device_id', id);
+            }
+            return id;
+        }
+
+        function checkPassword() {
+            var password = document.getElementById('passwordInput').value.trim();
+            if (!password || password.length < 6) {
+                showError('እባክዎ ትክክለኛ password ያስገቡ');
+                return;
+            }
+
+            var deviceId = getDeviceId();
+            setLoading(true);
+
+            var url = SCRIPT_URL + '?action=verify&password=' + encodeURIComponent(password) + '&device_id=' + encodeURIComponent(deviceId);
+
+            fetch(url)
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    setLoading(false);
+                    if (data.success) {
+                        openPDF(data.book);
+                    } else if (data.reason === 'different_device') {
+                        showDeviceError();
+                    } else if (data.reason === 'expired') {
+                        showError('❌ Password ጊዜው አልፏል። ታግ ብሪጅን ያናግሩ።');
+                    } else {
+                        showError('❌ Password ትክክለኛ አይደለም። እንደገና ይሞክሩ።');
+                    }
+                })
+                .catch(function() {
+                    setLoading(false);
+                    showError('❌ Connection error. እንደገና ይሞክሩ።');
+                });
+        }
+
+        function openPDF(book) {
+            var link = PDF_LINKS[book] || PDF_LINKS['forex'];
+            if (!link) {
+                showError('PDF አልተዘጋጀም። ታግ ብሪጅን ያናግሩ።');
+                return;
+            }
+            document.getElementById('pdfFrame').src = link;
+            document.getElementById('viewerScreen').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeViewer() {
+            document.getElementById('viewerScreen').classList.remove('active');
+            document.getElementById('pdfFrame').src = '';
+            document.body.style.overflow = '';
+        }
+
+        function setLoading(on) {
+            document.getElementById('loadingMsg').style.display = on ? 'block' : 'none';
+            document.getElementById('openBtn').disabled = on;
+            document.getElementById('errorMsg').style.display = 'none';
+            document.getElementById('deviceMsg').style.display = 'none';
+        }
+
+        function showError(msg) {
+            var el = document.getElementById('errorMsg');
+            el.textContent = msg;
+            el.style.display = 'block';
+            document.getElementById('deviceMsg').style.display = 'none';
+        }
+
+        function showDeviceError() {
+            document.getElementById('deviceMsg').style.display = 'block';
+            document.getElementById('errorMsg').style.display = 'none';
+        }
+
+        // Allow Enter key
+        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') checkPassword();
+        });
+    </script>
+</body>
+</html>
