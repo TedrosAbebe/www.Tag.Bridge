@@ -76,6 +76,9 @@ def generate_password(book_key, customer_name):
 
 # ===== /start — show books immediately =====
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    # Always reset conversation state
+    context.user_data.clear()
+
     # Check if came from website with book pre-selected
     args = context.args
     if args and args[0].startswith('order_'):
