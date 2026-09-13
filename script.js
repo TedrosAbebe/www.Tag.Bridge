@@ -547,9 +547,22 @@ document.querySelectorAll('.product-card:not(.yt-guide-card)').forEach(function(
 document.querySelectorAll('.btn-buy').forEach(function(button) {
     button.addEventListener('click', function(e) {
         e.stopPropagation();
-        var orderMessage = this.getAttribute('data-order-msg');
-        if (!orderMessage) return;
-        openTelegram(orderMessage);
+        var ua = navigator.userAgent || '';
+        var isRestricted = /TikTok|BytedanceWebview|musical_ly|Instagram|FBAN|FBAV|FBIOS/i.test(ua);
+        var isMobile = /Android|iPhone|iPad|iPod/i.test(ua);
+        var tgWeb = 'https://t.me/tagbridge_book_bot';
+        var tgDeep = 'tg://resolve?domain=tagbridge_book_bot';
+
+        if (isRestricted) {
+            window.location.href = '/tg.html?msg=';
+        } else if (isMobile) {
+            window.location.href = tgDeep;
+            setTimeout(function() {
+                if (!document.hidden) window.open(tgWeb, '_blank');
+            }, 1500);
+        } else {
+            window.open(tgWeb, '_blank');
+        }
     });
 });
 

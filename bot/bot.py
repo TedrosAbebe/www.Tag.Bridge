@@ -11,7 +11,7 @@ from telegram.ext import (
 )
 
 # ===== CONFIG =====
-BOT_TOKEN = "8781481681:AAE6IfF9QGbYdfaf9e7WotDBWvy5_lHCFr8"
+ BOT_TOKEN = "8781481681:AAE6IfF9QGbYdfaf9e7WotDBWvy5_lHCFr8"
 ADMIN_CHAT_ID = 867253752
 SCRIPT_URL = "https://script.google.com/macros/s/AKfycby3pGZBdEcvJHEMC5ANAV2w9V60GMa0hwa_5e8WAhfsgLL-jsuApZ5ALRcCs5uxJa0wgQ/exec"
 SITE_URL = "https://www-tag-bridge.vercel.app"
@@ -74,7 +74,7 @@ def generate_password(book_key, customer_name):
     return None
 
 
-# ===== /start =====
+# ===== /start — show books immediately =====
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
         [InlineKeyboardButton("📈 Forex — 350 ብር", callback_data="book_forex")],
@@ -82,8 +82,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         [InlineKeyboardButton("📚 Bundle (ሁለቱም) — 500 ብር", callback_data="book_bundle")],
     ]
     await update.message.reply_text(
-        "👋 እንኳን ወደ ታግ ብሪጅ መጡ!\n\n"
-        "📚 የትኛውን መጽሃፍ መግዛት ይፈልጋሉ?",
+        " የትኛውን መጽሃፍ ይዘዛሉ?",
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
     return SELECT_BOOK
