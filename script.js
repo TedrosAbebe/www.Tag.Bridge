@@ -9,41 +9,12 @@ function sendTelegramNotification(msg) {
     }).catch(function() {});
 }
 
-// ===== PWA INSTALL BANNER =====
+// ===== PWA (Service Worker only — no install prompt) =====
 let deferredPrompt = null;
-
-function showInstallBanner() {
-    var banner = document.getElementById('installBanner');
-    if (!banner) return;
-    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) return;
-    var ua = navigator.userAgent || '';
-    if (!/Android|iPhone|iPad|iPod/i.test(ua)) return;
-    banner.style.display = 'block';
-}
-
-function hideInstallBanner() {
-    var banner = document.getElementById('installBanner');
-    if (banner) banner.style.display = 'none';
-}
-
-window.addEventListener('beforeinstallprompt', function(e) {
-    e.preventDefault();
-    deferredPrompt = e;
-    showInstallBanner();
-});
-
+window.addEventListener('beforeinstallprompt', function(e) { e.preventDefault(); });
 window.addEventListener('appinstalled', function() {
-    deferredPrompt = null;
-    var count = parseInt(localStorage.getItem('installCount') || '0') + 1;
-    localStorage.setItem('installCount', count);
     var now = new Date().toLocaleString('en-ET', { timeZone: 'Africa/Addis_Ababa' });
-    sendTelegramNotification(
-        '📲 <b>New App Install!</b>\n' +
-        '━━━━━━━━━━━━━━\n' +
-        '🕐 Time: ' + now + '\n' +
-        '📱 Device: ' + (navigator.userAgent.match(/Android|iPhone|iPad/) || ['Unknown'])[0] + '\n' +
-        '🌍 Tag Bridge PWA installed successfully!'
-    );
+    sendTelegramNotification('📲 <b>New App Install!</b>\n🕐 ' + now + '\n🌍 Tag Bridge PWA');
 });
 
 // ===== REFERRAL (URL tracking only) =====
@@ -84,35 +55,10 @@ if ('serviceWorker' in navigator) {
 
 // ===== DOMContentLoaded =====
 document.addEventListener('DOMContentLoaded', function() {
-
     // Store referral code from URL
     var params = new URLSearchParams(window.location.search);
     var ref = params.get('ref');
     if (ref) sessionStorage.setItem('referredBy', ref);
-
-    // Install button
-    var overlayInstallBtn = document.getElementById('overlayInstallBtn');
-    if (overlayInstallBtn) {
-        overlayInstallBtn.addEventListener('click', async function() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                deferredPrompt = null;
-                if (outcome === 'accepted') {
-                    sendTelegramNotification('✅ <b>User accepted install prompt!</b>\n🌍 Tag Bridge PWA');
-                }
-            }
-            hideInstallBanner();
-        });
-    }
-
-    // Close install banner
-    var installBannerClose = document.getElementById('installBannerClose');
-    if (installBannerClose) {
-        installBannerClose.addEventListener('click', function() {
-            hideInstallBanner();
-        });
-    }
 });
 
 // ===== SCROLL PROGRESS BAR & BACK TO TOP =====
