@@ -298,28 +298,66 @@
     <section id="contact" class="contact">
         <div class="container">
             <h2 data-en="Contact Us" data-am="ያግኙን">ያግኙን</h2>
-            <p data-en="Have questions? Send us any question or feedback and we will reply immediately!" data-am="ጥያቄዎች አሉዎት? ማንኛውንም ጥያቄ እና አስተያየትዎን ይላኩልን ወዲያውኑ እንመልሳለን">ጥያቄዎች አሉዎት? ማንኛውንም ጥያቄ እና አስተያየትዎን ይላኩልን ወዲያውኑ እንመልሳለን</p>
-            <div class="contact-options">
-                <div class="contact-row telegram-row">
-                    <i class="fab fa-telegram"></i>
-                    <span data-en="Contact via Telegram" data-am="በቴሌግራም ያግኙን">በቴሌግራም ያግኙን</span>
-                    <div class="message-box">
-                        <input type="text" id="telegramMessage" class="message-input" placeholder="መልእክት..." data-placeholder-en="Message..." data-placeholder-am="መልእክት...">
-                        <button onclick="sendTelegramMessage()" class="telegram-send-btn">
+            <p data-en="Have questions? We reply instantly!" data-am="ጥያቄ አለዎት? ወዲያውኑ እንመልሳለን!">ጥያቄ አለዎት? ወዲያውኑ እንመልሳለን!</p>
+
+            <div class="chat-cards">
+
+                <!-- Telegram Chat Card -->
+                <div class="chat-card">
+                    <div class="chat-card-header tg-header">
+                        <div class="chat-avatar tg-avatar">
+                            <i class="fab fa-telegram"></i>
+                        </div>
+                        <div class="chat-info">
+                            <div class="chat-name">Tag Bridge</div>
+                            <div class="chat-status"><span class="online-dot"></span> Online</div>
+                        </div>
+                        <div class="chat-badge">Telegram</div>
+                    </div>
+                    <div class="chat-body">
+                        <div class="chat-bubble incoming">
+                            <span data-en="Hello! How can we help you? 👋" data-am="ሰላም! እንዴት ልንረዳዎ እንችላለን? 👋">ሰላም! እንዴት ልንረዳዎ እንችላለን? 👋</span>
+                        </div>
+                    </div>
+                    <div class="chat-input-area">
+                        <input type="text" id="telegramMessage" class="chat-input"
+                            placeholder="መልእክት ይጻፉ..."
+                            data-placeholder-en="Type a message..."
+                            data-placeholder-am="መልእክት ይጻፉ...">
+                        <button onclick="sendTelegramMessage()" class="chat-send-btn tg-send">
                             <i class="fas fa-paper-plane"></i>
                         </button>
                     </div>
                 </div>
-                <div class="contact-row whatsapp-row">
-                    <i class="fab fa-whatsapp"></i>
-                    <span data-en="Contact via WhatsApp" data-am="በዋትስአፕ ያግኙን">በዋትስአፕ ያግኙን</span>
-                    <div class="message-box">
-                        <input type="text" id="quickMessage" class="message-input" placeholder="መልእክት..." data-placeholder-en="Message..." data-placeholder-am="መልእክት...">
-                        <button onclick="sendQuickMessage()" class="whatsapp-send-btn">
+
+                <!-- WhatsApp Chat Card -->
+                <div class="chat-card">
+                    <div class="chat-card-header wa-header">
+                        <div class="chat-avatar wa-avatar">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <div class="chat-info">
+                            <div class="chat-name">Tag Bridge</div>
+                            <div class="chat-status"><span class="online-dot"></span> Online</div>
+                        </div>
+                        <div class="chat-badge">WhatsApp</div>
+                    </div>
+                    <div class="chat-body">
+                        <div class="chat-bubble incoming">
+                            <span data-en="Hi! Send us your question or order 📚" data-am="ሰላም! ጥያቄዎን ወይም ትዕዛዝዎን ይላኩ 📚">ሰላም! ጥያቄዎን ወይም ትዕዛዝዎን ይላኩ 📚</span>
+                        </div>
+                    </div>
+                    <div class="chat-input-area">
+                        <input type="text" id="quickMessage" class="chat-input"
+                            placeholder="መልእክት ይጻፉ..."
+                            data-placeholder-en="Type a message..."
+                            data-placeholder-am="መልእክት ይጻፉ...">
+                        <button onclick="sendQuickMessage()" class="chat-send-btn wa-send">
                             <i class="fas fa-paper-plane"></i>
                         </button>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
