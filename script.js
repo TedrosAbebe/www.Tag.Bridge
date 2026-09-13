@@ -411,13 +411,13 @@ function openTelegram(message) {
         finalMsg = message + '\n[Ref: ' + refBy + ']';
     }
     var encodedFinal = encodeURIComponent(finalMsg);
-    var tgWeb = 'https://t.me/tagbridge123?text=' + encodedFinal;
+    var tgWeb = 'https://t.me/tagbridge_book_bot?text=' + encodedFinal;
 
     if (isRestricted) {
         window.location.href = '/tg.html?msg=' + encodedFinal;
     } else if (isMobile) {
         // tg:// deep link — opens app directly; fallback to web if not installed
-        window.location.href = 'tg://resolve?domain=tagbridge123&text=' + encodedFinal;
+        window.location.href = 'tg://resolve?domain=tagbridge_book_bot&text=' + encodedFinal;
         setTimeout(function() {
             if (!document.hidden) window.open(tgWeb, '_blank');
         }, 1500);
