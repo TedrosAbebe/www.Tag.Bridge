@@ -16,7 +16,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    <link rel="preload" href="/styles.css" as="style">
     <link rel="stylesheet" href="/styles.css">
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap"></noscript>
@@ -156,8 +155,7 @@
                 }
             })();
         </script>
-        <nav class="navbar" id="mainNav">
-            <div class="container">                <div class="logo">
+        <nav class="navbar" id="mainNav">            <div class="container">                <div class="logo">
                     <img src="/logo.png.png" alt="Tag Bridge" style="width:38px; height:38px; object-fit:contain; border-radius:50%; background:white; padding:2px; box-shadow:0 2px 8px rgba(0,0,0,0.2);">
                     <span data-en="<span class='logo-tag'>Tag</span> <span class='logo-bridge'>Bridge</span>" data-am="<span class='logo-tag'>ታግ</span> <span class='logo-bridge'>ብሪጅ</span>"><span class="logo-tag">ታግ</span> <span class="logo-bridge">ብሪጅ</span></span>
                 </div>
@@ -184,6 +182,17 @@
                 </div>
             </div>
         </nav>
+        <!-- Fix TikTok browser nav offset — runs after nav is in DOM -->
+        <script>
+            (function() {
+                var ua = navigator.userAgent || '';
+                var isRestricted = /TikTok|BytedanceWebview|musical_ly|Instagram|FBAN|FBAV|FBIOS/i.test(ua);
+                if (isRestricted) {
+                    var nav = document.getElementById('mainNav');
+                    if (nav) nav.style.top = '40px';
+                }
+            })();
+        </script>
     </header>
 
     <!-- Scroll Progress Bar -->

@@ -9,20 +9,15 @@ function sendTelegramNotification(msg) {
     }).catch(function() {});
 }
 
-// ===== PWA INSTALL BANNER (top bar) =====
+// ===== PWA INSTALL BANNER =====
 let deferredPrompt = null;
 
 function showInstallBanner() {
     var banner = document.getElementById('installBanner');
     if (!banner) return;
-
-    // Don't show if already installed
     if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) return;
-
-    // Mobile only
     var ua = navigator.userAgent || '';
     if (!/Android|iPhone|iPad|iPod/i.test(ua)) return;
-
     banner.style.display = 'block';
 }
 
@@ -31,14 +26,12 @@ function hideInstallBanner() {
     if (banner) banner.style.display = 'none';
 }
 
-// Single beforeinstallprompt listener
 window.addEventListener('beforeinstallprompt', function(e) {
     e.preventDefault();
     deferredPrompt = e;
     showInstallBanner();
 });
 
-// Single appinstalled listener
 window.addEventListener('appinstalled', function() {
     deferredPrompt = null;
     var count = parseInt(localStorage.getItem('installCount') || '0') + 1;
@@ -53,7 +46,7 @@ window.addEventListener('appinstalled', function() {
     );
 });
 
-// ===== REFERRAL SYSTEM =====
+// ===== REFERRAL (URL tracking only) =====
 function generateRefCode() {
     var stored = localStorage.getItem('refCode');
     if (stored) return stored;
@@ -62,31 +55,15 @@ function generateRefCode() {
     return code;
 }
 
-function getReferralLink() {
-    var code = generateRefCode();
-    return 'https://www-tag-bridge.vercel.app/?ref=' + code;
-}
-
-function shareReferral() {
-    var link = getReferralLink();
-    var code = generateRefCode();
-    var msg = '📚 ታግ ብሪጅ — የፎሬክስ እና ክሪፕቶ ትሬዲንግ መጽሃፍት!\n\nይህን link ተጠቅመህ ብትገዛ ልዩ ቅናሽ ታገኛለህ 👇\n' + link + '\n\n(Referral: ' + code + ')';
-    openTelegram(msg);
-}
-// ===== END REFERRAL =====
-
 // ===== SERVICE WORKER =====
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
         navigator.serviceWorker.register('/sw.js').then(function(reg) {
-            // Check for SW updates every 5 minutes (not every 60s)
             setInterval(function() { reg.update(); }, 5 * 60 * 1000);
         }).catch(function() {});
 
-        // Listen for SW_UPDATED message — show update banner after short delay
         navigator.serviceWorker.addEventListener('message', function(e) {
             if (e.data && e.data.type === 'SW_UPDATED') {
-                // Wait 3 minutes before showing update banner (don't interrupt immediately)
                 setTimeout(function() {
                     var banner = document.getElementById('updateBanner');
                     if (banner) {
@@ -105,19 +82,15 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// ===== SINGLE DOMContentLoaded =====
+// ===== DOMContentLoaded =====
 document.addEventListener('DOMContentLoaded', function() {
 
-    // --- Referral link input ---
-    var refInput = document.getElementById('referralLinkInput');
-    if (refInput) refInput.value = getReferralLink();
-
-    // --- Store referral code if visited via ref link ---
+    // Store referral code from URL
     var params = new URLSearchParams(window.location.search);
     var ref = params.get('ref');
     if (ref) sessionStorage.setItem('referredBy', ref);
 
-    // --- Install button ---
+    // Install button
     var overlayInstallBtn = document.getElementById('overlayInstallBtn');
     if (overlayInstallBtn) {
         overlayInstallBtn.addEventListener('click', async function() {
@@ -133,155 +106,39 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // --- Close button ---
+    // Close install banner
     var installBannerClose = document.getElementById('installBannerClose');
     if (installBannerClose) {
         installBannerClose.addEventListener('click', function() {
             hideInstallBanner();
         });
     }
-
-    // --- YouTube button ---
-    var ytBtn = document.getElementById('youtube-guide-btn');
-    if (ytBtn) {
-        ytBtn.addEventListener('click', function() {
-            window.open('https://www.youtube.com/@tagbridge?sub_confirmation=1', '_blank');
-        });
-    }
 });
 
-// ===== SCROLL PROGRESS BAR =====
+// ===== SCROLL PROGRESS BAR & BACK TO TOP =====
 var progressBar = document.getElementById('scrollProgress');
 var backToTopBtn = document.getElementById('backToTop');
 
 window.addEventListener('scroll', function() {
-    // Progress bar
     var scrollTop = window.scrollY || document.documentElement.scrollTop;
     var docHeight = document.documentElement.scrollHeight - window.innerHeight;
     var progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
     if (progressBar) progressBar.style.width = progress + '%';
-
-    // Back to top
     if (backToTopBtn) {
-        if (scrollTop > 400) {
-            backToTopBtn.classList.add('visible');
-        } else {
-            backToTopBtn.classList.remove('visible');
-        }
+        if (scrollTop > 400) backToTopBtn.classList.add('visible');
+        else backToTopBtn.classList.remove('visible');
     }
 });
 
-// Back to top click
 if (backToTopBtn) {
     backToTopBtn.addEventListener('click', function() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 }
 
-// ===== DARK / LIGHT MODE =====
-var themeToggle = document.getElementById('themeToggle');
-var themeIcon = document.getElementById('themeIcon');
-
-function applyTheme(mode) {
-    if (mode === 'light') {
-        document.body.classList.add('light-mode');
-        if (themeIcon) {
-            themeIcon.classList.remove('fa-moon');
-            themeIcon.classList.add('fa-sun');
-        }
-    } else {
-        document.body.classList.remove('light-mode');
-        if (themeIcon) {
-            themeIcon.classList.remove('fa-sun');
-            themeIcon.classList.add('fa-moon');
-        }
-    }
-    localStorage.setItem('theme', mode);
-}
-
-// Load saved theme
-var savedTheme = localStorage.getItem('theme') || 'dark';
-applyTheme(savedTheme);
-
-if (themeToggle) {
-    themeToggle.addEventListener('click', function() {
-        var current = document.body.classList.contains('light-mode') ? 'light' : 'dark';
-        applyTheme(current === 'light' ? 'dark' : 'light');
-    });
-}
-
-// ===== RESOURCE LINKS — app deep link on mobile =====
-var APP_DEEP_LINKS = {
-    'tradingview.com':    'tradingview://',
-    'coinmarketcap.com':  'coinmarketcap://',
-    'coingecko.com':      'coingecko://',
-    'binance.com':        'binance://',
-    'academy.binance.com':'binance://',
-    'bingxdao.com':       'bingx://',
-    'forexfactory.com':   'forexfactory://',
-    'tradezella.com':     'tradezella://',
-    'myfxbook.com':       'myfxbook://',
-    'investing.com':      'investing://',
-    'babypips.com':       'babypips://'
-};
-
-document.querySelectorAll('.res-item, .dropdown-menu a').forEach(function(link) {
-    link.addEventListener('click', function(e) {
-        var ua = navigator.userAgent || '';
-        var isMobile = /Android|iPhone|iPad|iPod/i.test(ua);
-        if (!isMobile) return; // desktop — normal browser open
-
-        var href = this.getAttribute('href') || '';
-        var matched = null;
-
-        Object.keys(APP_DEEP_LINKS).forEach(function(domain) {
-            if (href.indexOf(domain) !== -1) matched = APP_DEEP_LINKS[domain];
-        });
-
-        if (matched) {
-            e.preventDefault();
-            var webUrl = href;
-            // Try app first, fallback to browser after 1.2s
-            window.location.href = matched;
-            setTimeout(function() {
-                window.open(webUrl, '_blank');
-            }, 1200);
-        }
-        // else — no deep link known, open normally
-    });
-});
-
-// ===== RESOURCES ACCORDION =====
-function toggleResources(btn) {
-    var body = btn.nextElementSibling;
-    var isOpen = body.classList.contains('open');
-    // Close all
-    document.querySelectorAll('.resources-body').forEach(function(b) { b.classList.remove('open'); });
-    document.querySelectorAll('.resources-toggle').forEach(function(b) { b.classList.remove('open'); });
-    if (!isOpen) {
-        body.classList.add('open');
-        btn.classList.add('open');
-    }
-}
-
-// ===== DROPDOWN MENU =====
-document.querySelectorAll('.dropdown-toggle').forEach(function(toggle) {
-    toggle.addEventListener('click', function(e) {
-        e.preventDefault();
-        var li = this.closest('.dropdown-li');
-        var isOpen = li.classList.contains('open');
-        // Close all
-        document.querySelectorAll('.dropdown-li').forEach(function(d) { d.classList.remove('open'); });
-        if (!isOpen) li.classList.add('open');
-    });
-});
-
-// Close dropdown when clicking outside
-document.addEventListener('click', function(e) {
-    if (!e.target.closest('.dropdown-li')) {
-        document.querySelectorAll('.dropdown-li').forEach(function(d) { d.classList.remove('open'); });
-    }
-});
+// Clear any stale light-mode from localStorage
+localStorage.removeItem('theme');
+document.body.classList.remove('light-mode');
 
 // ===== STAT COUNTERS =====
 function animateCounters() {
@@ -292,10 +149,7 @@ function animateCounters() {
         var current = 0;
         var timer = setInterval(function() {
             current += step;
-            if (current >= target) {
-                current = target;
-                clearInterval(timer);
-            }
+            if (current >= target) { current = target; clearInterval(timer); }
             counter.textContent = Math.floor(current);
         }, 16);
     });
@@ -303,10 +157,7 @@ function animateCounters() {
 
 var statsObserver = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-            animateCounters();
-            statsObserver.disconnect();
-        }
+        if (entry.isIntersecting) { animateCounters(); statsObserver.disconnect(); }
     });
 }, { threshold: 0.5 });
 
@@ -319,10 +170,7 @@ function toggleFaq(question) {
     var isOpen = answer.classList.contains('open');
     document.querySelectorAll('.faq-answer').forEach(function(a) { a.classList.remove('open'); });
     document.querySelectorAll('.faq-question').forEach(function(q) { q.classList.remove('open'); });
-    if (!isOpen) {
-        answer.classList.add('open');
-        question.classList.add('open');
-    }
+    if (!isOpen) { answer.classList.add('open'); question.classList.add('open'); }
 }
 
 // ===== SERVICE DROPDOWN =====
@@ -332,10 +180,7 @@ document.querySelectorAll('.service-header').forEach(function(header) {
         var isOpen = list.classList.contains('open');
         document.querySelectorAll('.service-list').forEach(function(l) { l.classList.remove('open'); });
         document.querySelectorAll('.service-header').forEach(function(h) { h.classList.remove('open'); });
-        if (!isOpen) {
-            list.classList.add('open');
-            this.classList.add('open');
-        }
+        if (!isOpen) { list.classList.add('open'); this.classList.add('open'); }
     });
 });
 
@@ -347,22 +192,17 @@ mobileMenuBtn.addEventListener('click', function() {
     navLinks.classList.toggle('active');
     const icon = mobileMenuBtn.querySelector('i');
     if (navLinks.classList.contains('active')) {
-        icon.classList.remove('fa-bars');
-        icon.classList.add('fa-times');
+        icon.classList.remove('fa-bars'); icon.classList.add('fa-times');
     } else {
-        icon.classList.remove('fa-times');
-        icon.classList.add('fa-bars');
+        icon.classList.remove('fa-times'); icon.classList.add('fa-bars');
     }
 });
 
 navLinks.querySelectorAll('a').forEach(function(link) {
     link.addEventListener('click', function() {
-        // Don't close menu when clicking dropdown toggle
-        if (this.classList.contains('dropdown-toggle')) return;
         navLinks.classList.remove('active');
         const icon = mobileMenuBtn.querySelector('i');
-        icon.classList.remove('fa-times');
-        icon.classList.add('fa-bars');
+        icon.classList.remove('fa-times'); icon.classList.add('fa-bars');
     });
 });
 
@@ -376,11 +216,8 @@ function switchLanguage(lang) {
     elementsWithLang.forEach(function(element) {
         const text = element.getAttribute('data-' + lang);
         if (text) {
-            if (text.includes('<span')) {
-                element.innerHTML = text;
-            } else {
-                element.textContent = text;
-            }
+            if (text.includes('<span')) element.innerHTML = text;
+            else element.textContent = text;
         }
     });
     document.querySelectorAll('[data-placeholder-' + lang + ']').forEach(function(el) {
@@ -391,10 +228,6 @@ function switchLanguage(lang) {
 const savedLang = localStorage.getItem('preferredLanguage') || 'am';
 langToggle.checked = (savedLang === 'en');
 switchLanguage(savedLang);
-
-if (!localStorage.getItem('preferredLanguage')) {
-    localStorage.setItem('preferredLanguage', 'am');
-}
 
 langToggle.addEventListener('change', function(e) {
     switchLanguage(e.target.checked ? 'en' : 'am');
@@ -407,16 +240,13 @@ function openTelegram(message) {
     var isMobile = /Android|iPhone|iPad|iPod/i.test(ua);
     var refBy = sessionStorage.getItem('referredBy');
     var finalMsg = message;
-    if (refBy && !message.includes('Referral:')) {
-        finalMsg = message + '\n[Ref: ' + refBy + ']';
-    }
+    if (refBy && !message.includes('Referral:')) finalMsg = message + '\n[Ref: ' + refBy + ']';
     var encodedFinal = encodeURIComponent(finalMsg);
     var tgWeb = 'https://t.me/tagbridge123?text=' + encodedFinal;
 
     if (isRestricted) {
         window.location.href = '/tg.html?msg=' + encodedFinal;
     } else if (isMobile) {
-        // tg:// deep link — opens app directly; fallback to web if not installed
         window.location.href = 'tg://resolve?domain=tagbridge123&text=' + encodedFinal;
         setTimeout(function() {
             if (!document.hidden) window.open(tgWeb, '_blank');
@@ -441,20 +271,14 @@ function openWhatsApp(message) {
 // ===== CONTACT SEND FUNCTIONS =====
 function sendQuickMessage() {
     var message = document.getElementById('quickMessage').value;
-    if (message.trim() === '') {
-        alert('እባክዎ መልእክትዎን ይጻፉ / Please write your message');
-        return;
-    }
+    if (message.trim() === '') { alert('እባክዎ መልእክትዎን ይጻፉ / Please write your message'); return; }
     openWhatsApp(message);
     document.getElementById('quickMessage').value = '';
 }
 
 function sendTelegramMessage() {
     var message = document.getElementById('telegramMessage').value;
-    if (message.trim() === '') {
-        alert('እባክዎ መልእክትዎን ይጻፉ / Please write your message');
-        return;
-    }
+    if (message.trim() === '') { alert('እባክዎ መልእክትዎን ይጻፉ / Please write your message'); return; }
     openTelegram(message);
     document.getElementById('telegramMessage').value = '';
 }
@@ -462,12 +286,11 @@ function sendTelegramMessage() {
 document.getElementById('quickMessage').addEventListener('keypress', function(e) {
     if (e.key === 'Enter') sendQuickMessage();
 });
-
 document.getElementById('telegramMessage').addEventListener('keypress', function(e) {
     if (e.key === 'Enter') sendTelegramMessage();
 });
 
-// ===== WHATSAPP FLOAT BUTTON (draggable) =====
+// ===== TELEGRAM FLOAT BUTTON (draggable) =====
 const whatsappBtn = document.getElementById('whatsappBtn');
 let isDragging = false;
 let hasMoved = false;
@@ -481,21 +304,14 @@ document.addEventListener('mouseup', dragEnd);
 document.addEventListener('touchend', dragEnd);
 
 function dragStart(e) {
-    isDragging = true;
-    hasMoved = false;
+    isDragging = true; hasMoved = false;
     whatsappBtn.style.animation = 'none';
     whatsappBtn.style.cursor = 'grabbing';
     whatsappBtn.style.transition = 'none';
     var rect = whatsappBtn.getBoundingClientRect();
-    startLeft = rect.left;
-    startTop = rect.top;
-    if (e.type === 'touchstart') {
-        startX = e.touches[0].clientX;
-        startY = e.touches[0].clientY;
-    } else {
-        startX = e.clientX;
-        startY = e.clientY;
-    }
+    startLeft = rect.left; startTop = rect.top;
+    if (e.type === 'touchstart') { startX = e.touches[0].clientX; startY = e.touches[0].clientY; }
+    else { startX = e.clientX; startY = e.clientY; }
 }
 
 function dragMove(e) {
@@ -503,15 +319,12 @@ function dragMove(e) {
     if (e.type === 'touchmove') e.preventDefault();
     var clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
     var clientY = e.type === 'touchmove' ? e.touches[0].clientY : e.clientY;
-    var dx = clientX - startX;
-    var dy = clientY - startY;
+    var dx = clientX - startX; var dy = clientY - startY;
     if (Math.abs(dx) > 5 || Math.abs(dy) > 5) hasMoved = true;
     var newLeft = Math.max(10, Math.min(window.innerWidth - 68, startLeft + dx));
     var newTop = Math.max(10, Math.min(window.innerHeight - 68, startTop + dy));
-    whatsappBtn.style.left = newLeft + 'px';
-    whatsappBtn.style.top = newTop + 'px';
-    whatsappBtn.style.bottom = 'auto';
-    whatsappBtn.style.transform = 'none';
+    whatsappBtn.style.left = newLeft + 'px'; whatsappBtn.style.top = newTop + 'px';
+    whatsappBtn.style.bottom = 'auto'; whatsappBtn.style.transform = 'none';
 }
 
 function dragEnd(e) {
@@ -519,9 +332,7 @@ function dragEnd(e) {
     isDragging = false;
     whatsappBtn.style.cursor = 'grab';
     whatsappBtn.style.animation = 'whatsappPulse 2.5s ease-in-out infinite';
-    if (!hasMoved) {
-        openTelegram('ሰላም ታግ ብሪጅ! ተጨማሪ ማብራሪያ እፈልጋለሁ።');
-    }
+    if (!hasMoved) openTelegram('ሰላም ታግ ብሪጅ! ተጨማሪ ማብራሪያ እፈልጋለሁ።');
 }
 
 // ===== SMOOTH SCROLL =====
@@ -534,7 +345,7 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
 });
 
 // ===== BUY BUTTONS =====
-document.querySelectorAll('.product-card:not(.yt-guide-card)').forEach(function(card) {
+document.querySelectorAll('.product-card').forEach(function(card) {
     card.style.cursor = 'pointer';
     card.addEventListener('click', function(e) {
         if (e.target.classList.contains('btn-buy') || e.target.closest('.btn-buy')) return;
@@ -549,12 +360,11 @@ document.querySelectorAll('.btn-buy').forEach(function(button) {
         e.stopPropagation();
         var book = this.getAttribute('data-book') || 'forex';
         var bookNames = {
-            'forex': 'የፎሬክስ ትሬዲንግ መጽሃፍ በ 350 ብር ማዘዝ እፈልጋለሁ።',
+            'forex':  'የፎሬክስ ትሬዲንግ መጽሃፍ በ 350 ብር ማዘዝ እፈልጋለሁ።',
             'crypto': 'የክሪፕቶ ትሬዲንግ መጽሃፍ በ 400 ብር ማዘዝ እፈልጋለሁ።',
             'bundle': 'ፎሬክስ + ክሪፕቶ ጥቅል በ 500 ብር ማዘዝ እፈልጋለሁ።'
         };
-        var msg = 'ሰላም! ' + (bookNames[book] || bookNames['forex']);
-        openTelegram(msg);
+        openTelegram('ሰላም! ' + (bookNames[book] || bookNames['forex']));
     });
 });
 

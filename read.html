@@ -239,7 +239,7 @@
     <!-- PDF VIEWER -->
     <div id="viewerScreen">
         <div class="viewer-header">
-            <div class="viewer-title">📚 <span>ታግ ብሪጅ</span> — የፎሬክስ ትሬዲንግ</div>
+            <div class="viewer-title" id="viewerTitle">📚 <span>ታግ ብሪጅ</span> — የፎሬክስ ትሬዲንግ</div>
             <button class="btn-close-viewer" onclick="closeViewer()">✕ ዝጋ</button>
         </div>
         <iframe id="pdfFrame" src="" allowfullscreen></iframe>
@@ -301,6 +301,16 @@
             if (!link) {
                 showError('PDF አልተዘጋጀም። ታግ ብሪጅን ያናግሩ።');
                 return;
+            }
+            // Update viewer title based on book type
+            var titles = {
+                'forex':  'የፎሬክስ ትሬዲንግ መጽሃፍ',
+                'crypto': 'የክሪፕቶ ትሬዲንግ መጽሃፍ',
+                'bundle': 'ፎሬክስ + ክሪፕቶ ጥቅል'
+            };
+            var titleEl = document.getElementById('viewerTitle');
+            if (titleEl) {
+                titleEl.innerHTML = '📚 <span>ታግ ብሪጅ</span> — ' + (titles[book] || titles['forex']);
             }
             document.getElementById('pdfFrame').src = link;
             document.getElementById('viewerScreen').classList.add('active');
