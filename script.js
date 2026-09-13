@@ -345,16 +345,6 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
 });
 
 // ===== BUY BUTTONS =====
-document.querySelectorAll('.product-card').forEach(function(card) {
-    card.style.cursor = 'pointer';
-    card.addEventListener('click', function(e) {
-        if (e.target.classList.contains('btn-buy') || e.target.closest('.btn-buy')) return;
-        if (e.target.closest('a')) return;
-        var btn = this.querySelector('.btn-buy');
-        if (btn) btn.dispatchEvent(new MouseEvent('click', { bubbles: false }));
-    });
-});
-
 document.querySelectorAll('.btn-buy').forEach(function(button) {
     button.addEventListener('click', function(e) {
         e.stopPropagation();
@@ -365,6 +355,17 @@ document.querySelectorAll('.btn-buy').forEach(function(button) {
             'bundle': 'ፎሬክስ + ክሪፕቶ ጥቅል በ 500 ብር ማዘዝ እፈልጋለሁ።'
         };
         openTelegram('ሰላም! ' + (bookNames[book] || bookNames['forex']));
+    });
+});
+
+// Make card clickable — delegates to btn-buy
+document.querySelectorAll('.product-card').forEach(function(card) {
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', function(e) {
+        if (e.target.classList.contains('btn-buy') || e.target.closest('.btn-buy')) return;
+        if (e.target.closest('a')) return;
+        var btn = this.querySelector('.btn-buy');
+        if (btn) btn.click();
     });
 });
 
