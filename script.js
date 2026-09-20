@@ -225,7 +225,15 @@ function sendQuickMessage() {
 function sendTelegramMessage() {
     var message = document.getElementById('telegramMessage').value;
     if (message.trim() === '') { alert('እባክዎ መልእክትዎን ይጻፉ / Please write your message'); return; }
-    openTelegram(message);
+    // Contact section — always use web URL (no cached pre-filled text issue)
+    var encoded = encodeURIComponent(message);
+    var ua = navigator.userAgent || '';
+    var isRestricted = /TikTok|BytedanceWebview|musical_ly|Instagram|FBAN|FBAV|FBIOS/i.test(ua);
+    if (isRestricted) {
+        window.location.href = '/tg.html?msg=' + encoded;
+    } else {
+        window.open('https://t.me/tagbridge123?text=' + encoded, '_blank');
+    }
     document.getElementById('telegramMessage').value = '';
 }
 
