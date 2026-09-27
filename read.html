@@ -749,7 +749,8 @@
     </div>
 
     <script>
-        var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwdlUTAU3HC30FkzeUf22UEvi7YqzWZa4I4onLWjt1D3np7PAV98sT3gg4WYAlEzMsDkQ/exec';
+        // ===== CONFIG — ሲቀይሩ ይህን ብቻ ቀይሩ =====
+        var MEMBERS_PASSWORD = 'TAGBRIDGE2026';  // ← ይህን ቀይሩ
 
         var PDF_LINKS = {
             'forex':  'https://drive.google.com/file/d/1r3UEZCWXOOPogC672VqEKMaaJR1Fo_XN/preview#toolbar=0&navpanes=0&scrollbar=0',
@@ -763,16 +764,6 @@
             'bundle': 'ፎሬክስ + ክሪፕቶ ጥቅል'
         };
 
-        // Device fingerprint
-        function getDeviceId() {
-            var id = localStorage.getItem('tb_device_id');
-            if (!id) {
-                id = 'dev_' + Date.now() + '_' + Math.random().toString(36).substring(2, 10);
-                localStorage.setItem('tb_device_id', id);
-            }
-            return id;
-        }
-
         function showStatus(type, msg) {
             var el = document.getElementById('statusMsg');
             el.className = 'status-msg ' + type;
@@ -785,49 +776,39 @@
         }
 
         function checkPassword() {
-            var password = document.getElementById('passwordInput').value.trim();
-            if (!password || password.length < 3) {
+            var password = document.getElementById('passwordInput').value.trim().toUpperCase();
+            if (!password) {
                 showStatus('error', '❌ እባክዎ password ያስገቡ');
                 return;
             }
 
-            var deviceId = getDeviceId();
             document.getElementById('openBtn').disabled = true;
             showStatus('loading', '<i class="fas fa-spinner spin"></i> እያረጋገጠ ነው...');
 
-            var url = SCRIPT_URL + '?action=verify&password=' + encodeURIComponent(password) + '&device_id=' + encodeURIComponent(deviceId);
-
-            fetch(url, { mode: 'cors' })
-                .then(function(r) { return r.json(); })
-                .then(function(data) {
-                    document.getElementById('openBtn').disabled = false;
+            // Simple check — no server needed
+            setTimeout(function() {
+                document.getElementById('openBtn').disabled = false;
+                if (password === MEMBERS_PASSWORD) {
                     hideStatus();
-                    if (data.success) {
-                        openPDF(data.book);
-                    } else if (data.reason === 'different_device') {
-                        showStatus('device',
-                            '⚠️ ይህ password ሌላ device ላይ ጥቅም ላይ ውሏል።<br>' +
-                            'ለማፅደቅ ታግ ብሪጅን ያናግሩ — ' +
-                            '<a href="https://t.me/tagbridge123" target="_blank" style="color:#38ef7d; font-weight:800;">@tagbridge123</a>'
-                        );
-                    } else if (data.reason === 'expired') {
-                        showStatus('error', '❌ Password ጊዜው አልፏል። ታግ ብሪጅን ያናግሩ።');
-                    } else {
-                        showStatus('error', '❌ Password ትክክለኛ አይደለም። እንደገና ይሞክሩ።');
-                    }
-                })
-                .catch(function() {
-                    document.getElementById('openBtn').disabled = false;
-                    showStatus('error', '❌ Connection error. እንደገና ይሞክሩ።');
-                });
+                    openMembers();
+                } else {
+                    showStatus('error', '❌ Password ትክክለኛ አይደለም። እንደገና ይሞክሩ።');
+                }
+            }, 600);
+        }
+
+        function openMembers() {
+            // Show viewer with PDF pre-loaded
+            var titleEl = document.getElementById('viewerTitle');
+            if (titleEl) titleEl.textContent = 'Members Area — Tag Bridge';
+            document.getElementById('pdfFrame').src = PDF_LINKS['forex'];
+            document.getElementById('viewerScreen').classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
 
         function openPDF(book) {
             var link = PDF_LINKS[book] || PDF_LINKS['forex'];
-            if (!link) {
-                showStatus('error', 'PDF አልተዘጋጀም። ታግ ብሪጅን ያናግሩ — <a href="https://t.me/tagbridge123" target="_blank" style="color:#38ef7d;">@tagbridge123</a>');
-                return;
-            }
+            if (!link) return;
             var titleEl = document.getElementById('viewerTitle');
             if (titleEl) titleEl.textContent = BOOK_TITLES[book] || BOOK_TITLES['forex'];
             document.getElementById('pdfFrame').src = link;
