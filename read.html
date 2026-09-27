@@ -233,6 +233,127 @@
 
         .back-link:hover { color: rgba(255,255,255,0.65); background: var(--surface); }
 
+        /* ===== TABS ===== */
+        .viewer-tabs {
+            display: flex;
+            gap: 4px;
+            padding: 0 16px;
+            background: var(--bg2);
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .tab-btn {
+            padding: 10px 18px;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: var(--muted);
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tab-btn:hover { color: white; }
+
+        .tab-btn.active {
+            color: white;
+            border-bottom-color: var(--accent);
+        }
+
+        /* ===== RESOURCES PANEL ===== */
+        #resourcesPanel {
+            display: none;
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 16px;
+            background: var(--bg);
+        }
+
+        #resourcesPanel.active { display: block; }
+
+        .res-cats {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .res-cat-btn {
+            padding: 7px 16px;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--muted);
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .res-cat-btn:hover { border-color: var(--accent); color: white; }
+        .res-cat-btn.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+        .res-list { display: none; }
+        .res-list.active { display: flex; flex-direction: column; gap: 10px; }
+
+        .res-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 14px 16px;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.2s;
+        }
+
+        .res-card:hover {
+            background: rgba(91,125,232,0.1);
+            border-color: rgba(91,125,232,0.3);
+            transform: translateX(4px);
+        }
+
+        .res-icon {
+            width: 42px; height: 42px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .res-info { flex: 1; }
+        .res-name { font-size: 0.88rem; font-weight: 800; color: white; margin-bottom: 2px; }
+        .res-desc { font-size: 0.72rem; color: var(--muted); line-height: 1.4; }
+
+        .res-arrow {
+            color: var(--muted);
+            font-size: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .ref-tag {
+            background: linear-gradient(135deg, #38ef7d, #11998e);
+            color: white;
+            font-size: 0.6rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+
         /* ===== VIEWER SCREEN ===== */
         #viewerScreen {
             display: none;
@@ -409,12 +530,214 @@
             </div>
         </div>
 
+        <!-- Tabs -->
+        <div class="viewer-tabs">
+            <button class="tab-btn active" onclick="switchTab('pdf', this)">
+                <i class="fas fa-book-open"></i> PDF
+            </button>
+            <button class="tab-btn" onclick="switchTab('resources', this)">
+                <i class="fas fa-link"></i> Trading Resources
+            </button>
+        </div>
+
         <!-- PDF + Overlay to block pop-out button -->
-        <div style="position:relative; flex:1; display:flex; flex-direction:column;">
+        <div id="pdfPanel" style="position:relative; flex:1; display:flex; flex-direction:column;">
             <iframe id="pdfFrame" src="" allowfullscreen
                 sandbox="allow-scripts allow-same-origin"></iframe>
             <!-- Block top-right pop-out button -->
             <div style="position:absolute; top:0; right:0; width:50px; height:50px; z-index:10; background:var(--bg2);"></div>
+        </div>
+
+        <!-- Resources Panel -->
+        <div id="resourcesPanel">
+            <!-- Category buttons -->
+            <div class="res-cats">
+                <button class="res-cat-btn active" onclick="switchCat('analysis', this)">📊 Analysis</button>
+                <button class="res-cat-btn" onclick="switchCat('backtesting', this)">🔄 Backtesting</button>
+                <button class="res-cat-btn" onclick="switchCat('brokers', this)">📈 Brokers</button>
+                <button class="res-cat-btn" onclick="switchCat('education', this)">🎓 Education</button>
+                <button class="res-cat-btn" onclick="switchCat('tools', this)">🛠 Tools</button>
+            </div>
+
+            <!-- Analysis -->
+            <div class="res-list active" id="cat-analysis">
+                <a href="https://www.tradingview.com/" target="_blank" rel="noopener" class="res-card">
+                    <div class="res-icon" style="background:rgba(34,197,94,0.15);">📈</div>
+                    <div class="res-info">
+                        <div class="res-name">TradingView</div>
+                        <div class="res-desc">Professional charts, indicators & analysis tools</div>
+                    </div>
+                    <i class="fas fa-chevron-right res-arrow"></i>
+                </a>
+                <a href="https://gptchart.ai/" target="_blank" rel="noopener" class="res-card">
+                    <div class="res-icon" style="background:rgba(91,125,232,0.15);">🤖</div>
+                    <div class="res-info">
+                        <div class="res-name">GPTChart.ai</div>
+                        <div class="res-desc">AI-powered chart analysis</div>
+                    </div>
+                    <i class="fas fa-chevron-right res-arrow"></i>
+                </a>
+                <a href="https://www.investing.com/" target="_blank" rel="noopener" class="res-card">
+                    <div class="res-icon" style="background:rgba(255,165,0,0.15);">📉</div>
+                    <div class="res-info">
+                        <div class="res-name">Investing.com</div>
+                        <div class="res-desc">Real-time quotes, news & analysis</div>
+                    </div>
+                    <i class="fas fa-chevron-right res-arrow"></i>
+                </a>
+                <a href="https://coinmarketcap.com/" target="_blank" rel="noopener" class="res-card">
+                    <div class="res-icon" style="background:rgba(255,210,0,0.15);">₿</div>
+                    <div class="res-info">
+                        <div class="res-name">CoinMarketCap</div>
+                        <div class="res-desc">Crypto prices, charts & market data</div>
+                    </div>
+                    <i class="fas fa-chevron-right res-arrow"></i>
+                </a>
+                <a href="https://www.coingecko.com/" target="_blank" rel="noopener" class="res-card">
+                    <div class="res-icon" style="background:rgba(56,239,125,0.15);">🦎</div>
+                    <div class="res-info">
+                        <div class="res-name">CoinGecko</div>
+                        <div class="res-desc">Crypto market data & portfolio tracker</div>
+                    </div>
+                    <i class="fas fa-chevron-right res-arrow"></i>
+                </a>
+                <a href="https://tradingeconomics.com/" target="_blank" rel="noopener" class="res-card">
+                    <div class="res-icon" style="background:rgba(91,125,232,0.15);">🌍</div>
+                    <div class="res-info">
+                        <div class="res-name">Trading Economics</div>
+                        <div class="res-desc">Economic indicators & global market data</div>
+                    </div>
+                    <i class="fas fa-chevron-right res-arrow"></i>
+                </a>
+            </div>
+
+            <!-- Backtesting -->
+            <div class="res-list" id="cat-backtesting">
+                <a href="https://www.tradingview.com/pine-script-docs/" target="_blank" rel="noopener" class="res-card">
+                    <div class="res-icon" style="background:rgba(34,197,94,0.15);">📊</div>
+                    <div class="res-info">
+                        <div class="res-name">TradingView Strategy Tester</div>
+                        <div class="res-desc">Backtest strategies with Pine Script</div>
+                    </div>
+                    <i class="fas fa-chevron-right res-arrow"></i>
+                </a>
+                <a href="https://www.myfxbook.com/forex-calculators" target="_blank" rel="noopener" class="res-card">
+                    <div class="res-icon" style="background:rgba(255,165,0,0.15);">🧮</div>
+                    <div class="res-info">
+                        <div class="res-name">Myfxbook Calculators</div>
+                        <div class="res-desc">Risk/reward, position size calculators</div>
+                    </div>
+                    <i class="fas fa-chevron-right res-arrow"></i>
+                </a>
+                <a href="https://fxreplay.com/" target="_blank" rel="noopener" class="res-card">
+                    <div class="res-icon" style="background:rgba(91,125,232,0.15);">⏪</div>
+                    <div class="res-info">
+                        <div class="res-name">FX Replay</div>
+                        <div class="res-desc">Free Forex backtesting platform</div>
+                    </div>
+                    <i class="fas fa-chevron-right res-arrow"></i>
+                </a>
+                <a href="https://www.tradingheroes.com/forex-backtesting-spreadsheet/" target="_blank" rel="noopener" class="res-card">
+                    <div class="res-icon" style="background:rgba(56,239,125,0.15);">📋</div>
+                    <div class="res-info">
+                        <div class="res-name">Backtesting Spreadsheet</div>
+                        <div class="res-desc">Free Excel/Google Sheets backtesting template</div>
+                    </div>
+                    <i class="fas fa-chevron-right res-arrow"></i>
+                </a>
+            </div>
+
+            <!-- Brokers -->
+            <div class="res-list" id="cat-brokers">
+                <a href="https://one.exnessonelink.com/a/3ebw4nz2fi" target="_blank" rel="noopener" class="res-card">
+                    <div class="res-icon" style="background:rgba(255,80,80,0.15);">🏦</div>
+                    <div class="res-info">
+                        <div class="res-name">Exness <span class="ref-tag">Referral</span></div>
+                        <div class="res-desc">Top Forex broker — low spreads, fast execution</div>
+                    </div>
+                    <i class="fas fa-chevron-right res-arrow"></i>
+                </a>
+                <a href="https://www.xmglobal.com/referral?token=WZDswV8uWbUyq5l147snZA" target="_blank" rel="noopener" class="res-card">
+                    <div class="res-icon" style="background:rgba(255,165,0,0.15);">📊</div>
+                    <div class="res-info">
+                        <div class="res-name">XM <span class="ref-tag">Referral</span></div>
+                        <div class="res-desc">Global Forex & CFD broker</div>
+                    </div>
+                    <i class="fas fa-chevron-right res-arrow"></i>
+                </a>
+                <a href="https://bingxdao.com/invite/U9AT4V/" target="_blank" rel="noopener" class="res-card">
+                    <div class="res-icon" style="background:rgba(56,239,125,0.15);">₿</div>
+                    <div class="res-info">
+                        <div class="res-name">BingX <span class="ref-tag">U9AT4V</span></div>
+                        <div class="res-desc">Crypto exchange — spot & futures trading</div>
+                    </div>
+                    <i class="fas fa-chevron-right res-arrow"></i>
+                </a>
+            </div>
+
+            <!-- Education -->
+            <div class="res-list" id="cat-education">
+                <a href="https://www.babypips.com/learn/forex" target="_blank" rel="noopener" class="res-card">
+                    <div class="res-icon" style="background:rgba(91,125,232,0.15);">🎓</div>
+                    <div class="res-info">
+                        <div class="res-name">BabyPips School</div>
+                        <div class="res-desc">Free complete Forex trading education</div>
+                    </div>
+                    <i class="fas fa-chevron-right res-arrow"></i>
+                </a>
+                <a href="https://academy.binance.com/" target="_blank" rel="noopener" class="res-card">
+                    <div class="res-icon" style="background:rgba(255,210,0,0.15);">📚</div>
+                    <div class="res-info">
+                        <div class="res-name">Binance Academy</div>
+                        <div class="res-desc">Free crypto & blockchain education</div>
+                    </div>
+                    <i class="fas fa-chevron-right res-arrow"></i>
+                </a>
+                <a href="https://www.investopedia.com/trading-4427765" target="_blank" rel="noopener" class="res-card">
+                    <div class="res-icon" style="background:rgba(56,239,125,0.15);">📖</div>
+                    <div class="res-info">
+                        <div class="res-name">Investopedia Trading</div>
+                        <div class="res-desc">Comprehensive trading guides & tutorials</div>
+                    </div>
+                    <i class="fas fa-chevron-right res-arrow"></i>
+                </a>
+            </div>
+
+            <!-- Tools -->
+            <div class="res-list" id="cat-tools">
+                <a href="https://www.myfxbook.com/forex-calculators/position-size-calculator" target="_blank" rel="noopener" class="res-card">
+                    <div class="res-icon" style="background:rgba(91,125,232,0.15);">📐</div>
+                    <div class="res-info">
+                        <div class="res-name">Position Size Calculator</div>
+                        <div class="res-desc">Calculate lot size based on risk %</div>
+                    </div>
+                    <i class="fas fa-chevron-right res-arrow"></i>
+                </a>
+                <a href="https://www.tradezella.com/" target="_blank" rel="noopener" class="res-card">
+                    <div class="res-icon" style="background:rgba(255,165,0,0.15);">📓</div>
+                    <div class="res-info">
+                        <div class="res-name">TradeZella</div>
+                        <div class="res-desc">Professional trading journal & analytics</div>
+                    </div>
+                    <i class="fas fa-chevron-right res-arrow"></i>
+                </a>
+                <a href="https://www.forexfactory.com/calendar" target="_blank" rel="noopener" class="res-card">
+                    <div class="res-icon" style="background:rgba(255,80,80,0.15);">📅</div>
+                    <div class="res-info">
+                        <div class="res-name">Forex Factory Calendar</div>
+                        <div class="res-desc">Economic calendar & news events</div>
+                    </div>
+                    <i class="fas fa-chevron-right res-arrow"></i>
+                </a>
+                <a href="https://www.tradingview.com/scripts/" target="_blank" rel="noopener" class="res-card">
+                    <div class="res-icon" style="background:rgba(34,197,94,0.15);">⚙️</div>
+                    <div class="res-info">
+                        <div class="res-name">TradingView Indicators</div>
+                        <div class="res-desc">Thousands of free custom indicators</div>
+                    </div>
+                    <i class="fas fa-chevron-right res-arrow"></i>
+                </a>
+            </div>
         </div>
 
         <!-- Bottom bar -->
@@ -520,6 +843,30 @@
 
         // Block right-click
         document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+
+        // Tab switching
+        function switchTab(tab, btn) {
+            var pdfPanel = document.getElementById('pdfPanel');
+            var resPanel = document.getElementById('resourcesPanel');
+            document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            if (tab === 'pdf') {
+                pdfPanel.style.display = 'flex';
+                resPanel.classList.remove('active');
+            } else {
+                pdfPanel.style.display = 'none';
+                resPanel.classList.add('active');
+            }
+        }
+
+        // Category switching
+        function switchCat(cat, btn) {
+            document.querySelectorAll('.res-cat-btn').forEach(function(b) { b.classList.remove('active'); });
+            document.querySelectorAll('.res-list').forEach(function(l) { l.classList.remove('active'); });
+            btn.classList.add('active');
+            var el = document.getElementById('cat-' + cat);
+            if (el) el.classList.add('active');
+        }
 
         // Enter key
         document.getElementById('passwordInput').addEventListener('keypress', function(e) {
