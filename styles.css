@@ -1655,3 +1655,26 @@ html[lang="en"] .lang-en-only { display: inline-block; }
 @media (max-width: 600px) {
     .chat-cards { grid-template-columns: 1fr; gap: 1rem; }
 }
+
+/* ===== RESOURCES BUTTON ===== */
+.btn-resources {
+    display: block;
+    margin-top: 8px;
+    padding: 9px 0;
+    border-radius: 50px;
+    background: transparent;
+    border: 1.5px solid rgba(91,125,232,0.4);
+    color: #5b7de8;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.2s;
+    letter-spacing: 0.2px;
+}
+
+.btn-resources:hover {
+    background: rgba(91,125,232,0.08);
+    border-color: #5b7de8;
+    transform: translateY(-1px);
+}
