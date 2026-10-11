@@ -1778,142 +1778,150 @@ html[lang="en"] .lang-en-only { display: inline-block; }
 /* ===== BOOK COVER ===== */
 .book-cover {
     position: relative;
-    width: 140px;
-    height: 190px;
-    margin: 0 auto 16px;
-    perspective: 800px;
+    width: 160px;
+    height: 220px;
+    margin: 0 auto 20px;
     cursor: pointer;
     transition: transform 0.3s;
+    filter: drop-shadow(6px 6px 16px rgba(0,0,0,0.35));
 }
 
-.book-cover:hover { transform: scale(1.05); }
-
-.book-front {
-    position: absolute;
-    top: 0; left: 8px;
-    right: 0; bottom: 0;
-    border-radius: 3px 8px 8px 3px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 14px 10px;
-    text-align: center;
-    box-shadow: 4px 4px 20px rgba(0,0,0,0.3), inset -2px 0 6px rgba(0,0,0,0.1);
-    overflow: hidden;
-    gap: 4px;
+.book-cover:hover {
+    transform: translateY(-6px) scale(1.03);
+    filter: drop-shadow(8px 12px 24px rgba(0,0,0,0.45));
 }
 
-.book-front::before {
-    content: '';
-    position: absolute;
-    top: 0; right: 0;
-    width: 100%; height: 100%;
-    background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%);
-    pointer-events: none;
-}
-
+/* Spine — left edge darker strip */
 .book-spine {
     position: absolute;
     top: 0; left: 0;
-    width: 10px; height: 100%;
-    border-radius: 3px 0 0 3px;
-    filter: brightness(0.6);
+    width: 14px; height: 100%;
+    border-radius: 4px 0 0 4px;
+    z-index: 2;
 }
 
+/* Front cover */
+.book-front {
+    position: absolute;
+    top: 0; left: 14px;
+    right: 0; bottom: 0;
+    border-radius: 0 6px 6px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 14px 14px;
+    text-align: center;
+    overflow: hidden;
+    z-index: 1;
+}
+
+/* Shine overlay */
+.book-front::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 50%; height: 100%;
+    background: linear-gradient(90deg, rgba(255,255,255,0.08), transparent);
+    pointer-events: none;
+    z-index: 3;
+}
+
+/* Bottom shadow */
 .book-shadow {
     position: absolute;
-    bottom: -8px; left: 8px; right: -6px;
-    height: 12px;
-    background: rgba(0,0,0,0.2);
+    bottom: -10px; left: 14px; right: -4px;
+    height: 14px;
+    background: rgba(0,0,0,0.25);
     border-radius: 50%;
-    filter: blur(6px);
+    filter: blur(8px);
+    z-index: 0;
 }
 
-/* Forex cover colors */
+/* ── Forex colors ── */
+.forex-cover .book-spine {
+    background: linear-gradient(180deg, #063a5a, #0a4f7a);
+}
 .forex-cover .book-front {
-    background: linear-gradient(160deg, #0f4c75 0%, #1b6ca8 40%, #11998e 100%);
+    background: linear-gradient(170deg, #0f4c75 0%, #1565c0 45%, #00897b 100%);
 }
-.forex-cover .book-spine { background: #0a3352; }
 
-/* Crypto cover colors */
+/* ── Crypto colors ── */
+.crypto-cover .book-spine {
+    background: linear-gradient(180deg, #0d0d1a, #1a1230);
+}
 .crypto-cover .book-front {
-    background: linear-gradient(160deg, #1a1a2e 0%, #f7971e 50%, #ffd200 100%);
+    background: linear-gradient(170deg, #1a1a2e 0%, #e65100 55%, #ffc107 100%);
 }
-.crypto-cover .book-spine { background: #0d0d1a; }
 
-/* Book content */
+/* ── Book content ── */
 .book-logo {
-    width: 38px; height: 38px;
-    background: rgba(255,255,255,0.2);
+    width: 46px; height: 46px;
+    background: rgba(255,255,255,0.18);
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     color: white;
-    margin-bottom: 4px;
-    border: 1.5px solid rgba(255,255,255,0.3);
-}
-
-.book-tag-bridge {
-    font-size: 0.5rem;
-    font-weight: 900;
-    color: rgba(255,255,255,0.7);
-    letter-spacing: 2px;
-    text-transform: uppercase;
+    border: 2px solid rgba(255,255,255,0.3);
+    flex-shrink: 0;
 }
 
 .book-title-am {
-    font-size: 0.75rem;
+    font-size: 0.88rem;
     font-weight: 900;
     color: white;
-    line-height: 1.3;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    line-height: 1.4;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+    letter-spacing: -0.3px;
 }
 
 .book-title-en {
-    font-size: 0.6rem;
+    font-size: 0.62rem;
     font-weight: 600;
-    color: rgba(255,255,255,0.7);
-    line-height: 1.3;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.4;
+    margin-top: -4px;
 }
 
-.book-pages-hint {
-    display: flex;
-    gap: 4px;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 4px;
-}
-
-.book-pages-hint span {
-    background: rgba(255,255,255,0.15);
-    color: rgba(255,255,255,0.85);
-    font-size: 0.52rem;
-    font-weight: 700;
-    padding: 2px 6px;
-    border-radius: 10px;
-}
-
-.book-author {
-    font-size: 0.5rem;
-    color: rgba(255,255,255,0.5);
-    margin-top: 2px;
-    letter-spacing: 0.5px;
-}
-
-/* Mobile */
-@media (max-width: 480px) {
-    .book-cover { width: 110px; height: 150px; }
-    .book-title-am { font-size: 0.65rem; }
-}
-
-/* ===== BOOK TOPICS ===== */
+/* ── Topics 2×2 ── */
 .book-topics {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 3px;
-    margin-top: 6px;
+    gap: 4px;
     width: 100%;
+}
+
+.book-topics span {
+    font-size: 0.5rem;
+    font-weight: 800;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 3px 0;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    text-align: center;
+    background: rgba(255,255,255,0.08);
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+    .book-cover { width: 130px; height: 178px; }
+    .book-spine { width: 12px; }
+    .book-front { left: 12px; padding: 14px 10px 10px; }
+    .book-logo { width: 38px; height: 38px; font-size: 1.1rem; }
+    .book-title-am { font-size: 0.76rem; }
+    .book-title-en { font-size: 0.56rem; }
+    .book-topics span { font-size: 0.44rem; }
+}
+
+@media (max-width: 380px) {
+    .book-cover { width: 110px; height: 152px; }
+    .book-spine { width: 10px; }
+    .book-front { left: 10px; padding: 10px 8px 8px; }
+    .book-logo { width: 32px; height: 32px; font-size: 0.95rem; }
+    .book-title-am { font-size: 0.65rem; }
+    .book-topics span { font-size: 0.4rem; padding: 2px 0; }
 }
 
 .book-topics span {
