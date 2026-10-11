@@ -1,54 +1,28 @@
-const CACHE = 'tagbridge-v8';
-const OFFLINE_URL = '/offline.html';
+const CACHE = 'tagbridge-v9';
 
-const PRECACHE = [
-  '/',
-  '/index.html',
-  '/styles.css',
-  '/script.js',
-  '/offline.html'
-];
-
+// Clear ALL old caches immediately
 self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(PRECACHE)).then(() => self.skipWaiting())
-  );
+    e.waitUntil(
+        caches.keys().then(keys =>
+            Promise.all(keys.map(k => caches.delete(k)))
+        ).then(() => self.skipWaiting())
+    );
 });
 
 self.addEventListener('activate', e => {
-  e.waitUntil(
-    caches.keys()
-      .then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
-      .then(() => self.clients.claim())
-      .then(() => self.clients.matchAll({ includeUncontrolled: true }))
-      .then(clients => clients.forEach(c => c.postMessage({ type: 'SW_UPDATED' })))
-  );
+    e.waitUntil(
+        caches.keys().then(keys =>
+            Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+        ).then(() => self.clients.claim())
+        .then(() => self.clients.matchAll({ includeUncontrolled: true }))
+        .then(clients => clients.forEach(c => c.postMessage({ type: 'SW_UPDATED' })))
+    );
 });
 
+// Always network first — never serve stale cache
 self.addEventListener('fetch', e => {
-  if (e.request.mode === 'navigate') {
+    if (e.request.method !== 'GET') return;
     e.respondWith(
-      fetch(e.request).catch(() => caches.match(OFFLINE_URL))
+        fetch(e.request).catch(() => caches.match(e.request))
     );
-    return;
-  }
-
-  // Network first for JS and CSS
-  if (e.request.url.match(/\.(js|css)$/)) {
-    e.respondWith(
-      fetch(e.request)
-        .then(response => {
-          var clone = response.clone();
-          caches.open(CACHE).then(c => c.put(e.request, clone));
-          return response;
-        })
-        .catch(() => caches.match(e.request))
-    );
-    return;
-  }
-
-  // Cache first for images and other static assets
-  e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request))
-  );
 });
