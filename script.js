@@ -86,6 +86,23 @@ if (backToTopBtn) {
 localStorage.removeItem('theme');
 document.body.classList.remove('light-mode');
 
+// ===== NAV RESOURCES DROPDOWN =====
+document.querySelectorAll('.nav-resources-toggle').forEach(function(toggle) {
+    toggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        var li = this.closest('.nav-resources-li');
+        var isOpen = li.classList.contains('open');
+        document.querySelectorAll('.nav-resources-li').forEach(function(d) { d.classList.remove('open'); });
+        if (!isOpen) li.classList.add('open');
+    });
+});
+
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.nav-resources-li')) {
+        document.querySelectorAll('.nav-resources-li').forEach(function(d) { d.classList.remove('open'); });
+    }
+});
+
 // ===== STAT COUNTERS =====
 function animateCounters() {
     document.querySelectorAll('.stat-number').forEach(function(counter) {
