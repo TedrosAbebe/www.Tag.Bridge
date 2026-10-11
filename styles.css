@@ -1780,6 +1780,9 @@ html[lang="en"] .lang-en-only { display: inline-block; }
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
+    padding: 0 4px;
+    width: 100%;
 }
 
 .book-cover {
@@ -2040,10 +2043,11 @@ html[lang="en"] .lang-en-only { display: inline-block; }
 
 .book-info-desc {
     font-size: 0.78rem;
-    color: #555;
+    color: #333;
     margin-bottom: 8px;
     line-height: 1.5;
-    font-weight: 500;
+    font-weight: 600;
+    text-shadow: none;
 }
 
 .book-info-price {
