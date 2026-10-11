@@ -2030,3 +2030,34 @@ html[lang="en"] .lang-en-only { display: inline-block; }
     align-items: center;
     gap: 4px;
 }
+
+/* ===== BOOK INFO (outside card) ===== */
+.book-info {
+    text-align: center;
+    padding: 0 8px;
+    width: 100%;
+}
+
+.book-info-desc {
+    font-size: 0.78rem;
+    color: #555;
+    margin-bottom: 8px;
+    line-height: 1.5;
+    font-weight: 500;
+}
+
+.book-info-price {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #5b7de8;
+    margin-bottom: 10px;
+}
+
+.book-info-btn {
+    width: 100%;
+}
+
+/* wrap hover effect */
+.product-book-wrap:hover .book-info-btn {
+    transform: scale(1.03);
+}
