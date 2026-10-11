@@ -1,4 +1,4 @@
-const CACHE = 'tagbridge-v7';
+const CACHE = 'tagbridge-v8';
 const OFFLINE_URL = '/offline.html';
 
 const PRECACHE = [
