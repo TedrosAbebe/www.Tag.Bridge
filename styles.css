@@ -1778,14 +1778,24 @@ html[lang="en"] .lang-en-only { display: inline-block; }
 /* ===== BOOK COVER ===== */
 .book-cover {
     position: relative;
-    width: 155px;
-    height: 215px;
-    margin: 0 auto 20px;
+    width: 140px;
+    height: 195px;
+    margin: -50px auto 12px;  /* floats above card */
     cursor: pointer;
     transition: transform 0.3s;
+    z-index: 2;
+    filter: drop-shadow(4px 8px 18px rgba(0,0,0,0.35));
 }
 
-.book-cover:hover { transform: translateY(-6px) scale(1.03); }
+/* Card needs top padding to make room for floating book */
+.product-card {
+    padding-top: 65px !important;
+}
+
+.book-cover:hover {
+    transform: translateY(-6px) scale(1.04);
+    filter: drop-shadow(6px 14px 24px rgba(0,0,0,0.45));
+}
 
 .book-spine {
     position: absolute;
