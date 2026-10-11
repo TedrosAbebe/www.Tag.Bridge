@@ -2053,7 +2053,8 @@ html[lang="en"] .lang-en-only { display: inline-block; }
 .book-info-price {
     font-size: 1.5rem;
     font-weight: 900;
-    color: #5b7de8;
+    color: #111;
+    margin-top: 2px;
     margin-bottom: 10px;
 }
 
