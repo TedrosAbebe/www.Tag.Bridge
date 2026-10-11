@@ -1909,11 +1909,11 @@ html[lang="en"] .lang-en-only { display: inline-block; }
 
 /* ===== BOOK TOPICS ===== */
 .book-topics {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 3px;
     margin-top: 6px;
+    width: 100%;
 }
 
 .book-topics span {
@@ -1925,4 +1925,5 @@ html[lang="en"] .lang-en-only { display: inline-block; }
     padding: 1px 5px;
     border: 1px solid rgba(255,255,255,0.2);
     border-radius: 20px;
+    text-align: center;
 }
