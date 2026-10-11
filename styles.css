@@ -1906,3 +1906,23 @@ html[lang="en"] .lang-en-only { display: inline-block; }
     .book-cover { width: 110px; height: 150px; }
     .book-title-am { font-size: 0.65rem; }
 }
+
+/* ===== BOOK TOPICS ===== */
+.book-topics {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 3px;
+    margin-top: 6px;
+}
+
+.book-topics span {
+    font-size: 0.48rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 1px 5px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+}
