@@ -86,6 +86,14 @@ if (backToTopBtn) {
 localStorage.removeItem('theme');
 document.body.classList.remove('light-mode');
 
+// ===== BOOK CONTENTS ACCORDION =====
+function toggleContents(btn) {
+    var body = btn.nextElementSibling;
+    var isOpen = body.classList.contains('open');
+    btn.classList.toggle('open', !isOpen);
+    body.classList.toggle('open', !isOpen);
+}
+
 // ===== NAV RESOURCES DROPDOWN =====
 document.querySelectorAll('.nav-resources-toggle').forEach(function(toggle) {
     toggle.addEventListener('click', function(e) {
