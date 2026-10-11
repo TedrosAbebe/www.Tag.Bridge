@@ -1778,20 +1778,16 @@ html[lang="en"] .lang-en-only { display: inline-block; }
 /* ===== BOOK COVER ===== */
 .book-cover {
     position: relative;
-    width: 160px;
-    height: 220px;
+    width: 155px;
+    height: 215px;
     margin: 0 auto 20px;
     cursor: pointer;
     transition: transform 0.3s;
-    filter: drop-shadow(6px 6px 16px rgba(0,0,0,0.35));
 }
 
-.book-cover:hover {
-    transform: translateY(-6px) scale(1.03);
-    filter: drop-shadow(8px 12px 24px rgba(0,0,0,0.45));
-}
+.book-cover:hover { transform: translateY(-6px) scale(1.03); }
 
-/* Spine — left edge darker strip */
+/* Spine */
 .book-spine {
     position: absolute;
     top: 0; left: 0;
@@ -1800,150 +1796,141 @@ html[lang="en"] .lang-en-only { display: inline-block; }
     z-index: 2;
 }
 
+.forex-cover .book-spine { background: linear-gradient(180deg, #7a8fa0, #a0b4c4); }
+.crypto-cover .book-spine { background: linear-gradient(180deg, #7a8fa0, #a0b4c4); }
+
 /* Front cover */
 .book-front {
     position: absolute;
-    top: 0; left: 14px;
-    right: 0; bottom: 0;
-    border-radius: 0 6px 6px 0;
+    top: 0; left: 14px; right: 0; bottom: 0;
+    border-radius: 0 4px 4px 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding: 18px 14px 14px;
-    text-align: center;
     overflow: hidden;
     z-index: 1;
 }
 
-/* Shine overlay */
+/* Forex = light blue, Crypto = light navy */
+.forex-cover .book-front { background: #dce8f5; }
+.crypto-cover .book-front { background: #cdd8ea; }
+
+/* Shine */
 .book-front::before {
     content: '';
     position: absolute;
     top: 0; left: 0;
-    width: 50%; height: 100%;
-    background: linear-gradient(90deg, rgba(255,255,255,0.08), transparent);
+    width: 40%; height: 100%;
+    background: linear-gradient(90deg, rgba(255,255,255,0.25), transparent);
     pointer-events: none;
-    z-index: 3;
+    z-index: 5;
 }
 
-/* Page edge lines on right side */
-.book-front::after {
-    content: '';
+/* Page edge */
+.book-page-edge {
     position: absolute;
-    top: 4px; right: -4px; bottom: 4px;
-    width: 5px;
+    top: 3px; right: -5px; bottom: 3px;
+    width: 6px;
     background: repeating-linear-gradient(
         180deg,
-        #e8e0d0 0px,
-        #e8e0d0 1px,
-        #d4c9b8 1px,
-        #d4c9b8 2px
+        #f0ebe0 0px, #f0ebe0 1px,
+        #ddd5c5 1px, #ddd5c5 2px
     );
     border-radius: 0 2px 2px 0;
     z-index: 0;
 }
 
-/* Bottom shadow */
+/* Shadow */
 .book-shadow {
     position: absolute;
     bottom: -10px; left: 14px; right: -4px;
     height: 14px;
-    background: rgba(0,0,0,0.25);
+    background: rgba(0,0,0,0.2);
     border-radius: 50%;
     filter: blur(8px);
     z-index: 0;
 }
 
-/* ── Forex colors ── */
-.forex-cover .book-spine {
-    background: linear-gradient(180deg, #063a5a, #0a4f7a);
-}
-.forex-cover .book-front {
-    background: linear-gradient(170deg, #0f4c75 0%, #1565c0 45%, #00897b 100%);
-}
-
-/* ── Crypto colors ── */
-.crypto-cover .book-spine {
-    background: linear-gradient(180deg, #0d0d1a, #1a1230);
-}
-.crypto-cover .book-front {
-    background: linear-gradient(170deg, #1a1a2e 0%, #e65100 55%, #ffc107 100%);
-}
-
-/* ── Book content ── */
-.book-logo {
-    width: 46px; height: 46px;
-    background: rgba(255,255,255,0.18);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.3rem;
-    color: white;
-    border: 2px solid rgba(255,255,255,0.3);
+/* ── Book Header ── */
+.book-header {
+    padding: 12px 10px 6px;
+    text-align: center;
     flex-shrink: 0;
 }
 
-.book-title-am {
-    font-size: 0.88rem;
+.book-main-title {
+    font-size: 0.82rem;
+    font-weight: 900;
+    color: #c8860a;
+    line-height: 1.25;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-style: italic;
+}
+
+.book-sub-title {
+    font-size: 0.48rem;
+    font-weight: 700;
+    color: #1a3a5c;
+    margin-top: 3px;
+    letter-spacing: 0.3px;
+}
+
+/* ── Chart ── */
+.book-chart-wrap {
+    flex: 1;
+    margin: 0 6px;
+    border-radius: 3px;
+    overflow: hidden;
+    border: 1px solid #bbb;
+}
+
+.book-chart-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* ── Bottom bar ── */
+.book-bottom-bar {
+    background: #1a3a5c;
+    border-top: 3px solid #c8860a;
+    padding: 6px 0;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.crypto-bar { background: #1a2a3c; border-top-color: #f7971e; }
+
+.book-bottom-text {
+    font-size: 0.58rem;
     font-weight: 900;
     color: white;
-    line-height: 1.4;
-    text-shadow: 0 2px 6px rgba(0,0,0,0.5);
-    letter-spacing: -0.3px;
-}
-
-.book-title-en {
-    font-size: 0.62rem;
-    font-weight: 600;
-    color: rgba(255,255,255,0.65);
-    line-height: 1.4;
-    margin-top: -4px;
-}
-
-/* ── Topics 2×2 ── */
-.book-topics {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3px;
-    width: 100%;
-    overflow: hidden;
-}
-
-.book-topics span {
-    font-size: 0.44rem;
-    font-weight: 800;
-    color: rgba(255,255,255,0.75);
-    letter-spacing: 0.4px;
+    letter-spacing: 2px;
     text-transform: uppercase;
-    padding: 2px 0;
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 20px;
-    text-align: center;
-    background: rgba(255,255,255,0.08);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 /* ── Mobile ── */
 @media (max-width: 768px) {
-    .book-cover { width: 120px; height: 165px; }
+    .book-cover { width: 125px; height: 172px; }
     .book-spine { width: 11px; }
-    .book-front { left: 11px; padding: 12px 8px 8px; }
-    .book-logo { width: 34px; height: 34px; font-size: 1rem; }
-    .book-title-am { font-size: 0.7rem; }
-    .book-title-en { font-size: 0.52rem; }
-    .book-topics span { font-size: 0.38rem; padding: 2px 0; }
+    .book-front { left: 11px; }
+    .book-main-title { font-size: 0.68rem; }
+    .book-sub-title { font-size: 0.4rem; }
+    .book-bottom-text { font-size: 0.48rem; letter-spacing: 1.5px; }
+    .book-header { padding: 8px 8px 4px; }
+    .book-bottom-bar { padding: 5px 0; }
 }
 
 @media (max-width: 380px) {
-    .book-cover { width: 100px; height: 138px; }
+    .book-cover { width: 105px; height: 145px; }
     .book-spine { width: 9px; }
-    .book-front { left: 9px; padding: 8px 6px 6px; }
-    .book-logo { width: 28px; height: 28px; font-size: 0.85rem; }
-    .book-title-am { font-size: 0.58rem; }
-    .book-topics { gap: 2px; }
-    .book-topics span { font-size: 0.34rem; padding: 1px 0; }
+    .book-front { left: 9px; }
+    .book-main-title { font-size: 0.58rem; }
+    .book-sub-title { font-size: 0.35rem; }
+    .book-bottom-text { font-size: 0.4rem; letter-spacing: 1px; }
+    .book-header { padding: 6px 6px 3px; }
+    .book-bottom-bar { padding: 4px 0; border-top-width: 2px; }
+    .book-chart-wrap { margin: 0 4px; }
 }
 
 .book-topics span {
