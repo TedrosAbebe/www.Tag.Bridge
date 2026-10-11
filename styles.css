@@ -1787,42 +1787,48 @@ html[lang="en"] .lang-en-only { display: inline-block; }
 
 .book-cover:hover { transform: translateY(-6px) scale(1.03); }
 
-/* Spine */
 .book-spine {
     position: absolute;
     top: 0; left: 0;
-    width: 14px; height: 100%;
+    width: 12px; height: 100%;
     border-radius: 4px 0 0 4px;
     z-index: 2;
 }
 
-.forex-cover .book-spine { background: linear-gradient(180deg, #7a8fa0, #a0b4c4); }
-.crypto-cover .book-spine { background: linear-gradient(180deg, #7a8fa0, #a0b4c4); }
+.forex-cover .book-spine { background: linear-gradient(180deg, #0a3a6e, #0d4f94); }
+.crypto-cover .book-spine { background: linear-gradient(180deg, #1a1a2e, #2a1a0e); }
 
-/* Front cover */
 .book-front {
     position: absolute;
-    top: 0; left: 14px; right: 0; bottom: 0;
-    border-radius: 0 4px 4px 0;
+    top: 0; left: 12px; right: 0; bottom: 0;
+    border-radius: 0 6px 6px 0;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 16px 12px 14px;
+    text-align: center;
     overflow: hidden;
     z-index: 1;
 }
 
-/* Forex = light blue, Crypto = light navy */
-.forex-cover .book-front { background: #dce8f5; }
-.crypto-cover .book-front { background: #cdd8ea; }
+.forex-cover .book-front {
+    background: linear-gradient(165deg, #1565c0 0%, #1976d2 35%, #26a69a 100%);
+}
+
+.crypto-cover .book-front {
+    background: linear-gradient(165deg, #1a1a2e 0%, #e65100 55%, #ff8f00 100%);
+}
 
 /* Shine */
 .book-front::before {
     content: '';
     position: absolute;
     top: 0; left: 0;
-    width: 40%; height: 100%;
-    background: linear-gradient(90deg, rgba(255,255,255,0.25), transparent);
+    width: 45%; height: 100%;
+    background: linear-gradient(90deg, rgba(255,255,255,0.12), transparent);
     pointer-events: none;
-    z-index: 5;
+    z-index: 3;
 }
 
 /* Page edge */
@@ -1842,7 +1848,7 @@ html[lang="en"] .lang-en-only { display: inline-block; }
 /* Shadow */
 .book-shadow {
     position: absolute;
-    bottom: -10px; left: 14px; right: -4px;
+    bottom: -10px; left: 12px; right: -4px;
     height: 14px;
     background: rgba(0,0,0,0.2);
     border-radius: 50%;
@@ -1850,87 +1856,77 @@ html[lang="en"] .lang-en-only { display: inline-block; }
     z-index: 0;
 }
 
-/* ── Book Header ── */
-.book-header {
-    padding: 12px 10px 6px;
-    text-align: center;
+/* Icon */
+.book-icon-wrap {
+    width: 48px; height: 48px;
+    background: rgba(255,255,255,0.18);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    color: white;
+    border: 2px solid rgba(255,255,255,0.3);
     flex-shrink: 0;
 }
 
-.book-main-title {
-    font-size: 0.82rem;
-    font-weight: 900;
-    color: #c8860a;
-    line-height: 1.25;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    font-style: italic;
-}
-
-.book-sub-title {
-    font-size: 0.48rem;
-    font-weight: 700;
-    color: #1a3a5c;
-    margin-top: 3px;
-    letter-spacing: 0.3px;
-}
-
-/* ── Chart ── */
-.book-chart-wrap {
-    flex: 1;
-    margin: 0 6px;
-    border-radius: 3px;
-    overflow: hidden;
-    border: 1px solid #bbb;
-}
-
-.book-chart-svg {
-    width: 100%;
-    height: 100%;
-    display: block;
-}
-
-/* ── Bottom bar ── */
-.book-bottom-bar {
-    background: #1a3a5c;
-    border-top: 3px solid #c8860a;
-    padding: 6px 0;
-    text-align: center;
-    flex-shrink: 0;
-}
-
-.crypto-bar { background: #1a2a3c; border-top-color: #f7971e; }
-
-.book-bottom-text {
-    font-size: 0.58rem;
+/* Titles */
+.book-title-am {
+    font-size: 0.85rem;
     font-weight: 900;
     color: white;
-    letter-spacing: 2px;
-    text-transform: uppercase;
+    line-height: 1.35;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.4);
 }
 
-/* ── Mobile ── */
+.book-title-en {
+    font-size: 0.6rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.4;
+}
+
+/* Topics */
+.book-topics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    width: 100%;
+}
+
+.book-topics span {
+    font-size: 0.46rem;
+    font-weight: 800;
+    color: rgba(255,255,255,0.85);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    padding: 3px 2px;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    text-align: center;
+    background: rgba(255,255,255,0.12);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Mobile */
 @media (max-width: 768px) {
-    .book-cover { width: 125px; height: 172px; }
-    .book-spine { width: 11px; }
-    .book-front { left: 11px; }
-    .book-main-title { font-size: 0.68rem; }
-    .book-sub-title { font-size: 0.4rem; }
-    .book-bottom-text { font-size: 0.48rem; letter-spacing: 1.5px; }
-    .book-header { padding: 8px 8px 4px; }
-    .book-bottom-bar { padding: 5px 0; }
+    .book-cover { width: 130px; height: 180px; }
+    .book-spine { width: 10px; }
+    .book-front { left: 10px; padding: 12px 10px 10px; }
+    .book-icon-wrap { width: 40px; height: 40px; font-size: 1.15rem; }
+    .book-title-am { font-size: 0.75rem; }
+    .book-title-en { font-size: 0.52rem; }
+    .book-topics span { font-size: 0.4rem; padding: 2px 1px; }
 }
 
 @media (max-width: 380px) {
-    .book-cover { width: 105px; height: 145px; }
+    .book-cover { width: 108px; height: 150px; }
     .book-spine { width: 9px; }
-    .book-front { left: 9px; }
-    .book-main-title { font-size: 0.58rem; }
-    .book-sub-title { font-size: 0.35rem; }
-    .book-bottom-text { font-size: 0.4rem; letter-spacing: 1px; }
-    .book-header { padding: 6px 6px 3px; }
-    .book-bottom-bar { padding: 4px 0; border-top-width: 2px; }
-    .book-chart-wrap { margin: 0 4px; }
+    .book-front { left: 9px; padding: 10px 8px 8px; }
+    .book-icon-wrap { width: 34px; height: 34px; font-size: 1rem; }
+    .book-title-am { font-size: 0.65rem; }
+    .book-title-en { font-size: 0.45rem; }
+    .book-topics span { font-size: 0.35rem; padding: 2px 0; }
 }
 
 .book-topics span {
