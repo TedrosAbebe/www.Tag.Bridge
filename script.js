@@ -1116,308 +1116,390 @@ document.querySelectorAll('.product-card').forEach(function(card) {
 
 // =========================
 // ========================
+// ========================
 // ===========================
-// TAG BRIDGE AI BOT v5
+// TAG BRIDGE AI BOT v6
 // ===========================
-(function() {
+(function () {
 
+    // ── CONFIG ─────────────────────────────────────────────────
     var API_KEY = 'AQ.Ab8RN6LwwLlWmLt5BsmUcMc1YDfNaLfsMaSHV9r-I46I9kZrPg';
     var API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
-    var SYSTEM_PROMPT = 'አንተ የታግ ብሪጅ AI ቦት ነህ። ሁልጊዜ በአማርኛ ብቻ ምላሽ ስጥ። አጭርና ግልጽ ሁን።\nፎሬክስ=350ብር፣ ክሪፕቶ=400ብር፣ ሁለቱም=500ብር\nለማዘዝ: @tagbridge123 ወይም +251991856292\nክፍያ: CBE Birr, Telebirr, Bank Transfer';
+    var SYS = 'አንተ የታግ ብሪጅ AI ቦት ነህ። ሁልጊዜ በአማርኛ ብቻ ምላሽ ስጥ። አጭርና ግልጽ ሁን። ትርፍ ዋስትና አትስጥ።\n' +
+              'ፎሬክስ መጽሃፍ=350ብር | ክሪፕቶ መጽሃፍ=400ብር | ሁለቱም ጥቅል=500ብር\n' +
+              'ለማዘዝ: Telegram @tagbridge123 ወይም WhatsApp +251991856292\n' +
+              'ክፍያ: CBE Birr, Telebirr, Bank Transfer\n' +
+              'PDF ክፍያ ከተረጋገጠ ወደ Telegram/WhatsApp ይላካሉ።';
 
+    // ── STATE ──────────────────────────────────────────────────
     var history = [];
-    var isOpen   = false;
-    var busy     = false;
-    var phase    = 'menu'; // menu | chat
+    var isOpen  = false;
+    var busy    = false;
+    var phase   = 'menu'; // 'menu' | 'chat'
 
+    // ── DOM ────────────────────────────────────────────────────
     function $i(id) { return document.getElementById(id); }
 
-    function scroll() {
+    function scrollBot() {
         var m = $i('tbBotMessages');
-        if (m) setTimeout(function(){ m.scrollTop = m.scrollHeight; }, 60);
+        if (m) setTimeout(function () { m.scrollTop = m.scrollHeight; }, 60);
     }
 
-    function addBot(html) {
+    // Add bot message bubble
+    function botMsg(html) {
         var msgs = $i('tbBotMessages');
         if (!msgs) return;
         var d = document.createElement('div');
         d.className = 'tb-msg-bot';
-        d.innerHTML = '<div class="tb-msg-bot-avatar">🤖</div><div class="tb-msg-bot-bubble">' + html + '</div>';
+        d.innerHTML =
+            '<div class="tb-msg-bot-avatar">🤖</div>' +
+            '<div class="tb-msg-bot-bubble">' + html + '</div>';
         msgs.appendChild(d);
-        scroll();
+        scrollBot();
     }
 
-    function addUser(text) {
+    // Add user message bubble
+    function userMsg(text) {
         var msgs = $i('tbBotMessages');
         if (!msgs) return;
         var d = document.createElement('div');
         d.className = 'tb-msg-user';
-        d.innerHTML = '<div class="tb-msg-user-bubble">' + text + '</div>';
+        d.innerHTML = '<div class="tb-msg-user-bubble">' + escHtml(text) + '</div>';
         msgs.appendChild(d);
-        scroll();
+        scrollBot();
     }
 
+    // Typing indicator
     function showDots() {
         var msgs = $i('tbBotMessages');
         if (!msgs) return;
         var d = document.createElement('div');
         d.className = 'tb-msg-bot'; d.id = 'tbDots';
-        d.innerHTML = '<div class="tb-msg-bot-avatar">🤖</div><div class="tb-typing-dots"><span></span><span></span><span></span></div>';
-        msgs.appendChild(d); scroll();
+        d.innerHTML =
+            '<div class="tb-msg-bot-avatar">🤖</div>' +
+            '<div class="tb-typing-dots"><span></span><span></span><span></span></div>';
+        msgs.appendChild(d);
+        scrollBot();
     }
-
     function hideDots() { var t = $i('tbDots'); if (t) t.remove(); }
 
-    function clearOpts() { var o = $i('tbBotOpts'); if(o) o.innerHTML = ''; }
-
+    // Set option buttons
     function setOpts(items) {
-        clearOpts();
         var o = $i('tbBotOpts');
         if (!o) return;
-        items.forEach(function(item) {
+        o.innerHTML = '';
+        items.forEach(function (item) {
             var btn = document.createElement('button');
             btn.className = 'tb-faq-btn';
             btn.innerHTML = item.label;
             btn.onclick = item.fn;
             o.appendChild(btn);
         });
-        scroll();
+        scrollBot();
     }
 
-    // ── MAIN MENU ─────────────────────────────────────────────
+    function clearOpts() {
+        var o = $i('tbBotOpts');
+        if (o) o.innerHTML = '';
+    }
+
+    function escHtml(s) {
+        return String(s)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+    }
+
+    // ── OPEN / CLOSE ───────────────────────────────────────────
+    window.toggleTbBot = function () {
+        var sidebar  = $i('tbBotWindow');
+        var overlay  = $i('tbOverlay');
+        if (!sidebar) return;
+
+        isOpen = !isOpen;
+
+        if (isOpen) {
+            sidebar.classList.add('open');
+            if (overlay) overlay.classList.add('open');
+            // First open — show welcome
+            if ($i('tbBotMessages').children.length === 0) {
+                setTimeout(function () {
+                    botMsg('ሰላም! 👋 እኔ የታግ ብሪጅ AI ቦት ነኝ።<br>ከታች ካሉ ጥያቄዎች ይምረጡ ወይም ጽፈው ይጠይቁ 👇');
+                    setTimeout(showMenu, 350);
+                }, 200);
+            }
+            setTimeout(function () { var i = $i('tbBotInput'); if (i) i.focus(); }, 400);
+        } else {
+            sidebar.classList.remove('open');
+            if (overlay) overlay.classList.remove('open');
+        }
+    };
+
+    // ── MAIN MENU ──────────────────────────────────────────────
     function showMenu() {
         phase = 'menu';
         setOpts([
-            { label: '💱 የፎሬክስ ትሬዲንግ ፈተና', fn: function(){ forexIntro(); } },
-            { label: '₿ የክሪፕቶ ትሬዲንግ ፈተና', fn: function(){ cryptoIntro(); } },
-            { label: '📚 የመጽሃፍቱ ይዘቶች ማወቅ እፈልጋለሁ', fn: function(){ bookContents(); } },
-            { label: '💳 ክፍያ ከፈልኩ መጽሃፉን እንዴት አገኛለሁ?', fn: function(){ howToGet(); } },
-            { label: '🌱 መጽሃፉ ለጀማሪ ተስማሚ ነው?', fn: function(){ forBeginners(); } },
-            { label: '💰 ምን አይነት ክፍያ ዘዴ አለ?', fn: function(){ paymentMethods(); } },
-            { label: '🎯 ከመጽሃፍ ሌሎች አማራጮች?', fn: function(){ otherOptions(); } },
-            { label: '❓ ሌሎች ጥያቄዎች ለጽፍ', fn: function(){ enterChat(); } }
+            { label: '💱 የፎሬክስ ትሬዲንግ ፈተና',              fn: function () { forexIntro();      } },
+            { label: '₿  የክሪፕቶ ትሬዲንግ ፈተና',             fn: function () { cryptoIntro();     } },
+            { label: '📚 የመጽሃፍቱ ይዘቶች ማወቅ እፈልጋለሁ',     fn: function () { bookContents();    } },
+            { label: '💳 ክፍያ ከፈልኩ መጽሃፉን እንዴት አገኛለሁ?', fn: function () { howToGet();        } },
+            { label: '🌱 መጽሃፉ ለጀማሪ ተስማሚ ነው?',          fn: function () { forBeginners();    } },
+            { label: '💰 ምን አይነት ክፍያ ዘዴ አለ?',           fn: function () { paymentMethods();  } },
+            { label: '🎯 ከመጽሃፍ ሌሎች አማራጮች?',            fn: function () { otherOptions();    } },
+            { label: '❓ ሌላ ጥያቄ አለኝ — ልጻፍ',            fn: function () { enterChat();       } }
         ]);
     }
 
-    // ── OPEN / CLOSE ──────────────────────────────────────────
-    window.toggleTbBot = function() {
-        var win = $i('tbBotWindow');
-        if (!win) return;
-        isOpen = !isOpen;
-        win.style.display = isOpen ? 'flex' : 'none';
-        if (isOpen && $i('tbBotMessages').children.length === 0) {
-            setTimeout(function() {
-                addBot('ሰላም! 👋 እኔ የታግ ብሪጅ AI ቦት ነኝ።<br>ከታች ካሉ ጥያቄዎች ይምረጡ ወይም ጽፈው ይጠይቁ 👇');
-                setTimeout(showMenu, 400);
-            }, 200);
-        }
-        if (isOpen) setTimeout(function(){ var i=$i('tbBotInput'); if(i) i.focus(); }, 300);
-    };
+    function backToMenu() {
+        setTimeout(function () {
+            botMsg('ሌሎች ጥያቄዎችም ይምረጡ 👇');
+            setTimeout(showMenu, 300);
+        }, 300);
+    }
 
-    // ── FOREX QUIZ INTRO ──────────────────────────────────────
+    // ── FOREX QUIZ INTRO ───────────────────────────────────────
     function forexIntro() {
         clearOpts();
-        addUser('💱 የፎሬክስ ትሬዲንግ ፈተና');
-        setTimeout(function() {
-            addBot(
-                'በጣም ጥሩ! 🎉 የፎሬክስ ትሬዲንግ ፈተናዎችን ለመፈተን መርጠዋል!<br><br>' +
+        userMsg('💱 የፎሬክስ ትሬዲንግ ፈተና');
+        setTimeout(function () {
+            botMsg(
+                '🎉 <strong>የፎሬክስ ትሬዲንግ ፈተናዎችን ለመፈተን መርጠዋል!</strong><br><br>' +
                 'ከ<strong>200 በላይ ጥያቄዎች</strong> — በ4 ምዕራፍ፦<br><br>' +
-                '📗 <strong>1. ጀማሪ (1–50)</strong> — Forex መሠረቶች, Currency Pairs, Brokers<br>' +
-                '📘 <strong>2. መካከለኛ (51–100)</strong> — Technical Analysis, Candlesticks<br>' +
-                '📙 <strong>3. ከፍተኛ (101–150)</strong> — Fundamental Analysis, Risk Management<br>' +
-                '📕 <strong>4. ፕሮፌሽናል (151–200)</strong> — Trading Psychology, Advanced Analysis<br><br>' +
+                '📗 <strong>1. ጀማሪ (1–50)</strong><br>' +
+                '<small style="opacity:.7">Forex መሠረቶች, Currency Pairs, Brokers, Trading Basics</small><br><br>' +
+                '📘 <strong>2. መካከለኛ (51–100)</strong><br>' +
+                '<small style="opacity:.7">Technical Analysis, Candlesticks, Market Structure</small><br><br>' +
+                '📙 <strong>3. ከፍተኛ (101–150)</strong><br>' +
+                '<small style="opacity:.7">Fundamental Analysis, Strategies, Risk Management</small><br><br>' +
+                '📕 <strong>4. ፕሮፌሽናል (151–200)</strong><br>' +
+                '<small style="opacity:.7">Trading Psychology, Advanced Analysis, የገበያ ውሳኔዎች</small><br><br>' +
                 'ፈተናውን ለመውሰድ ዝግጁ ነዎት? ↓'
             );
-            setTimeout(function(){
+            setTimeout(function () {
                 setOpts([
-                    { label: '✅ እንቀጥል! ፈተናውን ጀምር', fn: function(){
-                        clearOpts();
-                        addUser('✅ እንቀጥል!');
-                        var quiz = document.getElementById('quizSection');
-                        if (quiz) quiz.scrollIntoView({ behavior:'smooth' });
-                        var win = $i('tbBotWindow');
-                        if (win) { win.style.display='none'; isOpen=false; }
-                        setTimeout(function(){
-                            if (window.launchQuiz) window.launchQuiz();
-                        }, 800);
-                    }},
-                    { label: '🔙 ወደ ዋናው ምናሌ ተመለስ', fn: function(){ backToMenu(); } }
+                    {
+                        label: '✅ እንቀጥል! — ምዕራፍ 1 ጀምር',
+                        fn: function () {
+                            clearOpts();
+                            userMsg('✅ እንቀጥል!');
+                            var quiz = document.getElementById('quizSection');
+                            if (quiz) quiz.scrollIntoView({ behavior: 'smooth' });
+                            // close sidebar
+                            var sb = $i('tbBotWindow');
+                            var ov = $i('tbOverlay');
+                            if (sb) sb.classList.remove('open');
+                            if (ov) ov.classList.remove('open');
+                            isOpen = false;
+                            setTimeout(function () {
+                                if (window.launchQuiz) window.launchQuiz();
+                                // auto-pick forex topic
+                                setTimeout(function () {
+                                    if (window.pickTopic) window.pickTopic('forex');
+                                }, 1200);
+                            }, 600);
+                        }
+                    },
+                    { label: '🔙 ወደ ዋናው ምናሌ', fn: function () { backToMenu(); } }
                 ]);
-            }, 400);
-        }, 400);
+            }, 500);
+        }, 350);
     }
 
-    // ── CRYPTO QUIZ INTRO ─────────────────────────────────────
+    // ── CRYPTO QUIZ INTRO ──────────────────────────────────────
     function cryptoIntro() {
         clearOpts();
-        addUser('₿ የክሪፕቶ ትሬዲንግ ፈተና');
-        setTimeout(function() {
-            addBot(
-                'በጣም ጥሩ! 🎉 የክሪፕቶ ትሬዲንግ ፈተናዎችን ለመፈተን መርጠዋል!<br><br>' +
-                '<strong>30 ጥያቄዎች</strong> — Crypto Basics, Blockchain, Spot & Futures, Risk Management ↓'
+        userMsg('₿ የክሪፕቶ ትሬዲንግ ፈተና');
+        setTimeout(function () {
+            botMsg(
+                '🎉 <strong>የክሪፕቶ ትሬዲንግ ፈተናዎችን ለመፈተን መርጠዋል!</strong><br><br>' +
+                '<strong>30 ጥያቄዎች</strong> — Crypto Basics, Blockchain,<br>' +
+                'Spot &amp; Futures Trading, Risk Management ↓'
             );
-            setTimeout(function(){
+            setTimeout(function () {
                 setOpts([
-                    { label: '✅ እንቀጥል! ፈተናውን ጀምር', fn: function(){
-                        clearOpts();
-                        addUser('✅ እንቀጥል!');
-                        var quiz = document.getElementById('quizSection');
-                        if (quiz) quiz.scrollIntoView({ behavior:'smooth' });
-                        var win = $i('tbBotWindow');
-                        if (win) { win.style.display='none'; isOpen=false; }
-                        setTimeout(function(){
-                            if (window.launchQuiz) window.launchQuiz();
-                            setTimeout(function(){ if (window.pickTopic) window.pickTopic('crypto'); }, 1200);
-                        }, 800);
-                    }},
-                    { label: '🔙 ወደ ዋናው ምናሌ ተመለስ', fn: function(){ backToMenu(); } }
+                    {
+                        label: '✅ እንቀጥል! — ክሪፕቶ ፈተና ጀምር',
+                        fn: function () {
+                            clearOpts();
+                            userMsg('✅ እንቀጥል!');
+                            var quiz = document.getElementById('quizSection');
+                            if (quiz) quiz.scrollIntoView({ behavior: 'smooth' });
+                            var sb = $i('tbBotWindow');
+                            var ov = $i('tbOverlay');
+                            if (sb) sb.classList.remove('open');
+                            if (ov) ov.classList.remove('open');
+                            isOpen = false;
+                            setTimeout(function () {
+                                if (window.launchQuiz) window.launchQuiz();
+                                setTimeout(function () {
+                                    if (window.pickTopic) window.pickTopic('crypto');
+                                }, 1200);
+                            }, 600);
+                        }
+                    },
+                    { label: '🔙 ወደ ዋናው ምናሌ', fn: function () { backToMenu(); } }
                 ]);
-            }, 400);
-        }, 400);
+            }, 500);
+        }, 350);
     }
 
-    // ── FAQ ANSWERS ───────────────────────────────────────────
+    // ── FAQ ANSWERS ────────────────────────────────────────────
     function bookContents() {
         clearOpts();
-        addUser('📚 የመጽሃፍቱ ይዘቶች ማወቅ እፈልጋለሁ');
-        setTimeout(function(){
-            addBot(
+        userMsg('📚 የመጽሃፍቱ ይዘቶች ማወቅ እፈልጋለሁ');
+        setTimeout(function () {
+            botMsg(
                 '📚 <strong>1. ፎሬክስ ትሬዲንግ፦</strong><br>' +
-                '✅ Forex መሠረቶች | ✅ Currency Pairs | ✅ Trading Sessions<br>' +
-                '✅ Technical Analysis | ✅ Candlestick Patterns<br>' +
-                '✅ Smart Money Concept | ✅ Risk Management<br>' +
-                '✅ Trading Psychology | ✅ Demo Account | ✅ Practical Trading<br><br>' +
+                '✅ Forex መሠረቶች &nbsp;✅ Currency Pairs &nbsp;✅ Trading Sessions<br>' +
+                '✅ Technical Analysis &nbsp;✅ Candlestick Patterns<br>' +
+                '✅ Smart Money Concept (SMC) &nbsp;✅ Risk Management<br>' +
+                '✅ Trading Psychology &nbsp;✅ Demo Account &nbsp;✅ Practical Trading<br><br>' +
                 '₿ <strong>2. ክሪፕቶ ትሬዲንግ፦</strong><br>' +
-                '✅ Crypto Basics | ✅ Blockchain | ✅ Spot & Futures<br>' +
-                '✅ Binance Account | ✅ Risk Management | ✅ Trading Psychology'
+                '✅ Crypto Basics &nbsp;✅ Blockchain &nbsp;✅ Spot &amp; Futures<br>' +
+                '✅ Binance Account &nbsp;✅ Risk Management &nbsp;✅ Trading Psychology'
             );
-            setTimeout(function(){ backToMenu(); }, 400);
-        }, 300);
+            setTimeout(backToMenu, 400);
+        }, 350);
     }
 
     function howToGet() {
         clearOpts();
-        addUser('💳 ክፍያ ከፈልኩ መጽሃፉን እንዴት አገኛለሁ?');
-        setTimeout(function(){
-            addBot(
+        userMsg('💳 ክፍያ ከፈልኩ መጽሃፉን እንዴት አገኛለሁ?');
+        setTimeout(function () {
+            botMsg(
                 '✅ ክፍያ ከተረጋገጠ <strong>PDF ወዲያውኑ</strong> ወደ Telegram ወይም WhatsApp ይላካሉ!<br><br>' +
                 '📲 ለማዘዝ፦<br>' +
                 '• Telegram: <strong>@tagbridge123</strong><br>' +
                 '• WhatsApp: <strong>+251991856292</strong>'
             );
-            setTimeout(function(){ backToMenu(); }, 400);
-        }, 300);
+            setTimeout(backToMenu, 400);
+        }, 350);
     }
 
     function forBeginners() {
         clearOpts();
-        addUser('🌱 መጽሃፉ ለጀማሪ ተስማሚ ነው?');
-        setTimeout(function(){
-            addBot('✅ አዎ! ሁሉም መጽሃፍቶቻችን <strong>ከዜሮ ጀምሮ</strong> በቀላል አማርኛ ተጽፈዋሉ። ምንም ቀዳሚ እውቀት አያስፈልግም!');
-            setTimeout(function(){ backToMenu(); }, 400);
-        }, 300);
+        userMsg('🌱 መጽሃፉ ለጀማሪ ተስማሚ ነው?');
+        setTimeout(function () {
+            botMsg(
+                '✅ አዎ! ሁሉም መጽሃፍቶቻችን <strong>ከዜሮ ጀምሮ</strong> በቀላል አማርኛ ተጽፈዋሉ።<br>' +
+                'ምንም ቀዳሚ እውቀት አያስፈልግም — ሙሉ ሂደቱ ደረጃ በደረጃ ይገለጻሉ!'
+            );
+            setTimeout(backToMenu, 400);
+        }, 350);
     }
 
     function paymentMethods() {
         clearOpts();
-        addUser('💰 ምን አይነት ክፍያ ዘዴ አለ?');
-        setTimeout(function(){
-            addBot(
+        userMsg('💰 ምን አይነት ክፍያ ዘዴ አለ?');
+        setTimeout(function () {
+            botMsg(
                 '✅ ተቀባይ ክፍያ ዘዴዎች፦<br>' +
                 '• <strong>CBE Birr</strong><br>' +
                 '• <strong>Telebirr</strong><br>' +
                 '• <strong>Bank Transfer</strong><br><br>' +
-                'ዋጋዎች፦ ፎሬክስ=<strong>350ብር</strong> | ክሪፕቶ=<strong>400ብር</strong> | ጥቅል=<strong>500ብር</strong>'
+                '💰 ዋጋዎች፦ ፎሬክስ = <strong>350ብር</strong> | ክሪፕቶ = <strong>400ብር</strong> | ጥቅል = <strong>500ብር</strong>'
             );
-            setTimeout(function(){ backToMenu(); }, 400);
-        }, 300);
+            setTimeout(backToMenu, 400);
+        }, 350);
     }
 
     function otherOptions() {
         clearOpts();
-        addUser('🎯 ከመጽሃፍ ሌሎች አማራጮች?');
-        setTimeout(function(){
-            addBot(
+        userMsg('🎯 ከመጽሃፍ ሌሎች አማራጮች?');
+        setTimeout(function () {
+            botMsg(
                 '✅ ከመጽሃፍ በተጨማሪ፦<br>' +
                 '• 📊 <strong>Demo Account</strong> — ምናባዊ ለልምምድ (ነጻ)<br>' +
-                '• 📢 <strong>Telegram</strong>: t.me/tagbridge<br>' +
+                '• 📢 <strong>Telegram Channel</strong>: t.me/tagbridge<br>' +
                 '• 🎵 <strong>TikTok</strong>: @tagbridge<br>' +
-                '• 💬 <strong>WhatsApp Channel</strong>'
+                '• 💬 <strong>WhatsApp Channel</strong> — ቅናሾችና ዝርዝሮች'
             );
-            setTimeout(function(){ backToMenu(); }, 400);
-        }, 300);
+            setTimeout(backToMenu, 400);
+        }, 350);
     }
 
     function enterChat() {
         clearOpts();
         phase = 'chat';
-        addUser('❓ ሌሎች ጥያቄዎች ለጽፍ');
-        setTimeout(function(){
-            addBot('ጥያቄዎን ይጻፉ — ምላሽ ለመስጠት ዝግጁ ነኝ! 💬');
+        userMsg('❓ ሌላ ጥያቄ አለኝ — ልጻፍ');
+        setTimeout(function () {
+            botMsg('ጥያቄዎን ይጻፉ — ምላሽ ለመስጠት ዝግጁ ነኝ! 💬');
         }, 300);
     }
 
-    function backToMenu() {
-        phase = 'menu';
-        setTimeout(function(){
-            addBot('ሌሎች ጥያቄዎችም ይምረጡ 👇');
-            setTimeout(showMenu, 300);
-        }, 300);
-    }
-
-    // ── SEND TEXT ─────────────────────────────────────────────
-    window.sendTbMessage = function() {
+    // ── SEND TEXT MESSAGE ──────────────────────────────────────
+    window.sendTbMessage = function () {
         var inp = $i('tbBotInput');
         if (!inp || busy) return;
         var text = inp.value.trim();
         if (!text) return;
         inp.value = '';
 
+        // Not in chat mode — redirect to menu
         if (phase !== 'chat') {
-            addUser(text);
-            setTimeout(function(){
-                addBot('ከታች ካሉ ምናሌዎች ይምረጡ 👇');
+            userMsg(text);
+            setTimeout(function () {
+                botMsg('ከታች ካሉ ምናሌዎች ይምረጡ 👇');
                 setTimeout(showMenu, 300);
             }, 200);
             return;
         }
 
-        addUser(text);
-        history.push({ role:'user', parts:[{ text:text }] });
-        busy = true; inp.disabled = true;
+        // Chat mode — call Gemini
+        userMsg(text);
+        history.push({ role: 'user', parts: [{ text: text }] });
+        busy = true;
+        inp.disabled = true;
         showDots();
 
         fetch(API_URL, {
-            method:'POST',
-            headers:{ 'Content-Type':'application/json', 'x-goog-api-key':API_KEY },
+            method: 'POST',
+            headers: {
+                'Content-Type':    'application/json',
+                'x-goog-api-key':  API_KEY
+            },
             body: JSON.stringify({
-                system_instruction:{ parts:[{ text:SYSTEM_PROMPT }] },
-                contents: history,
-                generationConfig:{ temperature:0.7, maxOutputTokens:400, topP:0.9 }
+                system_instruction: { parts: [{ text: SYS }] },
+                contents:           history,
+                generationConfig:   { temperature: 0.7, maxOutputTokens: 450, topP: 0.9 }
             })
         })
-        .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
-        .then(function(data){
-            hideDots(); busy=false; inp.disabled=false; inp.focus();
-            var reply='';
-            try{ reply=data.candidates[0].content.parts[0].text; }catch(e){}
-            if(!reply) reply='ይቅርታ — አሁን ምላሽ አልቻልኩም።';
-            history.push({ role:'model', parts:[{ text:reply }] });
-            addBot(reply.replace(/\n/g,'<br>'));
-            setTimeout(function(){
-                setOpts([{ label:'🔙 ወደ ዋናው ምናሌ ተመለስ', fn:function(){ backToMenu(); } }]);
+        .then(function (r) {
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            return r.json();
+        })
+        .then(function (data) {
+            hideDots();
+            busy = false;
+            inp.disabled = false;
+            inp.focus();
+            var reply = '';
+            try { reply = data.candidates[0].content.parts[0].text; } catch (e) {}
+            if (!reply) reply = 'ይቅርታ — አሁን ምላሽ አልቻልኩም። ቆየት ብለው ይሞክሩ።';
+            history.push({ role: 'model', parts: [{ text: reply }] });
+            botMsg(reply.replace(/\n/g, '<br>'));
+            setTimeout(function () {
+                setOpts([
+                    { label: '🔙 ወደ ዋናው ምናሌ ተመለስ', fn: function () { backToMenu(); } }
+                ]);
             }, 500);
         })
-        .catch(function(err){
-            hideDots(); busy=false; inp.disabled=false; inp.focus();
-            var msg = err.message.indexOf('401')!==-1
-                ? 'ለዚህ ጥያቄ ያናግሩን 📲 Telegram: <strong>@tagbridge123</strong>'
+        .catch(function (err) {
+            hideDots();
+            busy = false;
+            inp.disabled = false;
+            inp.focus();
+            var msg = (err.message.indexOf('401') !== -1 || err.message.indexOf('403') !== -1)
+                ? 'ለዚህ ጥያቄ በቀጥታ ያናግሩን 📲<br>Telegram: <strong>@tagbridge123</strong>'
                 : 'ይቅርታ — ኔትወርክ ችግር። ቆየት ብለው ይሞክሩ።';
-            addBot(msg);
-            setTimeout(function(){
-                setOpts([{ label:'🔙 ወደ ዋናው ምናሌ ተመለስ', fn:function(){ backToMenu(); } }]);
+            botMsg(msg);
+            setTimeout(function () {
+                setOpts([
+                    { label: '🔙 ወደ ዋናው ምናሌ ተመለስ', fn: function () { backToMenu(); } }
+                ]);
             }, 500);
         });
     };
 
 })();
+
