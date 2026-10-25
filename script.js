@@ -1224,7 +1224,7 @@ document.querySelectorAll('.product-card').forEach(function(card) {
             // First open — show welcome
             if ($i('tbBotMessages').children.length === 0) {
                 setTimeout(function () {
-                    botMsg('ሰላም! 👋 እኔ የታግ ብሪጅ AI ቦት ነኝ።<br>ከታች ካሉ ጥያቄዎች ይምረጡ ወይም ጽፈው ይጠይቁ 👇');
+                    botMsg('ሰላም! 👋 እኔ የታግ ብሪጅ AI ቦት ነኝ።<br>ለምረዳዎ ዝግጁ ነኝ — ከታች ካሉት ጥያቄዎች ይምረጡ ወይም ጽፈው ይጠይቁ 👇');
                     setTimeout(showMenu, 350);
                 }, 200);
             }
@@ -1239,14 +1239,12 @@ document.querySelectorAll('.product-card').forEach(function(card) {
     function showMenu() {
         phase = 'menu';
         setOpts([
-            { label: '💱 የፎሬክስ ትሬዲንግ ፈተና',              fn: function () { forexIntro();      } },
-            { label: '₿  የክሪፕቶ ትሬዲንግ ፈተና',             fn: function () { cryptoIntro();     } },
             { label: '📚 የመጽሃፍቱ ይዘቶች ማወቅ እፈልጋለሁ',     fn: function () { bookContents();    } },
             { label: '💳 ክፍያ ከፈልኩ መጽሃፉን እንዴት አገኛለሁ?', fn: function () { howToGet();        } },
-            { label: '🌱 መጽሃፉ ለጀማሪ ተስማሚ ነው?',          fn: function () { forBeginners();    } },
-            { label: '💰 ምን አይነት ክፍያ ዘዴ አለ?',           fn: function () { paymentMethods();  } },
-            { label: '🎯 ከመጽሃፍ ሌሎች አማራጮች?',            fn: function () { otherOptions();    } },
-            { label: '❓ ሌላ ጥያቄ አለኝ — ልጻፍ',            fn: function () { enterChat();       } }
+            { label: '🌱 መጽሃፉ ለጀማሪዎች ተስማሚ ነው?',         fn: function () { forBeginners();    } },
+            { label: '💰 ምን አይነት ክፍያ ዘዴዎች አሉ?',           fn: function () { paymentMethods();  } },
+            { label: '🎯 ከመጽሃፍ ሌሎች አማራጮች?',              fn: function () { otherOptions();    } },
+            { label: '❓ ሌላ ጥያቄ አለኝ — ልጻፍ',              fn: function () { enterChat();       } }
         ]);
     }
 
