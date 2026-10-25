@@ -2795,3 +2795,27 @@ html[lang="en"] .lang-en-only { display: inline-block; }
     .quiz-ai-avatar { width:90px; height:90px; }
     .quiz-ai-face { width:90px; height:90px; }
 }
+
+/* ── Score Counter ── */
+.quiz-score-counter {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+    font-size: 0.72rem;
+    font-weight: 800;
+}
+.qsc-correct { color: #38ef7d; }
+.qsc-wrong   { color: #ff6060; }
+.qsc-total   { color: rgba(255,255,255,0.45); }
+.qsc-sep     { color: rgba(255,255,255,0.2); }
+
+/* ── Feedback bubble colors ── */
+.quiz-bubble-bot.bubble-correct {
+    background: linear-gradient(135deg, rgba(56,239,125,0.18), rgba(17,153,142,0.18));
+    border-color: rgba(56,239,125,0.4);
+}
+.quiz-bubble-bot.bubble-wrong {
+    background: linear-gradient(135deg, rgba(255,80,80,0.15), rgba(200,0,0,0.12));
+    border-color: rgba(255,80,80,0.35);
+}
