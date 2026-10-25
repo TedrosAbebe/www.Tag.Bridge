@@ -1120,7 +1120,7 @@ document.querySelectorAll('.product-card').forEach(function(card) {
 (function() {
 
     var API_KEY = 'AQ.Ab8RN6LwwLlWmLt5BsmUcMc1YDfNaLfsMaSHV9r-I46I9kZrPg';
-    var API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + API_KEY;
+    var API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
 
     var SYSTEM_PROMPT = 'አንተ የታግ ብሪጅ (Tag Bridge) ኦፊሽያል AI ረዳት ቦት ነህ። ስምህ "ታግ ብሪጅ ቦት" ነው።\n\nስለ ታግ ብሪጅ:\nታግ ብሪጅ ፎሬክስ እና ክሪፕቶ ትሬዲንግ PDF መጽሃፍት በአማርኛ ቋንቋ ያቀርባሉ።\n\nመጽሃፍቱ ዋጋዎች:\n- የፎሬክስ ትሬዲንግ = 350 ብር\n- የክሪፕቶ ትሬዲንግ = 400 ብር\n- ሁለቱም ጥቅል = 500 ብር\n\nለማዘዝ: Telegram @tagbridge123 ወይም WhatsApp +251991856292\nክፍያ: CBE Birr፣ Telebirr፣ Bank Transfer\nPDF ክፍያ ከተረጋገጠ ወደ Telegram/WhatsApp ይላካሉ።\n\nቻናሎች: t.me/tagbridge | TikTok: @tagbridge\n\nህግጋት:\n- ሁልጊዜ በአማርኛ ብቻ ምላሽ ስጥ\n- ጨዋና ሙያዊ ሁን\n- ትርፍ ዋስትና አትስጥ\n- አጭርና ግልጽ ምላሽ ስጥ';
 
@@ -1306,7 +1306,10 @@ document.querySelectorAll('.product-card').forEach(function(card) {
 
         fetch(API_URL, {
             method:'POST',
-            headers:{'Content-Type':'application/json'},
+            headers:{
+                'Content-Type':'application/json',
+                'x-goog-api-key': API_KEY
+            },
             body: JSON.stringify(body)
         })
         .then(function(r) {
