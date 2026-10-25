@@ -698,7 +698,71 @@ document.querySelectorAll('.product-card').forEach(function(card) {
     };
 
     // ── ASK ────────────────────────────────────────────────────
+    // ── PASSWORD GATE ──────────────────────────────────────────
+    var QUIZ_PASSWORD   = 'ይህበታግ-ብሪጅየተዘጋጀመጽሃፍነው';
+    var passwordPassed  = false;
+    var GATE_AFTER_Q    = 10; // ጥያቄ 10 ካለቀ gate ይታያሉ
+
+    function showPasswordGate(onSuccess) {
+        clearOpts();
+        botMsg(
+            '🔐 <strong>ለመቀጠል ፓስዎርድ ያስፈልጋሉ።</strong><br><br>' +
+            'ከታግ ብሪጅ መጽሃፍ ሲወስዱ የተላከልዎትን ፓስዎርድ ያስገቡ።',
+            '', 300
+        ).then(function() {
+            var opts = $id('quizOptions');
+            opts.innerHTML = '';
+
+            var wrap = document.createElement('div');
+            wrap.className = 'quiz-pw-wrap';
+            wrap.innerHTML =
+                '<div class="quiz-pw-box">' +
+                  '<div class="quiz-pw-icon">🔐</div>' +
+                  '<p class="quiz-pw-label">ፓስዎርድ ያስገቡ</p>' +
+                  '<input type="password" id="quizPwInput" class="quiz-pw-input" placeholder="••••••••••••" autocomplete="off">' +
+                  '<div id="quizPwError" class="quiz-pw-error" style="display:none;">❌ ፓስዎርዱ ትክክል አይደለም። እንደገና ይሞክሩ።</div>' +
+                  '<button class="quiz-pw-btn" onclick="submitQuizPassword()">ፈተናውን እንቀጥል →</button>' +
+                '</div>';
+            opts.appendChild(wrap);
+
+            // store callback
+            window._quizPwCallback = onSuccess;
+
+            // allow Enter key
+            setTimeout(function() {
+                var inp = document.getElementById('quizPwInput');
+                if (inp) inp.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') window.submitQuizPassword();
+                });
+            }, 100);
+        });
+    }
+
+    window.submitQuizPassword = function() {
+        var inp = document.getElementById('quizPwInput');
+        var err = document.getElementById('quizPwError');
+        if (!inp) return;
+        var val = inp.value.trim();
+        if (val === QUIZ_PASSWORD) {
+            passwordPassed = true;
+            clearOpts();
+            userMsg('🔑 ••••••••••••');
+            botMsg('✅ <strong>ፓስዎርዱ ትክክለኛ ነው!</strong> ፈተናውን እንቀጥል 💪', 'bubble-correct', 200).then(function() {
+                if (window._quizPwCallback) window._quizPwCallback();
+            });
+        } else {
+            if (err) { err.style.display = 'block'; }
+            if (inp) { inp.value = ''; inp.focus(); inp.style.borderColor = '#ff5050'; }
+            setTimeout(function() { if (inp) inp.style.borderColor = ''; }, 1500);
+        }
+    };
+
     function askQuestion(idx){
+        // Password gate after question 10 (if not yet passed)
+        if (idx === GATE_AFTER_Q && !passwordPassed) {
+            showPasswordGate(function() { askQuestion(idx); });
+            return;
+        }
         if(idx >= questions.length){ showResult(); return; }
         updateCounter();
         var q = questions[idx];
