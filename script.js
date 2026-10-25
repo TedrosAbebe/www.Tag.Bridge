@@ -1151,11 +1151,29 @@ document.querySelectorAll('.product-card').forEach(function(card) {
         if (!msgs) return;
         var d = document.createElement('div');
         d.className = 'tb-msg-bot';
-        d.innerHTML =
-            '<div class="tb-msg-bot-avatar">🤖</div>' +
-            '<div class="tb-msg-bot-bubble">' + html + '</div>';
+        var bubble = document.createElement('div');
+        bubble.className = 'tb-msg-bot-bubble';
+        var avatar = document.createElement('div');
+        avatar.className = 'tb-msg-bot-avatar';
+        avatar.textContent = '🤖';
+        d.appendChild(avatar);
+        d.appendChild(bubble);
         msgs.appendChild(d);
-        scrollBot();
+
+        // Typewriter — strip HTML tags for plain text, then reveal char by char
+        // But keep HTML formatting — render word by word instead
+        var words = html.split(' ');
+        var i = 0;
+        var revealed = '';
+        function nextWord() {
+            if (i >= words.length) { scrollBot(); return; }
+            revealed += (i > 0 ? ' ' : '') + words[i];
+            bubble.innerHTML = revealed;
+            i++;
+            scrollBot();
+            setTimeout(nextWord, 28);
+        }
+        nextWord();
     }
 
     // Add user message bubble
@@ -1224,7 +1242,7 @@ document.querySelectorAll('.product-card').forEach(function(card) {
             // First open — show welcome
             if ($i('tbBotMessages').children.length === 0) {
                 setTimeout(function () {
-                    botMsg('ሰላም! 👋 እኔ የታግ ብሪጅ AI ቦት ነኝ።<br>ለምረዳዎ ዝግጁ ነኝ — ከታች ካሉት ጥያቄዎች ይምረጡ ወይም ጽፈው ይጠይቁ 👇');
+                    botMsg('ሰላም! 👋 እኔ የታግ ብሪጅ AI ቦት ነኝ።<br>ልረዳዎት ዝግጁ ነኝ — ከታች ካሉት ጥያቄዎች ይምረጡ ወይም ጽፈው ይጠይቁ 👇');
                     setTimeout(showMenu, 350);
                 }, 200);
             }
