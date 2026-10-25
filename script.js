@@ -905,19 +905,22 @@ document.querySelectorAll('.product-card').forEach(function(card) {
     // ── RETRY ──────────────────────────────────────────────────
     window.retryQuiz = function(){
         quizActive=false; score=0; wrongCount=0; currentQ=0; questions=[];
-        passwordPassed = false; // reset password gate on retry
+        passwordPassed = false;
         var landing = $id('quizLanding');
         var box     = $id('quizBox');
         var chat    = $id('quizChat');
         if(chat)    chat.innerHTML = '';
         clearOpts();
         if(box)     box.style.display     = 'none';
-        if(landing) landing.style.display = 'flex';
+        if(landing) { landing.style.display = 'flex'; }
         var bar=$id('quizProgressBar'), co=$id('qscCorrect'), wr=$id('qscWrong'), tot=$id('qscTotal');
         if(bar) bar.style.width='0%';
         if(co)  co.textContent='✅ 0';
         if(wr)  wr.textContent='❌ 0';
         if(tot) tot.textContent='0/0';
+        // scroll back to quiz section
+        var section = document.getElementById('quizSection');
+        if(section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 
     window.startQuiz = window.launchQuiz;
