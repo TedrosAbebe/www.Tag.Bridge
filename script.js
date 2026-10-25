@@ -801,10 +801,23 @@ document.querySelectorAll('.product-card').forEach(function(card) {
                     }
                     botMsg(feedbackHtml, feedbackClass, 300).then(function(){
                         clearOpts();
-                        // small "ቀጥለን ..." prompt then next question
-                        botMsg('ቀጣዩ ጥያቄ... 👇', '', 200).then(function(){
+                        // Show "ቀጣዩ ጥያቄ →" button — user must tap to proceed
+                        var opts = $id('quizOptions');
+                        var nextWrap = document.createElement('div');
+                        nextWrap.style.cssText = 'padding:8px 18px 16px; text-align:right;';
+                        var nextBtn = document.createElement('button');
+                        nextBtn.className = 'quiz-next-btn';
+                        nextBtn.innerHTML = 'ቀጣዩ ጥያቄ <span style="font-size:1.1rem;">→</span>';
+                        nextBtn.onclick = function(){
+                            nextBtn.disabled = true;
+                            clearOpts();
                             askQuestion(currentQ);
-                        });
+                        };
+                        nextWrap.appendChild(nextBtn);
+                        opts.appendChild(nextWrap);
+                        // scroll to show button
+                        var chat = $id('quizChat');
+                        if(chat) chat.scrollTop = chat.scrollHeight;
                     });
                 };
                 container.appendChild(btn);
