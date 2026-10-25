@@ -1349,16 +1349,49 @@ document.querySelectorAll('.product-card').forEach(function(card) {
         userMsg('📚 የመጽሃፍቱ ይዘቶች ማወቅ እፈልጋለሁ');
         setTimeout(function () {
             botMsg(
-                '📚 <strong>1. ፎሬክስ ትሬዲንግ፦</strong><br>' +
-                '✅ Forex መሠረቶች &nbsp;✅ Currency Pairs &nbsp;✅ Trading Sessions<br>' +
-                '✅ Technical Analysis &nbsp;✅ Candlestick Patterns<br>' +
-                '✅ Smart Money Concept (SMC) &nbsp;✅ Risk Management<br>' +
-                '✅ Trading Psychology &nbsp;✅ Demo Account &nbsp;✅ Practical Trading<br><br>' +
-                '₿ <strong>2. ክሪፕቶ ትሬዲንግ፦</strong><br>' +
-                '✅ Crypto Basics &nbsp;✅ Blockchain &nbsp;✅ Spot &amp; Futures<br>' +
-                '✅ Binance Account &nbsp;✅ Risk Management &nbsp;✅ Trading Psychology'
+                '📚 <strong>1. የፎሬክስ ትሬዲንግ መጽሃፍ ይዘቶች፦</strong><br><br>' +
+                '✅ የፎሬክስ መሠረቶች<br>' +
+                '✅ የፎሬክስ ገበያ መዋቅር<br>' +
+                '✅ የምንዛሬ ጥንዶች (Currency Pairs)<br>' +
+                '✅ የትሬዲንግ ሰዓታት (Trading Sessions)<br>' +
+                '✅ የፎሬክስ አካውንት አጠቃቀም<br>' +
+                '✅ የፎሬክስ ትሬዲንግ ፕላትፎርም አጠቃቀም (MT4/MT5)<br>' +
+                '✅ የፎሬክስ ትሬዲንግ አይነቶች<br>' +
+                '✅ ቴክኒካል ትንተና (Technical Analysis)<br>' +
+                '✅ ቴክኒካል ኢንዲኬተሮች<br>' +
+                '✅ Price Action<br>' +
+                '✅ የካንድልስቲክ ፓተርኖች (Candlestick Patterns)<br>' +
+                '✅ Smart Money Concept (SMC)<br>' +
+                '✅ ፋንዳሜንታል ትንተና (Fundamental Analysis)<br>' +
+                '✅ የፎሬክስ ትሬዲንግ ስትራቴጂ<br>' +
+                '✅ Risk Management (የሪስክ ማኔጅመንት)<br>' +
+                '✅ Trading Psychology (የትሬዲንግ ስነ-ልቦና)<br>' +
+                '✅ Trading Plan እና አያያዝ<br>' +
+                '✅ Demo Account ልምምድ<br>' +
+                '✅ Practical Trading (ተግባራዊ ትሬዲንግ)<br>' +
+                '✅ በትሬዲንግ ገንዘብ ማግኛ መንገዶች<br>' +
+                '✅ እና ሌሎችም...'
             );
-            setTimeout(backToMenu, 400);
+            setTimeout(function () {
+                botMsg(
+                    '₿ <strong>2. የክሪፕቶ ትሬዲንግ መጽሃፍ ይዘቶች፦</strong><br><br>' +
+                    '✅ የክሪፕቶ ከረንሲ ምንነት<br>' +
+                    '✅ የክሪፕቶ ከረንሲ አይነቶች<br>' +
+                    '✅ Blockchain ምንነት<br>' +
+                    '✅ Spot &amp; Margin Trading<br>' +
+                    '✅ Futures Trading<br>' +
+                    '✅ Spot Trading<br>' +
+                    '✅ Arbitrage Trading<br>' +
+                    '✅ Copy Trading<br>' +
+                    '✅ የክሪፕቶ ትሬዲንግ ስትራቴጂዎች<br>' +
+                    '✅ የክሪፕቶ ትሬዲንግ ትንተና አይነቶች<br>' +
+                    '✅ ክሪፕቶ ትሬዲንግ ለመጀመር የሚያስፈልጉ ነገሮች<br>' +
+                    '✅ የባይናንስ አካውንት አከፋፈት<br>' +
+                    '✅ Risk Management<br>' +
+                    '✅ Trading Psychology'
+                );
+                setTimeout(backToMenu, 400);
+            }, 600);
         }, 350);
     }
 
@@ -1367,7 +1400,7 @@ document.querySelectorAll('.product-card').forEach(function(card) {
         userMsg('💳 ክፍያ ከፈልኩ መጽሃፉን እንዴት አገኛለሁ?');
         setTimeout(function () {
             botMsg(
-                '✅ ክፍያ ከተረጋገጠ <strong>PDF ወዲያውኑ</strong> ወደ Telegram ወይም WhatsApp ይላካሉ!<br><br>' +
+                '✅ ክፍያ ከተረጋገጠ በኋላ <strong>ፒዲኤፍ መጽሃፉ በደቂቃዎች ውስጥ</strong> ወደ WhatsApp ወይም Telegram ይላካሉ።<br><br>' +
                 '📲 ለማዘዝ፦<br>' +
                 '• Telegram: <strong>@tagbridge123</strong><br>' +
                 '• WhatsApp: <strong>+251991856292</strong>'
@@ -1378,10 +1411,10 @@ document.querySelectorAll('.product-card').forEach(function(card) {
 
     function forBeginners() {
         clearOpts();
-        userMsg('🌱 መጽሃፉ ለጀማሪ ተስማሚ ነው?');
+        userMsg('🌱 መጽሃፉ ለጀማሪዎች ተስማሚ ነው?');
         setTimeout(function () {
             botMsg(
-                '✅ አዎ! ሁሉም መጽሃፍቶቻችን <strong>ከዜሮ ጀምሮ</strong> በቀላል አማርኛ ተጽፈዋሉ።<br>' +
+                '✅ አዎ! ሁሉም መጽሃፍቶቻችን <strong>ለጀማሪዎች ከዜሮ ጀምሮ</strong> በቀላል አማርኛ ቋንቋ ተጽፈዋሉ።<br><br>' +
                 'ምንም ቀዳሚ እውቀት አያስፈልግም — ሙሉ ሂደቱ ደረጃ በደረጃ ይገለጻሉ!'
             );
             setTimeout(backToMenu, 400);
@@ -1390,14 +1423,18 @@ document.querySelectorAll('.product-card').forEach(function(card) {
 
     function paymentMethods() {
         clearOpts();
-        userMsg('💰 ምን አይነት ክፍያ ዘዴ አለ?');
+        userMsg('💰 ምን አይነት የክፍያ ዘዴዎች አሉ?');
         setTimeout(function () {
             botMsg(
-                '✅ ተቀባይ ክፍያ ዘዴዎች፦<br>' +
-                '• <strong>CBE Birr</strong><br>' +
-                '• <strong>Telebirr</strong><br>' +
-                '• <strong>Bank Transfer</strong><br><br>' +
-                '💰 ዋጋዎች፦ ፎሬክስ = <strong>350ብር</strong> | ክሪፕቶ = <strong>400ብር</strong> | ጥቅል = <strong>500ብር</strong>'
+                '✅ ተቀባይ የክፍያ ዘዴዎች፦<br><br>' +
+                '• <strong>CBE Birr</strong> (ሲቢኢ ብር)<br>' +
+                '• <strong>Telebirr</strong> (ቴሌብር)<br>' +
+                '• <strong>Bank Transfer</strong> (የባንክ ዝውውር)<br><br>' +
+                '💰 <strong>ዋጋዎች፦</strong><br>' +
+                '• ፎሬክስ ትሬዲንግ = <strong>350 ብር</strong><br>' +
+                '• ክሪፕቶ ትሬዲንግ = <strong>400 ብር</strong><br>' +
+                '• ሁለቱም ጥቅል = <strong>500 ብር</strong> (ቅናሽ!)<br><br>' +
+                'ለክፍያ ዝርዝር በ<strong>Telegram @tagbridge123</strong> ወይም <strong>WhatsApp +251991856292</strong> ያናግሩ።'
             );
             setTimeout(backToMenu, 400);
         }, 350);
