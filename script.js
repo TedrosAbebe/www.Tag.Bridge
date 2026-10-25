@@ -699,7 +699,7 @@ document.querySelectorAll('.product-card').forEach(function(card) {
 
     // ── ASK ────────────────────────────────────────────────────
     // ── PASSWORD GATE ──────────────────────────────────────────
-    var QUIZ_PASSWORD   = 'ይህበታግ-ብሪጅየተዘጋጀመጽሃፍነው';
+    var QUIZ_PASSWORD   = 'ይህበታግ-ብሪጅየተዘጋጀመጽሃፍነው'.replace(/[\u200B-\u200D\uFEFF\u00A0]/g,'').replace(/\s+/g,'');
     var passwordPassed  = false;
     var GATE_AFTER_Q    = 10; // ጥያቄ 10 ካለቀ gate ይታያሉ
 
@@ -719,7 +719,7 @@ document.querySelectorAll('.product-card').forEach(function(card) {
                 '<div class="quiz-pw-box">' +
                   '<div class="quiz-pw-icon">🔐</div>' +
                   '<p class="quiz-pw-label">ፓስዎርድ ያስገቡ</p>' +
-                  '<input type="password" id="quizPwInput" class="quiz-pw-input" placeholder="••••••••••••" autocomplete="off">' +
+                  '<input type="text" id="quizPwInput" class="quiz-pw-input" placeholder="ፓስዎርድ ይጻፉ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">' +
                   '<div id="quizPwError" class="quiz-pw-error" style="display:none;">❌ ፓስዎርዱ ትክክል አይደለም። እንደገና ይሞክሩ።</div>' +
                   '<button class="quiz-pw-btn" onclick="submitQuizPassword()">ፈተናውን እንቀጥል →</button>' +
                 '</div>';
@@ -742,7 +742,7 @@ document.querySelectorAll('.product-card').forEach(function(card) {
         var inp = document.getElementById('quizPwInput');
         var err = document.getElementById('quizPwError');
         if (!inp) return;
-        var val = inp.value.trim();
+        var val = inp.value.trim().replace(/[\u200B-\u200D\uFEFF\u00A0]/g, '').replace(/\s+/g,'');
         if (val === QUIZ_PASSWORD) {
             passwordPassed = true;
             clearOpts();
