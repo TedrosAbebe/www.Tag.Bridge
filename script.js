@@ -643,7 +643,7 @@ document.querySelectorAll('.product-card').forEach(function(card) {
         if(box){ box.style.display = 'block'; }
         $id('quizChat').innerHTML = '';
         clearOpts();
-        score=0; wrongCount=0; currentQ=0;
+        score=0; wrongCount=0; currentQ=0; passwordPassed=false;
         updateCounter();
         startIntro();
     };
@@ -758,8 +758,8 @@ document.querySelectorAll('.product-card').forEach(function(card) {
     };
 
     function askQuestion(idx){
-        // Password gate after question 10 (if not yet passed)
-        if (idx === GATE_AFTER_Q && !passwordPassed) {
+        // Password gate — ጥያቄ 10 ካለቀ Password ሳያስገቡ አያልፉም
+        if (idx >= GATE_AFTER_Q && !passwordPassed) {
             showPasswordGate(function() { askQuestion(idx); });
             return;
         }
@@ -862,6 +862,7 @@ document.querySelectorAll('.product-card').forEach(function(card) {
     // ── RETRY ──────────────────────────────────────────────────
     window.retryQuiz = function(){
         quizActive=false; score=0; wrongCount=0; currentQ=0; questions=[];
+        passwordPassed = false; // reset password gate on retry
         var landing = $id('quizLanding');
         var box     = $id('quizBox');
         var chat    = $id('quizChat');
