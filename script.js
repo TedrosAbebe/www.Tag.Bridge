@@ -470,66 +470,61 @@ document.querySelectorAll('.product-card').forEach(function(card) {
 (function initQuiz() {
 
     var questions = [
-        {
-            q:  'Pip (ፒፕ) ምንድን ነው? 💱',
-            opts: ['የምንዛሬ ጥንድ ዋጋ ትንሹ ለውጥ', 'የፎሬክስ ብሮከር ስም', 'ዲጂታል ኮይን አይነት', 'የጊዜ ፍሬም ስም'],
-            correct: 0,
-            explain: 'ፒፕ = የምንዛሬ ዋጋ ትንሹ ሊሆን የሚችል ለውጥ ነው (0.0001 ለበዛ currencies).'
-        },
-        {
-            q:  'Blockchain ምንድን ነው? ⛓️',
-            opts: ['ዲሴንትራላይዝድ ዲጂታል ሌጀር', 'የባንክ አይነት', 'ክሪፕቶ ኤክስቼንጅ', 'ትሬዲንግ ስትራቴጂ'],
-            correct: 0,
-            explain: 'ብሎክቼይን = ዲሴንትራላይዝድ ዲጂታል መዝገብ ሲሆን ሁሉም ትራንዛክሽኖች ይቀዳሉ።'
-        },
-        {
-            q:  'Bull Market (ቡል ማርኬት) ምን ማለት ነው? 🐂',
-            opts: ['ዋጋ እየወደቀ ያለበት ገበያ', 'ዋጋ እየጨመረ ያለበት ገበያ', 'ዋጋ ተረጋጋ ያለበት ገበያ', 'አዲስ ዲጂታል ኮይን'],
-            correct: 1,
-            explain: 'Bull Market = ዋጋዎች እያደጉ ያሉበት ብሩህ ገበያ ነው። Bear Market ደግሞ ተቃራኒው።'
-        },
-        {
-            q:  'Stop Loss ለምን ይጠቅማል? 🛡️',
-            opts: ['ትርፍ ለማሳደግ', 'ኪሳራን ለመገደብ', 'ፈጣን ትሬድ ለማድረግ', 'ሌቨሬጅ ለማሳደግ'],
-            correct: 1,
-            explain: 'Stop Loss = ዋጋ ወደ ታች ሲወርድ ራስ ሰር ትሬዱን ዘግቶ ኪሳራን ይገድባል።'
-        },
-        {
-            q:  'Leverage (ሌቨሬጅ) ምን ማለት ነው? ⚡',
-            opts: ['ነጻ ትሬዲንግ ፕላትፎርም', 'ትንሽ ገንዘብ ብዙ ቦታ ለማስቀመጥ', 'ክሪፕቶ ዋሌት', 'ካንድልስቲክ ፓተርን'],
-            correct: 1,
-            explain: 'Leverage = ትንሽ ካፒታል ብዙ ትልቅ ፖዚሽን ለመከፈት ያስችላል — ሪስክም ትርፍም ይጨምራል።'
-        },
-        {
-            q:  'Candlestick ቀይ (Bearish) ሲሆን ምን ማለት ነው? 🕯️',
-            opts: ['ዋጋ ጨምሯል', 'ዋጋ ቀንሷል', 'ሁኔታ ተረጋጋ', 'ኒውስ ወጥቷል'],
-            correct: 1,
-            explain: 'ቀይ/ቢርሽ ካንደል = ዋጋ ካደረ ዝቅ ብሎ ዘጋ ማለት ነው። አረንጓዴ/ቡሊሽ ደግሞ ተቃራኒ።'
-        },
-        {
-            q:  'Support Level (ሰፖርት) ምን ማለት ነው? 📊',
-            opts: ['ዋጋ ሊያልፈው ያልቻለ ወለል', 'ዋጋ ሊያልፈው ያልቻለ ጣሪያ', 'ትሬዲንግ ሰዓት', 'ኢኮኖሚ ሪፖርት'],
-            correct: 0,
-            explain: 'Support = ዋጋ ወደ ታች ሲወርድ "ወለሉን" ሆኖ ዋጋ ሲደገፍ ያዩበት ቦታ ነው።'
-        },
-        {
-            q:  'HODL ምን ማለት ነው? 💎',
-            opts: ['ፈጣን ሸጦ ትርፍ ማግኘት', 'ኮይን ደልሎ ረጅም ጊዜ ማስቀመጥ', 'ደይ-ትሬዲንግ ስትራቴጂ', 'ሃርድ ፎርክ'],
-            correct: 1,
-            explain: 'HODL = "Hold On for Dear Life" — ዋጋ ወቅታዊ ቢወርድ ሳትሸጥ ረጅም ጊዜ ማቆየት ስትራቴጂ።'
-        },
-        {
-            q:  'Fundamental Analysis (ፋንዳሜንታል ትንተና) ምን ይጠቀማል? 🔍',
-            opts: ['ቻርት እና ኢንዲኬተሮች', 'ኢኮኖሚ ዜናዎች እና ሪፖርቶች', 'ካንድልስቲክ ፓተርን', 'ሙቪንግ አቬሬጅ'],
-            correct: 1,
-            explain: 'Fundamental Analysis = GDP፣ ወለድ ዋጋ፣ ዜናዎች... ውሳኔ ለመስጠት ኢኮኖሚ መረጃ ይጠቀማል።'
-        },
-        {
-            q:  'Risk Management ለምን ወሳኝ ነው? ⚖️',
-            opts: ['ቶሎ ለሀብታም ለመሆን', 'ካፒታልን ለመጠበቅ እና ረጅም ጊዜ ለቆም', 'ብዙ ትሬዶች ለመክፈት', 'ብሮከር ለመቀያየር'],
-            correct: 1,
-            explain: 'Risk Management = ካፒታልህን ጠብቆ ረዘም ላለ ጊዜ ትሬዲንግ ለቀጠል። ሳይኖር ሁሉ ሊጠፋ ይችላል።'
-        }
+        // ── ምዕራፍ 1፦ የፎሬክስ መሠረታዊ እውቀት ──
+        { q:'1. Forex ማለት ምንድን ነው?', opts:['የኩባንያዎች አክሲዮን መግዣና መሸጫ ገበያ','የተለያዩ አገራት ምንዛሬዎች የሚለወጡበት ገበያ','የዲጂታል ሳንቲሞች ብቻ የሚገበያዩበት ገበያ','የእቃዎች መገበያያ ገበያ'], correct:1, explain:'Forex = Foreign Exchange — የምንዛሬ ልውውጥ ገበያ ማለት ነው።' },
+        { q:'2. የForex ገበያ ዋና ዓላማ ምንድን ነው?', opts:['ምንዛሬዎችን መለዋወጥና ከዋጋ ለውጥ ትርፍ ለማግኘት','በባንክ ብቻ ቁጠባ ማድረግ','ኩባንያ መመስረት','የመንግሥት ቦንድ ብቻ መግዛት'], correct:0, explain:'ተሳታፊዎች ምንዛሬዎችን ለመለዋወጥ ወይም ከዋጋ ለውጥ ትርፍ ለማግኘት ይገበያያሉ። ትርፍ ዋስትና የለውም።' },
+        { q:'3. በEUR/USD ጥንድ ውስጥ Base Currency የትኛው ነው?', opts:['USD','EUR','GBP','JPY'], correct:1, explain:'በCurrency Pair ውስጥ በመጀመሪያ የሚቀመጠው Base Currency ነው — ስለዚህ EUR ነው።' },
+        { q:'4. EUR/USD = 1.1000 ሲሆን ምን ማለት ነው?', opts:['1 USD = 1.10 EUR','1 EUR = 1.10 USD','1 EUR = 110 USD','1 USD = 110 EUR'], correct:1, explain:'1 EUR = 1.10 USD — Base currency አንድ ክፍል ምን ያህል Quote currency እንደሚዋጅ ያሳያል።' },
+        { q:'5. Major Currency Pairs አብዛኛውን ጊዜ የሚጋሩት የትኛውን ምንዛሬ ነው?', opts:['Ethiopian Birr (ETB)','Chinese Yuan (CNY)','US Dollar (USD)','South African Rand (ZAR)'], correct:2, explain:'Major pairs USDን ያካትታሉ እና ከፍተኛ የግብይት ፈሳሽነት ሊኖራቸው ይችላል።' },
+        { q:'6. Forex ገበያ Decentralized ነው ሲባል ምን ማለት ነው?', opts:['አንድ ማዕከላዊ ኤክስቼንጅ ብቻ ይቆጣጠረዋል','ሁሉም ዋጋዎች በአንድ ባንክ ይወሰናሉ','ግብይቶች በተለያዩ ተሳታፊዎችና መረቦች ይከናወናሉ፤ ማዕከላዊ ኤክስቼንጅ የለውም','ገበያው ምንም ዓይነት ደንብ የለውም'], correct:2, explain:'Decentralized = ግብይቶች በOTC (Over-the-Counter) የባንክና ዲልር መረቦች ይፈጸማሉ።' },
+        { q:'7. OTC (Over-the-Counter) ግብይት ምንድን ነው?', opts:['በማዕከላዊ ኤክስቼንጅ ብቻ','በሁለት ወገኖች መካከል በቀጥታ ወይም በዲልር ኔትወርኮች','የገንዘብ ልውውጥ የሌለበት ግብይት','የክሪፕቶ ገበያ ብቻ'], correct:1, explain:'Forex በአብዛኛው OTC ሲሆን ግብይቶች በተለያዩ የባንክና ዲልር መረቦች ይከናወናሉ።' },
+        { q:'8. Forex Broker ዋና ሚናው ምንድን ነው?', opts:['ትርፍ ዋስትና መስጠት','ገበያው የት እንደሚሄድ ማወቅ','የትሬዲንግ መለያና የግብይት አገልግሎት ማቅረብ','ሁሉንም ኪሳራ መክፈል'], correct:2, explain:'Broker ትዕዛዞችን ለማስፈጸምና የትሬዲንግ መለያ አገልግሎት ለማቅረብ ይረዳል።' },
+        { q:'9. Demo Account ከLive Account የሚለየው እንዴት ነው?', opts:['Demo ላይ ሁልጊዜ ትርፍ ይገኛል','Live ላይ ኪሳራ አይኖርም','Demo ምናባዊ ገንዘብ፣ Live ደግሞ እውነተኛ ገንዘብ ይጠቀማል','ሁለቱም ተመሳሳይ ጫና አላቸው'], correct:2, explain:'Demo ለልምምድ ይጠቅማል፤ Live ላይ የገንዘብ አደጋና የስነ-ልቦና ጫና ይጨምራል።' },
+        { q:'10. የForex ገበያ ዋና ተሳታፊዎች የትኞቹ ናቸው?', opts:['ማዕከላዊ ባንኮች ብቻ','የንግድ ባንኮች ብቻ','ኩባንያዎችና የችርቻሮ ነጋዴዎች ብቻ','ከላይ ያሉት ሁሉ'], correct:3, explain:'ባንኮች፣ ማዕከላዊ ባንኮች፣ ኩባንያዎች፣ ፈንዶችና ችርቻሮ ነጋዴዎች ሁሉ ይሳተፋሉ።' },
+        // ── ምዕራፍ 2፦ የTrading መሠረታዊ ቃላት ──
+        { q:'11. Bid Price ምንድን ነው?', opts:['ነጋዴው ምንዛሬውን ሊገዛበት የሚችለው ዋጋ ብቻ','ነጋዴው Sell የሚያደርግበት የBroker ዋጋ','የቀኑ ከፍተኛ ዋጋ','የመዝጊያ ዋጋ ብቻ'], correct:1, explain:'Bid = ነጋዴው ለBroker ሲሸጥ (Sell ሲያደርግ) ከBroker የሚያገኘው ዋጋ ነው።' },
+        { q:'12. Ask Price ምንድን ነው?', opts:['ነጋዴው Buy የሚያደርግበት የBroker ዋጋ','የቀኑ ዝቅተኛ ዋጋ','የገበያው የመክፈቻ ዋጋ','የStop Loss ዋጋ'], correct:0, explain:'Ask = ነጋዴው ከBroker ሲገዛ (Buy ሲያደርግ) የሚከፍለው ዋጋ ነው።' },
+        { q:'13. Spread እንዴት ይሰላል?', opts:['Bid + Ask','Ask − Bid','Ask × Bid','Bid ÷ Ask'], correct:1, explain:'Spread = Ask − Bid — ሁለቱ ዋጋዎች መካከል ያለ ልዩነት ሲሆን የBroker ክፍያ ተደርጎ ይወሰዳል።' },
+        { q:'14. Bid=1.1000 Ask=1.1002 ከሆነ Spread ስንት ነው?', opts:['0.2 pip','2 pips','20 pips','200 pips'], correct:1, explain:'0.0002 ÷ 0.0001 = 2 pips። ለJPY ጥንዶች 1 pip = 0.01 ነው።' },
+        { q:'15. በአብዛኛው የForex ጥንዶች 1 pip ስንት ነው?', opts:['0.01','0.0001','1.0000','0.1'], correct:1, explain:'ለአብዛኞቹ pairs 1 pip = 0.0001። ለJPY pairs ደግሞ 1 pip = 0.01 ነው።' },
+        { q:'16. Lot Size ምንን ያመለክታል?', opts:['የገበያውን አቅጣጫ','የትሬድ መጠንን','የኢኮኖሚ ዕድገትን','የSpread መጠንን'], correct:1, explain:'Lot Size = ትሬዱ ምን ያህል የBase Currency ክፍል እንደያዘ ያሳያል።' },
+        { q:'17. Standard Lot ምን ያህል ነው?', opts:['1,000','10,000','100,000','1,000,000'], correct:2, explain:'Standard Lot = 100,000 ክፍል። Mini = 10,000፤ Micro = 1,000 ናቸው።' },
+        { q:'18. Leverage ምንድን ነው?', opts:['ትርፍ ዋስትና','ከካፒታል በላይ ገበያ ኤክስፖዠር ለማዝ','የዜና መለኪያ','የStop Loss ሌላ ስም'], correct:1, explain:'Leverage = ትንሽ ካፒታል ብዙ ትልቅ ፖዚሽን ለመከፈት ያስችላል። ትርፍም ኪሳራም ያበዛል።' },
+        { q:'19. Margin ምንድን ነው?', opts:['ቦታ ለመክፈት እንደ ዋስትና የሚያስፈልግ ገንዘብ','የዕለት ትርፍ','የSpread ዋጋ','የባንክ ወለድ'], correct:0, explain:'Margin = ትሬደሩ ቦታ ለመክፈትና ለመያዝ Broker ጋር የሚያኖር ዋስትና ገንዘብ።' },
+        { q:'20. 1:100 Leverage ቀላሉ ምሳሌ ምንድን ነው?', opts:['100 ዶላር ትርፍ ዋስትና','ለ100,000$ ኤክስፖዠር 1,000$ ማርጅን ሊያስፈልግ ይችላል','100 ትሬዶች ነፃ ናቸው','ኪሳራ ሊኖር አይችልም'], correct:1, explain:'ትክክለኛው ማርጅን በመሳሪያ፣ ኮንትራት መጠንና Broker ደንብ ይለያያል። ይህ ቀላል ምሳሌ ብቻ ነው።' },
+        // ── ምዕራፍ 3፦ የገበያ አይነቶችና ትዕዛዞች ──
+        { q:'21. Spot Forex Market ምንድን ነው?', opts:['ምንዛሬዎች በአሁኑ ዋጋ የሚገበያዩበት ገበያ','ከ10 ዓመት በኋላ ብቻ','የአክሲዮን ገበያ','የክሪፕቶ ብቻ'], correct:0, explain:'Spot Market = ምንዛሬዎች ወዲያውኑ (ወይም ጥቂት ቀናት ውስጥ) በወቅቱ ዋጋ ይወጣሉ።' },
+        { q:'22. Market Order ምንድን ነው?', opts:['ወደፊት ዋጋ ብቻ','ወቅቱ ባለው ምርጥ ዋጋ ለመፈጸም ትዕዛዝ','ትዕዛዝ ሰርዣ','Stop Loss ዓይነት'], correct:1, explain:'Market Order = አሁን ባለው ዋጋ ወዲያው ለማስፈጸም ይላካል።' },
+        { q:'23. Buy Limit Order መቼ ይጠቅማል?', opts:['ዋጋ ወደ ላይ ሲወጣ','ዋጋ ወደ ተወሰነ ዝቅተኛ ደረጃ ሲወርድ ለመግዛት','ትሬድ ለመዝጋት','ዋጋ ለመቀየር'], correct:1, explain:'Buy Limit = ዋጋ ወደ ታች ወርዶ ለወሰንከው ደረጃ ሲደርስ ትሬዱ ይከፈታል።' },
+        { q:'24. Buy Stop Order ለምን ይጠቅማል?', opts:['ዋጋ ከተወሰነ ላይኛው ደረጃ ሲወጣ ለመግዛት','ዋጋ ሲወርድ ብቻ','ዜና ለማንበብ','ካፒታል ለማሳደግ'], correct:0, explain:'Buy Stop = ዋጋ ወደ ላይ ሰብሮ ለወሰንከው ደረጃ ሲደርስ ትሬዱ ይከፈታል — Breakout ትሬደሮች ይጠቀሙበታል።' },
+        { q:'25. Stop Loss (SL) ዋና ዓላማው ምንድን ነው?', opts:['ትርፍ ማሳደግ','ትሬድ በተወሰነ ዋጋ ደረጃ ዘጋ ኪሳራን ለመገደብ','Spread ማጥፋት','Leverage ማሳደግ'], correct:1, explain:'SL = ዋጋ ተቃራኒ አቅጣጫ ሲሄድ ትሬዱን ዘግቶ ኪሳራን ይገድባል። Slippage ሊኖር ይችላል።' },
+        { q:'26. Take Profit (TP) ምን ያደርጋል?', opts:['ትሬድን በተወሰነ ትርፍ ደረጃ ለመዝጋት ይረዳል','ዋጋ ይቀይራል','ካፒታል ያበዛል','ኪሳራ ወደ ትርፍ ይቀይራል'], correct:0, explain:'TP = ዋጋ ወደ ታለምከው ደረጃ ሲደርስ ትሬዱ ራሱ ዘግቶ ትርፍ ያስቆልፋል።' },
+        { q:'27. Liquidity ምንን ያመለክታል?', opts:['የኢንተርኔት ፍጥነት','ንብረትን በቀላሉ ወደ ገንዘብ የመቀየርና የመገበያየት ችሎታ','የወለድ መጠን ብቻ','የመዝጊያ ሰዓት'], correct:1, explain:'ከፍተኛ Liquidity = ትሬዶች ቀላል፣ Spread ዝቅተኛ። ዝቅተኛ Liquidity = ትሬድ ፈጻሚ ያስቸግራል።' },
+        { q:'28. Volatility ምንድን ነው?', opts:['የዋጋ ለውጥ መጠን ወይም ፍጥነት','Broker ስም','አካውንት ፓስዎርድ','የምንዛሬ ምልክት'], correct:0, explain:'ከፍተኛ Volatility = ዋጋ ፈጠን ብሎ ይቀያየራል። Risk እና Opportunity ሁለቱም ይጨምራሉ።' },
+        { q:'29. Market Session ምን ማለት ነው?', opts:['የትሬደሩ እረፍት','የአንድ ማዕከል ንግድ በሚጨምርበት ጊዜ ክፍል','Stop Loss ደረጃ','ምንዛሬ ዋጋ'], correct:1, explain:'Sydney, Tokyo, London, New York — አራቱ ዋና sessions ናቸው።' },
+        { q:'30. London እና New York sessions ሲደራረቡ ምን ሊከሰት ይችላል?', opts:['ገበያ ይዘጋል','የግብይት እንቅስቃሴና Liquidity ሊጨምር ይችላል','ሁሉም ዋጋ አንድ ይሆናል','Spread ዜሮ ይሆናል'], correct:1, explain:'Overlap ጊዜ ብዙ ተሳታፊዎች ስለሚገቡ EUR/USD ላይ እንቅስቃሴ ሊበዛ ይችላል።' },
+        // ── ምዕራፍ 4፦ Risk Management እና Trading Psychology ──
+        { q:'31. Risk Management ለምን አስፈላጊ ነው?', opts:['ኪሳራን ሙሉ ለማጥፋት','አደጋን ለመቆጣጠርና ካፒታልን ለመጠበቅ','ዋጋ ሁልጊዜ ለመገመት','ብዙ ትሬዶች ለመክፈት'], correct:1, explain:'Risk Management = ካፒታልህን ጠብቆ ረዘም ላለ ጊዜ ትሬዲንግ ለቀጥል — ሳይኖር ሁሉ ሊጠፋ ይችላል።' },
+        { q:'32. Position Sizing ማለት ምንድን ነው?', opts:['ሰዓት መምረጥ','ትሬድ መጠን ከካፒታልና SL ጋር አዛምዶ መወሰን','Broker ስም','ዜና መተርጎም'], correct:1, explain:'Position Sizing = ትሬዱ ምን ያህል ትልቅ ቦታ ይያዝ? ካፒታልህ፣ SL ርቀት እና ሪስክ % ላይ ይተማሰናል።' },
+        { q:'33. Risk:Reward Ratio = 1:2 ምን ማለት ነው?', opts:['የሚጋፈጠው 1 ክፍል ኪሳራ ሲሆን ዓላማ 2 ክፍል ትርፍ ነው','ሁለት ትሬዶች ማሸነፍ','ትርፍ ዋስትና','ሁለት አካውንቶች'], correct:0, explain:'R:R 1:2 = 100$ ሊጠፋ ሲችል 200$ ትርፍ ታለማለህ። ትርፍ ዋስትና አይሰጥም።' },
+        { q:'34. FOMO ምንን ያመለክታል?', opts:['የፈሳሽነት መጠን','ያለ እቅድ ትርፍ ያመልጠኛል ብሎ ወደ ትሬድ መዝለቅ','ገበያ ሰዓት','ቻርት አይነት'], correct:1, explain:'FOMO = Fear Of Missing Out — ስሜታዊ ውሳኔ ስለሚሆን ብዙ ጊዜ ኪሳራ ያስከትላል።' },
+        { q:'35. ኪሳራ ከደረሰ በኋላ ቁጣ ለመመለስ ብዙ ትሬዶች መክፈት ምን ይባላል?', opts:['Swing Trading','Risk Hedging','Revenge Trading','Fundamental Analysis'], correct:2, explain:'Revenge Trading = ስሜት ሲቆጣጠር የሚከናወን ትሬድ — ኪሳራን ሊያበዛ ይችላል።' },
+        { q:'36. የTrading ዲሲፕሊን ምንን ይጠይቃል?', opts:['ሁሉም ትሬድ ትርፍ','እቅዱንና Risk ደንቡን በተከታታይ መከተል','ስትራቴጂ ደቂቃ ቀይር','ያለ SL ነግድ'], correct:1, explain:'ዲሲፕሊን = ስሜት ሳይሆን እቅድ መከተል። ትሬዲንግ ስኬት ዋና ምሰሶ ነው።' },
+        { q:'37. Drawdown ምንድን ነው?', opts:['ካፒታል ወይም Equity ቀደም ከፍተኛ ደረጃ ሲቀነስ','ሰዓት','Spread','ትሬድ ብዛት'], correct:0, explain:'Drawdown = ካፒታልህ ከፍ ካለበት ደረጃ ምን ያህል ወደ ታች ወረደ — ሪስክ መለኪያ ነው።' },
+        { q:'38. ካፒታልን ሙሉ ለሙሉ አደጋ ላይ ማዋል ለምን አደገኛ ነው?', opts:['ትርፍ ይቀንሳል','ተቃራኒ እንቅስቃሴ ሙሉ ኪሳራ ሊያስከትል ይችላል','Spread ዜሮ ይሆናል','ገበያ ይዘጋል'], correct:1, explain:'አንድ ትሬድ ሁሉ ሊቀጥፍ ይችላል — ሁልጊዜ ትሬድ ሀ ካፒታል ትንሽ ክፍል ብቻ አደጋ ላይ አቅም።' },
+        { q:'39. ተከታታይ ኪሳራ ከደረሰ የLot መጠን ማሳደግ ትክክለኛ ዘዴ ነው?', opts:['አዎ ሁልጊዜ','አዎ ሁሉም ስትራቴጂ','አይደለም — ያለ እቅድ Lot ማሳደግ አደጋን ያበዛል','አዎ Demo ና Live ሁሉ'], correct:2, explain:'Martingale-style አሰራር ካፒታልን ሊጨርሰው ይችላል። ጊዜ ወስዶ ስትራቴጂ ገምግም።' },
+        { q:'40. Trading Journal ዋና ጥቅሙ ምንድን ነው?', opts:['ዋጋ መቆጣጠር','ትሬዶችን፣ ስህተቶችን፣ ውሳኔ ሂደትን መመዝገብና መገምገም','ኪሳራ ይመልሳል','Broker ኮሚሽን ያጠፋል'], correct:1, explain:'Journal = ስህተቶችህን ለይቶ ስትራቴጂህን ለማሻሻል ዋናው መሳሪያ ነው።' },
+        // ── ምዕራፍ 5፦ Technical Analysis መግቢያ ──
+        { q:'41. Technical Analysis ምንድን ነው?', opts:['ቻርት ወይም ዋጋ ውሂብ ተጠቅሞ ገበያ የመተንተን ዘዴ','አገር ሕግ ማጥናት','ወለድ ብቻ','አካውንት ሚዛን ማየት'], correct:0, explain:'TA = ያለፈ የዋጋ እንቅስቃሴ ቅጦች ወደፊቱን ሊጠቁሙ ይችላሉ ብሎ ይተናተናል።' },
+        { q:'42. Candlestick Chart ምን መረጃ ይሰጣል?', opts:['Open, High, Low, Close (OHLC)','አገር ስም ብቻ','Broker ስም ብቻ','ትሬደር ዕድሜ'], correct:0, explain:'OHLC = ሻማው ሲከፈት፣ ከፍተኛ፣ ዝቅተኛ፣ ሲዘጋ ያለ ዋጋ ሁሉ ያሳያል።' },
+        { q:'43. Timeframe ምንን ያሳያል?', opts:['ትሬደር ዕድሜ','እያንዳንዱ ሻማ የሚወክለው የጊዜ ርዝመት','Spread','Leverage'], correct:1, explain:'M1 = 1 ደቂቃ፤ H1 = 1 ሰዓት፤ D1 = አንድ ቀን — ተሞክሮህ ይወስናል።' },
+        { q:'44. Uptrend ምን ይለያዋል?', opts:['Lower Highs እና Lower Lows','Higher Highs እና Higher Lows','ዋጋ አይንቀሳቀስም','ሁሉም ሻማ ተመሳሳይ'], correct:1, explain:'Uptrend = ዋጋ ደረጃ በደረጃ ወደ ላይ — Higher Highs (HH) እና Higher Lows (HL) ይሠራሉ።' },
+        { q:'45. Downtrend ምን ይለያዋል?', opts:['Higher Highs እና Higher Lows','Lower Highs እና Lower Lows','እንቅስቃሴ አለ','ዜና ይቀልጣል'], correct:1, explain:'Downtrend = ዋጋ ደረጃ በደረጃ ወደ ታች — Lower Highs (LH) እና Lower Lows (LL) ይሠራሉ።' },
+        { q:'46. Support Level ምንድን ነው?', opts:['ዋጋ መውረድ ሊዘገይ ወይም ወደ ላይ ሊመለስ የሚችልበት አካባቢ','ዋጋ ሊቆምበት ዋስትና ያለው ደረጃ','Broker አገልግሎት','አካውንት ሚዛን'], correct:0, explain:'Support = Buyers ሊጨምሩ የሚችሉበት ዞን። ዋስትና አይሰጥም — ሊሰበር ይችላል።' },
+        { q:'47. Resistance Level ምንድን ነው?', opts:['ዋጋ ሁልጊዜ ሲወርድ ዋስትና','ዋጋ መጨመር ሊዘገይ ወይም ሊመለስ የሚችልበት አካባቢ','Stop Loss ሌላ ስም','Leverage'], correct:1, explain:'Resistance = Sellers ሊጨምሩ የሚችሉበት ዞን። ሊሰበር ይችላል — Breakout ሊፈጠር ይችላል።' },
+        { q:'48. Moving Average ምን ያደርጋል?', opts:['ዋጋ አለስልሶ አጠቃላይ አዝማሚያ ለማሳየት','Broker ፈቃድ','ትሬድ ለመወሰን','Spread ለማጥፋት'], correct:0, explain:'MA = ዋጋ ሸካሪ ነጥቦችን ሰርቆ ለስላሳ መስመር ያሳያል — አዝማሚያ ለማወቅ ይጠቅማል።' },
+        { q:'49. RSI ምን ሊያሳይ ይረዳል?', opts:['አካውንት ሚዛን','የዋጋ ጥንካሬ፣ Overbought ወይም Oversold ሁኔታ','Broker ኮሚሽን ብቻ','GDP ቀጥታ'], correct:1, explain:'RSI > 70 = ሊሸጥ ይቻላል (Overbought)፤ RSI < 30 = ሊገዛ ይቻላል (Oversold)። ዋስትና አይሰጥም።' },
+        { q:'50. Live Trading ከመጀመርህ በፊት የትኛው አቀራረብ ተገቢ ነው?', opts:['ያለ እቅድ','ሲግናሎች ብቻ ተከተል','መሠረት ተማር፣ Demo ለምምድ፣ ስትራቴጂ ፈትሽ፣ Risk ደንብ አዘጋጅ','ከፍተኛ Leverage ጠቀም'], correct:2, explain:'ትምህርት + ልምምድ + ዲሲፕሊን + Risk Management = ትሬዲንግ መሠረት። ትርፍ ዋስትና የለውም።' }
     ];
 
     var currentQ   = 0;
@@ -671,8 +666,8 @@ document.querySelectorAll('.product-card').forEach(function(card) {
         chatEl.innerHTML = '';
         score = 0; currentQ = 0;
 
-        botMsg('ሰላም! 👋 እኔ ታግ ብሪጅ AI ቦት ነኝ። ስለ ፎሬክስ እና ክሪፕቶ ምን ያህል እንደምታውቅ ፈትን!').then(function() {
-            return botMsg('10 ጥያቄዎች አሉ። ለእያንዳንዱ A/B/C/D ምረጥ። ዝግጁ ነህ? 🚀', 300);
+        botMsg('ሰላም! 👋 እንኳን ወደ THE FOREX BRIDGE ፈተና በደህና መጡ! 🎯').then(function() {
+            return botMsg('50 ጥያቄዎች አሉ — ከጀማሪ እስከ ፕሮፌሽናል። ለእያንዳንዱ A/B/C/D ምረጥ። 🚀', 300);
         }).then(function() {
             askQuestion(0);
         });
