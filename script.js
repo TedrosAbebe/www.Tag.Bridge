@@ -1249,21 +1249,21 @@ document.querySelectorAll('.product-card').forEach(function(card) {
         var wrap = document.createElement('div');
         wrap.className = 'tb-faq-wrap';
         wrap.id = 'tbFaqWrap';
-        faqs.forEach(function(faq, idx) {
+        faqs.forEach(function(faq) {
             var btn = document.createElement('button');
             btn.className = 'tb-faq-btn';
             btn.textContent = faq.q;
             btn.onclick = function() {
-                // remove faq cards
                 var fw = $i('tbFaqWrap');
                 if (fw) fw.remove();
-                // show user bubble
                 userBubble(faq.q);
-                // show answer
                 setTimeout(function() {
                     botBubble(faq.a);
-                    // after answer show "ተጨማሪ ጥያቄ?" prompt
-                    setTimeout(showExtraPrompt, 600);
+                    // ── ከmessage በሗላ FAQ cards እንደገና አሳይ ──
+                    setTimeout(function() {
+                        showExtraPrompt();
+                        setTimeout(showFaqCards, 300);
+                    }, 600);
                 }, 300);
             };
             wrap.appendChild(btn);
@@ -1275,13 +1275,12 @@ document.querySelectorAll('.product-card').forEach(function(card) {
     function showExtraPrompt() {
         var msgs = $i('tbBotMessages');
         if (!msgs) return;
-        // avoid duplicates
-        if ($i('tbExtraPrompt')) return;
+        if ($i('tbExtraPrompt')) $i('tbExtraPrompt').remove();
         var d = document.createElement('div');
         d.className = 'tb-msg-bot';
         d.id = 'tbExtraPrompt';
         d.innerHTML = '<div class="tb-msg-bot-avatar">🤖</div>' +
-            '<div class="tb-msg-bot-bubble">ተጨማሪ ጥያቄ ካለዎት ከታች ይጻፉ 👇</div>';
+            '<div class="tb-msg-bot-bubble">ሌሎቹን ጥያቄዎችም ይምረጡ ወይም ሌላ ጥያቄ ከታች ይጻፉ 👇</div>';
         msgs.appendChild(d);
         msgs.scrollTop = msgs.scrollHeight;
     }
@@ -1332,7 +1331,12 @@ document.querySelectorAll('.product-card').forEach(function(card) {
             busy = false;
             inp.disabled = false;
             inp.focus();
-            botBubble('ይቅርታ — ኔትወርክ ችግር አለ። ቆየት ብለው ይሞክሩ። (' + err.message + ')');
+            // 401 = key problem — static fallback
+            var msg = err.message.indexOf('401') !== -1
+                ? 'ለዚህ ጥያቄ በቀጥታ ያናግሩን 📲<br>• Telegram: <strong>@tagbridge123</strong><br>• WhatsApp: <strong>+251991856292</strong>'
+                : 'ይቅርታ — ኔትወርክ ችግር አለ። ቆየት ብለው ይሞክሩ።';
+            botBubble(msg);
+        });
         });
     };
 

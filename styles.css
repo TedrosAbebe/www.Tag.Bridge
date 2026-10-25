@@ -3433,3 +3433,9 @@ html[lang="en"] .lang-en-only { display: inline-block; }
     color: white;
     transform: translateX(4px);
 }
+
+/* ── Bot window flex fix ── */
+.tb-bot-window { display: flex !important; flex-direction: column !important; max-height: 520px; }
+.tb-bot-messages { flex: 1 1 auto !important; overflow-y: auto !important; min-height: 0 !important; }
+.tb-bot-input-wrap { flex-shrink: 0 !important; position: relative; z-index: 1; }
+.tb-bot-header { flex-shrink: 0 !important; }
