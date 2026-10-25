@@ -650,7 +650,7 @@ document.querySelectorAll('.product-card').forEach(function(card) {
 
     function startIntro(){
         botMsg('ሰላም! 👋 እኔ የታግ ብሪጅ ረዳት AI ቦት ነኝ።').then(function(){
-            return botMsg('የወሰዱትን የፎሬክስ እና ክሪፕቶ ትሬዲንግ መጽሃፍ በደንብ አንብበው፣ በMemo Account ተለማምደው እንዳጠናቀቁ ተስፋ ናደርጋለን! 📚', '', 200);
+            return botMsg('የወሰዱትን የፎሬክስ እና ክሪፕቶ ትሬዲንግ መጽሃፍ በደንብ አንብበው፣ በDemo Account ተለማምደው እንዳጠናቀቁ ተስፋ እናደርጋለን! 📚', '', 200);
         }).then(function(){
             return botMsg('ፈተናውን ለመቀጠል — <strong>ስለ ፎሬክስ ትሬዲንግ ወይስ ክሪፕቶ ትሬዲንግ?</strong>', '', 300);
         }).then(function(){

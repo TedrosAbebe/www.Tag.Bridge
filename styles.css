@@ -3041,3 +3041,34 @@ html[lang="en"] .lang-en-only { display: inline-block; }
     cursor: not-allowed;
     transform: none;
 }
+
+/* ── Market Overview ── */
+.market-overview-wrap {
+    margin-top: 14px;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.07);
+    background: rgba(255,255,255,0.02);
+}
+
+.market-overview-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+#tvOverviewContainer {
+    min-height: 400px;
+}
+
+#tvOverviewContainer .tradingview-widget-container {
+    height: 400px;
+}
+
+@media (max-width: 640px) {
+    .market-overview-wrap { border-radius: 10px; }
+    #tvOverviewContainer,
+    #tvOverviewContainer .tradingview-widget-container { min-height: 320px; height: 320px; }
+}
