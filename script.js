@@ -1097,3 +1097,195 @@ document.querySelectorAll('.product-card').forEach(function(card) {
         }
     };
 })();
+
+
+// ===========================
+// TAG BRIDGE AI BOT (Gemini)
+// ===========================
+(function() {
+
+    var API_KEY = 'AIzaSyAb8RN6Lb7ff6nW2ks0BXwYaoibWFL_2Ru5qmMJc4GsfEUJdYjQ';
+    var API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + API_KEY;
+
+    var SYSTEM_PROMPT = `አንተ የታግ ብሪጅ (Tag Bridge) ኦፊሽያል AI ረዳት ቦት ነህ። ስምህ "ታግ ብሪጅ ቦት" ነው።
+
+ስለ ታግ ብሪጅ የሚከተሉትን ማወቅ አለብህ፦
+
+═══ ስለ ታግ ብሪጅ ═══
+ታግ ብሪጅ ፎሬክስ እና ክሪፕቶ ትሬዲንግ PDF መጽሃፍት በአማርኛ ቋንቋ ያቀርባሉ።
+ዌብሳይት፦ https://www-tag-bridge.vercel.app
+
+═══ መጽሃፍቱና ዋጋዎቻቸው ═══
+1. የፎሬክስ ትሬዲንግ መጽሃፍ = 350 ብር (PDF)
+2. የክሪፕቶ ትሬዲንግ መጽሃፍ = 400 ብር (PDF)
+3. ፎሬክስ + ክሪፕቶ ጥቅል = 500 ብር (ሁለቱም PDF)
+
+═══ እንዴት ማዘዝ ═══
+1. Telegram @tagbridge123 ላይ ያናግሩ
+2. ወይም WhatsApp +251991856292 ላይ
+3. ክፍያ ከደፈሉ በኋላ PDF ወደ Telegram ወይም WhatsApp ይላካሉ
+
+═══ የክፍያ ዘዴዎች ═══
+- CBE Birr (Commercial Bank of Ethiopia)
+- Telebirr
+- Bank Transfer
+
+═══ PDF ማግኘት ═══
+ክፍያ ከተረጋገጠ በኋላ ፒዲኤፍ መጽሃፉ ወደ WhatsApp ወይም Telegram ይላካሉ - ብዙ ጊዜ ለደቂቃዎች ውስጥ።
+
+═══ ቴሌግራም ቻናል ═══
+ዜናዎች፣ ቅናሾች እና የፎሬክስ/ክሪፕቶ ትምህርቶች፦ https://t.me/tagbridge
+TikTok፦ https://www.tiktok.com/@tagbridge
+WhatsApp Channel፦ https://whatsapp.com/channel/0029VbC9h9Z4o7qIBVOmFE1j
+
+═══ መጽሃፍቱ ይዘት (ፎሬክስ) ═══
+Forex Basics, Currency Pairs, Leverage, Margin, Technical Analysis, Candlestick Patterns, Support & Resistance, Market Structure, Smart Money Concept, Risk Management, Trading Psychology, Trading Plan, Demo Account, Practical Trading
+
+═══ መጽሃፍቱ ይዘት (ክሪፕቶ) ═══
+Crypto Fundamentals, Blockchain, Bitcoin, Altcoins, Spot Trading, Futures Trading, HODL, DeFi, Risk Management, Binance Account, P2P Trading
+
+═══ አስፈላጊ ደንቦች ═══
+- ሁልጊዜ በአማርኛ ቋንቋ ብቻ ምላሽ ስጥ
+- ጨዋና ሙያዊ ሁን
+- ስለ ፎሬክስ/ክሪፕቶ ጥያቄ ቢኖር ምላሽ ስጥ
+- ትርፍ ዋስትና አትስጥ — ትሬዲንግ ኪሳራ ሊኖር ይችላሉ ብለህ አስጠንቅቅ
+- ስለ ሌሎች ርዕሰ ጉዳዮች ቢጠይቅ ወደ ታግ ብሪጅ ዓላማ መልስ
+- አጭርና ግልጽ ምላሽ ስጥ`;
+
+    var chatHistory = [];
+    var isOpen = false;
+    var isTyping = false;
+
+    // ── DOM helpers ──
+    function $id(id) { return document.getElementById(id); }
+
+    function scrollMsgs() {
+        var m = $id('tbBotMessages');
+        if (m) m.scrollTop = m.scrollHeight;
+    }
+
+    // Add bot message
+    function addBotMsg(text) {
+        var msgs = $id('tbBotMessages');
+        if (!msgs) return;
+        var div = document.createElement('div');
+        div.className = 'tb-msg-bot';
+        div.innerHTML =
+            '<div class="tb-msg-bot-avatar">🤖</div>' +
+            '<div class="tb-msg-bot-bubble">' + text.replace(/\n/g, '<br>') + '</div>';
+        msgs.appendChild(div);
+        scrollMsgs();
+    }
+
+    // Add user message
+    function addUserMsg(text) {
+        var msgs = $id('tbBotMessages');
+        if (!msgs) return;
+        var div = document.createElement('div');
+        div.className = 'tb-msg-user';
+        div.innerHTML = '<div class="tb-msg-user-bubble">' + text + '</div>';
+        msgs.appendChild(div);
+        scrollMsgs();
+    }
+
+    // Show typing indicator
+    function showTyping() {
+        var msgs = $id('tbBotMessages');
+        if (!msgs) return;
+        var div = document.createElement('div');
+        div.className = 'tb-msg-bot';
+        div.id = 'tbTypingIndicator';
+        div.innerHTML =
+            '<div class="tb-msg-bot-avatar">🤖</div>' +
+            '<div class="tb-typing-dots"><span></span><span></span><span></span></div>';
+        msgs.appendChild(div);
+        scrollMsgs();
+    }
+
+    function hideTyping() {
+        var t = $id('tbTypingIndicator');
+        if (t) t.remove();
+    }
+
+    // ── Toggle open/close ──
+    window.toggleTbBot = function() {
+        var win = $id('tbBotWindow');
+        if (!win) return;
+        isOpen = !isOpen;
+        if (isOpen) {
+            win.style.display = 'flex';
+            win.style.flexDirection = 'column';
+            // Show welcome if first open
+            var msgs = $id('tbBotMessages');
+            if (msgs && msgs.children.length === 0) {
+                setTimeout(function() {
+                    addBotMsg('ሰላም! 👋 እኔ የታግ ብሪጅ AI ቦት ነኝ።\n\nስለ መጽሃፍቶቻችን፣ ዋጋዎች፣ አዘዛ ሂደት ወይም ፎሬክስ/ክሪፕቶ ጥያቄ ካለዎት ይጠይቁ! 📚');
+                }, 200);
+            }
+            setTimeout(function() {
+                var inp = $id('tbBotInput');
+                if (inp) inp.focus();
+            }, 300);
+        } else {
+            win.style.display = 'none';
+        }
+    };
+
+    // ── Send message ──
+    window.sendTbMessage = function() {
+        var inp = $id('tbBotInput');
+        if (!inp || isTyping) return;
+        var text = inp.value.trim();
+        if (!text) return;
+        inp.value = '';
+        addUserMsg(text);
+        chatHistory.push({ role: 'user', parts: [{ text: text }] });
+        isTyping = true;
+        showTyping();
+        // Disable input
+        inp.disabled = true;
+
+        // Build request
+        var body = {
+            system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
+            contents: chatHistory,
+            generationConfig: {
+                temperature:     0.7,
+                maxOutputTokens: 600,
+                topP:            0.9
+            }
+        };
+
+        fetch(API_URL, {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify(body)
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            hideTyping();
+            isTyping = false;
+            inp.disabled = false;
+            inp.focus();
+            var reply = '';
+            if (data.candidates && data.candidates[0] &&
+                data.candidates[0].content &&
+                data.candidates[0].content.parts) {
+                reply = data.candidates[0].content.parts[0].text || '';
+            } else if (data.error) {
+                reply = 'ይቅርታ — አሁን ምላሽ መስጠት አልቻልኩም። ቆየት ብለው ይሞክሩ።';
+            }
+            if (reply) {
+                chatHistory.push({ role: 'model', parts: [{ text: reply }] });
+                addBotMsg(reply);
+            }
+        })
+        .catch(function() {
+            hideTyping();
+            isTyping = false;
+            inp.disabled = false;
+            addBotMsg('ይቅርታ — ኔትወርክ ችግር አለ። ቆየት ብለው ይሞክሩ።');
+        });
+    };
+
+})();

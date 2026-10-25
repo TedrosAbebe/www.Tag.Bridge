@@ -496,6 +496,36 @@
         <i class="fab fa-whatsapp"></i>
     </a>
 
+    <!-- TAG BRIDGE AI BOT FLOAT -->
+    <div class="tb-bot-fab" id="tbBotFab" onclick="toggleTbBot()">
+        <div class="tb-bot-fab-pulse"></div>
+        <span class="tb-bot-fab-icon">🤖</span>
+        <span class="tb-bot-fab-label">ቦት ያናግሩ</span>
+    </div>
+
+    <!-- TAG BRIDGE AI BOT CHAT WINDOW -->
+    <div class="tb-bot-window" id="tbBotWindow" style="display:none;">
+        <div class="tb-bot-header">
+            <div class="tb-bot-header-info">
+                <div class="tb-bot-header-avatar">🤖</div>
+                <div>
+                    <div class="tb-bot-header-name">ታግ ብሪጅ AI ቦት</div>
+                    <div class="tb-bot-header-status"><span class="tb-bot-online-dot"></span> Online</div>
+                </div>
+            </div>
+            <button class="tb-bot-close" onclick="toggleTbBot()">✕</button>
+        </div>
+        <div class="tb-bot-messages" id="tbBotMessages"></div>
+        <div class="tb-bot-input-wrap">
+            <input type="text" id="tbBotInput" class="tb-bot-input"
+                placeholder="ጥያቄዎን ይጻፉ..."
+                onkeydown="if(event.key==='Enter') sendTbMessage()">
+            <button class="tb-bot-send" onclick="sendTbMessage()">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <script>
       window.OneSignalDeferred = window.OneSignalDeferred || [];
