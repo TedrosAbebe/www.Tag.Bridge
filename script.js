@@ -604,8 +604,8 @@ document.querySelectorAll('.product-card').forEach(function(card) {
         var wr    = $id('qscWrong');
         var tot   = $id('qscTotal');
         if(bar) bar.style.width = pct + '%';
-        if(co)  co.textContent  = '✅ ' + score;
-        if(wr)  wr.textContent  = '❌ ' + wrongCount;
+        if(co)  co.textContent  = score;
+        if(wr)  wr.textContent  = wrongCount;
         if(tot) tot.textContent = currentQ + '/' + total;
     }
 
@@ -866,8 +866,8 @@ document.querySelectorAll('.product-card').forEach(function(card) {
         var wr  = $id('qscWrong');
         var tot = $id('qscTotal');
         if(bar) bar.style.width = '100%';
-        if(co)  co.textContent  = '✅ ' + score;
-        if(wr)  wr.textContent  = '❌ ' + wrongCount;
+        if(co)  co.textContent  = score;
+        if(wr)  wr.textContent  = wrongCount;
         if(tot) tot.textContent = total + '/' + total;
 
         var emoji, level, msg;
@@ -915,8 +915,8 @@ document.querySelectorAll('.product-card').forEach(function(card) {
         if(landing) { landing.style.display = 'block'; }
         var bar=$id('quizProgressBar'), co=$id('qscCorrect'), wr=$id('qscWrong'), tot=$id('qscTotal');
         if(bar) bar.style.width='0%';
-        if(co)  co.textContent='✅ 0';
-        if(wr)  wr.textContent='❌ 0';
+        if(co)  co.textContent='0';
+        if(wr)  wr.textContent='0';
         if(tot) tot.textContent='0/0';
         // scroll back to quiz section
         var section = document.getElementById('quizSection');

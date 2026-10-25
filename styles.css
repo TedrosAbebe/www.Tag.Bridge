@@ -3721,3 +3721,7 @@ html[lang="en"] .lang-en-only { display: inline-block; }
 .tb-bot-fab-label {
     transition: all 0.2s;
 }
+
+/* Score labels via pseudo-elements (no emoji) */
+#qscCorrect::before { content: '✓ '; font-size: 0.7rem; }
+#qscWrong::before   { content: '✗ '; font-size: 0.7rem; }
