@@ -3403,3 +3403,33 @@ html[lang="en"] .lang-en-only { display: inline-block; }
     }
     .tb-bot-fab { right: 16px; bottom: 95px; }
 }
+
+/* ── FAQ Cards in Bot ── */
+.tb-faq-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding: 4px 0 6px;
+    animation: msgIn 0.3s ease;
+}
+
+.tb-faq-btn {
+    background: rgba(91,125,232,0.1);
+    border: 1px solid rgba(91,125,232,0.3);
+    border-radius: 12px;
+    padding: 9px 14px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.85);
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+    line-height: 1.4;
+}
+
+.tb-faq-btn:hover {
+    background: rgba(91,125,232,0.25);
+    border-color: rgba(91,125,232,0.6);
+    color: white;
+    transform: translateX(4px);
+}

@@ -1169,11 +1169,79 @@ document.querySelectorAll('.product-card').forEach(function(card) {
         win.style.display = isOpen ? 'flex' : 'none';
         if (isOpen && $i('tbBotMessages').children.length === 0) {
             setTimeout(function() {
-                botBubble('ሰላም! 👋 እኔ የታግ ብሪጅ AI ቦት ነኝ።\n\nስለ መጽሃፍቶቻችን፣ ዋጋዎች፣ አዘዛ ሂደት ወይም ፎሬክስ/ክሪፕቶ ጥያቄ ካለዎት ይጠይቁ! 📚');
+                botBubble('ሰላም! 👋 እኔ የታግ ብሪጅ AI ቦት ነኝ።\nከታች ካሉ ጥያቄዎች ይምረጡ ወይም ሌላ ጥያቄ ይጻፉ 👇');
+                setTimeout(showFaqCards, 400);
             }, 200);
         }
         if (isOpen) setTimeout(function() { var i = $i('tbBotInput'); if(i) i.focus(); }, 300);
     };
+
+    // ── FAQ CARDS ──────────────────────────────────────────────
+    var faqs = [
+        {
+            q: '📚 የመጽሃፍቱ ይዘት ምንድን ነው?',
+            a: '📚 <strong>የፎሬክስ መጽሃፍ ይዘቶች፦</strong><br>Forex Basics፣ Currency Pairs፣ Technical Analysis፣ Candlestick Patterns፣ Support & Resistance፣ Smart Money Concept (SMC)፣ Risk Management፣ Trading Psychology፣ Demo Account ልምምድ እና ተግባራዊ ትሬዲንግ።<br><br>📚 <strong>የክሪፕቶ መጽሃፍ ይዘቶች፦</strong><br>Crypto Basics፣ Blockchain፣ Bitcoin & Altcoins፣ Spot & Futures Trading፣ Binance Account፣ Risk Management፣ Trading Psychology።'
+        },
+        {
+            q: '💳 ክፍያ ከፈልኩ መጽሃፉን እንዴት አገኛለሁ?',
+            a: '✅ ክፍያ ከተረጋገጠ በኋላ PDF መጽሃፉ <strong>ወደ Telegram ወይም WhatsApp</strong> ይላካሉ — ብዙ ጊዜ ከደቂቃዎች ውስጥ።<br><br>📲 ለማዘዝ፦<br>• Telegram: <strong>@tagbridge123</strong><br>• WhatsApp: <strong>+251991856292</strong>'
+        },
+        {
+            q: '🌱 መጽሃፉ ለጀማሪ ተስማሚ ነው?',
+            a: '✅ አዎ! ሁሉም መጽሃፍቶቻችን <strong>ለጀማሪዎች ከዜሮ ጀምሮ</strong> በቀላል አማርኛ ተጽፈዋሉ።<br><br>ምንም ቀዳሚ እውቀት አያስፈልግም — ሙሉ ሂደቱ ደረጃ በደረጃ ይገለጻሉ።'
+        },
+        {
+            q: '💰 ምን አይነት ክፍያ ዘዴ አለ?',
+            a: '✅ ተቀባይ የክፍያ ዘዴዎች፦<br>• <strong>CBE Birr</strong> (Commercial Bank of Ethiopia)<br>• <strong>Telebirr</strong><br>• <strong>Bank Transfer</strong><br><br>ለክፍያ ዝርዝር Telegram <strong>@tagbridge123</strong> ወይም WhatsApp <strong>+251991856292</strong> ያናግሩ።'
+        },
+        {
+            q: '🎯 ከመጽሃፍ በተጨማሪ ምን አማራጭ አለ?',
+            a: '✅ ከመጽሃፍ በተጨማሪ፦<br>• 📊 <strong>Demo Account</strong> — ምናባዊ ገንዘብ ለልምምድ (ነጻ)<br>• 📢 <strong>Telegram Channel</strong>: t.me/tagbridge — ዜናዎችና ምክሮች<br>• 🎵 <strong>TikTok</strong>: @tagbridge — ቪዲዮ ትምህርቶች<br>• 💬 <strong>WhatsApp Channel</strong> — አዳዲስ ቅናሾችና ዝርዝሮች'
+        }
+    ];
+
+    function showFaqCards() {
+        var msgs = $i('tbBotMessages');
+        if (!msgs) return;
+        var wrap = document.createElement('div');
+        wrap.className = 'tb-faq-wrap';
+        wrap.id = 'tbFaqWrap';
+        faqs.forEach(function(faq, idx) {
+            var btn = document.createElement('button');
+            btn.className = 'tb-faq-btn';
+            btn.textContent = faq.q;
+            btn.onclick = function() {
+                // remove faq cards
+                var fw = $i('tbFaqWrap');
+                if (fw) fw.remove();
+                // show user bubble
+                userBubble(faq.q);
+                // show answer
+                setTimeout(function() {
+                    botBubble(faq.a);
+                    // after answer show "ተጨማሪ ጥያቄ?" prompt
+                    setTimeout(showExtraPrompt, 600);
+                }, 300);
+            };
+            wrap.appendChild(btn);
+        });
+        msgs.appendChild(wrap);
+        msgs.scrollTop = msgs.scrollHeight;
+    }
+
+    function showExtraPrompt() {
+        var msgs = $i('tbBotMessages');
+        if (!msgs) return;
+        // avoid duplicates
+        if ($i('tbExtraPrompt')) return;
+        var d = document.createElement('div');
+        d.className = 'tb-msg-bot';
+        d.id = 'tbExtraPrompt';
+        d.innerHTML = '<div class="tb-msg-bot-avatar">🤖</div>' +
+            '<div class="tb-msg-bot-bubble">ተጨማሪ ጥያቄ ካለዎት ከታች ይጻፉ 👇</div>';
+        msgs.appendChild(d);
+        msgs.scrollTop = msgs.scrollHeight;
+    }
 
     window.sendTbMessage = function() {
         var inp = $i('tbBotInput');
