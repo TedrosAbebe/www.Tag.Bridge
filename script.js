@@ -275,14 +275,17 @@ let isDragging = false;
 let hasMoved = false;
 let startX, startY, startLeft, startTop;
 
-whatsappBtn.addEventListener('mousedown', dragStart);
-whatsappBtn.addEventListener('touchstart', dragStart, { passive: true });
+if (whatsappBtn) {
+    whatsappBtn.addEventListener('mousedown', dragStart);
+    whatsappBtn.addEventListener('touchstart', dragStart, { passive: true });
+}
 document.addEventListener('mousemove', dragMove);
 document.addEventListener('touchmove', dragMove, { passive: false });
 document.addEventListener('mouseup', dragEnd);
 document.addEventListener('touchend', dragEnd);
 
 function dragStart(e) {
+    if (!whatsappBtn) return;
     isDragging = true; hasMoved = false;
     whatsappBtn.style.animation = 'none';
     whatsappBtn.style.cursor = 'grabbing';
