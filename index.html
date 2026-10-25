@@ -125,6 +125,24 @@
     <!-- White separator band -->
     <div style="height: 8px; background: white; margin-top: 70px; position: relative; z-index: 1;"></div>
 
+    <!-- LIVE MARKET TICKER -->
+    <div class="market-ticker">
+        <div class="ticker-label"><i class="fas fa-chart-bar"></i> LIVE</div>
+        <div class="ticker-scroll-wrap">
+            <div class="ticker-scroll" id="tickerScroll">
+                <span class="ticker-item" id="tick-btc"><i class="fab fa-bitcoin"></i> BTC/USD <span class="tick-price">...</span> <span class="tick-change">...</span></span>
+                <span class="ticker-dot">●</span>
+                <span class="ticker-item" id="tick-eth"><i class="fab fa-ethereum"></i> ETH/USD <span class="tick-price">...</span> <span class="tick-change">...</span></span>
+                <span class="ticker-dot">●</span>
+                <span class="ticker-item" id="tick-bnb"><i class="fas fa-certificate"></i> BNB/USD <span class="tick-price">...</span> <span class="tick-change">...</span></span>
+                <span class="ticker-dot">●</span>
+                <span class="ticker-item" id="tick-eur"><i class="fas fa-euro-sign"></i> EUR/USD <span class="tick-price">...</span> <span class="tick-change">...</span></span>
+                <span class="ticker-dot">●</span>
+                <span class="ticker-item" id="tick-gold"><i class="fas fa-coins"></i> XAU/USD <span class="tick-price">...</span> <span class="tick-change">...</span></span>
+            </div>
+        </div>
+    </div>
+
     <!-- HERO -->
     <section id="home" class="hero">
         <div class="container">
@@ -280,6 +298,81 @@
         </div>
     </section>
 
+    <!-- TESTIMONIALS -->
+    <section class="testimonials">
+        <div class="container">
+            <h2 data-en="What Our Customers Say" data-am="ደምበኞቻችን ምን አሉ">ደምበኞቻችን ምን አሉ</h2>
+            <div class="testimonials-grid">
+                <div class="testi-card">
+                    <div class="testi-stars">★★★★★</div>
+                    <p class="testi-text" data-en="The Forex book is amazing! I started trading with confidence after reading it. Best investment I made this year." data-am="የፎሬክስ መጽሃፍ ድንቅ ነው! ካነበብኩ በኋላ በራስ መተማመን ትሬዲንግ ጀመርኩ። ዘንድሮ ያደረግሁት ምርጥ ኢንቨስትመንት ነው።">የፎሬክስ መጽሃፍ ድንቅ ነው! ካነበብኩ በኋላ በራስ መተማመን ትሬዲንግ ጀመርኩ። ዘንድሮ ያደረግሁት ምርጥ ኢንቨስትመንት ነው።</p>
+                    <div class="testi-author">
+                        <div class="testi-avatar" style="background:linear-gradient(135deg,#11998e,#38ef7d)">አ</div>
+                        <div>
+                            <div class="testi-name">አቤል ተ.</div>
+                            <div class="testi-role" data-en="Forex Trader · Addis Ababa" data-am="ፎሬክስ ትሬደር · አዲስ አበባ">ፎሬክስ ትሬደር · አዲስ አበባ</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testi-card">
+                    <div class="testi-stars">★★★★★</div>
+                    <p class="testi-text" data-en="I had zero knowledge about crypto. After the book I now understand charts, candlesticks, and risk management deeply." data-am="ስለ ክሪፕቶ ምንም አያውቅም ነበር። መጽሃፉን ካነበብኩ በኋላ ቻርት፣ ካንድልስቲክ እና ሪስክ ማኔጅመንትን በጥልቀት ተረዳሁ።">ስለ ክሪፕቶ ምንም አያውቅም ነበር። መጽሃፉን ካነበብኩ በኋላ ቻርት፣ ካንድልስቲክ እና ሪስክ ማኔጅመንትን በጥልቀት ተረዳሁ።</p>
+                    <div class="testi-author">
+                        <div class="testi-avatar" style="background:linear-gradient(135deg,#f7971e,#ffd200)">ሄ</div>
+                        <div>
+                            <div class="testi-name">ሄለን ም.</div>
+                            <div class="testi-role" data-en="Crypto Trader · Hawassa" data-am="ክሪፕቶ ትሬደር · ሃዋሳ">ክሪፕቶ ትሬደር · ሃዋሳ</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testi-card">
+                    <div class="testi-stars">★★★★★</div>
+                    <p class="testi-text" data-en="The bundle was totally worth it! Both books together gave me the complete picture. The Amharic explanation makes it so easy." data-am="ጥቅሉ ሙሉ ለሙሉ ዋጋ ያለው ነው! ሁለቱ መጽሃፍት አንድ ላይ ሙሉ ምስሉን ሰጡኝ። የአማርኛ ማብራሪያ ቀላል ያደርገዋል።">ጥቅሉ ሙሉ ለሙሉ ዋጋ ያለው ነው! ሁለቱ መጽሃፍት አንድ ላይ ሙሉ ምስሉን ሰጡኝ። የአማርኛ ማብራሪያ ቀላል ያደርገዋል።</p>
+                    <div class="testi-author">
+                        <div class="testi-avatar" style="background:linear-gradient(135deg,#667eea,#764ba2)">ዳ</div>
+                        <div>
+                            <div class="testi-name">ዳዊት ሰ.</div>
+                            <div class="testi-role" data-en="Bundle · Bahir Dar" data-am="ጥቅል · ባህር ዳር">ጥቅል · ባህር ዳር</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testi-card">
+                    <div class="testi-stars">★★★★★</div>
+                    <p class="testi-text" data-en="Smart Money Concept chapter was eye-opening. Nobody explained it this clearly before. Highly recommend!" data-am="ስማርት መኒ ኮንሰፕት ምዕራፍ አይን ከፋኝ። ከዚህ ቀደም ማንም ይህን ያህል ግልጽ አድርጎ አላስረዳም ነበር። በጣም እመክራለሁ!">ስማርት መኒ ኮንሰፕት ምዕራፍ አይን ከፋኝ። ከዚህ ቀደም ማንም ይህን ያህል ግልጽ አድርጎ አላስረዳም ነበር። በጣም እመክራለሁ!</p>
+                    <div class="testi-author">
+                        <div class="testi-avatar" style="background:linear-gradient(135deg,#ee0979,#ff6a00)">ሚ</div>
+                        <div>
+                            <div class="testi-name">ሚካኤል ጂ.</div>
+                            <div class="testi-role" data-en="Forex Trader · Dire Dawa" data-am="ፎሬክስ ትሬደር · ድሬዳዋ">ፎሬክስ ትሬደር · ድሬዳዋ</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testi-card">
+                    <div class="testi-stars">★★★★★</div>
+                    <p class="testi-text" data-en="Got the book Monday, placed my first demo trade Thursday. The step-by-step platform guide is perfect for beginners." data-am="ሰኞ መጽሃፉን ወሰድኩ፣ ሃሙስ የመጀመሪያ ዴሞ ትሬድ ሰራሁ። ደረጃ በደረጃ የፕላትፎርም መመሪያ ለጀማሪዎች ፍጹም ነው።">ሰኞ መጽሃፉን ወሰድኩ፣ ሃሙስ የመጀመሪያ ዴሞ ትሬድ ሰራሁ። ደረጃ በደረጃ የፕላትፎርም መመሪያ ለጀማሪዎች ፍጹም ነው።</p>
+                    <div class="testi-author">
+                        <div class="testi-avatar" style="background:linear-gradient(135deg,#00b4db,#0083b0)">ሳ</div>
+                        <div>
+                            <div class="testi-name">ሳምሶን ዋ.</div>
+                            <div class="testi-role" data-en="Beginner Trader · Adama" data-am="ጀማሪ ትሬደር · አዳማ">ጀማሪ ትሬደር · አዳማ</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testi-card">
+                    <div class="testi-stars">★★★★★</div>
+                    <p class="testi-text" data-en="The trading psychology section saved me from blowing my account. I learned to control emotions before pressing buy/sell." data-am="የትሬዲንግ ስነ-ልቦና ክፍል አካውንቴን ከማጥፋት አዳነኝ። ገዛ/ሸጥ ከመጫን በፊት ስሜቴን መቆጣጠርን ተማርኩ።">የትሬዲንግ ስነ-ልቦና ክፍል አካውንቴን ከማጥፋት አዳነኝ። ገዛ/ሸጥ ከመጫን በፊት ስሜቴን መቆጣጠርን ተማርኩ።</p>
+                    <div class="testi-author">
+                        <div class="testi-avatar" style="background:linear-gradient(135deg,#56ab2f,#a8e063)">ፍ</div>
+                        <div>
+                            <div class="testi-name">ፍሬወይኒ ሃ.</div>
+                            <div class="testi-role" data-en="Crypto Trader · Mekelle" data-am="ክሪፕቶ ትሬደር · መቀሌ">ክሪፕቶ ትሬደር · መቀሌ</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- FAQ -->
     <section class="faq">
         <div class="container">
@@ -311,6 +404,24 @@
                     <div class="faq-answer">
                         <p data-en="We accept CBE Birr, Telebirr, and bank transfers. Contact us on Telegram or WhatsApp for payment details." data-am="ሲቢኢ ብር፣ ቴሌብር እና የባንክ ዝውውር እንቀበላለን። ለክፍያ ዝርዝር በቴሌግራም ወይም በዋትሳፕ ያግኙን።">ሲቢኢ ብር፣ ቴሌብር እና የባንክ ዝውውር እንቀበላለን። ለክፍያ ዝርዝር በቴሌግራም ወይም በዋትሳፕ ያግኙን።</p>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI QUIZ -->
+    <section class="quiz-section">
+        <div class="container">
+            <h2 data-en="Are You a Trader? 🤖 Take the Quiz!" data-am="ትሬደር ነህ? 🤖 ፈተናውን ሞክር!">ትሬደር ነህ? 🤖 ፈተናውን ሞክር!</h2>
+            <p class="quiz-subtitle" data-en="Test your Forex & Crypto knowledge. 10 questions — takes 2 minutes!" data-am="የፎሬክስ እና ክሪፕቶ እውቀትህን ፈትን። 10 ጥያቄዎች — 2 ደቂቃ ይወስዳል!">የፎሬክስ እና ክሪፕቶ እውቀትህን ፈትን። 10 ጥያቄዎች — 2 ደቂቃ ይወስዳል!</p>
+            <div class="quiz-box">
+                <!-- Chat messages area -->
+                <div class="quiz-chat" id="quizChat"></div>
+                <!-- Options area -->
+                <div class="quiz-options" id="quizOptions"></div>
+                <!-- Start button -->
+                <div class="quiz-start-wrap" id="quizStartWrap">
+                    <button class="quiz-start-btn" onclick="startQuiz()" data-en="Start Quiz 🚀" data-am="ፈተናውን ጀምር 🚀">ፈተናውን ጀምር 🚀</button>
                 </div>
             </div>
         </div>

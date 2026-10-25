@@ -364,3 +364,328 @@ document.querySelectorAll('.product-card').forEach(function(card) {
     card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
     observer.observe(card);
 });
+
+
+// ===========================
+// LIVE MARKET TICKER
+// ===========================
+(function initTicker() {
+    var prevPrices = {};
+
+    function formatPrice(p) {
+        if (p >= 1000) return '$' + p.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+        if (p >= 1)    return '$' + p.toFixed(2);
+        return '$' + p.toFixed(4);
+    }
+
+    function formatChange(pct) {
+        var sign = pct >= 0 ? '+' : '';
+        return sign + pct.toFixed(2) + '%';
+    }
+
+    function setTick(id, price, changePct) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        var priceEl  = el.querySelector('.tick-price');
+        var changeEl = el.querySelector('.tick-change');
+        if (priceEl)  priceEl.textContent  = formatPrice(price);
+        if (changeEl) {
+            changeEl.textContent = formatChange(changePct);
+            changeEl.className   = 'tick-change ' + (changePct > 0 ? 'up' : changePct < 0 ? 'down' : 'flat');
+        }
+    }
+
+    function fetchCrypto() {
+        fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin&vs_currencies=usd&include_24hr_change=true', {
+            headers: { 'Accept': 'application/json' }
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(d) {
+            if (d.bitcoin)    setTick('tick-btc', d.bitcoin.usd,    d.bitcoin.usd_24h_change);
+            if (d.ethereum)   setTick('tick-eth', d.ethereum.usd,   d.ethereum.usd_24h_change);
+            if (d.binancecoin) setTick('tick-bnb', d.binancecoin.usd, d.binancecoin.usd_24h_change);
+        })
+        .catch(function() {});
+    }
+
+    function fetchForex() {
+        // EUR/USD via exchangerate-api (free, no key needed for this endpoint)
+        fetch('https://open.er-api.com/v6/latest/USD')
+        .then(function(r) { return r.json(); })
+        .then(function(d) {
+            if (d.rates && d.rates.EUR) {
+                var eurUsd = (1 / d.rates.EUR);
+                var prev   = prevPrices['eur'] || eurUsd;
+                var pct    = ((eurUsd - prev) / prev) * 100;
+                prevPrices['eur'] = eurUsd;
+                setTick('tick-eur', eurUsd, pct);
+            }
+        })
+        .catch(function() {});
+    }
+
+    function fetchGold() {
+        // Gold via metals-api free proxy (fallback static if unavailable)
+        fetch('https://api.metals.live/v1/spot/gold')
+        .then(function(r) { return r.json(); })
+        .then(function(d) {
+            var price = Array.isArray(d) ? d[0].price : (d.price || d.gold);
+            if (price) {
+                var prev = prevPrices['gold'] || price;
+                var pct  = ((price - prev) / prev) * 100;
+                prevPrices['gold'] = price;
+                setTick('tick-gold', price, pct);
+            }
+        })
+        .catch(function() {
+            // Fallback: show static approximate
+            var el = document.getElementById('tick-gold');
+            if (el) {
+                var p = el.querySelector('.tick-price');
+                var c = el.querySelector('.tick-change');
+                if (p) p.textContent = '$2,320';
+                if (c) { c.textContent = 'N/A'; c.className = 'tick-change flat'; }
+            }
+        });
+    }
+
+    function refresh() {
+        fetchCrypto();
+        fetchForex();
+        fetchGold();
+    }
+
+    // Run on DOM ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() { refresh(); setInterval(refresh, 60000); });
+    } else {
+        refresh();
+        setInterval(refresh, 60000);
+    }
+})();
+
+// ===========================
+// AI QUIZ — chatbot style
+// ===========================
+(function initQuiz() {
+
+    var questions = [
+        {
+            q:  'Pip (ፒፕ) ምንድን ነው? 💱',
+            opts: ['የምንዛሬ ጥንድ ዋጋ ትንሹ ለውጥ', 'የፎሬክስ ብሮከር ስም', 'ዲጂታል ኮይን አይነት', 'የጊዜ ፍሬም ስም'],
+            correct: 0,
+            explain: 'ፒፕ = የምንዛሬ ዋጋ ትንሹ ሊሆን የሚችል ለውጥ ነው (0.0001 ለበዛ currencies).'
+        },
+        {
+            q:  'Blockchain ምንድን ነው? ⛓️',
+            opts: ['ዲሴንትራላይዝድ ዲጂታል ሌጀር', 'የባንክ አይነት', 'ክሪፕቶ ኤክስቼንጅ', 'ትሬዲንግ ስትራቴጂ'],
+            correct: 0,
+            explain: 'ብሎክቼይን = ዲሴንትራላይዝድ ዲጂታል መዝገብ ሲሆን ሁሉም ትራንዛክሽኖች ይቀዳሉ።'
+        },
+        {
+            q:  'Bull Market (ቡል ማርኬት) ምን ማለት ነው? 🐂',
+            opts: ['ዋጋ እየወደቀ ያለበት ገበያ', 'ዋጋ እየጨመረ ያለበት ገበያ', 'ዋጋ ተረጋጋ ያለበት ገበያ', 'አዲስ ዲጂታል ኮይን'],
+            correct: 1,
+            explain: 'Bull Market = ዋጋዎች እያደጉ ያሉበት ብሩህ ገበያ ነው። Bear Market ደግሞ ተቃራኒው።'
+        },
+        {
+            q:  'Stop Loss ለምን ይጠቅማል? 🛡️',
+            opts: ['ትርፍ ለማሳደግ', 'ኪሳራን ለመገደብ', 'ፈጣን ትሬድ ለማድረግ', 'ሌቨሬጅ ለማሳደግ'],
+            correct: 1,
+            explain: 'Stop Loss = ዋጋ ወደ ታች ሲወርድ ራስ ሰር ትሬዱን ዘግቶ ኪሳራን ይገድባል።'
+        },
+        {
+            q:  'Leverage (ሌቨሬጅ) ምን ማለት ነው? ⚡',
+            opts: ['ነጻ ትሬዲንግ ፕላትፎርም', 'ትንሽ ገንዘብ ብዙ ቦታ ለማስቀመጥ', 'ክሪፕቶ ዋሌት', 'ካንድልስቲክ ፓተርን'],
+            correct: 1,
+            explain: 'Leverage = ትንሽ ካፒታል ብዙ ትልቅ ፖዚሽን ለመከፈት ያስችላል — ሪስክም ትርፍም ይጨምራል።'
+        },
+        {
+            q:  'Candlestick ቀይ (Bearish) ሲሆን ምን ማለት ነው? 🕯️',
+            opts: ['ዋጋ ጨምሯል', 'ዋጋ ቀንሷል', 'ሁኔታ ተረጋጋ', 'ኒውስ ወጥቷል'],
+            correct: 1,
+            explain: 'ቀይ/ቢርሽ ካንደል = ዋጋ ካደረ ዝቅ ብሎ ዘጋ ማለት ነው። አረንጓዴ/ቡሊሽ ደግሞ ተቃራኒ።'
+        },
+        {
+            q:  'Support Level (ሰፖርት) ምን ማለት ነው? 📊',
+            opts: ['ዋጋ ሊያልፈው ያልቻለ ወለል', 'ዋጋ ሊያልፈው ያልቻለ ጣሪያ', 'ትሬዲንግ ሰዓት', 'ኢኮኖሚ ሪፖርት'],
+            correct: 0,
+            explain: 'Support = ዋጋ ወደ ታች ሲወርድ "ወለሉን" ሆኖ ዋጋ ሲደገፍ ያዩበት ቦታ ነው።'
+        },
+        {
+            q:  'HODL ምን ማለት ነው? 💎',
+            opts: ['ፈጣን ሸጦ ትርፍ ማግኘት', 'ኮይን ደልሎ ረጅም ጊዜ ማስቀመጥ', 'ደይ-ትሬዲንግ ስትራቴጂ', 'ሃርድ ፎርክ'],
+            correct: 1,
+            explain: 'HODL = "Hold On for Dear Life" — ዋጋ ወቅታዊ ቢወርድ ሳትሸጥ ረጅም ጊዜ ማቆየት ስትራቴጂ።'
+        },
+        {
+            q:  'Fundamental Analysis (ፋንዳሜንታል ትንተና) ምን ይጠቀማል? 🔍',
+            opts: ['ቻርት እና ኢንዲኬተሮች', 'ኢኮኖሚ ዜናዎች እና ሪፖርቶች', 'ካንድልስቲክ ፓተርን', 'ሙቪንግ አቬሬጅ'],
+            correct: 1,
+            explain: 'Fundamental Analysis = GDP፣ ወለድ ዋጋ፣ ዜናዎች... ውሳኔ ለመስጠት ኢኮኖሚ መረጃ ይጠቀማል።'
+        },
+        {
+            q:  'Risk Management ለምን ወሳኝ ነው? ⚖️',
+            opts: ['ቶሎ ለሀብታም ለመሆን', 'ካፒታልን ለመጠበቅ እና ረጅም ጊዜ ለቆም', 'ብዙ ትሬዶች ለመክፈት', 'ብሮከር ለመቀያየር'],
+            correct: 1,
+            explain: 'Risk Management = ካፒታልህን ጠብቆ ረዘም ላለ ጊዜ ትሬዲንግ ለቀጠል። ሳይኖር ሁሉ ሊጠፋ ይችላል።'
+        }
+    ];
+
+    var currentQ   = 0;
+    var score      = 0;
+    var quizActive = false;
+    var chatEl, optionsEl, startWrapEl;
+
+    function init() {
+        chatEl     = document.getElementById('quizChat');
+        optionsEl  = document.getElementById('quizOptions');
+        startWrapEl = document.getElementById('quizStartWrap');
+    }
+
+    // Scroll chat to bottom
+    function scrollChat() {
+        if (chatEl) chatEl.scrollTop = chatEl.scrollHeight;
+    }
+
+    // Add bot message (with typing animation)
+    function botMsg(text, delay) {
+        delay = delay || 0;
+        return new Promise(function(resolve) {
+            setTimeout(function() {
+                // Show typing
+                var typing = document.createElement('div');
+                typing.className = 'quiz-msg-bot quiz-typing';
+                typing.innerHTML = '<div class="quiz-bot-avatar">🤖</div><div class="typing-dots"><span></span><span></span><span></span></div>';
+                chatEl.appendChild(typing);
+                scrollChat();
+
+                setTimeout(function() {
+                    chatEl.removeChild(typing);
+                    var msg = document.createElement('div');
+                    msg.className = 'quiz-msg-bot';
+                    msg.innerHTML = '<div class="quiz-bot-avatar">🤖</div><div class="quiz-bubble-bot">' + text + '</div>';
+                    chatEl.appendChild(msg);
+                    scrollChat();
+                    resolve();
+                }, 700);
+            }, delay);
+        });
+    }
+
+    // Add user message
+    function userMsg(text) {
+        var msg = document.createElement('div');
+        msg.className = 'quiz-msg-user';
+        msg.innerHTML = '<div class="quiz-bubble-user">' + text + '</div>';
+        chatEl.appendChild(msg);
+        scrollChat();
+    }
+
+    // Show options
+    function showOptions(opts, onSelect) {
+        optionsEl.innerHTML = '';
+        opts.forEach(function(opt, i) {
+            var btn = document.createElement('button');
+            btn.className = 'quiz-opt-btn';
+            btn.textContent = ['A', 'B', 'C', 'D'][i] + '. ' + opt;
+            btn.onclick = function() { onSelect(i, btn); };
+            optionsEl.appendChild(btn);
+        });
+    }
+
+    // Clear options
+    function clearOptions() { optionsEl.innerHTML = ''; }
+
+    // Ask one question
+    function askQuestion(index) {
+        if (index >= questions.length) { showResult(); return; }
+        var q = questions[index];
+        botMsg((index + 1) + '/10 · ' + q.q).then(function() {
+            showOptions(q.opts, function(chosen, btn) {
+                // Disable all buttons
+                optionsEl.querySelectorAll('.quiz-opt-btn').forEach(function(b) { b.disabled = true; });
+
+                var isCorrect = (chosen === q.correct);
+                btn.classList.add(isCorrect ? 'correct' : 'wrong');
+                if (!isCorrect) optionsEl.querySelectorAll('.quiz-opt-btn')[q.correct].classList.add('correct');
+
+                userMsg(['A', 'B', 'C', 'D'][chosen] + '. ' + q.opts[chosen]);
+                if (isCorrect) { score++; }
+
+                botMsg(isCorrect ? '✅ ትክክል ነው! ' + q.explain : '❌ አልሆነም። ' + q.explain, 400).then(function() {
+                    clearOptions();
+                    currentQ++;
+                    askQuestion(currentQ);
+                });
+            });
+        });
+    }
+
+    // Show final result
+    function showResult() {
+        var pct = Math.round((score / questions.length) * 100);
+
+        var level, emoji, msg, ctaLabel;
+        if (pct >= 80) {
+            level = 'Pro Trader 🏆'; emoji = '🏆';
+            msg   = 'አስደናቂ! ' + score + '/10 መምታትህ ፕሮ ደረጃ ያሳያል። ስትራቴጂህን ለማሻሻል መጽሃፍቱ ይጠቅምሃል!';
+            ctaLabel = 'Bundle ስዘዝ — 500 ብር';
+        } else if (pct >= 50) {
+            level = 'Intermediate Trader 📈'; emoji = '📈';
+            msg   = score + '/10 — ጥሩ መሠረት አለህ! ለሙሉ እውቀት የፎሬክስ ወይም ክሪፕቶ መጽሃፍ ይረዳሃል።';
+            ctaLabel = 'መጽሃፍ ስዘዝ';
+        } else {
+            level = 'Beginner Trader 🌱'; emoji = '🌱';
+            msg   = score + '/10 — ጀማሪ ነህ! አሳዝኖ አይሆን — ሁሉም ከዚሁ ጀምሮ ነው። መጽሃፍቱ ሁሉንም ከዜሮ ያስተምርሃል።';
+            ctaLabel = 'ጀምሮ ስዘዝ — 350 ብር';
+        }
+
+        clearOptions();
+        var resultEl = document.createElement('div');
+        resultEl.className = 'quiz-result';
+        resultEl.innerHTML =
+            '<div class="quiz-result-emoji">' + emoji + '</div>' +
+            '<div class="quiz-result-title">' + level + '</div>' +
+            '<div class="quiz-result-score">' + score + ' / ' + questions.length + ' ትክክለኛ (' + pct + '%)</div>' +
+            '<div class="quiz-result-bar-wrap"><div class="quiz-result-bar" id="quizBar" style="width:0%"></div></div>' +
+            '<div class="quiz-result-msg">' + msg + '</div>' +
+            '<button class="quiz-cta-btn" onclick="document.getElementById(\'products\').scrollIntoView({behavior:\'smooth\'})">' + ctaLabel + '</button>' +
+            '<button class="quiz-retry-btn" onclick="retryQuiz()">እንደገና ሞክር</button>';
+        chatEl.appendChild(resultEl);
+        scrollChat();
+
+        // Animate bar
+        setTimeout(function() {
+            var bar = document.getElementById('quizBar');
+            if (bar) bar.style.width = pct + '%';
+        }, 200);
+    }
+
+    // Public: start quiz
+    window.startQuiz = function() {
+        if (quizActive) return;
+        quizActive = true;
+        init();
+        startWrapEl.style.display = 'none';
+        chatEl.innerHTML = '';
+        score = 0; currentQ = 0;
+
+        botMsg('ሰላም! 👋 እኔ ታግ ብሪጅ AI ቦት ነኝ። ስለ ፎሬክስ እና ክሪፕቶ ምን ያህል እንደምታውቅ ፈትን!').then(function() {
+            return botMsg('10 ጥያቄዎች አሉ። ለእያንዳንዱ A/B/C/D ምረጥ። ዝግጁ ነህ? 🚀', 300);
+        }).then(function() {
+            askQuestion(0);
+        });
+    };
+
+    // Public: retry quiz
+    window.retryQuiz = function() {
+        quizActive = false;
+        init();
+        chatEl.innerHTML = '';
+        clearOptions();
+        startWrapEl.style.display = 'block';
+        score = 0; currentQ = 0;
+    };
+
+})();
