@@ -335,20 +335,50 @@
     </section>
 
     <!-- AI QUIZ -->
-    <section class="quiz-section">
+    <section class="quiz-section" id="quizSection">
         <div class="container">
-            <h2 data-en="Are You a Trader? 🤖 Take the Quiz!" data-am="ትሬደር ነህ? 🤖 ፈተናውን ሞክር!">ትሬደር ነህ? 🤖 ፈተናውን ሞክር!</h2>
-            <p class="quiz-subtitle" data-en="Test your Forex knowledge. 90 questions — from beginner to professional!" data-am="የፎሬክስ እውቀትህን ፈትን። 90 ጥያቄዎች — ከጀማሪ እስከ ፕሮፌሽናል!">የፎሬክስ እውቀትህን ፈትን። 90 ጥያቄዎች — ከጀማሪ እስከ ፕሮፌሽናል!</p>
-            <div class="quiz-box">
-                <!-- Chat messages area -->
-                <div class="quiz-chat" id="quizChat"></div>
-                <!-- Options area -->
-                <div class="quiz-options" id="quizOptions"></div>
-                <!-- Start button -->
-                <div class="quiz-start-wrap" id="quizStartWrap">
-                    <button class="quiz-start-btn" onclick="startQuiz()" data-en="Start Quiz 🚀" data-am="ፈተናውን ጀምር 🚀">ፈተናውን ጀምር 🚀</button>
+
+            <!-- LANDING CARD -->
+            <div class="quiz-landing" id="quizLanding">
+                <div class="quiz-landing-glow"></div>
+                <div class="quiz-ai-avatar">
+                    <div class="quiz-ai-ring"></div>
+                    <div class="quiz-ai-ring quiz-ai-ring2"></div>
+                    <div class="quiz-ai-face">
+                        <span class="quiz-ai-eye"></span>
+                        <span class="quiz-ai-eye"></span>
+                        <div class="quiz-ai-mouth"></div>
+                        <div class="quiz-ai-scan"></div>
+                    </div>
                 </div>
+                <div class="quiz-landing-badge">TAG BRIDGE AI BOT</div>
+                <h2 class="quiz-landing-title">ትሬደር ነህ?</h2>
+                <p class="quiz-landing-sub">እውቀትህን ፈትን — ከጀማሪ እስከ ፕሮፌሽናል ፣ 90 ጥያቄዎች</p>
+                <button class="quiz-launch-btn" onclick="launchQuiz()">
+                    <span class="quiz-launch-icon">🚀</span>
+                    <span>ፈተናውን ጀምር</span>
+                </button>
             </div>
+
+            <!-- QUIZ BOX (hidden until launched) -->
+            <div class="quiz-box" id="quizBox" style="display:none;">
+                <!-- Header -->
+                <div class="quiz-box-header">
+                    <div class="quiz-bot-pill">
+                        <div class="quiz-bot-dot"></div>
+                        <span>TAG BRIDGE AI BOT</span>
+                    </div>
+                    <div class="quiz-progress-wrap">
+                        <div class="quiz-progress-bar" id="quizProgressBar"></div>
+                    </div>
+                    <span class="quiz-qcount" id="quizQCount">0 / 0</span>
+                </div>
+                <!-- Chat -->
+                <div class="quiz-chat" id="quizChat"></div>
+                <!-- Options -->
+                <div class="quiz-options" id="quizOptions"></div>
+            </div>
+
         </div>
     </section>
 

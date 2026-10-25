@@ -1,4 +1,4 @@
-// ===== TELEGRAM NOTIFICATION (admin tracker) =====
+﻿// ===== TELEGRAM NOTIFICATION (admin tracker) =====
 function sendTelegramNotification(msg) {
     var token = '8983227461:AAEFFLkC0RIb1uMndPJdAE2YGcB91vXldxc';
     var chatId = '867253752';
@@ -465,269 +465,344 @@ document.querySelectorAll('.product-card').forEach(function(card) {
 })();
 
 // ===========================
-// AI QUIZ — chatbot style
+
+
 // ===========================
-(function initQuiz() {
+// AI QUIZ — FULL REDESIGN
+// ===========================
+(function() {
 
-    var questions = [
-        // ── ምዕራፍ 1፦ የፎሬክስ መሠረታዊ እውቀት ──
-        { q:'1. Forex ማለት ምንድን ነው?', opts:['የኩባንያዎች አክሲዮን መግዣና መሸጫ ገበያ','የተለያዩ አገራት ምንዛሬዎች የሚለወጡበት ገበያ','የዲጂታል ሳንቲሞች ብቻ የሚገበያዩበት ገበያ','የእቃዎች መገበያያ ገበያ'], correct:1, explain:'Forex = Foreign Exchange — የምንዛሬ ልውውጥ ገበያ ማለት ነው።' },
-        { q:'2. የForex ገበያ ዋና ዓላማ ምንድን ነው?', opts:['ምንዛሬዎችን መለዋወጥና ከዋጋ ለውጥ ትርፍ ለማግኘት','በባንክ ብቻ ቁጠባ ማድረግ','ኩባንያ መመስረት','የመንግሥት ቦንድ ብቻ መግዛት'], correct:0, explain:'ተሳታፊዎች ምንዛሬዎችን ለመለዋወጥ ወይም ከዋጋ ለውጥ ትርፍ ለማግኘት ይገበያያሉ። ትርፍ ዋስትና የለውም።' },
-        { q:'3. በEUR/USD ጥንድ ውስጥ Base Currency የትኛው ነው?', opts:['USD','EUR','GBP','JPY'], correct:1, explain:'በCurrency Pair ውስጥ በመጀመሪያ የሚቀመጠው Base Currency ነው — ስለዚህ EUR ነው።' },
-        { q:'4. EUR/USD = 1.1000 ሲሆን ምን ማለት ነው?', opts:['1 USD = 1.10 EUR','1 EUR = 1.10 USD','1 EUR = 110 USD','1 USD = 110 EUR'], correct:1, explain:'1 EUR = 1.10 USD — Base currency አንድ ክፍል ምን ያህል Quote currency እንደሚዋጅ ያሳያል።' },
-        { q:'5. Major Currency Pairs አብዛኛውን ጊዜ የሚጋሩት የትኛውን ምንዛሬ ነው?', opts:['Ethiopian Birr (ETB)','Chinese Yuan (CNY)','US Dollar (USD)','South African Rand (ZAR)'], correct:2, explain:'Major pairs USDን ያካትታሉ እና ከፍተኛ የግብይት ፈሳሽነት ሊኖራቸው ይችላል።' },
-        { q:'6. Forex ገበያ Decentralized ነው ሲባል ምን ማለት ነው?', opts:['አንድ ማዕከላዊ ኤክስቼንጅ ብቻ ይቆጣጠረዋል','ሁሉም ዋጋዎች በአንድ ባንክ ይወሰናሉ','ግብይቶች በተለያዩ ተሳታፊዎችና መረቦች ይከናወናሉ፤ ማዕከላዊ ኤክስቼንጅ የለውም','ገበያው ምንም ዓይነት ደንብ የለውም'], correct:2, explain:'Decentralized = ግብይቶች በOTC (Over-the-Counter) የባንክና ዲልር መረቦች ይፈጸማሉ።' },
-        { q:'7. OTC (Over-the-Counter) ግብይት ምንድን ነው?', opts:['በማዕከላዊ ኤክስቼንጅ ብቻ','በሁለት ወገኖች መካከል በቀጥታ ወይም በዲልር ኔትወርኮች','የገንዘብ ልውውጥ የሌለበት ግብይት','የክሪፕቶ ገበያ ብቻ'], correct:1, explain:'Forex በአብዛኛው OTC ሲሆን ግብይቶች በተለያዩ የባንክና ዲልር መረቦች ይከናወናሉ።' },
-        { q:'8. Forex Broker ዋና ሚናው ምንድን ነው?', opts:['ትርፍ ዋስትና መስጠት','ገበያው የት እንደሚሄድ ማወቅ','የትሬዲንግ መለያና የግብይት አገልግሎት ማቅረብ','ሁሉንም ኪሳራ መክፈል'], correct:2, explain:'Broker ትዕዛዞችን ለማስፈጸምና የትሬዲንግ መለያ አገልግሎት ለማቅረብ ይረዳል።' },
-        { q:'9. Demo Account ከLive Account የሚለየው እንዴት ነው?', opts:['Demo ላይ ሁልጊዜ ትርፍ ይገኛል','Live ላይ ኪሳራ አይኖርም','Demo ምናባዊ ገንዘብ፣ Live ደግሞ እውነተኛ ገንዘብ ይጠቀማል','ሁለቱም ተመሳሳይ ጫና አላቸው'], correct:2, explain:'Demo ለልምምድ ይጠቅማል፤ Live ላይ የገንዘብ አደጋና የስነ-ልቦና ጫና ይጨምራል።' },
-        { q:'10. የForex ገበያ ዋና ተሳታፊዎች የትኞቹ ናቸው?', opts:['ማዕከላዊ ባንኮች ብቻ','የንግድ ባንኮች ብቻ','ኩባንያዎችና የችርቻሮ ነጋዴዎች ብቻ','ከላይ ያሉት ሁሉ'], correct:3, explain:'ባንኮች፣ ማዕከላዊ ባንኮች፣ ኩባንያዎች፣ ፈንዶችና ችርቻሮ ነጋዴዎች ሁሉ ይሳተፋሉ።' },
-        // ── ምዕራፍ 2፦ የTrading መሠረታዊ ቃላት ──
-        { q:'11. Bid Price ምንድን ነው?', opts:['ነጋዴው ምንዛሬውን ሊገዛበት የሚችለው ዋጋ ብቻ','ነጋዴው Sell የሚያደርግበት የBroker ዋጋ','የቀኑ ከፍተኛ ዋጋ','የመዝጊያ ዋጋ ብቻ'], correct:1, explain:'Bid = ነጋዴው ለBroker ሲሸጥ (Sell ሲያደርግ) ከBroker የሚያገኘው ዋጋ ነው።' },
-        { q:'12. Ask Price ምንድን ነው?', opts:['ነጋዴው Buy የሚያደርግበት የBroker ዋጋ','የቀኑ ዝቅተኛ ዋጋ','የገበያው የመክፈቻ ዋጋ','የStop Loss ዋጋ'], correct:0, explain:'Ask = ነጋዴው ከBroker ሲገዛ (Buy ሲያደርግ) የሚከፍለው ዋጋ ነው።' },
-        { q:'13. Spread እንዴት ይሰላል?', opts:['Bid + Ask','Ask − Bid','Ask × Bid','Bid ÷ Ask'], correct:1, explain:'Spread = Ask − Bid — ሁለቱ ዋጋዎች መካከል ያለ ልዩነት ሲሆን የBroker ክፍያ ተደርጎ ይወሰዳል።' },
-        { q:'14. Bid=1.1000 Ask=1.1002 ከሆነ Spread ስንት ነው?', opts:['0.2 pip','2 pips','20 pips','200 pips'], correct:1, explain:'0.0002 ÷ 0.0001 = 2 pips። ለJPY ጥንዶች 1 pip = 0.01 ነው።' },
-        { q:'15. በአብዛኛው የForex ጥንዶች 1 pip ስንት ነው?', opts:['0.01','0.0001','1.0000','0.1'], correct:1, explain:'ለአብዛኞቹ pairs 1 pip = 0.0001። ለJPY pairs ደግሞ 1 pip = 0.01 ነው።' },
-        { q:'16. Lot Size ምንን ያመለክታል?', opts:['የገበያውን አቅጣጫ','የትሬድ መጠንን','የኢኮኖሚ ዕድገትን','የSpread መጠንን'], correct:1, explain:'Lot Size = ትሬዱ ምን ያህል የBase Currency ክፍል እንደያዘ ያሳያል።' },
-        { q:'17. Standard Lot ምን ያህል ነው?', opts:['1,000','10,000','100,000','1,000,000'], correct:2, explain:'Standard Lot = 100,000 ክፍል። Mini = 10,000፤ Micro = 1,000 ናቸው።' },
-        { q:'18. Leverage ምንድን ነው?', opts:['ትርፍ ዋስትና','ከካፒታል በላይ ገበያ ኤክስፖዠር ለማዝ','የዜና መለኪያ','የStop Loss ሌላ ስም'], correct:1, explain:'Leverage = ትንሽ ካፒታል ብዙ ትልቅ ፖዚሽን ለመከፈት ያስችላል። ትርፍም ኪሳራም ያበዛል።' },
-        { q:'19. Margin ምንድን ነው?', opts:['ቦታ ለመክፈት እንደ ዋስትና የሚያስፈልግ ገንዘብ','የዕለት ትርፍ','የSpread ዋጋ','የባንክ ወለድ'], correct:0, explain:'Margin = ትሬደሩ ቦታ ለመክፈትና ለመያዝ Broker ጋር የሚያኖር ዋስትና ገንዘብ።' },
-        { q:'20. 1:100 Leverage ቀላሉ ምሳሌ ምንድን ነው?', opts:['100 ዶላር ትርፍ ዋስትና','ለ100,000$ ኤክስፖዠር 1,000$ ማርጅን ሊያስፈልግ ይችላል','100 ትሬዶች ነፃ ናቸው','ኪሳራ ሊኖር አይችልም'], correct:1, explain:'ትክክለኛው ማርጅን በመሳሪያ፣ ኮንትራት መጠንና Broker ደንብ ይለያያል። ይህ ቀላል ምሳሌ ብቻ ነው።' },
-        // ── ምዕራፍ 3፦ የገበያ አይነቶችና ትዕዛዞች ──
-        { q:'21. Spot Forex Market ምንድን ነው?', opts:['ምንዛሬዎች በአሁኑ ዋጋ የሚገበያዩበት ገበያ','ከ10 ዓመት በኋላ ብቻ','የአክሲዮን ገበያ','የክሪፕቶ ብቻ'], correct:0, explain:'Spot Market = ምንዛሬዎች ወዲያውኑ (ወይም ጥቂት ቀናት ውስጥ) በወቅቱ ዋጋ ይወጣሉ።' },
-        { q:'22. Market Order ምንድን ነው?', opts:['ወደፊት ዋጋ ብቻ','ወቅቱ ባለው ምርጥ ዋጋ ለመፈጸም ትዕዛዝ','ትዕዛዝ ሰርዣ','Stop Loss ዓይነት'], correct:1, explain:'Market Order = አሁን ባለው ዋጋ ወዲያው ለማስፈጸም ይላካል።' },
-        { q:'23. Buy Limit Order መቼ ይጠቅማል?', opts:['ዋጋ ወደ ላይ ሲወጣ','ዋጋ ወደ ተወሰነ ዝቅተኛ ደረጃ ሲወርድ ለመግዛት','ትሬድ ለመዝጋት','ዋጋ ለመቀየር'], correct:1, explain:'Buy Limit = ዋጋ ወደ ታች ወርዶ ለወሰንከው ደረጃ ሲደርስ ትሬዱ ይከፈታል።' },
-        { q:'24. Buy Stop Order ለምን ይጠቅማል?', opts:['ዋጋ ከተወሰነ ላይኛው ደረጃ ሲወጣ ለመግዛት','ዋጋ ሲወርድ ብቻ','ዜና ለማንበብ','ካፒታል ለማሳደግ'], correct:0, explain:'Buy Stop = ዋጋ ወደ ላይ ሰብሮ ለወሰንከው ደረጃ ሲደርስ ትሬዱ ይከፈታል — Breakout ትሬደሮች ይጠቀሙበታል።' },
-        { q:'25. Stop Loss (SL) ዋና ዓላማው ምንድን ነው?', opts:['ትርፍ ማሳደግ','ትሬድ በተወሰነ ዋጋ ደረጃ ዘጋ ኪሳራን ለመገደብ','Spread ማጥፋት','Leverage ማሳደግ'], correct:1, explain:'SL = ዋጋ ተቃራኒ አቅጣጫ ሲሄድ ትሬዱን ዘግቶ ኪሳራን ይገድባል። Slippage ሊኖር ይችላል።' },
-        { q:'26. Take Profit (TP) ምን ያደርጋል?', opts:['ትሬድን በተወሰነ ትርፍ ደረጃ ለመዝጋት ይረዳል','ዋጋ ይቀይራል','ካፒታል ያበዛል','ኪሳራ ወደ ትርፍ ይቀይራል'], correct:0, explain:'TP = ዋጋ ወደ ታለምከው ደረጃ ሲደርስ ትሬዱ ራሱ ዘግቶ ትርፍ ያስቆልፋል።' },
-        { q:'27. Liquidity ምንን ያመለክታል?', opts:['የኢንተርኔት ፍጥነት','ንብረትን በቀላሉ ወደ ገንዘብ የመቀየርና የመገበያየት ችሎታ','የወለድ መጠን ብቻ','የመዝጊያ ሰዓት'], correct:1, explain:'ከፍተኛ Liquidity = ትሬዶች ቀላል፣ Spread ዝቅተኛ። ዝቅተኛ Liquidity = ትሬድ ፈጻሚ ያስቸግራል።' },
-        { q:'28. Volatility ምንድን ነው?', opts:['የዋጋ ለውጥ መጠን ወይም ፍጥነት','Broker ስም','አካውንት ፓስዎርድ','የምንዛሬ ምልክት'], correct:0, explain:'ከፍተኛ Volatility = ዋጋ ፈጠን ብሎ ይቀያየራል። Risk እና Opportunity ሁለቱም ይጨምራሉ።' },
-        { q:'29. Market Session ምን ማለት ነው?', opts:['የትሬደሩ እረፍት','የአንድ ማዕከል ንግድ በሚጨምርበት ጊዜ ክፍል','Stop Loss ደረጃ','ምንዛሬ ዋጋ'], correct:1, explain:'Sydney, Tokyo, London, New York — አራቱ ዋና sessions ናቸው።' },
-        { q:'30. London እና New York sessions ሲደራረቡ ምን ሊከሰት ይችላል?', opts:['ገበያ ይዘጋል','የግብይት እንቅስቃሴና Liquidity ሊጨምር ይችላል','ሁሉም ዋጋ አንድ ይሆናል','Spread ዜሮ ይሆናል'], correct:1, explain:'Overlap ጊዜ ብዙ ተሳታፊዎች ስለሚገቡ EUR/USD ላይ እንቅስቃሴ ሊበዛ ይችላል።' },
-        // ── ምዕራፍ 4፦ Risk Management እና Trading Psychology ──
-        { q:'31. Risk Management ለምን አስፈላጊ ነው?', opts:['ኪሳራን ሙሉ ለማጥፋት','አደጋን ለመቆጣጠርና ካፒታልን ለመጠበቅ','ዋጋ ሁልጊዜ ለመገመት','ብዙ ትሬዶች ለመክፈት'], correct:1, explain:'Risk Management = ካፒታልህን ጠብቆ ረዘም ላለ ጊዜ ትሬዲንግ ለቀጥል — ሳይኖር ሁሉ ሊጠፋ ይችላል።' },
-        { q:'32. Position Sizing ማለት ምንድን ነው?', opts:['ሰዓት መምረጥ','ትሬድ መጠን ከካፒታልና SL ጋር አዛምዶ መወሰን','Broker ስም','ዜና መተርጎም'], correct:1, explain:'Position Sizing = ትሬዱ ምን ያህል ትልቅ ቦታ ይያዝ? ካፒታልህ፣ SL ርቀት እና ሪስክ % ላይ ይተማሰናል።' },
-        { q:'33. Risk:Reward Ratio = 1:2 ምን ማለት ነው?', opts:['የሚጋፈጠው 1 ክፍል ኪሳራ ሲሆን ዓላማ 2 ክፍል ትርፍ ነው','ሁለት ትሬዶች ማሸነፍ','ትርፍ ዋስትና','ሁለት አካውንቶች'], correct:0, explain:'R:R 1:2 = 100$ ሊጠፋ ሲችል 200$ ትርፍ ታለማለህ። ትርፍ ዋስትና አይሰጥም።' },
-        { q:'34. FOMO ምንን ያመለክታል?', opts:['የፈሳሽነት መጠን','ያለ እቅድ ትርፍ ያመልጠኛል ብሎ ወደ ትሬድ መዝለቅ','ገበያ ሰዓት','ቻርት አይነት'], correct:1, explain:'FOMO = Fear Of Missing Out — ስሜታዊ ውሳኔ ስለሚሆን ብዙ ጊዜ ኪሳራ ያስከትላል።' },
-        { q:'35. ኪሳራ ከደረሰ በኋላ ቁጣ ለመመለስ ብዙ ትሬዶች መክፈት ምን ይባላል?', opts:['Swing Trading','Risk Hedging','Revenge Trading','Fundamental Analysis'], correct:2, explain:'Revenge Trading = ስሜት ሲቆጣጠር የሚከናወን ትሬድ — ኪሳራን ሊያበዛ ይችላል።' },
-        { q:'36. የTrading ዲሲፕሊን ምንን ይጠይቃል?', opts:['ሁሉም ትሬድ ትርፍ','እቅዱንና Risk ደንቡን በተከታታይ መከተል','ስትራቴጂ ደቂቃ ቀይር','ያለ SL ነግድ'], correct:1, explain:'ዲሲፕሊን = ስሜት ሳይሆን እቅድ መከተል። ትሬዲንግ ስኬት ዋና ምሰሶ ነው።' },
-        { q:'37. Drawdown ምንድን ነው?', opts:['ካፒታል ወይም Equity ቀደም ከፍተኛ ደረጃ ሲቀነስ','ሰዓት','Spread','ትሬድ ብዛት'], correct:0, explain:'Drawdown = ካፒታልህ ከፍ ካለበት ደረጃ ምን ያህል ወደ ታች ወረደ — ሪስክ መለኪያ ነው።' },
-        { q:'38. ካፒታልን ሙሉ ለሙሉ አደጋ ላይ ማዋል ለምን አደገኛ ነው?', opts:['ትርፍ ይቀንሳል','ተቃራኒ እንቅስቃሴ ሙሉ ኪሳራ ሊያስከትል ይችላል','Spread ዜሮ ይሆናል','ገበያ ይዘጋል'], correct:1, explain:'አንድ ትሬድ ሁሉ ሊቀጥፍ ይችላል — ሁልጊዜ ትሬድ ሀ ካፒታል ትንሽ ክፍል ብቻ አደጋ ላይ አቅም።' },
-        { q:'39. ተከታታይ ኪሳራ ከደረሰ የLot መጠን ማሳደግ ትክክለኛ ዘዴ ነው?', opts:['አዎ ሁልጊዜ','አዎ ሁሉም ስትራቴጂ','አይደለም — ያለ እቅድ Lot ማሳደግ አደጋን ያበዛል','አዎ Demo ና Live ሁሉ'], correct:2, explain:'Martingale-style አሰራር ካፒታልን ሊጨርሰው ይችላል። ጊዜ ወስዶ ስትራቴጂ ገምግም።' },
-        { q:'40. Trading Journal ዋና ጥቅሙ ምንድን ነው?', opts:['ዋጋ መቆጣጠር','ትሬዶችን፣ ስህተቶችን፣ ውሳኔ ሂደትን መመዝገብና መገምገም','ኪሳራ ይመልሳል','Broker ኮሚሽን ያጠፋል'], correct:1, explain:'Journal = ስህተቶችህን ለይቶ ስትራቴጂህን ለማሻሻል ዋናው መሳሪያ ነው።' },
-        // ── ምዕራፍ 2፦ Market Structure ──
-        { q:'51. Uptrend ምን ማለት ነው?', opts:['ዋጋ ሁልጊዜ ተመሳሳይ','Higher Highs እና Higher Lows','Lower Highs እና Lower Lows','ዋጋ አይንቀሳቀስም'], correct:1, explain:'Uptrend = ዋጋ ከቀድሞ High ከፍ (HH) እና ከቀድሞ Low ከፍ (HL) እየፈጠረ ይሄዳል።' },
-        { q:'52. Downtrend የሚያመለክተው ምንድን ነው?', opts:['Higher Highs እና Higher Lows','ተመሳሳይ Highs','Lower Highs እና Lower Lows','ወደ ላይ ብቻ'], correct:2, explain:'Downtrend = Lower Highs (LH) እና Lower Lows (LL) — ዋጋ ደረጃ በደረጃ ወደ ታች ይወርዳል።' },
-        { q:'53. Higher High (HH) ምንድን ነው?', opts:['አዲሱ High ከቀድሞ ዝቅ ሲል','አዲሱ Low ከቀድሞ ከፍ ሲል','አዲሱ High ከቀድሞ ከፍ ሲል','ዋጋ ያለ አቅጣጫ'], correct:2, explain:'HH = አዲሱ የዋጋ ከፍተኛ ነጥብ ከቀድሞ ከፍተኛ ነጥብ በላይ ሲሆን — Uptrend ምልክት ነው።' },
-        { q:'54. Lower Low (LL) ምንድን ነው?', opts:['አዲሱ Low ከቀድሞ ዝቅ ሲል','አዲሱ High ከቀድሞ ከፍ ሲል','ዋጋ Resistance ሲነካ','ዋጋ ወደ ላይ ሲመለስ'], correct:0, explain:'LL = አዲሱ ዝቅተኛ ነጥብ ከቀድሞ ዝቅተኛ ነጥብ በታች ሲሆን — Downtrend ያጠናክራል።' },
-        { q:'55. Market Structure Shift (MSS) ምን ሊያመለክት ይችላል?', opts:['ዋጋ ሁልጊዜ ወደ ላይ እንደሚሄድ','የገበያ አወቃቀር ሊቀየር እንደሚችል','ቮሊዩም መጥፋቱን','ሁሉም ትሬዶች ትርፋማ ናቸው'], correct:1, explain:'MSS = የቀድሞ አቅጣጫ ሊለወጥ እንደሚችል የሚጠቁም ምልክት ነው። ብቻውን አያረጋግጥም።' },
-        { q:'56. Break of Structure (BOS) ምን ማለት ነው?', opts:['ዋጋ እንዳይንቀሳቀስ','ዋጋ አስፈላጊ Swing High/Low ሲሰብር','Account ባላንስ ሲጨምር','Session ሲጨርስ'], correct:1, explain:'BOS = ዋጋ ቀደም ያለ Swing High ወይም Low ሲሰብር — የመዋቅር ለውጥ ምልክት።' },
-        { q:'57. Range-Bound Market ምንድን ነው?', opts:['ወደ ላይ ብቻ','ወደ ታች ብቻ','Support እና Resistance መካከል ሲወዛወዝ','ገበያ ሲዘጋ'], correct:2, explain:'Range = ዋጋ ግልጽ Trend ሳይኖር በተወሰነ ዞን ውስጥ ይወዛወዛል — Breakout ሊከሰት ይችላል።' },
-        // ── ምዕራፍ 3፦ Support and Resistance ──
-        { q:'58. Support ምንድን ነው?', opts:['ዋጋ ሁልጊዜ የሚወርድበት','የግዢ ፍላጎት ሊጨምርና ዋጋ ሊደገፍ የሚችልበት ዞን','Broker ኮሚሽን','Stop Loss መጠን'], correct:1, explain:'Support = Buyers ሊጠናከሩ የሚችሉበት ዞን። ዋጋ ሊሰብረው ይችላል — ዋስትና የለውም።' },
-        { q:'59. Resistance ምንድን ነው?', opts:['የሽያጭ ግፊት ሊጨምርና ዋጋ ሊዘገይ የሚችልበት ዞን','ሰዓት','Account ባላንስ','ዋጋ መለኪያ'], correct:0, explain:'Resistance = Sellers ሊጠናከሩ የሚችሉበት ዞን። ሊሰበር ይችላል — Breakout ሊፈጠር ይችላል።' },
-        { q:'60. Resistance ከተሰበረ Support ሊሆን ይችላል?', opts:['አይችልም','አዎ አንዳንድ ጊዜ (Role Reversal)','ሁልጊዜ ይሆናል','በForex ብቻ'], correct:1, explain:'Role Reversal = ቀድሞ Resistance የነበረ ዞን ከተሰበረ በኋላ Support ሊሆን ይችላል — ሁልጊዜ አይደለም።' },
-        { q:'61. Support/Resistance ዞን አድርጎ ማየት ለምን ይጠቅማል?', opts:['ዋጋ ሁልጊዜ አንድ ነጥብ ላይ ስለሚቆም','ዋጋ አካባቢ ሊወዛወዝ ስለሚችል','ዞኖች SL አያስፈልጋቸውም','100% ያረጋግጣሉ'], correct:1, explain:'ዋጋ ትክክለኛ ነጥብ ሳይሆን ዞን ላይ ሊደገፍ ይችላል — ስለዚህ ዞን አድርጎ ማቀድ ተግባራዊ ነው።' },
-        { q:'62. Support ላይ ዋጋ ሲመለስ ብቻ Buy ለመግባት በቂ ነው?', opts:['አዎ ሁልጊዜ','አይደለም — Market Structure፣ ማረጋገጫ፣ Risk መፈተሽ ያስፈልጋል','አዎ Bitcoin ላይ ብቻ','አይደለም — Support ላይ Sell ብቻ'], correct:1, explain:'Support ብቻ አይበቃም — Higher TF አቅጣጫ፣ Candlestick confirmation፣ R:R ሁሉ ማየት ያስፈልጋል።' },
-        // ── ምዕራፍ 4፦ Candlestick Analysis ──
-        { q:'63. Candlestick Body ምን ያሳያል?', opts:['Open እና Close ዋጋ','ሰዓት ብቻ','Broker ትርፍ','Account መጠን'], correct:0, explain:'Body = Open እና Close ዋጋ ይወክላል። ቀለሙ ዋጋ ከፍ ወይም ዝቅ ብሎ መዝጋቱን ያሳያል።' },
-        { q:'64. Candlestick Wick/Shadow ምን ያሳያል?', opts:['ካፒታሉን','Body ውጭ የደረሰ High እና Low ዋጋ','ኮሚሽን','ወደፊቱን ዋጋ ዋስትና'], correct:1, explain:'Wick = ሻማው Body ከፍ/ዝቅ ካለ ዋጋ ጋር ያለ ርቀት ይወክላል — ዋጋ Rejection ሊያሳይ ይችላል።' },
-        { q:'65. Bullish Engulfing ምን ሊያመለክት ይችላል?', opts:['ዋጋ ሁልጊዜ ይወርዳል','Bullish ግፊት ሊጨምር ይችላል','Account ተዘጋ','እንቅስቃሴ የለም'], correct:1, explain:'Bullish Engulfing = ትንሽ Bearish Candle ተከትሎ Body ቀድሞውን የሚሸፍን Bullish Candle — Support አካባቢ ሲታይ ትርጉም ይጨምራል።' },
-        { q:'66. Bearish Engulfing ምን ሊያመለክት ይችላል?', opts:['Bearish ግፊት ሊጨምር ይችላል','ዋጋ ሁልጊዜ ይጨምራል','Spread ይጠፋል','Session ይጀምራል'], correct:0, explain:'Bearish Engulfing = Resistance አካባቢ ሲታይ የሽያጭ ግፊት ሊጠናከር ይችላል — Market Structure ጋር ማጣመር ያስፈልጋል።' },
-        { q:'67. Doji Candle ምን ሊያመለክት ይችላል?', opts:['ወደ ላይ ዋስትና','Open እና Close ተቀራራቢ — የውሳኔ እጥረት','ሁሉም ትርፍ አገኙ','ገበያ ተዘጋ'], correct:1, explain:'Doji = Open ≈ Close — ገዢዎችና ሻጮች ሚዛናቸው ሲጠጋጋ ይሠራል። ብቻውን ሊቀጥሉ የሚሆነውን አያረጋግጥም።' },
-        { q:'68. Pin Bar ምን መረጃ ሊሰጥ ይችላል?', opts:['ዋጋ ሊመለስ ወይም Rejection ሊኖር ይችላል','ትርፍ ተረጋገጠ','SL አያስፈልግም','ዋጋ አይንቀሳቀስም'], correct:0, explain:'Pin Bar = ረጅም Wick ያለው Candle — ዋጋ ሊመለስ ይችላል ይላል። ቦታና አውድ ወሳኝ ናቸው።' },
-        { q:'69. Candlestick Analysis ትክክለኛ አቀራረብ የትኛው ነው?', opts:['አንድ Candle ብቻ ተመልክቶ ትሬድ','Pattern + Market Structure + Risk አጣምሮ ማየት','ትልቁ Candle ሲታይ ሁልጊዜ','Wick የሌለው ብቻ'], correct:1, explain:'Candle Pattern ብቻ አይበቃም — Market Structure፣ S/R ዞን፣ Risk Management ጋር አጣምሮ ማየት ያስፈልጋል።' },
-        { q:'70. M5 ላይ Bullish Pattern ታየ ግን Higher TF Downtrend ነው — ምን ትደርጋለህ?', opts:['Buy ሁልጊዜ','Higher TF ችላ','ሁለቱን ማጥናት፣ ማረጋገጫ፣ ወይም ትሬዱን መተው','SL ሳይጠቀም Buy'], correct:2, explain:'Higher TF Downtrend ሲሆን M5 Bullish Signal ብቻ ሊያሳስት ይችላል — Confirmation ጠብቅ ወይም ተው።' },
-        // ── ምዕራፍ 5፦ Liquidity ──
-        { q:'71. Liquidity በTrading ምንድን ነው?', opts:['ቻርት ቀለም','ንብረትን በቀላሉ መግዛትና መሸጥ፤ SMC ውስጥ Stop Orders ሊሰበሰቡ ዞኖችም ይባላል','Account ትርፍ','Stop Loss ዋጋ'], correct:1, explain:'Liquidity = መሸጥና መግዛት ቀላል ሁኔታ። SMC ውስጥ Stop Orders ባሉ ዞን ሊሰበሰብ ይችላል ሲባልም ይጠቀምበታል።' },
-        { q:'72. Buy-Side Liquidity (BSL) ብዙ ጊዜ የት ይገኛል?', opts:['ከSwing Highs/Equal Highs በላይ','ከLows በታች ብቻ','Account ውስጥ','Candle መካከል'], correct:0, explain:'BSL = ከቀድሞ Swing Highs ወይም Equal Highs በላይ — Buy Stop Orders ሊከማቹ ይችላሉ።' },
-        { q:'73. Sell-Side Liquidity (SSL) ብዙ ጊዜ የት ይገኛል?', opts:['ከSwing Highs በላይ','ከEqual Lows/Swing Lows በታች','Candle Open ላይ ብቻ','Resistance በላይ'], correct:1, explain:'SSL = ከቀድሞ Lows በታች — Long ትሬደሮች SL እና Sell Stop Orders ሊኖሩ ይችላሉ።' },
-        { q:'74. Equal Highs ለምን SMC ትንተና ውስጥ አስፈላጊ ናቸው?', opts:['ዋጋ ከዚያ በላይ አይሄድም','ከእነሱ በላይ BSL ሊኖር ስለሚችል','100% አቅጣጫ ያሳያሉ','ሁልጊዜ OB ናቸው'], correct:1, explain:'Equal Highs = ብዙ ትሬደሮች SL ሊያስቀምጡ ስለሚችሉ BSL ሊሰበሰብ ይችላል። ዋስትና አይሰጥም።' },
-        { q:'75. Equal Lows ምን ሊያመለክቱ ይችላሉ?', opts:['ከእነሱ በታች SSL ሊኖር ይችላል','ዋጋ ወደ ላይ ዋስትና','ገበያ ተዘጋ','Spread ይጠፋል'], correct:0, explain:'Equal Lows = ከተመሳሳይ Low ነጥቦች በታች SSL ሊሰበሰብ ይችላል — Liquidity ትንተና ዋና ቦታ ነው።' },
-        // ── ምዕራፍ 6፦ Liquidity Sweep & Stop Hunt ──
-        { q:'76. Liquidity Sweep ምንድን ነው?', opts:['ዋጋ High/Low ሰብሮ Liquidity ወስዶ ሊመለስ የሚችል እንቅስቃሴ','Account ማጽዳት','ሁሉም ትሬዶች መዝጋት','Candle ቀለም'], correct:0, explain:'Sweep = ዋጋ ደረጃ ሰብሮ SL/Orders ካነቃ በኋላ ሲመለስ — መምለሱ ማረጋገጫ ያስፈልጋል።' },
-        { q:'77. ዋጋ Equal Highs ሰብሮ ወዲያውኑ ወደ ታች ተመለሰ — ምን ሊሆን ይችላል?', opts:['Bullish Continuation ብቻ','BSL Sweep + Bearish Rejection','Account ተዘጋ','ለውጥ የለም'], correct:1, explain:'Equal Highs ሰብሮ ሲመለስ BSL Sweep ሊሆን ይችላል — Market Structure ማረጋገጫ ያስፈልጋል።' },
-        { q:'78. ዋጋ Previous Low ሰብሮ ወደ ላይ ተመለሰ — ምን ሊሆን ይችላል?', opts:['SSL Sweep + Bullish Rejection','Downtrend Continuation ዋስትና','Spread ጨምሯል','ገበያ ተዘጋ'], correct:0, explain:'Previous Low ሰብሮ ሲመለስ SSL Sweep ሊሆን ይችላል — TF ማረጋገጫ + MSS ያስፈልጋል።' },
-        { q:'79. Stop Hunt ምንን ያመለክታል?', opts:['Broker ሁልጊዜ ሆን ብሎ SL ይመታል','ዋጋ SL ሊኖሩ በሚችሉ ዞን ሄዶ Orders ሊያነቃ የሚችልበት ሁኔታ','ትሬድ መዝጊያ ብቻ','ትንተና ዘዴ አይደለም'], correct:1, explain:'Stop Hunt = ዋጋ ብዙ SL ሊኖሩ ወደሚችሉ ዞን ሄዶ ሲያነቃ — ሁሉም Broker ማታለያ ነው ማለት አይደለም።' },
-        { q:'80. Liquidity Sweep vs Breakout — ዋናው ልዩነት ምንድን ነው?', opts:['ሁለቱ አንድ ናቸው','Breakout ቀጥሎ ሊሄድ ሲችል Sweep ሰብሮ ሊመለስ ይችላል','Sweep ክሪፕቶ ብቻ','Breakout ሁልጊዜ ስህተት'], correct:1, explain:'Breakout = ሰብሮ ቀጠለ። Sweep = ሰብሮ ተመለሰ። የቀጣይ Price Action ብቻ ሊናገር ይችላል።' },
-        // ── ምዕራፍ 7፦ Order Block & FVG ──
-        { q:'81. Order Block (OB) SMC ውስጥ ምንድን ነው?', opts:['ማንኛውም Candle','ከጠንካራ እንቅስቃሴ በፊት ያለ ዞን፣ ሊኖር የሚችል Demand/Supply ዞን','Account መጠን','Broker ሁኔታ'], correct:1, explain:'OB = ከጠንካራ ወደ ላይ/ታች እንቅስቃሴ በፊት ያለ ዞን ነው። Institutional Order ዋስትና አይሰጥም።' },
-        { q:'82. Bullish Order Block እንዴት ይለያል?', opts:['ከጠንካራ ወደ ላይ እንቅስቃሴ በፊት ያለ Bearish Candle/ዞን','ወደ ታች ከሄደ በኋላ ብቻ','ሁሉም Green Candle','Previous High ብቻ'], correct:0, explain:'Bullish OB = ወደ ላይ ጠንካራ እንቅስቃሴ ከመጀመሩ በፊት ያለ ቀይ Candle ወይም ዞን ነው።' },
-        { q:'83. Bearish Order Block እንዴት ይለያል?', opts:['ከጠንካራ ወደ ታች እንቅስቃሴ በፊት ያለ Bullish Candle/ዞን','ሁሉም Bearish Candle','Account Loss','Previous Low ብቻ'], correct:0, explain:'Bearish OB = ወደ ታች ጠንካራ እንቅስቃሴ ከመጀመሩ በፊት ያለ አረንጓዴ Candle ወይም ዞን ነው።' },
-        { q:'84. ዋጋ OB ደረሰ — ወዲያው ትሬድ ትከፍታለህ?', opts:['አዎ ሁልጊዜ','አይደለም — ምላሽ፣ MSS፣ Risk ማረጋገጥ ያስፈልጋል','አዎ Gold ብቻ','አይደለም — OB ዋጋ ሁልጊዜ ይሰብራል'], correct:1, explain:'OB ደርሶ ብቻ አይበቃም — Rejection ምልክት፣ LTF MSS ወይም Plan ውስጥ ያለ Trigger ይጠብቅ።' },
-        { q:'85. Fair Value Gap (FVG) ምንድን ነው?', opts:['3 Candles ውስጥ 1ኛና 3ኛ Wick የማይደራረቡ ዞን','Broker ክፍያ','ሁሉም ዋጋ ጭማሪ','SL መጠን'], correct:0, explain:'FVG = 3-Candle setup — 1ኛ High < 3ኛ Low (Bullish) ወይም 1ኛ Low > 3ኛ High (Bearish)።' },
-        { q:'86. Bullish FVG ምን ያሳያል?', opts:['1ኛ Candle High < 3ኛ Candle Low — ዋጋ ሊሞላ ሊመለስ ይችላል','ዋጋ ሁልጊዜ ይወርዳል','ገበያ ይዘጋል','ኮሚሽን ይቀንሳል'], correct:0, explain:'Bullish FVG = ወደ ላይ ጠንካራ እንቅስቃሴ ወቅት ዞን ሲፈጠር — ዋጋ ሊሞላ ሊመለስ ይችላል።' },
-        { q:'87. Bearish FVG ምን ያሳያል?', opts:['1ኛ Candle Low > 3ኛ Candle High — ዋጋ ሊሞላ ሊመለስ ይችላል','ዋጋ ሁልጊዜ ይጨምራል','Account ትርፍ','ሁሉም Candle አንድ ቀለም'], correct:0, explain:'Bearish FVG = ወደ ታች ጠንካራ እንቅስቃሴ ወቅት ይፈጠራል። Sell Setup ለሚፈልጉ ዞን ሊሆን ይችላል።' },
-        { q:'88. FVG ተሞላ — ቀጣይ አቅጣጫ ምንድን ነው?', opts:['ወደ ላይ ብቻ','ወደ ታች ብቻ','ሊገመት አይችልም — ማረጋገጫ ያስፈልጋል','ገበያ ይዘጋል'], correct:2, explain:'FVG መሙላት ብቻ አቅጣጫ አያረጋግጥም — Market Structure፣ Liquidity፣ Price Action ሁሉ ማየት ያስፈልጋል።' },
-        // ── ምዕራፍ 8፦ Inducement & Confirmation ──
-        { q:'89. Inducement SMC ውስጥ ምን ለመግለጽ ይጠቅማል?', opts:['ትሬደሮችን ቀድሞ ሊስብ የሚችል የዋጋ አወቃቀር','Account ማስከፈቻ','Platform ስም','ወለድ'], correct:0, explain:'Inducement = ቀድሞ እንዲገቡ ሊያስቸኩለ የሚችል ምልክት — ሁሉም SMC ዘዴ አንድ ትርጉም አይጠቀምም።' },
-        { q:'90. SSL Sweep + Bullish MSS M5 ላይ ታየ — ቀጥሎ ምን ታደርጋለህ?', opts:['ሳይመረምር ትልቅ Lot Buy','ማረጋገጫ ችላ Sell','Higher TF Bias + Entry + SL + R:R + Position Size ሁሉ መወሰን','SL ሳይጠቀም Buy'], correct:2, explain:'Setup ቢታይ — Higher TF Bias፣ Entry Trigger፣ SL፣ Position Size፣ R:R ሁሉ ካልተወሰኑ ትሬድ አትክፈት።' },
-        // ── TA (ጥያቄ 41–50 ቁጥሮች) ──
-        { q:'41. Technical Analysis ምንድን ነው?', opts:['ቻርት ወይም ዋጋ ውሂብ ተጠቅሞ ገበያ የመተንተን ዘዴ','አገር ሕግ ማጥናት','ወለድ ብቻ','አካውንት ሚዛን ማየት'], correct:0, explain:'TA = ያለፈ የዋጋ እንቅስቃሴ ቅጦች ወደፊቱን ሊጠቁሙ ይችላሉ ብሎ ይተናተናል።' },
-        { q:'42. Candlestick Chart ምን መረጃ ይሰጣል?', opts:['Open, High, Low, Close (OHLC)','አገር ስም ብቻ','Broker ስም ብቻ','ትሬደር ዕድሜ'], correct:0, explain:'OHLC = ሻማው ሲከፈት፣ ከፍተኛ፣ ዝቅተኛ፣ ሲዘጋ ያለ ዋጋ ሁሉ ያሳያል።' },
-        { q:'43. Timeframe ምንን ያሳያል?', opts:['ትሬደር ዕድሜ','እያንዳንዱ ሻማ የሚወክለው የጊዜ ርዝመት','Spread','Leverage'], correct:1, explain:'M1 = 1 ደቂቃ፤ H1 = 1 ሰዓት፤ D1 = አንድ ቀን — ተሞክሮህ ይወስናል።' },
-        { q:'44. Uptrend ምን ይለያዋል?', opts:['Lower Highs እና Lower Lows','Higher Highs እና Higher Lows','ዋጋ አይንቀሳቀስም','ሁሉም ሻማ ተመሳሳይ'], correct:1, explain:'Uptrend = ዋጋ ደረጃ በደረጃ ወደ ላይ — Higher Highs (HH) እና Higher Lows (HL) ይሠራሉ።' },
-        { q:'45. Downtrend ምን ይለያዋል?', opts:['Higher Highs እና Higher Lows','Lower Highs እና Lower Lows','እንቅስቃሴ አለ','ዜና ይቀልጣል'], correct:1, explain:'Downtrend = ዋጋ ደረጃ በደረጃ ወደ ታች — Lower Highs (LH) እና Lower Lows (LL) ይሠራሉ።' },
-        { q:'46. Support Level ምንድን ነው?', opts:['ዋጋ መውረድ ሊዘገይ ወይም ወደ ላይ ሊመለስ የሚችልበት አካባቢ','ዋጋ ሊቆምበት ዋስትና ያለው ደረጃ','Broker አገልግሎት','አካውንት ሚዛን'], correct:0, explain:'Support = Buyers ሊጨምሩ የሚችሉበት ዞን። ዋስትና አይሰጥም — ሊሰበር ይችላል።' },
-        { q:'47. Resistance Level ምንድን ነው?', opts:['ዋጋ ሁልጊዜ ሲወርድ ዋስትና','ዋጋ መጨመር ሊዘገይ ወይም ሊመለስ የሚችልበት አካባቢ','Stop Loss ሌላ ስም','Leverage'], correct:1, explain:'Resistance = Sellers ሊጨምሩ የሚችሉበት ዞን። ሊሰበር ይችላል — Breakout ሊፈጠር ይችላል።' },
-        { q:'48. Moving Average ምን ያደርጋል?', opts:['ዋጋ አለስልሶ አጠቃላይ አዝማሚያ ለማሳየት','Broker ፈቃድ','ትሬድ ለመወሰን','Spread ለማጥፋት'], correct:0, explain:'MA = ዋጋ ሸካሪ ነጥቦችን ሰርቆ ለስላሳ መስመር ያሳያል — አዝማሚያ ለማወቅ ይጠቅማል።' },
-        { q:'49. RSI ምን ሊያሳይ ይረዳል?', opts:['አካውንት ሚዛን','የዋጋ ጥንካሬ፣ Overbought ወይም Oversold ሁኔታ','Broker ኮሚሽን ብቻ','GDP ቀጥታ'], correct:1, explain:'RSI > 70 = ሊሸጥ ይቻላል (Overbought)፤ RSI < 30 = ሊገዛ ይቻላል (Oversold)። ዋስትና አይሰጥም።' },
-        { q:'50. Live Trading ከመጀመርህ በፊት የትኛው አቀራረብ ተገቢ ነው?', opts:['ያለ እቅድ','ሲግናሎች ብቻ ተከተል','መሠረት ተማር፣ Demo ለምምድ፣ ስትራቴጂ ፈትሽ፣ Risk ደንብ አዘጋጅ','ከፍተኛ Leverage ጠቀም'], correct:2, explain:'ትምህርት + ልምምድ + ዲሲፕሊን + Risk Management = ትሬዲንግ መሠረት። ትርፍ ዋስትና የለውም።' }
-    ];
+    // ── QUESTIONS ──────────────────────────────────────────────
+    var allQ = {
+        forex: [
+            // ── ምዕራፍ 1 ──
+            { q:'1. Forex ማለት ምንድን ነው?', opts:['የኩባንያ አክሲዮን ገበያ','የምንዛሬ ልውውጥ ገበያ','የዲጂታል ሳንቲም ብቻ','የእቃ ንግድ'], correct:1, explain:'Forex = Foreign Exchange — የምንዛሬ ልውውጥ ገበያ ነው።' },
+            { q:'2. EUR/USD = 1.10 ሲሆን ምን ማለት ነው?', opts:['1 USD = 1.10 EUR','1 EUR = 1.10 USD','1 EUR = 110 USD','1 USD = 110 EUR'], correct:1, explain:'Base currency (EUR) አንድ ክፍል 1.10 USD ይዋጃል።' },
+            { q:'3. Major Pairs ምን ምንዛሬ ሁሉ ያካትታሉ?', opts:['GBP','EUR','USD','JPY'], correct:2, explain:'Major pairs ሁሉ USD ያካትታሉ — ከፍተኛ Liquidity አላቸው።' },
+            { q:'4. Decentralized ገበያ ምን ማለት ነው?', opts:['አንድ ኤክስቼንጅ ብቻ','ሁሉም ዋጋ ባንክ ይወስናል','ግብይቶች OTC Network ላይ','ደንብ የለውም'], correct:2, explain:'Forex OTC ሲሆን ምንም ማዕከላዊ ኤክስቼንጅ የለውም።' },
+            { q:'5. Forex Broker ዋና ሚናው ምንድን ነው?', opts:['ትርፍ ዋስትና','ትሬዲንግ መለያ + አገልግሎት','ዋጋ ይቆጣጠራል','ኪሳራ ይሸፍናል'], correct:1, explain:'Broker የትሬዲንግ Platform እና Order Execution ያቀርባል።' },
+            { q:'6. Demo Account ለምን ይጠቅማል?', opts:['ትርፍ ዋስትና','ምናባዊ ገንዘብ ለልምምድ','ሁልጊዜ Live ይሸናል','Spread አያስፈልግም'], correct:1, explain:'Demo = ምናባዊ ገንዘብ ስለሆነ ያለ ኪሳራ ስትራቴጂ ለመለማመድ ያስችላል።' },
+            { q:'7. Bid Price ምንድን ነው?', opts:['ዋጋ ጫሪ ሲሸጥ (Sell)','ዋጋ ጫሪ ሲገዛ (Buy)','ከፍተኛ ዋጋ','ዝቅተኛ ዋጋ'], correct:0, explain:'Bid = ትሬደሩ Sell ሲያደርግ Broker ከሚከፍለው ዋጋ ነው።' },
+            { q:'8. Spread ምንድን ነው?', opts:['Bid + Ask','Ask − Bid','Bid × Ask','Ask ÷ Bid'], correct:1, explain:'Spread = Ask − Bid — Broker ክፍያ ተደርጎ ይወሰዳል።' },
+            { q:'9. 1 pip ለ EUR/USD ስንት ነው?', opts:['0.01','0.001','0.0001','1.0'], correct:2, explain:'ለብዛቱ pairs 1 pip = 0.0001 ሲሆን JPY pairs ግን 0.01 ናቸው።' },
+            { q:'10. Standard Lot ስንት ነው?', opts:['1,000','10,000','100,000','1,000,000'], correct:2, explain:'Standard Lot = 100,000 units የBase currency ነው።' },
+            // ── ምዕራፍ 2 ──
+            { q:'11. Leverage 1:100 ምን ማለት ነው?', opts:['100$ ትርፍ ዋስትና','ትንሽ ካፒታል ትልቅ ፖዚሽን ለማስቀመጥ','100 ትሬዶች ነፃ','ኪሳራ የለም'], correct:1, explain:'Leverage = ትርፍም ኪሳራም ያበዛል — ጥንቃቄ ያስፈልጋል።' },
+            { q:'12. Margin ምንድን ነው?', opts:['ዕለት ትርፍ','Broker ዋስትና ገንዘብ','Spread ዋጋ','ወለድ'], correct:1, explain:'Margin = ቦታ ለመክፈትና ለመያዝ Broker ጋር የሚቀመጥ ዋስትና ገንዘብ ነው።' },
+            { q:'13. Stop Loss ለምን ይጠቅማል?', opts:['ትርፍ ለማሳደግ','ኪሳራ ለመገደብ','ፈጣን ትሬድ','Leverage ለማሳደግ'], correct:1, explain:'SL = ዋጋ ተቃራኒ ሲሄድ ትሬዱ ዘግቶ ኪሳራ ይገድባል።' },
+            { q:'14. Take Profit ምን ያደርጋል?', opts:['ቦታ ያሳድጋል','ዋጋ ደረጃ ሲደርስ ትርፍ ዘግቶ ያሸለፍናል','SL ይቀይራል','ካፒታል ያበዛል'], correct:1, explain:'TP = ዋጋ ዓላማ ደረጃ ሲደርስ ትሬዱ ሲዘጋ ትርፍ ያሸለፍናል።' },
+            { q:'15. Market Order ምንድን ነው?', opts:['ወደፊት ዋጋ ብቻ','አሁን ባለው ዋጋ ለመፈጸም','ትሬድ ሰርዣ','SL ዓይነት'], correct:1, explain:'Market Order = ወቅቱ ባለው ምርጥ ዋጋ ወዲያው ይፈጸማል።' },
+            { q:'16. Buy Limit Order ለምን ይጠቅማል?', opts:['ዋጋ ወደ ላይ ሲወጣ','ዋጋ ዝቅ ሲል ለመግዛት','ትሬድ ለመዝጋት','Spread ለማጥፋት'], correct:1, explain:'Buy Limit = ዋጋ ወደ ተወሰነ ዝቅ ደረጃ ሲወርድ Buy order ይፈጸማል።' },
+            { q:'17. Risk:Reward 1:2 ምን ማለት ነው?', opts:['2 ትሬዶች ያሸነፋሉ','1 ኪሳራ ሲሆን ዓላማ 2 ትርፍ','ትርፍ ዋስትና','2 Account ያስፈልጋል'], correct:1, explain:'R:R 1:2 = ሊጠፋ ከሚችል 1 ለ 2 ትርፍ ታለማለህ — ዋስትና የለም።' },
+            { q:'18. FOMO ምንድን ነው?', opts:['Liquidity','ፍርሃት ያለ እቅድ ትሬድ ምቦ መዝለቅ','Session ስም','ቻርት ዓይነት'], correct:1, explain:'FOMO = Fear Of Missing Out — ስሜታዊ ውሳኔ ስለሆነ ብዙ ጊዜ ኪሳራ ያስከትላል።' },
+            { q:'19. Revenge Trading ምንድን ነው?', opts:['ስትራቴጂ','ኪሳራ ለመመለስ ቁጣ ትሬዶች','Hedging','Technical Analysis'], correct:1, explain:'Revenge Trading = ኪሳራ ከደረሰ በኋላ ቁጣ ኪሳራን ሊያበዛ ይችላል።' },
+            { q:'20. Trading Journal ለምን ያስፈልጋል?', opts:['ዋጋ ለመቆጣጠር','ትሬዶች ስህተቶችና ውሳኔ ለመገምገም','ኪሳራ ይመልሳል','Broker ኮሚሽን ለማጥፋት'], correct:1, explain:'Journal = ስህተቶች ለይቶ ስትራቴጂ ለማሻሻል ዋናው መሳሪያ ነው።' },
+            // ── Market Structure ──
+            { q:'21. Uptrend ምን ይለያዋል?', opts:['Lower Highs & Lower Lows','Higher Highs & Higher Lows','ዋጋ አይንቀሳቀስም','ሁሉም ሻማ ተመሳሳይ'], correct:1, explain:'Uptrend = HH + HL — ዋጋ ደረጃ ደረጃ ወደ ላይ ይሄዳል።' },
+            { q:'22. Downtrend ምን ይለያዋል?', opts:['Higher Highs & Higher Lows','Lower Highs & Lower Lows','ተመሳሳይ High/Low','ወደ ላይ ብቻ'], correct:1, explain:'Downtrend = LH + LL — ዋጋ ደረጃ ደረጃ ወደ ታች ይወርዳል።' },
+            { q:'23. Market Structure Shift (MSS) ምን ሊያስጠቁም ይችላል?', opts:['ዋጋ ወደ ላይ ዋስትና','አወቃቀሩ ሊቀየር ይችላል','Broker ሊቀይር','ሁሉም ትርፍ'], correct:1, explain:'MSS = ቀደም ያለ Trend ሊቀየር እንደሚችል ምልክት — ብቻውን አያረጋግጥም።' },
+            { q:'24. Break of Structure (BOS) ምን ማለት ነው?', opts:['ዋጋ አይንቀሳቀስም','ቀደም Swing High/Low ሰብሮ ሲያልፍ','Account ሲጨምር','Session ሲጨርስ'], correct:1, explain:'BOS = ቀደም ያለ Swing ሰብሮ ሲያልፍ — የTrend Continuation ምልክት ሊሆን ይችላል።' },
+            { q:'25. Range Market ምን ማለት ነው?', opts:['ወደ ላይ ብቻ','ወደ ታች ብቻ','Support/Resistance መካከል ሲወዛወዝ','ገበያ ሲዘጋ'], correct:2, explain:'Range = ዋጋ ግልጽ Trend ሳይኖር ዞን ውስጥ ይወዛወዛል — Breakout ሊከሰት ይችላል።' },
+            // ── S/R ──
+            { q:'26. Support ምንድን ነው?', opts:['ዋጋ ሁልጊዜ ሚወርድበት','Buyer ሊጨምሩ የሚችሉ ዞን','Broker ኮሚሽን','SL'], correct:1, explain:'Support = Buyers ሊጠናከሩ ዞን — ዋስትና የለም።' },
+            { q:'27. Resistance ምንድን ነው?', opts:['Seller ሊጨምሩ የሚችሉ ዞን','ዋጋ ሁልጊዜ ሚጨምርበት','Session','Leverage'], correct:0, explain:'Resistance = Sellers ዞን — Breakout ሊከሰት ይችላል።' },
+            { q:'28. Role Reversal ምን ማለት ነው?', opts:['Resistance ሰብሮ Support ሊሆን ይችላል','ሁልጊዜ ይሆናል','Spread ብቻ','Demo ብቻ'], correct:0, explain:'Resistance ከተሰበረ Support ሊሆን ይችላል — ዋስትና አይሰጥም።' },
+            // ── Candlestick ──
+            { q:'29. Candlestick Body ምን ያሳያል?', opts:['Open & Close ዋጋ','Session ሰዓት','Broker ትርፍ','Account'], correct:0, explain:'Body = Open/Close ዋጋዎች ይወክላል — ቀለሙ ዋጋ ከፍ/ዝቅ ብሎ ስለ መዝጋቱ ያሳያል።' },
+            { q:'30. Pin Bar ምን ሊያሳይ ይችላል?', opts:['ዋጋ Rejection ወይም ምላሽ ሊኖር','ትርፍ ዋስትና','SL አያስፈልግም','ዋጋ አይንቀሳቀስም'], correct:0, explain:'Pin Bar = ረጅም Wick — ዋጋ ሊመለስ ይጠቁማል። ቦታ + አውድ ወሳኝ ናቸው።' },
+            // ── Liquidity & SMC ──
+            { q:'31. Buy-Side Liquidity ብዙ ጊዜ የት ይገኛል?', opts:['ከSwing Highs/Equal Highs በላይ','ከLows በታች','Account ውስጥ','Candle መካከል'], correct:0, explain:'BSL = ከHigh ደረጃዎች በላይ Buy Stop Orders ሊሰበሰቡ ይችላሉ።' },
+            { q:'32. Sell-Side Liquidity ብዙ ጊዜ የት ይገኛል?', opts:['ከHighs በላይ','ከEqual Lows/Swing Lows በታች','Open ላይ','Resistance በላይ'], correct:1, explain:'SSL = ከLow ደረጃዎች በታች Sell Stop Orders ሊሰበሰቡ ይችላሉ።' },
+            { q:'33. Liquidity Sweep ምን ማለት ነው?', opts:['Account ማጽዳት','ዋጋ High/Low ሰብሮ Orders ወሰዶ ሊመለስ','ሁሉም ትሬዶች መዝጋት','Candle ቀለም'], correct:1, explain:'Sweep = ዋጋ SL/Orders ካነቃ ሲመለስ — Market Structure ማረጋገጫ ያስፈልጋል።' },
+            { q:'34. Order Block (OB) ምንድን ነው?', opts:['ሁሉም Candle','ጠንካራ እንቅስቃሴ በፊት ያለ ዞን (Demand/Supply)','Account','Broker'], correct:1, explain:'OB = ከጠንካራ Move በፊት ያለ ዞን — ዋስትና አይሰጥም ። ማረጋገጫ ያስፈልጋል።' },
+            { q:'35. Fair Value Gap (FVG) ምንድን ነው?', opts:['3-Candle setup ውስጥ 1ኛ/3ኛ Wick የማይደራረቡ ዞን','Broker ክፍያ','ሁሉም ጭማሪ','SL'], correct:0, explain:'FVG = 1ኛ Candle High < 3ኛ Low (Bullish) ወይም 1ኛ Low > 3ኛ High (Bearish)።' },
+            // ── Psychology & Risk ──
+            { q:'36. Risk Management ለምን ወሳኝ ነው?', opts:['ሙሉ ኪሳራ ለማጥፋት','ካፒታልን ጠብቆ ለቀጠል','ዋጋ ለመቆጣጠር','ብዙ ትሬዶች'], correct:1, explain:'RM = ካፒታልህን ጠብቆ ረዘም ላለ ጊዜ ትሬዲንግ ለቀጠል ወሳኝ ነው።' },
+            { q:'37. Position Sizing ምን ያደርጋል?', opts:['ሰዓት ይወስናል','ካፒታልና SL ጋር የትሬድ መጠን ያዛምዳል','Broker ስም','ዜና'], correct:1, explain:'Position Sizing = ካፒታልህ፣ SL ርቀት እና ሪስክ % ተዳምሮ የLot Size ይወስናል።' },
+            { q:'38. Drawdown ምንድን ነው?', opts:['ካፒታል ከፍ ደረጃ ሲቀነስ','Session','Spread','ትሬድ ብዛት'], correct:0, explain:'Drawdown = ካፒታልህ ከቀድሞ Peak ምን ያህል ወረደ — ሪስክ መለኪያ ነው።' },
+            { q:'39. Technical Analysis ምንድን ነው?', opts:['ቻርት ወይም ዋጋ ውሂብ ተጠቅሞ ትንተና','አገር ሕግ','ወለድ','Account'], correct:0, explain:'TA = ያለፈ ዋጋ ቅጦች ወደፊቱን ሊጠቁሙ ይችላሉ ብሎ ይተናተናል።' },
+            { q:'40. Fundamental Analysis ምን ይጠቀማል?', opts:['ቻርት ብቻ','ኢኮኖሚ ዜናዎችና ሪፖርቶች','Candlestick','Moving Average'], correct:1, explain:'FA = GDP፣ ወለድ ዋጋ፣ ዜናዎች ገበያን ለማህዳር ይጠቀማል።' },
+            { q:'41. Uptrend ስትሬደር ምን ይጠቀምሃ?', opts:['Sell ብቻ','Buy ፖዚሽን ያዝ','Trend ችላ','Demo ብቻ'], correct:1, explain:'Trend Follow = Uptrend ላይ Buy ፖዚሽን መያዝ አቅጣጫ ጋር አብሮ መሄድ ነው።' },
+            { q:'42. RSI > 70 ምን ሊያስጠቁም ይችላል?', opts:['Overbought — ዋጋ ሊወርድ ሊችል','Oversold','Account ሙሉ ነው','Breakout ዋስትና'], correct:0, explain:'RSI > 70 Overbought ሊሆን ይጠቁማል — ዋስትና አይሰጥም ። Market Structure ጋር ማጣመር ያስፈልጋል።' },
+            { q:'43. Moving Average ምን ያደርጋል?', opts:['ዋጋ አለስልሶ አዝማሚያ ያሳያል','Broker ፈቃድ','Lot ይወስናል','Spread ያጠፋል'], correct:0, explain:'MA = ዋጋ ሸካሪ ለስ አድርጎ Trend አቅጣጫ ለመመልከት ይጠቅማል።' },
+            { q:'44. Timeframe ምን ማለት ነው?', opts:['ትሬደር ዕድሜ','ሻማ የሚወክለው የጊዜ ርዝመት','Spread','Leverage'], correct:1, explain:'Timeframe = M1፣ H1፣ D1... ሻማ ምን ያህል ጊዜ እንደሚወክል ያሳያል።' },
+            { q:'45. Higher Timeframe Bias ለምን ወሳኝ ነው?', opts:['ሁልጊዜ ትሬድ ለመክፈት','ትንሽ TF Signal ምን አቅጣጫ ላይ እንዳለ ለማወቅ','Demo ብቻ','Session ሰዓት'], correct:1, explain:'HTF Bias = ትልቁ ስዕሉ ምን ሲናገር አቅጣጫ ወስነህ ትሬድ ልትከፍት ይጠቅምሃል።' },
+            { q:'46. Equal Highs ምን ሊያምለክቱ ይችላሉ?', opts:['ከላያቸው BSL ሊሰበሰብ ይችላል','ዋጋ ፈጽሞ ሊያልፍ አይችልም','Broker ስጦታ','Session ሰዓት'], correct:0, explain:'Equal Highs = ብዙ SL ሊሰበሰቡ ስለሚችሉ ዋጋ ሊሄዳቸው ይችላል — ዋስትና አይሰጥም።' },
+            { q:'47. Bearish Engulfing ምን ሊያምለክት ይችላል?', opts:['Resistance አካባቢ Bearish ግፊት ሊጨምር','ዋጋ ሁልጊዜ ይጨምራል','Session ጀምሯል','Spread ጠፋ'], correct:0, explain:'Bearish Engulfing = ትልቅ Bearish Candle ቀደምቱን Bullish የሸፈነ — Context ያስፈልጋል።' },
+            { q:'48. Inducement SMC ውስጥ ምን ሊያምለክት ይጠቅምበታል?', opts:['ቀድሞ እንዲገቡ ሊያስቸኩለ የሚችል ምልክት','Account ማስከፈቻ','Platform','ወለድ'], correct:0, explain:'Inducement = ቀድሞ እንዲገቡ ሊሳብ የሚችል ምልክት ሲሆን Context ወሳኝ ነው።' },
+            { q:'49. ትሬደር SSL Sweep + Bullish MSS አየ — ቀጥሎ?', opts:['ሳይመረምር ትልቅ Lot Buy','Sell ብቻ','HTF Bias + Entry + SL + R:R ሁሉ ሰርቶ ከዚያ','SL ሳይጠቀም'], correct:2, explain:'Setup ቢታይ — HTF Bias፣ Entry Trigger፣ SL፣ Position Size፣ R:R ሁሉ ካልተወሰኑ አትክፈት።' },
+            { q:'50. Live Trading ከመጀመርህ ምን ማድረግ አለብህ?', opts:['ያለ እቅድ ብቀጥ','Social media signal ብቻ','መሠረት ተማር፣ Demo ለምምድ፣ Risk ደንብ አዘጋጅ','ትልቅ Leverage ጠቀም'], correct:2, explain:'ትምህርት + ልምምድ + ዲሲፕሊን + Risk Management = ጠንካራ መሠረት ነው።' }
+        ],
+        crypto: [
+            { q:'1. Cryptocurrency ምንድን ነው?', opts:['የባንክ ሌላ ስም','Cryptography ላይ የተመሠረተ ዲጂታል ምንዛሬ','የForex ዓይነት','አክሲዮን ብቻ'], correct:1, explain:'Crypto = Blockchain ላይ የሚሰራ ዲሴንትራላይዝድ ዲጂታል ምንዛሬ ነው።' },
+            { q:'2. Blockchain ምንድን ነው?', opts:['ዲሴንትራላይዝድ ዲጂታል Ledger','ባንክ ዓይነት','Crypto Exchange','ትሬዲንግ ስትራቴጂ'], correct:0, explain:'Blockchain = ሁሉም ትራንዛክሽን ሚቀዳበት ዲሴንትራላይዝድ ዲጂታል መዝገብ ነው።' },
+            { q:'3. Bitcoin ምን ዓይነት ምንዛሬ ነው?', opts:['Stable Coin','Altcoin','First Decentralized Cryptocurrency','Fiat'], correct:2, explain:'BTC = Satoshi Nakamoto 2009 ያስተዋወቀው የመጀመሪያ Decentralized ምንዛሬ ነው።' },
+            { q:'4. Altcoin ምን ማለት ነው?', opts:['Bitcoin ብቻ','Bitcoin ካልሆነ ሌላ ሁሉ','Stable Coin','Fiat'], correct:1, explain:'Altcoin = BTC ካልሆነ ሌላ ሁሉ Crypto — ETH፣ BNB፣ SOL... ናቸው።' },
+            { q:'5. Stable Coin ምን ይለያዋል?', opts:['ዋጋ ሁልጊዜ ይጨምራል','ከFiat ጋር ዋጋ ለማረጋጋጥ ሙከራ ይደረጋል','ካልሆነ ሌላ ሁሉ','Blockchain የሌለው'], correct:1, explain:'Stable Coin = USDT/USDC ዋጋ 1 USD ጠጋ እንዲቆይ ዘዴ ይጠቀማል — ዋስትና አይሰጥም።' },
+            { q:'6. Spot Trading ምን ማለት ነው?', opts:['ዋጋ አሁን ተፈጽሞ Asset ወዲያው','Futures ሌላ ስም','Demo ብቻ','Leverage ሁልጊዜ'], correct:0, explain:'Spot = Asset ወዲያው ፈጽሞ ይቀበላሉ/ይሸጣሉ — ቀጥተኛ ባለቤትነት።' },
+            { q:'7. Futures Trading ምን ይፈቅዳል?', opts:['ወዲያው Asset','Leverage ተጠቅሞ ወደፊት ዋጋ ለማትረፍ ወደ ላይ/ታች','Demo ብቻ','Crypto ማቆየት'], correct:1, explain:'Futures = Leverage ተጠቅሞ Long/Short ትሬድ — ትርፍም ኪሳራም ይጨምራል።' },
+            { q:'8. HODL ምን ማለት ነው?', opts:['ቶሎ ሸጥ','ዋጋ ቢወርድ ሳትሸጥ ረዘም ጊዜ ማስቀመጥ','Day Trading','Hard Fork'], correct:1, explain:'HODL = Hold On for Dear Life — ረዘም ጊዜ ሳትሸጥ ዋጋ ሊጨምር ብሎ ማቆየት።' },
+            { q:'9. DeFi ምን ማለት ነው?', opts:['ማዕከላዊ ባንክ','Blockchain ላይ ያለ Decentralized Finance','Fiat Exchange','Stable Coin ብቻ'], correct:1, explain:'DeFi = ባንክ ሳያስፈልግ Blockchain ላይ የሚሰራ Lending፣ Swap፣ Yield Farming...ናቸው።' },
+            { q:'10. NFT ምን ማለት ነው?', opts:['Normal Finance Token','Non-Fungible Token — ልዩ ዲጂታል Asset','Stable Coin','Altcoin'], correct:1, explain:'NFT = Non-Fungible Token — ሌላ ዲጂታል Asset ጋር ሊቀያየር ያልቻለ ልዩ Asset ነው።' },
+            { q:'11. Market Cap ምን ያሳያል?', opts:['የCoin ዋጋ ብቻ','Price × Circulating Supply — የCoin አጠቃላይ ዋጋ','Broker ኮሚሽን','SL ዋጋ'], correct:1, explain:'Market Cap = ዋጋ × Circulating Supply — Coin ምን ያህል ትልቅ እንደሆነ ያሳያል።' },
+            { q:'12. Whale በCrypto ምን ማለት ነው?', opts:['ትንሽ ትሬደር','ትልቅ Crypto ሚሸዝ ይዞ ዋጋ ላይ ሊጽዕኖ ሊኖረው','Stable Coin','Exchange'], correct:1, explain:'Whale = ትልቅ Crypto ሚሸዝ ያለው አካል — ሽያጭ/ግዢ ዋጋ ሊነካ ይችላል።' },
+            { q:'13. Bull Run ምን ማለት ነው?', opts:['ዋጋ ወደ ታች','ዋጋ ሰፊ ወደ ላይ ሄዶ ጊዜ','Stable Coin','Bearish ሁኔታ'], correct:1, explain:'Bull Run = Crypto ዋጋዎች ሰፊ ወደ ላይ ሄዶ ጊዜ — ብዙ ጊዜ Halving ተከትሎ ሊከሰት ይችላል።' },
+            { q:'14. Bear Market ምን ማለት ነው?', opts:['ዋጋ ወደ ላይ','ዋጋዎች ሰፊ ወደ ታች ሄደው ጊዜ','Stable','NFT'], correct:1, explain:'Bear Market = ዋጋዎች ሰፊ ወደ ታች ሄደው ጊዜ — Crypto ዘወትር ጠንካራ Bear ይኖረዋል።' },
+            { q:'15. Bitcoin Halving ምን ያደርጋል?', opts:['Supply ያሳድጋል','Miners ሚቀበሉ BTC ሽልማት በ50% ይቀንሳል','Blockchain ያፈርሳል','ዋጋ ዋስትና'], correct:1, explain:'Halving = ~4 ዓመት አንዴ Mining Reward ይቀnjoyሳል — Supply ቀነሰ ፣ Demand ቢጨምር ዋጋ ሊጨምር ይችላል።' },
+            { q:'16. Binance ምን ዓይነት አገልግሎት ነው?', opts:['Wallet ብቻ','Centralized Crypto Exchange','DeFi ብቻ','Blockchain ፈጣሪ'], correct:1, explain:'Binance = ዓለም ትልቁ Centralized Crypto Exchange — Spot/Futures/P2P ያቀርባል።' },
+            { q:'17. P2P Trading ምን ማለት ነው?', opts:['Exchange ብቻ','ሰው ለሰው ቀጥታ ግዢ/ሽያጭ','Futures','Stable Coin'], correct:1, explain:'P2P = Peer-to-Peer — ሰው ለሰው ቀጥታ Crypto ለFiat/ETB ይቀያየራሉ።' },
+            { q:'18. Private Key ምን ያደርጋል?', opts:['Password ብቻ','Wallet ሙሉ ስልጣን — ቢጠፋ Asset ይጠፋሉ','Broker ፈቃድ','API Key ብቻ'], correct:1, explain:'Private Key = Wallet ፊርማ ቁልፍ ነው — ቢጠፋ ወይም ቢሰረቅ Asset ሊጠፋ ይችላል።' },
+            { q:'19. Gas Fee ምን ማለት ነው?', opts:['Broker ኮሚሽን','Blockchain ትራንዛክሽን ለማስፈጸም የሚከፈል ክፍያ','Spread','SL ዋጋ'], correct:1, explain:'Gas Fee = Ethereum ና ሌሎች ዘዴዎች ትራንዛክሽን ለማስፈጸም Network ክፍያ ነው።' },
+            { q:'20. Crypto ትሬዲንግ ሲጀምሩ ምን ቅድሚያ ያስፈልጋል?', opts:['ያለ እቅድ','Risk Management + ትምህርት + Demo','Signal ብቻ','ትልቅ Leverage'], correct:1, explain:'Crypto ቢዘመን ፣ ቢወርድ — Risk Management ካጣህ ካፒታልህ ሊጠፋ ይችላል።' },
+            { q:'21. Long Position ምን ማለት ነው?', opts:['Sell ብቻ','ዋጋ ሊጨምር ብሎ Buy','SL','Hedge'], correct:1, explain:'Long = ዋጋ ወደ ላይ ሲጠብቅ ገዝቶ ወደፊት ሸጦ ትርፍ ለማግኘት።' },
+            { q:'22. Short Position ምን ማለት ነው?', opts:['Buy','ዋጋ ሊወርድ ብሎ Sell','HODL','Stable Coin'], correct:1, explain:'Short = ዋጋ ወደ ታች ሲጠብቅ ሸጦ ዝቅ ሲል ገዝቶ ትርፍ ለማግኘት — Futures ያስፈልጋል።' },
+            { q:'23. Liquidation ምን ማለት ነው?', opts:['ትርፍ ሰጠ','Margin ሲጠፋ Position ሲዘጋ','Account ሲከፈት','Spot ብቻ'], correct:1, explain:'Liquidation = Futures ላይ Margin ሲጠናቀቅ Position ሲዘጋ — Leverage ሲበዛ ሊጨምር ይችላል።' },
+            { q:'24. Crypto Arbitrage ምን ማለት ነው?', opts:['Single Exchange ብቻ','ዋጋ ልዩነት ተጠቅሞ ትርፍ ለማግኘት','HODL','NFT'], correct:1, explain:'Arbitrage = Exchange A ላይ ሸጦ Exchange B ላይ ዋጋ ልዩነት ለማጠቃቀም — ፈጣን ነው ፣ ዋስትና የለም።' },
+            { q:'25. Copy Trading ምን ማለት ነው?', opts:['ሁሉም ትርፍ ዋስትና','ሌላ ትሬደር ትሬዶችን ቀጥሎ ማደናቀፍ','Spot ብቻ','Demo ብቻ'], correct:1, explain:'Copy Trading = ሌላ ትሬደር ትሬዶቹን ፈቀድ ብሎ ቀጥሎ ማደናቀፍ — ኪሳራም ሊቀዳ ይችላል።' },
+            { q:'26. RSI < 30 ምን ሊያጠቁም ይችላል?', opts:['Overbought','Oversold — ዋጋ ሊጨምር ሊችል','Session ጠፋ','Spread ጨምሯል'], correct:1, explain:'RSI < 30 Oversold ሊጠቁም ይችላል — ዋስትና አይሰጥም ። Market Structure ጋር ያጣምር።' },
+            { q:'27. Candlestick Doji ምን ሊያጠቁም ይችላል?', opts:['ዋጋ ዋስትና','Open ≈ Close — ውሳኔ እጥረት','ሁሉም ትርፍ','ዋጋ ዜሮ'], correct:1, explain:'Doji = ገዢ/ሻጭ ሚዛን — ብቻውን ቀጣዩን አቅጣጫ አያረጋግጥም።' },
+            { q:'28. Ethereum Smart Contract ምን ያደርጋል?', opts:['ዋጋ ሁልጊዜ ያቆማል','ሁኔታ ሲሟላ ራሱ ሚሰራ Code','Whale ብቻ','SL'], correct:1, explain:'Smart Contract = Ethereum ላይ ሁኔታ ሲሟላ ራሱ ሚፈጸም Code ነው — DeFi መሠረት ነው።' },
+            { q:'29. DCA (Dollar Cost Averaging) ምን ማለት ነው?', opts:['አንዴ ብቻ ትልቅ ኢንቨስትመንት','በወቅታዊ ትንንሽ ግዢ Risk ለማሰራጨት','Futures ብቻ','SL ዘዴ'], correct:1, explain:'DCA = ወቅታዊ ትንሽ ትንሽ ስትገዛ ዋጋ Average ዝቅ ሊሆን ይችላል — ዋስትና አይሰጥም።' },
+            { q:'30. Crypto ትሬዲንግ ዋና Risk ምንድን ነው?', opts:['ዋጋ ሁልጊዜ ይጨምራል','ዋጋ ፈጣን Volatility፣ Liquidity፣ Regulation Risk','Demo ብቻ','Stable Coin አለ'], correct:1, explain:'Crypto ከፍተኛ Volatility + Regulation + Liquidity Risk አለው — Risk Management ወሳኝ ነው።' }
+        ]
+    };
 
-    var currentQ   = 0;
-    var score      = 0;
-    var quizActive = false;
-    var chatEl, optionsEl, startWrapEl;
+    // ── STATE ──────────────────────────────────────────────────
+    var topic       = null;
+    var questions   = [];
+    var currentQ    = 0;
+    var score       = 0;
+    var quizActive  = false;
 
-    function init() {
-        chatEl     = document.getElementById('quizChat');
-        optionsEl  = document.getElementById('quizOptions');
-        startWrapEl = document.getElementById('quizStartWrap');
+    // ── DOM helpers ────────────────────────────────────────────
+    function $(id){ return document.getElementById(id); }
+
+    function scrollChat(){
+        var c = $('quizChat');
+        if(c) c.scrollTop = c.scrollHeight;
     }
 
-    // Scroll chat to bottom
-    function scrollChat() {
-        if (chatEl) chatEl.scrollTop = chatEl.scrollHeight;
+    function updateProgress(){
+        var total = questions.length;
+        var pct   = total ? Math.round((currentQ / total) * 100) : 0;
+        var bar   = $('quizProgressBar');
+        var cnt   = $('quizQCount');
+        if(bar) bar.style.width = pct + '%';
+        if(cnt) cnt.textContent = currentQ + ' / ' + total;
     }
 
-    // Add bot message (with typing animation)
-    function botMsg(text, delay) {
+    // Bot message with typing animation
+    function botMsg(html, delay){
         delay = delay || 0;
-        return new Promise(function(resolve) {
-            setTimeout(function() {
-                // Show typing
+        return new Promise(function(res){
+            setTimeout(function(){
+                var chat = $('quizChat');
+                if(!chat){ res(); return; }
+                // show typing
                 var typing = document.createElement('div');
                 typing.className = 'quiz-msg-bot quiz-typing';
                 typing.innerHTML = '<div class="quiz-bot-avatar">🤖</div><div class="typing-dots"><span></span><span></span><span></span></div>';
-                chatEl.appendChild(typing);
+                chat.appendChild(typing);
                 scrollChat();
-
-                setTimeout(function() {
-                    chatEl.removeChild(typing);
+                setTimeout(function(){
+                    chat.removeChild(typing);
                     var msg = document.createElement('div');
                     msg.className = 'quiz-msg-bot';
-                    msg.innerHTML = '<div class="quiz-bot-avatar">🤖</div><div class="quiz-bubble-bot">' + text + '</div>';
-                    chatEl.appendChild(msg);
+                    msg.innerHTML = '<div class="quiz-bot-avatar">🤖</div><div class="quiz-bubble-bot">' + html + '</div>';
+                    chat.appendChild(msg);
                     scrollChat();
-                    resolve();
-                }, 700);
+                    res();
+                }, 650);
             }, delay);
         });
     }
 
-    // Add user message
-    function userMsg(text) {
+    // User message bubble
+    function userMsg(html){
+        var chat = $('quizChat');
+        if(!chat) return;
         var msg = document.createElement('div');
         msg.className = 'quiz-msg-user';
-        msg.innerHTML = '<div class="quiz-bubble-user">' + text + '</div>';
-        chatEl.appendChild(msg);
+        msg.innerHTML = '<div class="quiz-bubble-user">' + html + '</div>';
+        chat.appendChild(msg);
         scrollChat();
     }
 
-    // Show options
-    function showOptions(opts, onSelect) {
-        optionsEl.innerHTML = '';
-        opts.forEach(function(opt, i) {
-            var btn = document.createElement('button');
-            btn.className = 'quiz-opt-btn';
-            btn.textContent = ['A', 'B', 'C', 'D'][i] + '. ' + opt;
-            btn.onclick = function() { onSelect(i, btn); };
-            optionsEl.appendChild(btn);
+    // Clear options area
+    function clearOpts(){ var o = $('quizOptions'); if(o) o.innerHTML = ''; }
+
+    // ── LAUNCH — show quiz box ─────────────────────────────────
+    window.launchQuiz = function(){
+        var landing = $('quizLanding');
+        var box     = $('quizBox');
+        if(landing) landing.style.display = 'none';
+        if(box)     box.style.display     = 'block';
+        clearOpts();
+        $('quizChat').innerHTML = '';
+        updateProgress();
+        startIntro();
+    };
+
+    // ── INTRO messages ─────────────────────────────────────────
+    function startIntro(){
+        botMsg('ሰላም! 👋 እኔ የታግ ብሪጅ ረዳት AI ቦት ነኝ።').then(function(){
+            return botMsg('የወሰዱትን የፎሬክስ/ክሪፕቶ ትሬዲንግ መጽሃፍ በደንብ አንብበው፣ በMemo Account ተለማምደው እንዳጠናቀቁ ተስፋ እናደርጋለን! 📚', 200);
+        }).then(function(){
+            return botMsg('ፈተናውን ለመቀጠል — <strong>ስለ ፎሬክስ ትሬዲንግ ወይስ ክሪፕቶ ትሬዲንግ?</strong>', 300);
+        }).then(function(){
+            showTopicChoice();
         });
     }
 
-    // Clear options
-    function clearOptions() { optionsEl.innerHTML = ''; }
+    // ── TOPIC CHOICE ───────────────────────────────────────────
+    function showTopicChoice(){
+        var opts = $('quizOptions');
+        if(!opts) return;
+        opts.innerHTML = '';
+        var wrap = document.createElement('div');
+        wrap.className = 'quiz-topic-wrap';
+        wrap.innerHTML =
+            '<button class="quiz-topic-btn t-forex" onclick="pickTopic(\'forex\')">' +
+            '  <span class="t-icon">💱</span><span>ፎሬክስ ትሬዲንግ</span>' +
+            '</button>' +
+            '<button class="quiz-topic-btn t-crypto" onclick="pickTopic(\'crypto\')">' +
+            '  <span class="t-icon">₿</span><span>ክሪፕቶ ትሬዲንግ</span>' +
+            '</button>' +
+            '<button class="quiz-topic-btn t-both" onclick="pickTopic(\'both\')">' +
+            '  <span class="t-icon">🚀</span><span>ሁለቱም</span>' +
+            '</button>';
+        opts.appendChild(wrap);
+    }
 
-    // Ask one question
-    function askQuestion(index) {
-        if (index >= questions.length) { showResult(); return; }
-        var q = questions[index];
-        botMsg((index + 1) + '/10 · ' + q.q).then(function() {
-            showOptions(q.opts, function(chosen, btn) {
-                // Disable all buttons
-                optionsEl.querySelectorAll('.quiz-opt-btn').forEach(function(b) { b.disabled = true; });
+    window.pickTopic = function(t){
+        clearOpts();
+        topic = t;
+        var label = t === 'forex' ? 'ፎሬክስ ትሬዲንግ 💱' :
+                    t === 'crypto'? 'ክሪፕቶ ትሬዲንግ ₿' : 'ሁለቱም 🚀';
+        userMsg(label);
 
-                var isCorrect = (chosen === q.correct);
-                btn.classList.add(isCorrect ? 'correct' : 'wrong');
-                if (!isCorrect) optionsEl.querySelectorAll('.quiz-opt-btn')[q.correct].classList.add('correct');
+        if(t === 'both'){
+            questions = allQ.forex.concat(allQ.crypto);
+        } else {
+            questions = allQ[t].slice();
+        }
+        // shuffle
+        questions = questions.sort(function(){ return Math.random() - 0.5; }).slice(0, 30);
 
-                userMsg(['A', 'B', 'C', 'D'][chosen] + '. ' + q.opts[chosen]);
-                if (isCorrect) { score++; }
+        score = 0; currentQ = 0; quizActive = true;
+        updateProgress();
 
-                botMsg(isCorrect ? '✅ ትክክል ነው! ' + q.explain : '❌ አልሆነም። ' + q.explain, 400).then(function() {
-                    clearOptions();
-                    currentQ++;
+        var msg = t === 'forex'  ? 'ጥሩ! 30 ጥያቄዎች ስለ ፎሬክስ ትሬዲንግ ።' :
+                  t === 'crypto' ? 'ጥሩ! 30 ጥያቄዎች ስለ ክሪፕቶ ትሬዲንግ ።' :
+                                   'ጥሩ! ሁለቱም ፎሬክስ + ክሪፕቶ 30 ጥያቄዎች ።';
+        botMsg(msg + ' ለእያንዳንዱ A/B/C/D ምረጥ። ዝግጁ ነህ? 💪', 200).then(function(){
+            askQuestion(0);
+        });
+    };
+
+    // ── ASK QUESTION ───────────────────────────────────────────
+    function askQuestion(idx){
+        if(idx >= questions.length){ showResult(); return; }
+        updateProgress();
+        var q = questions[idx];
+        var qText = '<span style="opacity:0.55;font-size:0.78rem;">ጥያቄ ' + (idx+1) + '/' + questions.length + '</span><br>' + q.q;
+        botMsg(qText).then(function(){
+            showOptions(q.opts, function(chosen, btn){
+                // disable all
+                var allBtns = $('quizOptions').querySelectorAll('.quiz-opt-btn');
+                allBtns.forEach(function(b){ b.disabled = true; });
+                var isOk = (chosen === q.correct);
+                btn.classList.add(isOk ? 'correct' : 'wrong');
+                if(!isOk) allBtns[q.correct].classList.add('correct');
+                if(isOk) score++;
+                var letter = ['A','B','C','D'][chosen];
+                userMsg(letter + '. ' + q.opts[chosen]);
+                var feedback = isOk
+                    ? '✅ <strong>ትክክለኛ!</strong> ' + q.explain
+                    : '❌ <strong>አልሆነም።</strong> ' + q.explain;
+                botMsg(feedback, 350).then(function(){
+                    clearOpts();
+                    currentQ = idx + 1;
+                    updateProgress();
                     askQuestion(currentQ);
                 });
             });
         });
     }
 
-    // Show final result
-    function showResult() {
-        var pct = Math.round((score / questions.length) * 100);
-
-        var level, emoji, msg, ctaLabel;
-        if (pct >= 80) {
-            level = 'Pro Trader 🏆'; emoji = '🏆';
-            msg   = 'አስደናቂ! ' + score + '/10 መምታትህ ፕሮ ደረጃ ያሳያል። ስትራቴጂህን ለማሻሻል መጽሃፍቱ ይጠቅምሃል!';
-            ctaLabel = 'Bundle ስዘዝ — 500 ብር';
-        } else if (pct >= 50) {
-            level = 'Intermediate Trader 📈'; emoji = '📈';
-            msg   = score + '/10 — ጥሩ መሠረት አለህ! ለሙሉ እውቀት የፎሬክስ ወይም ክሪፕቶ መጽሃፍ ይረዳሃል።';
-            ctaLabel = 'መጽሃፍ ስዘዝ';
-        } else {
-            level = 'Beginner Trader 🌱'; emoji = '🌱';
-            msg   = score + '/10 — ጀማሪ ነህ! አሳዝኖ አይሆን — ሁሉም ከዚሁ ጀምሮ ነው። መጽሃፍቱ ሁሉንም ከዜሮ ያስተምርሃል።';
-            ctaLabel = 'ጀምሮ ስዘዝ — 350 ብር';
-        }
-
-        clearOptions();
-        var resultEl = document.createElement('div');
-        resultEl.className = 'quiz-result';
-        resultEl.innerHTML =
-            '<div class="quiz-result-emoji">' + emoji + '</div>' +
-            '<div class="quiz-result-title">' + level + '</div>' +
-            '<div class="quiz-result-score">' + score + ' / ' + questions.length + ' ትክክለኛ (' + pct + '%)</div>' +
-            '<div class="quiz-result-bar-wrap"><div class="quiz-result-bar" id="quizBar" style="width:0%"></div></div>' +
-            '<div class="quiz-result-msg">' + msg + '</div>' +
-            '<button class="quiz-cta-btn" onclick="document.getElementById(\'products\').scrollIntoView({behavior:\'smooth\'})">' + ctaLabel + '</button>' +
-            '<button class="quiz-retry-btn" onclick="retryQuiz()">እንደገና ሞክር</button>';
-        chatEl.appendChild(resultEl);
-        scrollChat();
-
-        // Animate bar
-        setTimeout(function() {
-            var bar = document.getElementById('quizBar');
-            if (bar) bar.style.width = pct + '%';
-        }, 200);
+    // ── OPTIONS ────────────────────────────────────────────────
+    function showOptions(opts, onSelect){
+        var container = $('quizOptions');
+        container.innerHTML = '';
+        opts.forEach(function(opt, i){
+            var btn = document.createElement('button');
+            btn.className = 'quiz-opt-btn';
+            btn.innerHTML = '<strong>' + ['A','B','C','D'][i] + '.</strong> ' + opt;
+            btn.onclick = function(){ onSelect(i, btn); };
+            container.appendChild(btn);
+        });
     }
 
-    // Public: start quiz
-    window.startQuiz = function() {
-        if (quizActive) return;
-        quizActive = true;
-        init();
-        startWrapEl.style.display = 'none';
-        chatEl.innerHTML = '';
-        score = 0; currentQ = 0;
+    // ── RESULT ─────────────────────────────────────────────────
+    function showResult(){
+        clearOpts();
+        var total = questions.length;
+        var pct   = Math.round((score / total) * 100);
+        var emoji, level, msg;
+        if(pct >= 80){
+            emoji = '🏆'; level = 'Pro Trader!';
+            msg   = score + '/' + total + ' (' + pct + '%) — አስደናቂ ውጤት! ፕሮፌሽናል ደረጃ ነህ። ስትራቴጂህን ለማሻሻል Bundle መጽሃፍ ይጠቅምሃል።';
+        } else if(pct >= 55){
+            emoji = '📈'; level = 'Intermediate Trader';
+            msg   = score + '/' + total + ' (' + pct + '%) — ጥሩ! የተሳሳቱትን ክለሳ አድርግ። ፎሬክስ ወይም ክሪፕቶ መጽሃፍ ሙሉ ተሞክሮ ይሰጥሃል።';
+        } else {
+            emoji = '🌱'; level = 'Beginner Trader';
+            msg   = score + '/' + total + ' (' + pct + '%) — አሳዝኖ አይሆን! ሁሉም ከዜሮ ጀምሮ ነው። መጽሃፍቱ ሙሉ ዕውቀቱን ከዜሮ ያስተምርሃል።';
+        }
 
-        botMsg('ሰላም! 👋 እንኳን ወደ THE FOREX BRIDGE ፈተና በደህና መጡ! 🎯').then(function() {
-            return botMsg('50 ጥያቄዎች አሉ — ከጀማሪ እስከ ፕሮፌሽናል። ለእያንዳንዱ A/B/C/D ምረጥ። 🚀', 300);
-        }).then(function() {
-            askQuestion(0);
-        });
-    };
+        var chat = $('quizChat');
+        var card = document.createElement('div');
+        card.className = 'quiz-result';
+        card.innerHTML =
+            '<div class="quiz-result-emoji">' + emoji + '</div>' +
+            '<div class="quiz-result-title">' + level + '</div>' +
+            '<div class="quiz-result-bar-wrap"><div class="quiz-result-bar" id="qResBar" style="width:0%"></div></div>' +
+            '<div class="quiz-result-score">' + msg + '</div>' +
+            '<div class="quiz-result-btns">' +
+              '<button class="quiz-cta-btn" onclick="document.getElementById(\'products\').scrollIntoView({behavior:\'smooth\'})">📚 መጽሃፍ ስዘዝ</button>' +
+              '<button class="quiz-retry-btn" onclick="retryQuiz()">🔄 እንደገና ሞክር</button>' +
+            '</div>';
+        chat.appendChild(card);
+        scrollChat();
+        setTimeout(function(){
+            var bar = document.getElementById('qResBar');
+            if(bar) bar.style.width = pct + '%';
+        }, 300);
+        // update progress to 100%
+        var pb = $('quizProgressBar');
+        var qc = $('quizQCount');
+        if(pb) pb.style.width = '100%';
+        if(qc) qc.textContent = total + ' / ' + total;
+    }
 
-    // Public: retry quiz
-    window.retryQuiz = function() {
+    // ── RETRY ──────────────────────────────────────────────────
+    window.retryQuiz = function(){
         quizActive = false;
-        init();
-        chatEl.innerHTML = '';
-        clearOptions();
-        startWrapEl.style.display = 'block';
-        score = 0; currentQ = 0;
+        topic = null; score = 0; currentQ = 0;
+        var landing = $('quizLanding');
+        var box     = $('quizBox');
+        var chat    = $('quizChat');
+        if(chat)    chat.innerHTML    = '';
+        clearOpts();
+        if(box)     box.style.display = 'none';
+        if(landing){ landing.style.display = 'flex'; landing.style.flexDirection = 'column'; landing.style.alignItems = 'center'; }
+        var pb = $('quizProgressBar');
+        var qc = $('quizQCount');
+        if(pb) pb.style.width = '0%';
+        if(qc) qc.textContent = '0 / 0';
     };
+
+    // legacy compat
+    window.startQuiz = window.launchQuiz;
 
 })();
