@@ -3661,3 +3661,17 @@ html[lang="en"] .lang-en-only { display: inline-block; }
     transition: all 0.2s;
 }
 .quiz-exit-btn:hover { background: rgba(255,80,80,0.25); color: #ff6060; }
+
+/* Quiz header layout fix — ensure X button visible */
+.quiz-box-header {
+    flex-wrap: nowrap !important;
+    overflow: visible !important;
+}
+.quiz-score-counter {
+    flex-shrink: 1;
+    min-width: 0;
+}
+.quiz-exit-btn {
+    flex-shrink: 0 !important;
+    margin-left: auto;
+}

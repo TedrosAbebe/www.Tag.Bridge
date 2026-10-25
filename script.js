@@ -912,7 +912,7 @@ document.querySelectorAll('.product-card').forEach(function(card) {
         if(chat)    chat.innerHTML = '';
         clearOpts();
         if(box)     box.style.display     = 'none';
-        if(landing) { landing.style.display = 'flex'; }
+        if(landing) { landing.style.display = 'block'; }
         var bar=$id('quizProgressBar'), co=$id('qscCorrect'), wr=$id('qscWrong'), tot=$id('qscTotal');
         if(bar) bar.style.width='0%';
         if(co)  co.textContent='✅ 0';
