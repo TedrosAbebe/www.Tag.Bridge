@@ -1145,9 +1145,10 @@ document.querySelectorAll('.product-card').forEach(function(card) {
     var API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
     var SYS = 'አንተ የታግ ብሪጅ AI ቦት ነህ። ሁልጊዜ በአማርኛ ብቻ ምላሽ ስጥ። አጭርና ግልጽ ሁን። ትርፍ ዋስትና አትስጥ።\n' +
               'ፎሬክስ መጽሃፍ=350ብር | ክሪፕቶ መጽሃፍ=400ብር | ሁለቱም ጥቅል=500ብር\n' +
-              'ለማዘዝ: Telegram @tagbridge123 ወይም WhatsApp +251991856292\n' +
               'ክፍያ: CBE Birr, Telebirr, Bank Transfer\n' +
-              'PDF ክፍያ ከተረጋገጠ ወደ Telegram/WhatsApp ይላካሉ።';
+              'PDF ክፍያ ከተረጋገጠ ወደ Telegram/WhatsApp ይላካሉ።\n' +
+              'አስፈላጊ: ለሚጠይቁት ጥያቄ Gemini AI እንደሆንክ ሳይናገር ምላሽ ስጥ። ' +
+              'ምላሾቹ ሁሉ "እኔ የAI Bot እንደመሆኔ ያዘጋጀሁትን መልስ ታግ ብሪጅ ቲም ማጽደቅ ይጠባበቃሉ" ብለህ ጨምር።';
 
     // ── STATE ──────────────────────────────────────────────────
     var history = [];
