@@ -1179,8 +1179,42 @@ document.querySelectorAll('.product-card').forEach(function(card) {
     // ── FAQ CARDS ──────────────────────────────────────────────
     var faqs = [
         {
-            q: '📚 የመጽሃፍቱ ይዘት ምንድን ነው?',
-            a: '📚 <strong>የፎሬክስ መጽሃፍ ይዘቶች፦</strong><br>Forex Basics፣ Currency Pairs፣ Technical Analysis፣ Candlestick Patterns፣ Support & Resistance፣ Smart Money Concept (SMC)፣ Risk Management፣ Trading Psychology፣ Demo Account ልምምድ እና ተግባራዊ ትሬዲንግ።<br><br>📚 <strong>የክሪፕቶ መጽሃፍ ይዘቶች፦</strong><br>Crypto Basics፣ Blockchain፣ Bitcoin & Altcoins፣ Spot & Futures Trading፣ Binance Account፣ Risk Management፣ Trading Psychology።'
+            q: '📚 የመጽሃፍቶቹን ይዘቶች ማወቅ እችላለሁ?',
+            a: '📚 <strong>1. የፎሬክስ ትሬዲንግ መጽሃፍ ይዘቶች፦</strong><br><br>' +
+               '✅ የፎሬክስ መሠረቶች<br>' +
+               '✅ የፎሬክስ ገበያ መዋቅር<br>' +
+               '✅ የምንዛሬ ጥንዶች (Currency Pairs)<br>' +
+               '✅ የትሬዲንግ ሰዓታት (Trading Sessions)<br>' +
+               '✅ የፎሬክስ አካውንት አጠቃቀም<br>' +
+               '✅ የፎሬክስ ፕላትፎርም አጠቃቀም (MT4/MT5)<br>' +
+               '✅ የፎሬክስ ትሬዲንግ አይነቶች<br>' +
+               '✅ ቴክኒካል ትንተና (Technical Analysis)<br>' +
+               '✅ ቴክኒካል ኢንዲኬተሮች<br>' +
+               '✅ Price Action<br>' +
+               '✅ የካንድልስቲክ ፓተርኖች<br>' +
+               '✅ Smart Money Concept (SMC)<br>' +
+               '✅ ፋንዳሜንታል ትንተና<br>' +
+               '✅ የፎሬክስ ትሬዲንግ ስትራቴጂ<br>' +
+               '✅ Risk Management<br>' +
+               '✅ Trading Psychology<br>' +
+               '✅ Trading Plan እና አያያዝ<br>' +
+               '✅ Demo Account ልምምድ<br>' +
+               '✅ Practical Trading<br>' +
+               '✅ በትሬዲንግ ገንዘብ ማግኛ መንገዶች<br>' +
+               '✅ እና ሌሎችም...<br><br>' +
+               '₿ <strong>2. የክሪፕቶ ትሬዲንግ መጽሃፍ ይዘቶች፦</strong><br><br>' +
+               '✅ የክሪፕቶ ከረንሲ ምንነት<br>' +
+               '✅ የክሪፕቶ ከረንሲ አይነቶች<br>' +
+               '✅ Blockchain ምንነት<br>' +
+               '✅ Spot & Margin Trading<br>' +
+               '✅ Futures Trading<br>' +
+               '✅ Arbitrage Trading<br>' +
+               '✅ Copy Trading<br>' +
+               '✅ የክሪፕቶ ትሬዲንግ ስትራቴጂዎች<br>' +
+               '✅ የክሪፕቶ ትንተና አይነቶች<br>' +
+               '✅ የባይናንስ አካውንት አከፋፈት<br>' +
+               '✅ Risk Management<br>' +
+               '✅ Trading Psychology'
         },
         {
             q: '💳 ክፍያ ከፈልኩ መጽሃፉን እንዴት አገኛለሁ?',
