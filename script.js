@@ -815,3 +815,118 @@ document.querySelectorAll('.product-card').forEach(function(card) {
     window.startQuiz = window.launchQuiz;
 
 })();
+
+
+// ===========================
+// LIVE TRADINGVIEW CHART
+// ===========================
+(function initChart() {
+
+    var currentSymbol = 'BINANCE:BTCUSDT';
+    var chartLoaded   = false;
+    var tvScript      = null;
+
+    // Map tab symbol → TradingView symbol
+    var symbolMap = {
+        'BTCUSDT': 'BINANCE:BTCUSDT',
+        'ETHUSDT': 'BINANCE:ETHUSDT',
+        'BNBUSDT': 'BINANCE:BNBUSDT',
+        'SOLUSDT': 'BINANCE:SOLUSDT',
+        'EURUSD':  'FX:EURUSD',
+        'XAUUSD':  'TVC:GOLD'
+    };
+
+    function buildWidget(tvSymbol) {
+        var container = document.getElementById('tvChartContainer');
+        if (!container) return;
+
+        // Clear previous
+        container.innerHTML = '';
+
+        // Create new widget script
+        var script = document.createElement('script');
+        script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+        script.async = true;
+        script.innerHTML = JSON.stringify({
+            autosize:           true,
+            symbol:             tvSymbol,
+            interval:           '60',
+            timezone:           'Africa/Addis_Ababa',
+            theme:              'dark',
+            style:              '1',
+            locale:             'en',
+            backgroundColor:    '#131722',
+            gridColor:          'rgba(255,255,255,0.04)',
+            hide_top_toolbar:   false,
+            hide_legend:        false,
+            save_image:         false,
+            calendar:           false,
+            support_host:       'https://www.tradingview.com',
+            height:             420,
+            withdateranges:     true,
+            range:              '1D',
+            allow_symbol_change: false,
+            details:            true,
+            hotlist:            false,
+            news:               [],
+            studies:            ['STD;MACD','STD;RSI']
+        });
+
+        // Wrapper div TradingView needs
+        var wrap = document.createElement('div');
+        wrap.className = 'tradingview-widget-container';
+        wrap.style.height = '420px';
+        wrap.style.width  = '100%';
+
+        var inner = document.createElement('div');
+        inner.className = 'tradingview-widget-container__widget';
+        inner.style.height = '100%';
+        inner.style.width  = '100%';
+
+        wrap.appendChild(inner);
+        wrap.appendChild(script);
+        container.appendChild(wrap);
+    }
+
+    // Public: called by tab buttons
+    window.switchChart = function(symbol, label, btn) {
+        // Update active tab
+        document.querySelectorAll('.chart-tab').forEach(function(b) {
+            b.classList.remove('active');
+        });
+        if (btn) btn.classList.add('active');
+
+        // Update label
+        var lbl = document.getElementById('chartPairLabel');
+        if (lbl) lbl.textContent = label;
+
+        var tvSym = symbolMap[symbol] || ('BINANCE:' + symbol);
+        currentSymbol = tvSym;
+        buildWidget(tvSym);
+    };
+
+    // Init on DOM ready — lazy load when section visible
+    function init() {
+        var section = document.querySelector('.live-chart-section');
+        if (!section) return;
+
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting && !chartLoaded) {
+                    chartLoaded = true;
+                    buildWidget(currentSymbol);
+                    observer.disconnect();
+                }
+            });
+        }, { threshold: 0.1 });
+
+        observer.observe(section);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+})();
