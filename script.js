@@ -1008,3 +1008,92 @@ document.querySelectorAll('.product-card').forEach(function(card) {
     }
 
 })();
+
+
+// ===========================
+// MARKET OVERVIEW TOGGLE
+// ===========================
+(function() {
+    var widgetLoaded = false;
+
+    function loadOverviewWidget() {
+        if (widgetLoaded) return;
+        widgetLoaded = true;
+        var container = document.querySelector('#tvOverviewContainer .tradingview-widget-container__widget');
+        if (!container) return;
+        var s = document.createElement('script');
+        s.src = 'https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js';
+        s.async = true;
+        s.innerHTML = JSON.stringify({
+            colorTheme: 'dark',
+            dateRange:  '1D',
+            showChart:  false,
+            locale:     'en',
+            width:      '100%',
+            height:     '420',
+            isTransparent: true,
+            showSymbolLogo: true,
+            showFloatingTooltip: true,
+            plotLineColorGrowing:       '#38ef7d',
+            plotLineColorFalling:       '#ff6060',
+            gridLineColor:              'rgba(255,255,255,0.06)',
+            scaleFontColor:             'rgba(255,255,255,0.4)',
+            belowLineFillColorGrowing:  'rgba(56,239,125,0.08)',
+            belowLineFillColorFalling:  'rgba(255,96,96,0.08)',
+            symbolActiveColor:          'rgba(91,125,232,0.15)',
+            tabs: [
+                {
+                    title: 'Crypto',
+                    symbols: [
+                        { s:'BINANCE:BTCUSDT', d:'Bitcoin'  },
+                        { s:'BINANCE:ETHUSDT', d:'Ethereum' },
+                        { s:'BINANCE:BNBUSDT', d:'BNB'      },
+                        { s:'BINANCE:SOLUSDT', d:'Solana'   },
+                        { s:'BINANCE:XRPUSDT', d:'XRP'      },
+                        { s:'BINANCE:ADAUSDT', d:'Cardano'  }
+                    ],
+                    originalTitle: 'Crypto'
+                },
+                {
+                    title: 'Forex',
+                    symbols: [
+                        { s:'FX:EURUSD', d:'EUR/USD' },
+                        { s:'FX:GBPUSD', d:'GBP/USD' },
+                        { s:'FX:USDJPY', d:'USD/JPY' },
+                        { s:'FX:AUDUSD', d:'AUD/USD' },
+                        { s:'FX:USDCHF', d:'USD/CHF' },
+                        { s:'FX:USDCAD', d:'USD/CAD' }
+                    ],
+                    originalTitle: 'Forex'
+                },
+                {
+                    title: 'Commodities',
+                    symbols: [
+                        { s:'TVC:GOLD',   d:'Gold'        },
+                        { s:'TVC:SILVER', d:'Silver'      },
+                        { s:'NYMEX:CL1!', d:'Crude Oil'   },
+                        { s:'NYMEX:NG1!', d:'Natural Gas' }
+                    ],
+                    originalTitle: 'Commodities'
+                }
+            ]
+        });
+        container.parentNode.appendChild(s);
+    }
+
+    window.toggleMarketOverview = function(btn) {
+        var body    = document.getElementById('marketOverviewBody');
+        var chevron = btn.querySelector('.market-ov-chevron');
+        if (!body) return;
+
+        var isOpen = body.style.display !== 'none';
+        if (isOpen) {
+            body.style.display = 'none';
+            if (chevron) chevron.classList.remove('open');
+        } else {
+            body.style.display = 'block';
+            if (chevron) chevron.classList.add('open');
+            loadOverviewWidget(); // lazy load first time only
+        }
+    };
+})();

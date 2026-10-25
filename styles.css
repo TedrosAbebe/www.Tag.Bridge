@@ -3072,3 +3072,60 @@ html[lang="en"] .lang-en-only { display: inline-block; }
     #tvOverviewContainer,
     #tvOverviewContainer .tradingview-widget-container { min-height: 320px; height: 320px; }
 }
+
+/* ── Market Overview Toggle ── */
+.market-overview-wrap {
+    margin-top: 14px;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.02);
+}
+
+.market-overview-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 18px;
+    background: rgba(255,255,255,0.04);
+    border: none;
+    color: rgba(255,255,255,0.75);
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+    text-align: left;
+    letter-spacing: 0.3px;
+}
+
+.market-overview-toggle:hover {
+    background: rgba(91,125,232,0.12);
+    color: white;
+}
+
+.market-ov-chevron {
+    margin-left: auto;
+    font-size: 0.75rem;
+    transition: transform 0.3s ease;
+    color: rgba(255,255,255,0.4);
+}
+
+.market-ov-chevron.open {
+    transform: rotate(180deg);
+    color: #38ef7d;
+}
+
+.market-overview-body {
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+}
+
+#tvOverviewContainer {
+    min-height: 400px;
+}
+
+@media (max-width: 640px) {
+    .market-overview-wrap { border-radius: 10px; margin-top: 10px; }
+    #tvOverviewContainer { min-height: 320px; }
+}
