@@ -3439,3 +3439,12 @@ html[lang="en"] .lang-en-only { display: inline-block; }
 .tb-bot-messages { flex: 1 1 auto !important; overflow-y: auto !important; min-height: 0 !important; }
 .tb-bot-input-wrap { flex-shrink: 0 !important; position: relative; z-index: 1; }
 .tb-bot-header { flex-shrink: 0 !important; }
+
+/* ── Bot Options Area ── */
+.tb-bot-opts {
+    padding: 0 10px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex-shrink: 0;
+}

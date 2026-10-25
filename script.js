@@ -1114,229 +1114,333 @@ document.querySelectorAll('.product-card').forEach(function(card) {
 // =========================
 
 
+// =========================
 // ===========================
-// TAG BRIDGE AI BOT (Gemini)
+// TAG BRIDGE AI BOT v4
 // ===========================
 (function() {
 
     var API_KEY = 'AQ.Ab8RN6LwwLlWmLt5BsmUcMc1YDfNaLfsMaSHV9r-I46I9kZrPg';
     var API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
 
-    var SYSTEM_PROMPT = 'አንተ የታግ ብሪጅ (Tag Bridge) ኦፊሽያል AI ረዳት ቦት ነህ። ስምህ "ታግ ብሪጅ ቦት" ነው።\n\nስለ ታግ ብሪጅ:\nታግ ብሪጅ ፎሬክስ እና ክሪፕቶ ትሬዲንግ PDF መጽሃፍት በአማርኛ ቋንቋ ያቀርባሉ።\n\nመጽሃፍቱ ዋጋዎች:\n- የፎሬክስ ትሬዲንግ = 350 ብር\n- የክሪፕቶ ትሬዲንግ = 400 ብር\n- ሁለቱም ጥቅል = 500 ብር\n\nለማዘዝ: Telegram @tagbridge123 ወይም WhatsApp +251991856292\nክፍያ: CBE Birr፣ Telebirr፣ Bank Transfer\nPDF ክፍያ ከተረጋገጠ ወደ Telegram/WhatsApp ይላካሉ።\n\nቻናሎች: t.me/tagbridge | TikTok: @tagbridge\n\nህግጋት:\n- ሁልጊዜ በአማርኛ ብቻ ምላሽ ስጥ\n- ጨዋና ሙያዊ ሁን\n- ትርፍ ዋስትና አትስጥ\n- አጭርና ግልጽ ምላሽ ስጥ';
+    var SYSTEM_PROMPT = 'አንተ የታግ ብሪጅ AI ቦት ነህ። ሁልጊዜ በአማርኛ ብቻ ምላሽ ስጥ። አጭርና ግልጽ ሁን። ትርፍ ዋስትና አትስጥ።\n\nስለ ታግ ብሪጅ:\n- ፎሬክስ ትሬዲንግ = 350 ብር\n- ክሪፕቶ ትሬዲንግ = 400 ብር\n- ሁለቱም ጥቅል = 500 ብር\n- ለማዘዝ: @tagbridge123 ወይም +251991856292\n- ክፍያ: CBE Birr, Telebirr, Bank Transfer';
 
     var history = [];
     var isOpen  = false;
     var busy    = false;
+    var botPhase = 'welcome'; // welcome | topic | quiz_forex | quiz_crypto | chat
 
     function $i(id) { return document.getElementById(id); }
 
-    function scroll() {
+    function scrollMsgs() {
         var m = $i('tbBotMessages');
-        if (m) m.scrollTop = m.scrollHeight;
+        if (m) setTimeout(function(){ m.scrollTop = m.scrollHeight; }, 50);
     }
 
-    function botBubble(text, id) {
+    function addBotBubble(html, cls) {
         var msgs = $i('tbBotMessages');
         if (!msgs) return;
         var d = document.createElement('div');
         d.className = 'tb-msg-bot';
-        if (id) d.id = id;
         d.innerHTML = '<div class="tb-msg-bot-avatar">🤖</div>' +
-            '<div class="tb-msg-bot-bubble">' + text.replace(/\n/g,'<br>') + '</div>';
+            '<div class="tb-msg-bot-bubble' + (cls ? ' ' + cls : '') + '">' + html + '</div>';
         msgs.appendChild(d);
-        scroll();
+        scrollMsgs();
     }
 
-    function userBubble(text) {
+    function addUserBubble(html) {
         var msgs = $i('tbBotMessages');
         if (!msgs) return;
         var d = document.createElement('div');
         d.className = 'tb-msg-user';
-        d.innerHTML = '<div class="tb-msg-user-bubble">' + text + '</div>';
+        d.innerHTML = '<div class="tb-msg-user-bubble">' + html + '</div>';
         msgs.appendChild(d);
-        scroll();
+        scrollMsgs();
     }
 
-    function showDots() {
+    function showTyping() {
         var msgs = $i('tbBotMessages');
         if (!msgs) return;
         var d = document.createElement('div');
-        d.className = 'tb-msg-bot';
-        d.id = 'tbDots';
-        d.innerHTML = '<div class="tb-msg-bot-avatar">🤖</div>' +
-            '<div class="tb-typing-dots"><span></span><span></span><span></span></div>';
-        msgs.appendChild(d);
-        scroll();
+        d.className = 'tb-msg-bot'; d.id = 'tbDots';
+        d.innerHTML = '<div class="tb-msg-bot-avatar">🤖</div><div class="tb-typing-dots"><span></span><span></span><span></span></div>';
+        msgs.appendChild(d); scrollMsgs();
     }
 
-    function hideDots() { var t = $i('tbDots'); if (t) t.remove(); }
+    function hideTyping() { var t = $i('tbDots'); if (t) t.remove(); }
 
+    function clearOpts() { var o = $i('tbBotOpts'); if(o) o.innerHTML = ''; }
+
+    function addOptions(items) {
+        clearOpts();
+        var o = $i('tbBotOpts');
+        if (!o) return;
+        items.forEach(function(item) {
+            var btn = document.createElement('button');
+            btn.className = 'tb-faq-btn';
+            btn.innerHTML = item.label;
+            btn.onclick = function() { item.action(); };
+            o.appendChild(btn);
+        });
+        scrollMsgs();
+    }
+
+    // ── OPEN / CLOSE ──────────────────────────────────────────
     window.toggleTbBot = function() {
         var win = $i('tbBotWindow');
         if (!win) return;
         isOpen = !isOpen;
         win.style.display = isOpen ? 'flex' : 'none';
         if (isOpen && $i('tbBotMessages').children.length === 0) {
-            setTimeout(function() {
-                botBubble('ሰላም! 👋 እኔ የታግ ብሪጅ AI ቦት ነኝ።\nከታች ካሉ ጥያቄዎች ይምረጡ ወይም ሌላ ጥያቄ ይጻፉ 👇');
-                setTimeout(showFaqCards, 400);
-            }, 200);
+            setTimeout(showWelcome, 300);
         }
-        if (isOpen) setTimeout(function() { var i = $i('tbBotInput'); if(i) i.focus(); }, 300);
+        if (isOpen) setTimeout(function() { var i = $i('tbBotInput'); if(i) i.focus(); }, 400);
     };
 
-    // ── FAQ CARDS ──────────────────────────────────────────────
-    var faqs = [
-        {
-            q: '📚 የመጽሃፍቶቹን ይዘቶች ማወቅ እችላለሁ?',
-            a: '📚 <strong>1. የፎሬክስ ትሬዲንግ መጽሃፍ ይዘቶች፦</strong><br><br>' +
-               '✅ የፎሬክስ መሠረቶች<br>' +
-               '✅ የፎሬክስ ገበያ መዋቅር<br>' +
-               '✅ የምንዛሬ ጥንዶች (Currency Pairs)<br>' +
-               '✅ የትሬዲንግ ሰዓታት (Trading Sessions)<br>' +
-               '✅ የፎሬክስ አካውንት አጠቃቀም<br>' +
-               '✅ የፎሬክስ ፕላትፎርም አጠቃቀም (MT4/MT5)<br>' +
-               '✅ የፎሬክስ ትሬዲንግ አይነቶች<br>' +
-               '✅ ቴክኒካል ትንተና (Technical Analysis)<br>' +
-               '✅ ቴክኒካል ኢንዲኬተሮች<br>' +
-               '✅ Price Action<br>' +
-               '✅ የካንድልስቲክ ፓተርኖች<br>' +
-               '✅ Smart Money Concept (SMC)<br>' +
-               '✅ ፋንዳሜንታል ትንተና<br>' +
-               '✅ የፎሬክስ ትሬዲንግ ስትራቴጂ<br>' +
-               '✅ Risk Management<br>' +
-               '✅ Trading Psychology<br>' +
-               '✅ Trading Plan እና አያያዝ<br>' +
-               '✅ Demo Account ልምምድ<br>' +
-               '✅ Practical Trading<br>' +
-               '✅ በትሬዲንግ ገንዘብ ማግኛ መንገዶች<br>' +
-               '✅ እና ሌሎችም...<br><br>' +
-               '₿ <strong>2. የክሪፕቶ ትሬዲንግ መጽሃፍ ይዘቶች፦</strong><br><br>' +
-               '✅ የክሪፕቶ ከረንሲ ምንነት<br>' +
-               '✅ የክሪፕቶ ከረንሲ አይነቶች<br>' +
-               '✅ Blockchain ምንነት<br>' +
-               '✅ Spot & Margin Trading<br>' +
-               '✅ Futures Trading<br>' +
-               '✅ Arbitrage Trading<br>' +
-               '✅ Copy Trading<br>' +
-               '✅ የክሪፕቶ ትሬዲንግ ስትራቴጂዎች<br>' +
-               '✅ የክሪፕቶ ትንተና አይነቶች<br>' +
-               '✅ የባይናንስ አካውንት አከፋፈት<br>' +
-               '✅ Risk Management<br>' +
-               '✅ Trading Psychology'
-        },
-        {
-            q: '💳 ክፍያ ከፈልኩ መጽሃፉን እንዴት አገኛለሁ?',
-            a: '✅ ክፍያ ከተረጋገጠ በኋላ PDF መጽሃፉ <strong>ወደ Telegram ወይም WhatsApp</strong> ይላካሉ — ብዙ ጊዜ ከደቂቃዎች ውስጥ።<br><br>📲 ለማዘዝ፦<br>• Telegram: <strong>@tagbridge123</strong><br>• WhatsApp: <strong>+251991856292</strong>'
-        },
-        {
-            q: '🌱 መጽሃፉ ለጀማሪ ተስማሚ ነው?',
-            a: '✅ አዎ! ሁሉም መጽሃፍቶቻችን <strong>ለጀማሪዎች ከዜሮ ጀምሮ</strong> በቀላል አማርኛ ተጽፈዋሉ።<br><br>ምንም ቀዳሚ እውቀት አያስፈልግም — ሙሉ ሂደቱ ደረጃ በደረጃ ይገለጻሉ።'
-        },
-        {
-            q: '💰 ምን አይነት ክፍያ ዘዴ አለ?',
-            a: '✅ ተቀባይ የክፍያ ዘዴዎች፦<br>• <strong>CBE Birr</strong> (Commercial Bank of Ethiopia)<br>• <strong>Telebirr</strong><br>• <strong>Bank Transfer</strong><br><br>ለክፍያ ዝርዝር Telegram <strong>@tagbridge123</strong> ወይም WhatsApp <strong>+251991856292</strong> ያናግሩ።'
-        },
-        {
-            q: '🎯 ከመጽሃፍ በተጨማሪ ምን አማራጭ አለ?',
-            a: '✅ ከመጽሃፍ በተጨማሪ፦<br>• 📊 <strong>Demo Account</strong> — ምናባዊ ገንዘብ ለልምምድ (ነጻ)<br>• 📢 <strong>Telegram Channel</strong>: t.me/tagbridge — ዜናዎችና ምክሮች<br>• 🎵 <strong>TikTok</strong>: @tagbridge — ቪዲዮ ትምህርቶች<br>• 💬 <strong>WhatsApp Channel</strong> — አዳዲስ ቅናሾችና ዝርዝሮች'
-        }
-    ];
-
-    function showFaqCards() {
-        var msgs = $i('tbBotMessages');
-        if (!msgs) return;
-        var wrap = document.createElement('div');
-        wrap.className = 'tb-faq-wrap';
-        wrap.id = 'tbFaqWrap';
-        faqs.forEach(function(faq) {
-            var btn = document.createElement('button');
-            btn.className = 'tb-faq-btn';
-            btn.textContent = faq.q;
-            btn.onclick = function() {
-                var fw = $i('tbFaqWrap');
-                if (fw) fw.remove();
-                userBubble(faq.q);
-                setTimeout(function() {
-                    botBubble(faq.a);
-                    // ── ከmessage በሗላ FAQ cards እንደገና አሳይ ──
-                    setTimeout(function() {
-                        showExtraPrompt();
-                        setTimeout(showFaqCards, 300);
-                    }, 600);
-                }, 300);
-            };
-            wrap.appendChild(btn);
-        });
-        msgs.appendChild(wrap);
-        msgs.scrollTop = msgs.scrollHeight;
+    // ── WELCOME ───────────────────────────────────────────────
+    function showWelcome() {
+        botPhase = 'welcome';
+        addBotBubble('ሰላም! 👋 እኔ የታግ ብሪጅ AI ቦት ነኝ።<br>ምን ላደርግልዎት እችላለሁ?');
+        setTimeout(function() {
+            addOptions([
+                { label: '💱 ፎሬክስ ትሬዲንግ ፈተና', action: function(){ chooseForexQuiz(); } },
+                { label: '₿ ክሪፕቶ ትሬዲንግ ፈተና', action: function(){ chooseCryptoQuiz(); } },
+                { label: '📚 የመጽሃፍቱ ይዘቶች', action: function(){ showBookContents(); } },
+                { label: '💳 ዋጋ እና አዘዛ', action: function(){ showPricing(); } },
+                { label: '❓ ሌሎች ጥያቄዎች', action: function(){ showChatMode(); } }
+            ]);
+        }, 400);
     }
 
-    function showExtraPrompt() {
-        var msgs = $i('tbBotMessages');
-        if (!msgs) return;
-        if ($i('tbExtraPrompt')) $i('tbExtraPrompt').remove();
-        var d = document.createElement('div');
-        d.className = 'tb-msg-bot';
-        d.id = 'tbExtraPrompt';
-        d.innerHTML = '<div class="tb-msg-bot-avatar">🤖</div>' +
-            '<div class="tb-msg-bot-bubble">ሌሎቹን ጥያቄዎችም ይምረጡ ወይም ሌላ ጥያቄ ከታች ይጻፉ 👇</div>';
-        msgs.appendChild(d);
-        msgs.scrollTop = msgs.scrollHeight;
+    // ── FOREX QUIZ INTRO ──────────────────────────────────────
+    function chooseForexQuiz() {
+        clearOpts();
+        addUserBubble('💱 ፎሬክስ ትሬዲንግ ፈተና');
+        botPhase = 'quiz_forex';
+        setTimeout(function() {
+            addBotBubble(
+                'በጣም ጥሩ! 🎉 የፎሬክስ ትሬዲንግ ፈተናዎችን ለመፈተን መርጠዋል!<br><br>' +
+                'በአጠቃላይ ከ<strong>200 በላይ ጥያቄዎች</strong> የተዘጋጁ ሲሆን ጥያቄዎቹ በ<strong>4 ምዕራፍ</strong> የተዘጋጁ ናቸው፦<br><br>' +
+                '<strong>1. ጀማሪ (1–50)</strong><br>' +
+                '↳ Forex መሠረቶች, የምንዛሬ ጥንዶች, Brokers, Trading Basics<br><br>' +
+                '<strong>2. መካከለኛ (51–100)</strong><br>' +
+                '↳ Technical Analysis, Candlesticks, Market Structure<br><br>' +
+                '<strong>3. ከፍተኛ (101–150)</strong><br>' +
+                '↳ Fundamental Analysis, Strategies, Risk Management<br><br>' +
+                '<strong>4. ፕሮፌሽናል (151–200)</strong><br>' +
+                '↳ Trading Psychology, Advanced Analysis, የገበያ ውሳኔዎች<br><br>' +
+                'ፈተናውን ለመውሰድ ዝግጁ ነዎት? ↓'
+            );
+            setTimeout(function() {
+                addOptions([
+                    { label: '✅ እንቀጥል! ምዕራፍ 1 — ጀማሪ', action: function(){ startForexQuiz(); } },
+                    { label: '🔙 ወደ ዋናው ምናሌ', action: function(){ goBack(); } }
+                ]);
+            }, 500);
+        }, 400);
     }
 
+    // ── START FOREX QUIZ ──────────────────────────────────────
+    function startForexQuiz() {
+        clearOpts();
+        addUserBubble('✅ እንቀጥል! ምዕራፍ 1 — ጀማሪ');
+        setTimeout(function() {
+            addBotBubble(
+                '🚀 <strong>ምዕራፍ 1 — ጀማሪ ትሬደር</strong><br>' +
+                '<em>Forex መሠረቶች, የምንዛሬ ጥንዶች, Brokers, Trading Basics</em><br><br>' +
+                'ፈተናው ወደ ዋናው ፈተና (ትሬደር ነህ?) ያስተላልፍዎታሉ።<br>' +
+                'ሙሉ ፈተናውን ለማጠናቀቅ ወደ ታች ይሸብልሉ! 👇'
+            );
+            setTimeout(function() {
+                addOptions([
+                    { label: '📝 ፈተናውን ጀምር', action: function(){
+                        clearOpts();
+                        var quiz = document.getElementById('quizSection');
+                        if (quiz) quiz.scrollIntoView({ behavior: 'smooth' });
+                        var win = $i('tbBotWindow');
+                        if (win) { win.style.display = 'none'; isOpen = false; }
+                        setTimeout(function() {
+                            if (window.launchQuiz) window.launchQuiz();
+                        }, 800);
+                    }},
+                    { label: '🔙 ወደ ዋናው ምናሌ', action: function(){ goBack(); } }
+                ]);
+            }, 500);
+        }, 400);
+    }
+
+    // ── CRYPTO QUIZ INTRO ─────────────────────────────────────
+    function chooseCryptoQuiz() {
+        clearOpts();
+        addUserBubble('₿ ክሪፕቶ ትሬዲንግ ፈተና');
+        setTimeout(function() {
+            addBotBubble(
+                'በጣም ጥሩ! 🎉 የክሪፕቶ ትሬዲንግ ፈተናዎችን ለመፈተን መርጠዋል!<br><br>' +
+                '30 ጥያቄዎች ከ<strong>Crypto Basics እስከ Risk Management</strong> ድረስ።<br><br>' +
+                'ፈተናውን ለመውሰድ ዝግጁ ነዎት? ↓'
+            );
+            setTimeout(function() {
+                addOptions([
+                    { label: '✅ እንቀጥል! ክሪፕቶ ፈተና', action: function(){
+                        clearOpts();
+                        addUserBubble('✅ እንቀጥል!');
+                        setTimeout(function() {
+                            addBotBubble('🚀 ፈተናውን ለመጀመር ወደ ታች ይሸብልሉ! 👇');
+                            setTimeout(function() {
+                                addOptions([{ label: '📝 ፈተናውን ጀምር', action: function(){
+                                    clearOpts();
+                                    var quiz = document.getElementById('quizSection');
+                                    if (quiz) quiz.scrollIntoView({ behavior: 'smooth' });
+                                    var win = $i('tbBotWindow');
+                                    if (win) { win.style.display = 'none'; isOpen = false; }
+                                    setTimeout(function() {
+                                        if (window.launchQuiz) window.launchQuiz();
+                                        if (window.pickTopic) setTimeout(function(){ window.pickTopic('crypto'); }, 1200);
+                                    }, 800);
+                                }}, { label: '🔙 ወደ ዋናው ምናሌ', action: function(){ goBack(); } }]);
+                            }, 400);
+                        }, 300);
+                    }},
+                    { label: '🔙 ወደ ዋናው ምናሌ', action: function(){ goBack(); } }
+                ]);
+            }, 500);
+        }, 400);
+    }
+
+    // ── BOOK CONTENTS ─────────────────────────────────────────
+    function showBookContents() {
+        clearOpts();
+        addUserBubble('📚 የመጽሃፍቱ ይዘቶች');
+        setTimeout(function() {
+            addBotBubble(
+                '📚 <strong>1. የፎሬክስ ትሬዲንግ መጽሃፍ ይዘቶች፦</strong><br><br>' +
+                '✅ የፎሬክስ መሠረቶች | ✅ Currency Pairs | ✅ Trading Sessions<br>' +
+                '✅ Platform አጠቃቀም (MT4/MT5) | ✅ Technical Analysis<br>' +
+                '✅ Candlestick Patterns | ✅ Smart Money Concept<br>' +
+                '✅ Risk Management | ✅ Trading Psychology<br>' +
+                '✅ Demo Account | ✅ Practical Trading<br><br>' +
+                '₿ <strong>2. የክሪፕቶ ትሬዲንግ መጽሃፍ ይዘቶች፦</strong><br><br>' +
+                '✅ Crypto Basics | ✅ Blockchain | ✅ Bitcoin & Altcoins<br>' +
+                '✅ Spot & Futures Trading | ✅ Binance Account<br>' +
+                '✅ Risk Management | ✅ Trading Psychology'
+            );
+            setTimeout(function() {
+                addOptions([
+                    { label: '💳 ዋጋ እና አዘዛ', action: function(){ showPricing(); } },
+                    { label: '🔙 ወደ ዋናው ምናሌ', action: function(){ goBack(); } }
+                ]);
+            }, 500);
+        }, 400);
+    }
+
+    // ── PRICING ───────────────────────────────────────────────
+    function showPricing() {
+        clearOpts();
+        addUserBubble('💳 ዋጋ እና አዘዛ');
+        setTimeout(function() {
+            addBotBubble(
+                '💰 <strong>ዋጋዎች፦</strong><br><br>' +
+                '📗 ፎሬክስ ትሬዲንግ = <strong>350 ብር</strong><br>' +
+                '📘 ክሪፕቶ ትሬዲንግ = <strong>400 ብር</strong><br>' +
+                '📦 ሁለቱም ጥቅል = <strong>500 ብር</strong> (ቅናሽ!)<br><br>' +
+                '💳 <strong>ክፍያ ዘዴዎች፦</strong> CBE Birr, Telebirr, Bank Transfer<br><br>' +
+                '📲 <strong>ለማዘዝ፦</strong><br>' +
+                '• Telegram: <strong>@tagbridge123</strong><br>' +
+                '• WhatsApp: <strong>+251991856292</strong><br><br>' +
+                '✅ ክፍያ ከተረጋገጠ PDF ወዲያውኑ ይላካሉ!'
+            );
+            setTimeout(function() {
+                addOptions([
+                    { label: '📩 Telegram ያናግሩ', action: function(){
+                        window.open('https://t.me/tagbridge123', '_blank');
+                    }},
+                    { label: '🔙 ወደ ዋናው ምናሌ', action: function(){ goBack(); } }
+                ]);
+            }, 500);
+        }, 400);
+    }
+
+    // ── CHAT MODE (Gemini) ────────────────────────────────────
+    function showChatMode() {
+        clearOpts();
+        addUserBubble('❓ ሌሎች ጥያቄዎች');
+        botPhase = 'chat';
+        setTimeout(function() {
+            addBotBubble('ጥያቄዎን ይጻፉ — ምልሽ ለመስጠት ዝግጁ ነኝ! 💬');
+        }, 300);
+    }
+
+    // ── BACK ──────────────────────────────────────────────────
+    function goBack() {
+        clearOpts();
+        botPhase = 'welcome';
+        setTimeout(function() {
+            addBotBubble('ሌላ ምን ልረዳዎ? 👇');
+            setTimeout(function() {
+                addOptions([
+                    { label: '💱 ፎሬክስ ትሬዲንግ ፈተና', action: function(){ chooseForexQuiz(); } },
+                    { label: '₿ ክሪፕቶ ትሬዲንግ ፈተና', action: function(){ chooseCryptoQuiz(); } },
+                    { label: '📚 የመጽሃፍቱ ይዘቶች', action: function(){ showBookContents(); } },
+                    { label: '💳 ዋጋ እና አዘዛ', action: function(){ showPricing(); } },
+                    { label: '❓ ሌሎች ጥያቄዎች', action: function(){ showChatMode(); } }
+                ]);
+            }, 300);
+        }, 200);
+    }
+
+    // ── SEND TEXT (Gemini) ────────────────────────────────────
     window.sendTbMessage = function() {
         var inp = $i('tbBotInput');
         if (!inp || busy) return;
         var text = inp.value.trim();
         if (!text) return;
         inp.value = '';
-        userBubble(text);
+        addUserBubble(text);
+
+        // If not in chat mode — show menu
+        if (botPhase !== 'chat') {
+            goBack();
+            return;
+        }
+
         history.push({ role:'user', parts:[{ text:text }] });
         busy = true;
         inp.disabled = true;
-        showDots();
-
-        var body = {
-            system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
-            contents: history,
-            generationConfig: { temperature:0.7, maxOutputTokens:500, topP:0.9 }
-        };
+        showTyping();
 
         fetch(API_URL, {
-            method:'POST',
-            headers:{
-                'Content-Type':'application/json',
-                'x-goog-api-key': API_KEY
-            },
-            body: JSON.stringify(body)
+            method: 'POST',
+            headers: { 'Content-Type':'application/json', 'x-goog-api-key': API_KEY },
+            body: JSON.stringify({
+                system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
+                contents: history,
+                generationConfig: { temperature:0.7, maxOutputTokens:400, topP:0.9 }
+            })
         })
         .then(function(r) {
             if (!r.ok) throw new Error('HTTP ' + r.status);
             return r.json();
         })
         .then(function(data) {
-            hideDots();
-            busy = false;
-            inp.disabled = false;
-            inp.focus();
+            hideTyping(); busy = false; inp.disabled = false; inp.focus();
             var reply = '';
             try { reply = data.candidates[0].content.parts[0].text; } catch(e) {}
-            if (!reply) reply = 'ይቅርታ — አሁን ምላሽ መስጠት አልቻልኩም። ቆየት ብለው ይሞክሩ።';
+            if (!reply) reply = 'ይቅርታ — አሁን ምላሽ አልቻልኩም።';
             history.push({ role:'model', parts:[{ text:reply }] });
-            botBubble(reply);
+            addBotBubble(reply.replace(/\n/g,'<br>'));
+            setTimeout(function() {
+                addOptions([{ label: '🔙 ወደ ዋናው ምናሌ', action: function(){ goBack(); } }]);
+            }, 600);
         })
         .catch(function(err) {
-            hideDots();
-            busy = false;
-            inp.disabled = false;
-            inp.focus();
-            // 401 = key problem — static fallback
+            hideTyping(); busy = false; inp.disabled = false; inp.focus();
             var msg = err.message.indexOf('401') !== -1
-                ? 'ለዚህ ጥያቄ በቀጥታ ያናግሩን 📲<br>• Telegram: <strong>@tagbridge123</strong><br>• WhatsApp: <strong>+251991856292</strong>'
+                ? 'ለዚህ ጥያቄ በቀጥታ ያናግሩን 📲<br>Telegram: <strong>@tagbridge123</strong>'
                 : 'ይቅርታ — ኔትወርክ ችግር አለ። ቆየት ብለው ይሞክሩ።';
-            botBubble(msg);
-        });
+            addBotBubble(msg);
+            setTimeout(function() {
+                addOptions([{ label: '🔙 ወደ ዋናው ምናሌ', action: function(){ goBack(); } }]);
+            }, 600);
         });
     };
 
