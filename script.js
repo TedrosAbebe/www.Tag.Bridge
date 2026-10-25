@@ -708,7 +708,7 @@ document.querySelectorAll('.product-card').forEach(function(card) {
         var msg;
         if (t === 'forex') {
             msg = '✅ <strong>የፎሬክስ ትሬዲንግ ፈተና መርጠዋል!</strong><br><br>' +
-                  'ጥያቄዎቹ በአጠቃላይ <strong>' + total + '</strong> ሲሆኑ በአራት ምዕራፍ የተዘጋጁ ናቸው፦<br><br>' +
+                  'ጥያቄዎቹ በአጠቃላይ <strong>200</strong> ሲሆኑ በአራት ምዕራፍ የተዘጋጁ ናቸው፦<br><br>' +
                   '<strong>ደረጃ 1 — ጀማሪ (1–50)</strong><br>' +
                   '<small>Forex Foundations, Currency Pairs, Brokers, Trading Basics</small><br><br>' +
                   '<strong>ደረጃ 2 — መካከለኛ (51–100)</strong><br>' +
@@ -720,7 +720,7 @@ document.querySelectorAll('.product-card').forEach(function(card) {
                   'ፈተናውን ለመቀጠል ዝግጁ ነዎት? 💪';
         } else if (t === 'crypto') {
             msg = '✅ <strong>የክሪፕቶ ትሬዲንግ ፈተና መርጠዋል!</strong><br>' +
-                  total + ' ጥያቄዎች — ጀምር 💪';
+                  'ጥያቄዎቹ በአጠቃላይ <strong>200</strong> ሲሆኑ ቀጣይ ጥያቄዎች ይጨመራሉ። ጀምር 💪';
         } else {
             msg = '✅ ጥሩ! ' + total + ' ጥያቄዎች ፎሬክስ + ክሪፕቶ። ጀምር 💪';
         }
@@ -1254,9 +1254,17 @@ document.querySelectorAll('.product-card').forEach(function(card) {
 
         isOpen = !isOpen;
 
+        var fabIcon  = document.getElementById('tbBotFabIcon');
+        var fabLabel = document.getElementById('tbBotFabLabel');
+
         if (isOpen) {
             sidebar.classList.add('open');
             if (overlay) overlay.classList.add('open');
+            if (fabIcon)  fabIcon.textContent  = '✕';
+            if (fabLabel) fabLabel.textContent = 'ዝጋ';
+            if (fabLabel) fabLabel.style.background = 'rgba(255,80,80,0.15)';
+            if (fabLabel) fabLabel.style.borderColor = 'rgba(255,80,80,0.4)';
+            if (fabLabel) fabLabel.style.color = '#ff8080';
             // First open — show welcome
             if ($i('tbBotMessages').children.length === 0) {
                 setTimeout(function () {
@@ -1268,6 +1276,13 @@ document.querySelectorAll('.product-card').forEach(function(card) {
         } else {
             sidebar.classList.remove('open');
             if (overlay) overlay.classList.remove('open');
+            var fabIcon2  = document.getElementById('tbBotFabIcon');
+            var fabLabel2 = document.getElementById('tbBotFabLabel');
+            if (fabIcon2)  fabIcon2.textContent  = '🤖';
+            if (fabLabel2) fabLabel2.textContent = 'ቦቱን ያናግሩ';
+            if (fabLabel2) fabLabel2.style.background = '';
+            if (fabLabel2) fabLabel2.style.borderColor = '';
+            if (fabLabel2) fabLabel2.style.color = '';
         }
     };
 
