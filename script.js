@@ -1099,6 +1099,9 @@ document.querySelectorAll('.product-card').forEach(function(card) {
 })();
 
 
+// =========================
+
+
 // ===========================
 // TAG BRIDGE AI BOT (Gemini)
 // ===========================
@@ -1107,184 +1110,112 @@ document.querySelectorAll('.product-card').forEach(function(card) {
     var API_KEY = 'AIzaSyAb8RN6Lb7ff6nW2ks0BXwYaoibWFL_2Ru5qmMJc4GsfEUJdYjQ';
     var API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + API_KEY;
 
-    var SYSTEM_PROMPT = `አንተ የታግ ብሪጅ (Tag Bridge) ኦፊሽያል AI ረዳት ቦት ነህ። ስምህ "ታግ ብሪጅ ቦት" ነው።
+    var SYSTEM_PROMPT = 'አንተ የታግ ብሪጅ (Tag Bridge) ኦፊሽያል AI ረዳት ቦት ነህ። ስምህ "ታግ ብሪጅ ቦት" ነው።\n\nስለ ታግ ብሪጅ:\nታግ ብሪጅ ፎሬክስ እና ክሪፕቶ ትሬዲንግ PDF መጽሃፍት በአማርኛ ቋንቋ ያቀርባሉ።\n\nመጽሃፍቱ ዋጋዎች:\n- የፎሬክስ ትሬዲንግ = 350 ብር\n- የክሪፕቶ ትሬዲንግ = 400 ብር\n- ሁለቱም ጥቅል = 500 ብር\n\nለማዘዝ: Telegram @tagbridge123 ወይም WhatsApp +251991856292\nክፍያ: CBE Birr፣ Telebirr፣ Bank Transfer\nPDF ክፍያ ከተረጋገጠ ወደ Telegram/WhatsApp ይላካሉ።\n\nቻናሎች: t.me/tagbridge | TikTok: @tagbridge\n\nህግጋት:\n- ሁልጊዜ በአማርኛ ብቻ ምላሽ ስጥ\n- ጨዋና ሙያዊ ሁን\n- ትርፍ ዋስትና አትስጥ\n- አጭርና ግልጽ ምላሽ ስጥ';
 
-ስለ ታግ ብሪጅ የሚከተሉትን ማወቅ አለብህ፦
+    var history = [];
+    var isOpen  = false;
+    var busy    = false;
 
-═══ ስለ ታግ ብሪጅ ═══
-ታግ ብሪጅ ፎሬክስ እና ክሪፕቶ ትሬዲንግ PDF መጽሃፍት በአማርኛ ቋንቋ ያቀርባሉ።
-ዌብሳይት፦ https://www-tag-bridge.vercel.app
+    function $i(id) { return document.getElementById(id); }
 
-═══ መጽሃፍቱና ዋጋዎቻቸው ═══
-1. የፎሬክስ ትሬዲንግ መጽሃፍ = 350 ብር (PDF)
-2. የክሪፕቶ ትሬዲንግ መጽሃፍ = 400 ብር (PDF)
-3. ፎሬክስ + ክሪፕቶ ጥቅል = 500 ብር (ሁለቱም PDF)
-
-═══ እንዴት ማዘዝ ═══
-1. Telegram @tagbridge123 ላይ ያናግሩ
-2. ወይም WhatsApp +251991856292 ላይ
-3. ክፍያ ከደፈሉ በኋላ PDF ወደ Telegram ወይም WhatsApp ይላካሉ
-
-═══ የክፍያ ዘዴዎች ═══
-- CBE Birr (Commercial Bank of Ethiopia)
-- Telebirr
-- Bank Transfer
-
-═══ PDF ማግኘት ═══
-ክፍያ ከተረጋገጠ በኋላ ፒዲኤፍ መጽሃፉ ወደ WhatsApp ወይም Telegram ይላካሉ - ብዙ ጊዜ ለደቂቃዎች ውስጥ።
-
-═══ ቴሌግራም ቻናል ═══
-ዜናዎች፣ ቅናሾች እና የፎሬክስ/ክሪፕቶ ትምህርቶች፦ https://t.me/tagbridge
-TikTok፦ https://www.tiktok.com/@tagbridge
-WhatsApp Channel፦ https://whatsapp.com/channel/0029VbC9h9Z4o7qIBVOmFE1j
-
-═══ መጽሃፍቱ ይዘት (ፎሬክስ) ═══
-Forex Basics, Currency Pairs, Leverage, Margin, Technical Analysis, Candlestick Patterns, Support & Resistance, Market Structure, Smart Money Concept, Risk Management, Trading Psychology, Trading Plan, Demo Account, Practical Trading
-
-═══ መጽሃፍቱ ይዘት (ክሪፕቶ) ═══
-Crypto Fundamentals, Blockchain, Bitcoin, Altcoins, Spot Trading, Futures Trading, HODL, DeFi, Risk Management, Binance Account, P2P Trading
-
-═══ አስፈላጊ ደንቦች ═══
-- ሁልጊዜ በአማርኛ ቋንቋ ብቻ ምላሽ ስጥ
-- ጨዋና ሙያዊ ሁን
-- ስለ ፎሬክስ/ክሪፕቶ ጥያቄ ቢኖር ምላሽ ስጥ
-- ትርፍ ዋስትና አትስጥ — ትሬዲንግ ኪሳራ ሊኖር ይችላሉ ብለህ አስጠንቅቅ
-- ስለ ሌሎች ርዕሰ ጉዳዮች ቢጠይቅ ወደ ታግ ብሪጅ ዓላማ መልስ
-- አጭርና ግልጽ ምላሽ ስጥ`;
-
-    var chatHistory = [];
-    var isOpen = false;
-    var isTyping = false;
-
-    // ── DOM helpers ──
-    function $id(id) { return document.getElementById(id); }
-
-    function scrollMsgs() {
-        var m = $id('tbBotMessages');
+    function scroll() {
+        var m = $i('tbBotMessages');
         if (m) m.scrollTop = m.scrollHeight;
     }
 
-    // Add bot message
-    function addBotMsg(text) {
-        var msgs = $id('tbBotMessages');
+    function botBubble(text, id) {
+        var msgs = $i('tbBotMessages');
         if (!msgs) return;
-        var div = document.createElement('div');
-        div.className = 'tb-msg-bot';
-        div.innerHTML =
-            '<div class="tb-msg-bot-avatar">🤖</div>' +
-            '<div class="tb-msg-bot-bubble">' + text.replace(/\n/g, '<br>') + '</div>';
-        msgs.appendChild(div);
-        scrollMsgs();
+        var d = document.createElement('div');
+        d.className = 'tb-msg-bot';
+        if (id) d.id = id;
+        d.innerHTML = '<div class="tb-msg-bot-avatar">🤖</div>' +
+            '<div class="tb-msg-bot-bubble">' + text.replace(/\n/g,'<br>') + '</div>';
+        msgs.appendChild(d);
+        scroll();
     }
 
-    // Add user message
-    function addUserMsg(text) {
-        var msgs = $id('tbBotMessages');
+    function userBubble(text) {
+        var msgs = $i('tbBotMessages');
         if (!msgs) return;
-        var div = document.createElement('div');
-        div.className = 'tb-msg-user';
-        div.innerHTML = '<div class="tb-msg-user-bubble">' + text + '</div>';
-        msgs.appendChild(div);
-        scrollMsgs();
+        var d = document.createElement('div');
+        d.className = 'tb-msg-user';
+        d.innerHTML = '<div class="tb-msg-user-bubble">' + text + '</div>';
+        msgs.appendChild(d);
+        scroll();
     }
 
-    // Show typing indicator
-    function showTyping() {
-        var msgs = $id('tbBotMessages');
+    function showDots() {
+        var msgs = $i('tbBotMessages');
         if (!msgs) return;
-        var div = document.createElement('div');
-        div.className = 'tb-msg-bot';
-        div.id = 'tbTypingIndicator';
-        div.innerHTML =
-            '<div class="tb-msg-bot-avatar">🤖</div>' +
+        var d = document.createElement('div');
+        d.className = 'tb-msg-bot';
+        d.id = 'tbDots';
+        d.innerHTML = '<div class="tb-msg-bot-avatar">🤖</div>' +
             '<div class="tb-typing-dots"><span></span><span></span><span></span></div>';
-        msgs.appendChild(div);
-        scrollMsgs();
+        msgs.appendChild(d);
+        scroll();
     }
 
-    function hideTyping() {
-        var t = $id('tbTypingIndicator');
-        if (t) t.remove();
-    }
+    function hideDots() { var t = $i('tbDots'); if (t) t.remove(); }
 
-    // ── Toggle open/close ──
     window.toggleTbBot = function() {
-        var win = $id('tbBotWindow');
+        var win = $i('tbBotWindow');
         if (!win) return;
         isOpen = !isOpen;
-        if (isOpen) {
-            win.style.display = 'flex';
-            win.style.flexDirection = 'column';
-            // Show welcome if first open
-            var msgs = $id('tbBotMessages');
-            if (msgs && msgs.children.length === 0) {
-                setTimeout(function() {
-                    addBotMsg('ሰላም! 👋 እኔ የታግ ብሪጅ AI ቦት ነኝ።\n\nስለ መጽሃፍቶቻችን፣ ዋጋዎች፣ አዘዛ ሂደት ወይም ፎሬክስ/ክሪፕቶ ጥያቄ ካለዎት ይጠይቁ! 📚');
-                }, 200);
-            }
+        win.style.display = isOpen ? 'flex' : 'none';
+        if (isOpen && $i('tbBotMessages').children.length === 0) {
             setTimeout(function() {
-                var inp = $id('tbBotInput');
-                if (inp) inp.focus();
-            }, 300);
-        } else {
-            win.style.display = 'none';
+                botBubble('ሰላም! 👋 እኔ የታግ ብሪጅ AI ቦት ነኝ።\n\nስለ መጽሃፍቶቻችን፣ ዋጋዎች፣ አዘዛ ሂደት ወይም ፎሬክስ/ክሪፕቶ ጥያቄ ካለዎት ይጠይቁ! 📚');
+            }, 200);
         }
+        if (isOpen) setTimeout(function() { var i = $i('tbBotInput'); if(i) i.focus(); }, 300);
     };
 
-    // ── Send message ──
     window.sendTbMessage = function() {
-        var inp = $id('tbBotInput');
-        if (!inp || isTyping) return;
+        var inp = $i('tbBotInput');
+        if (!inp || busy) return;
         var text = inp.value.trim();
         if (!text) return;
         inp.value = '';
-        addUserMsg(text);
-        chatHistory.push({ role: 'user', parts: [{ text: text }] });
-        isTyping = true;
-        showTyping();
-        // Disable input
+        userBubble(text);
+        history.push({ role:'user', parts:[{ text:text }] });
+        busy = true;
         inp.disabled = true;
+        showDots();
 
-        // Build request
         var body = {
             system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
-            contents: chatHistory,
-            generationConfig: {
-                temperature:     0.7,
-                maxOutputTokens: 600,
-                topP:            0.9
-            }
+            contents: history,
+            generationConfig: { temperature:0.7, maxOutputTokens:500, topP:0.9 }
         };
 
         fetch(API_URL, {
-            method:  'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify(body)
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify(body)
         })
-        .then(function(r) { return r.json(); })
+        .then(function(r) {
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            return r.json();
+        })
         .then(function(data) {
-            hideTyping();
-            isTyping = false;
+            hideDots();
+            busy = false;
             inp.disabled = false;
             inp.focus();
             var reply = '';
-            if (data.candidates && data.candidates[0] &&
-                data.candidates[0].content &&
-                data.candidates[0].content.parts) {
-                reply = data.candidates[0].content.parts[0].text || '';
-            } else if (data.error) {
-                reply = 'ይቅርታ — አሁን ምላሽ መስጠት አልቻልኩም። ቆየት ብለው ይሞክሩ።';
-            }
-            if (reply) {
-                chatHistory.push({ role: 'model', parts: [{ text: reply }] });
-                addBotMsg(reply);
-            }
+            try { reply = data.candidates[0].content.parts[0].text; } catch(e) {}
+            if (!reply) reply = 'ይቅርታ — አሁን ምላሽ መስጠት አልቻልኩም። ቆየት ብለው ይሞክሩ።';
+            history.push({ role:'model', parts:[{ text:reply }] });
+            botBubble(reply);
         })
-        .catch(function() {
-            hideTyping();
-            isTyping = false;
+        .catch(function(err) {
+            hideDots();
+            busy = false;
             inp.disabled = false;
-            addBotMsg('ይቅርታ — ኔትወርክ ችግር አለ። ቆየት ብለው ይሞክሩ።');
+            inp.focus();
+            botBubble('ይቅርታ — ኔትወርክ ችግር አለ። ቆየት ብለው ይሞክሩ። (' + err.message + ')');
         });
     };
 
