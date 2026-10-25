@@ -664,7 +664,7 @@ document.querySelectorAll('.product-card').forEach(function(card) {
         botMsg('ሰላም! 👋 እኔ የታግ ብሪጅ ረዳት AI ቦት ነኝ።').then(function(){
             return botMsg('የወሰዱትን የፎሬክስ እና ክሪፕቶ ትሬዲንግ መጽሃፍ በደንብ አንብበው፣ በDemo Account ተለማምደው እንዳጠናቀቁ ተስፋ እናደርጋለን! 📚', '', 200);
         }).then(function(){
-            return botMsg('ፈተናውን ለመቀጠል — <strong>ስለ ፎሬክስ ትሬዲንግ ወይስ ክሪፕቶ ትሬዲንግ?</strong>', '', 300);
+            return botMsg('ፈተናውን ለመቀጠል — <strong>የፎሬክስ ትሬዲንግ ወይንም የክሪፕቶ ትሬዲንግ ይምረጡ፦</strong>', '', 300);
         }).then(function(){
             showTopicChoice();
         });
@@ -700,12 +700,30 @@ document.querySelectorAll('.product-card').forEach(function(card) {
         } else {
             questions = allQ[t].slice();
         }
-        score=0; wrongCount=0; currentQ=0; quizActive=true;
+        score=0; wrongCount=0; currentQ=0; quizActive=true; passwordPassed=false;
+        // crypto — password gate from very first question
+        GATE_AFTER_Q = (t === 'crypto' || t === 'both') ? 0 : 10;
         updateCounter();
         var total = questions.length;
-        var msg = t==='forex'  ? '✅ ጥሩ! ' + total + ' ጥያቄዎች ስለ ፎሬክስ ትሬዲንግ። ጀምር 💪' :
-                  t==='crypto' ? '✅ ጥሩ! ' + total + ' ጥያቄዎች ስለ ክሪፕቶ ትሬዲንግ። ጀምር 💪' :
-                                 '✅ ጥሩ! ' + total + ' ጥያቄዎች ፎሬክስ + ክሪፕቶ። ጀምር 💪';
+        var msg;
+        if (t === 'forex') {
+            msg = '✅ <strong>የፎሬክስ ትሬዲንግ ፈተና መርጠዋል!</strong><br><br>' +
+                  'ጥያቄዎቹ በአጠቃላይ <strong>' + total + '</strong> ሲሆኑ በአራት ምዕራፍ የተዘጋጁ ናቸው፦<br><br>' +
+                  '<strong>ደረጃ 1 — ጀማሪ (1–50)</strong><br>' +
+                  '<small>Forex Foundations, Currency Pairs, Brokers, Trading Basics</small><br><br>' +
+                  '<strong>ደረጃ 2 — መካከለኛ (51–100)</strong><br>' +
+                  '<small>Technical Analysis, Candlesticks, Market Structure</small><br><br>' +
+                  '<strong>ደረጃ 3 — ከፍተኛ (101–150)</strong><br>' +
+                  '<small>Fundamental Analysis, Strategies, Risk Management</small><br><br>' +
+                  '<strong>ደረጃ 4 — ፕሮፌሽናል (151–200)</strong><br>' +
+                  '<small>Trading Psychology, Advanced Analysis, የገበያ ውሳኔዎች</small><br><br>' +
+                  'ፈተናውን ለመቀጠል ዝግጁ ነዎት? 💪';
+        } else if (t === 'crypto') {
+            msg = '✅ <strong>የክሪፕቶ ትሬዲንግ ፈተና መርጠዋል!</strong><br>' +
+                  total + ' ጥያቄዎች — ጀምር 💪';
+        } else {
+            msg = '✅ ጥሩ! ' + total + ' ጥያቄዎች ፎሬክስ + ክሪፕቶ። ጀምር 💪';
+        }
         botMsg(msg, '', 200).then(function(){ askQuestion(0); });
     };
 
@@ -713,7 +731,7 @@ document.querySelectorAll('.product-card').forEach(function(card) {
     // ── PASSWORD GATE ──────────────────────────────────────────
     var QUIZ_PASSWORD   = 'ይህበታግ-ብሪጅየተዘጋጀመጽሃፍነው'.replace(/[\u200B-\u200D\uFEFF\u00A0]/g,'').replace(/\s+/g,'');
     var passwordPassed  = false;
-    var GATE_AFTER_Q    = 10; // ጥያቄ 10 ካለቀ gate ይታያሉ
+    var GATE_AFTER_Q    = 10; // default for forex — crypto overrides to 0
 
     function showPasswordGate(onSuccess) {
         clearOpts();
@@ -1417,9 +1435,7 @@ document.querySelectorAll('.product-card').forEach(function(card) {
         setTimeout(function () {
             botMsg(
                 '✅ ክፍያ ከተረጋገጠ በኋላ <strong>ፒዲኤፍ መጽሃፉ በደቂቃዎች ውስጥ</strong> ወደ WhatsApp ወይም Telegram ይላካሉ።<br><br>' +
-                '📲 ለማዘዝ፦<br>' +
-                '• Telegram: <strong>@tagbridge123</strong><br>' +
-                '• WhatsApp: <strong>+251991856292</strong>'
+                '📲 ለማዘዝ ወይም ለክፍያ ዝርዝር ያናግሩን — ምላሽ ለመስጠት ዝግጁ ነን!'
             );
             setTimeout(backToMenu, 400);
         }, 350);
