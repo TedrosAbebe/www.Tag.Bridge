@@ -3675,3 +3675,49 @@ html[lang="en"] .lang-en-only { display: inline-block; }
     flex-shrink: 0 !important;
     margin-left: auto;
 }
+
+/* ── Quiz header final fix ── */
+.quiz-box-header {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 10px 14px !important;
+    flex-wrap: nowrap !important;
+}
+.quiz-bot-pill { flex-shrink: 0; }
+.quiz-progress-wrap { flex: 1; min-width: 0; }
+.quiz-score-counter { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+
+/* Score counter colors */
+.qsc-correct { color: #38ef7d !important; font-weight: 800 !important; font-size: 0.78rem; }
+.qsc-wrong   { color: #ff5050 !important; font-weight: 800 !important; font-size: 0.78rem; }
+.qsc-total   { color: rgba(255,255,255,0.5) !important; font-size: 0.72rem; }
+.qsc-sep     { color: rgba(255,255,255,0.2) !important; font-size: 0.7rem; }
+
+/* Quiz exit X button — standalone, no overlap */
+.quiz-exit-btn {
+    flex-shrink: 0 !important;
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50% !important;
+    background: rgba(255,80,80,0.15) !important;
+    border: 1.5px solid rgba(255,80,80,0.5) !important;
+    color: #ff6060 !important;
+    font-size: 0.9rem !important;
+    font-weight: 800 !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s !important;
+    box-shadow: 0 2px 8px rgba(255,80,80,0.25) !important;
+}
+.quiz-exit-btn:hover {
+    background: rgba(255,80,80,0.3) !important;
+    transform: scale(1.1) !important;
+}
+
+/* Bot FAB close state */
+.tb-bot-fab-label {
+    transition: all 0.2s;
+}
