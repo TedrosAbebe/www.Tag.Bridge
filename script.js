@@ -159,23 +159,25 @@ document.querySelectorAll('.service-header').forEach(function(header) {
 const mobileMenuBtn = document.getElementById('mobileMenuBtn');
 const navLinks = document.getElementById('navLinks');
 
-mobileMenuBtn.addEventListener('click', function() {
-    navLinks.classList.toggle('active');
-    const icon = mobileMenuBtn.querySelector('i');
-    if (navLinks.classList.contains('active')) {
-        icon.classList.remove('fa-bars'); icon.classList.add('fa-times');
-    } else {
-        icon.classList.remove('fa-times'); icon.classList.add('fa-bars');
-    }
-});
-
-navLinks.querySelectorAll('a').forEach(function(link) {
-    link.addEventListener('click', function() {
-        navLinks.classList.remove('active');
+if (mobileMenuBtn && navLinks) {
+    mobileMenuBtn.addEventListener('click', function() {
+        navLinks.classList.toggle('active');
         const icon = mobileMenuBtn.querySelector('i');
-        icon.classList.remove('fa-times'); icon.classList.add('fa-bars');
+        if (navLinks.classList.contains('active')) {
+            icon.classList.remove('fa-bars'); icon.classList.add('fa-times');
+        } else {
+            icon.classList.remove('fa-times'); icon.classList.add('fa-bars');
+        }
     });
-});
+
+    navLinks.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+            navLinks.classList.remove('active');
+            const icon = mobileMenuBtn.querySelector('i');
+            icon.classList.remove('fa-times'); icon.classList.add('fa-bars');
+        });
+    });
+}
 
 // ===== LANGUAGE SWITCHER =====
 const langToggle = document.getElementById('langToggle');
@@ -200,9 +202,11 @@ const savedLang = localStorage.getItem('preferredLanguage') || 'am';
 langToggle.checked = (savedLang === 'en');
 switchLanguage(savedLang);
 
-langToggle.addEventListener('change', function(e) {
-    switchLanguage(e.target.checked ? 'en' : 'am');
-});
+if (langToggle) {
+    langToggle.addEventListener('change', function(e) {
+        switchLanguage(e.target.checked ? 'en' : 'am');
+    });
+}
 
 // ===== TELEGRAM REDIRECT =====
 function openTelegram(message) {
@@ -241,16 +245,19 @@ function openWhatsApp(message) {
 
 // ===== CONTACT SEND FUNCTIONS =====
 function sendQuickMessage() {
-    var message = document.getElementById('quickMessage').value;
+    var el = document.getElementById('quickMessage');
+    if (!el) return;
+    var message = el.value;
     if (message.trim() === '') { alert('እባክዎ መልእክትዎን ይጻፉ / Please write your message'); return; }
     openWhatsApp(message);
-    document.getElementById('quickMessage').value = '';
+    el.value = '';
 }
 
 function sendTelegramMessage() {
-    var message = document.getElementById('telegramMessage').value;
+    var el = document.getElementById('telegramMessage');
+    if (!el) return;
+    var message = el.value;
     if (message.trim() === '') { alert('እባክዎ መልእክትዎን ይጻፉ / Please write your message'); return; }
-    // Contact section — always use web URL (no cached pre-filled text issue)
     var encoded = encodeURIComponent(message);
     var ua = navigator.userAgent || '';
     var isRestricted = /TikTok|BytedanceWebview|musical_ly|Instagram|FBAN|FBAV|FBIOS/i.test(ua);
@@ -259,13 +266,15 @@ function sendTelegramMessage() {
     } else {
         window.open('https://t.me/tagbridge123?text=' + encoded, '_blank');
     }
-    document.getElementById('telegramMessage').value = '';
+    el.value = '';
 }
 
-document.getElementById('quickMessage').addEventListener('keypress', function(e) {
+var _qmEl = document.getElementById('quickMessage');
+if (_qmEl) _qmEl.addEventListener('keypress', function(e) {
     if (e.key === 'Enter') sendQuickMessage();
 });
-document.getElementById('telegramMessage').addEventListener('keypress', function(e) {
+var _tmEl = document.getElementById('telegramMessage');
+if (_tmEl) _tmEl.addEventListener('keypress', function(e) {
     if (e.key === 'Enter') sendTelegramMessage();
 });
 
