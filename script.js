@@ -1145,7 +1145,7 @@ document.querySelectorAll('.product-card').forEach(function(card) {
 
     // ── CONFIG ─────────────────────────────────────────────────
     var API_KEY = 'AIzaSyBS0214z1N7rZe2RWQ56AOKLvEYIIQyFJI';
-    var API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=' + API_KEY;
+    var API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + API_KEY;
     var SYS = 'አንተ የታግ ብሪጅ AI ቦት ነህ። ሁልጊዜ በአማርኛ ብቻ ምላሽ ስጥ። አጭርና ግልጽ ሁን። ትርፍ ዋስትና አትስጥ።\n' +
               'ፎሬክስ መጽሃፍ=350ብር | ክሪፕቶ መጽሃፍ=400ብር | ሁለቱም ጥቅል=500ብር\n' +
               'ክፍያ: CBE Birr, Telebirr, Bank Transfer\n' +
@@ -1539,7 +1539,7 @@ document.querySelectorAll('.product-card').forEach(function(card) {
             body: JSON.stringify({
                 system_instruction: { parts: [{ text: SYS }] },
                 contents:           history,
-                generationConfig:   { temperature: 0.7, maxOutputTokens: 450, topP: 0.9 }
+                generationConfig:   { temperature: 0.7, maxOutputTokens: 450 }
             })
         })
         .then(function (r) {
