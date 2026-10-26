@@ -1523,17 +1523,7 @@ document.querySelectorAll('.product-card').forEach(function(card) {
         if (!text) return;
         inp.value = '';
 
-        // Not in chat mode — redirect to menu
-        if (phase !== 'chat') {
-            userMsg(text);
-            setTimeout(function () {
-                botMsg('ከታች ካሉ ምናሌዎች ይምረጡ 👇');
-                setTimeout(showMenu, 300);
-            }, 200);
-            return;
-        }
-
-        // Chat mode — call Gemini
+        // Always send to Gemini — static menu buttons still work separately
         userMsg(text);
         history.push({ role: 'user', parts: [{ text: text }] });
         busy = true;
