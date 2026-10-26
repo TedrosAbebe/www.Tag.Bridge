@@ -1145,7 +1145,7 @@ document.querySelectorAll('.product-card').forEach(function(card) {
 
     // ── CONFIG ─────────────────────────────────────────────────
     var API_KEY = 'AIzaSyBS0214z1N7rZe2RWQ56AOKLvEYIIQyFJI';
-    var API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + API_KEY;
+    var API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + API_KEY;
     var SYS = 'አንተ የታግ ብሪጅ AI ቦት ነህ። ሁልጊዜ በአማርኛ ብቻ ምላሽ ስጥ። አጭርና ግልጽ ሁን። ትርፍ ዋስትና አትስጥ።\n' +
               'ፎሬክስ መጽሃፍ=350ብር | ክሪፕቶ መጽሃፍ=400ብር | ሁለቱም ጥቅል=500ብር\n' +
               'ክፍያ: CBE Birr, Telebirr, Bank Transfer\n' +
@@ -1567,9 +1567,10 @@ document.querySelectorAll('.product-card').forEach(function(card) {
             busy = false;
             inp.disabled = false;
             inp.focus();
+            console.error('Gemini error:', err.message);
             var msg = (err.message.indexOf('401') !== -1 || err.message.indexOf('403') !== -1)
                 ? 'ለዚህ ጥያቄ በቀጥታ ያናግሩን 📲<br>Telegram: <strong>@tagbridge123</strong>'
-                : 'ይቅርታ — ኔትወርክ ችግር። ቆየት ብለው ይሞክሩ።';
+                : 'ይቅርታ — ኔትወርክ ችግር (' + err.message + ')። ቆየት ብለው ይሞክሩ።';
             botMsg(msg);
             setTimeout(function () {
                 setOpts([
