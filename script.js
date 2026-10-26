@@ -1534,8 +1534,7 @@ document.querySelectorAll('.product-card').forEach(function(card) {
             method: 'POST',
             headers: {
                 'Content-Type':    'application/json',
-                'x-goog-api-key':  API_KEY
-            },
+                },
             body: JSON.stringify({
                 system_instruction: { parts: [{ text: SYS }] },
                 contents:           history,
