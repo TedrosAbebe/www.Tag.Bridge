@@ -1,205 +1,288 @@
-﻿<!DOCTYPE html>
-<html lang="am">
+<!DOCTYPE html>
+<html lang="am" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ታግ ብሪጅ - የፎሬክስ እና ክሪፕቶ ትሬዲንግ መጽሃፍት በአማርኛ | Tag Bridge - Forex & Crypto Trading Books in Amharic">
-    <meta name="keywords" content="forex trading amharic, crypto trading amharic, ፎሬክስ, ክሪፕቶ, የፎሬክስ መጽሃፍ, የክሪፕቶ መጽሃፍ">
-    <meta name="theme-color" content="#5b7de8">
-    <link rel="manifest" href="/manifest.json">
-    <meta property="og:title" content="ታግ ብሪጅ - Tag Bridge">
-    <meta property="og:description" content="የፎሬክስ እና ክሪፕቶ ትሬዲንግ መጽሃፍት በአማርኛ — 350 ብር እና 400 ብር">
+    <meta name="description" content="ታግ ብሪጅ — Professional Trading Ecosystem: Forex, Crypto, AI Assistant, Charts, Calculators & Trading Academy in Amharic">
+    <meta name="keywords" content="forex trading amharic, crypto trading amharic, ፎሬክስ, ክሪፕቶ, trading calculator, trading journal, SMC, ICT">
+    <meta name="theme-color" content="#0d1117">
+    <meta property="og:title" content="ታግ ብሪጅ — Tag Bridge Trading Ecosystem">
+    <meta property="og:description" content="Professional trading education, live charts, AI assistant & tools — all in Amharic">
     <meta property="og:url" content="https://www-tag-bridge.vercel.app/">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
-    <title>ታግ ብሪጅ - Tag Bridge</title>
+    <link rel="manifest" href="/manifest.json">
+    <title>ታግ ብሪጅ | Tag Bridge — Trading Ecosystem</title>
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Main CSS -->
     <link rel="stylesheet" href="/styles.css">
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap"></noscript>
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+    <link rel="stylesheet" href="/dashboard.css">
 </head>
 <body>
 
-
-
-    <header>
-        <!-- Force Update Banner -->
-        <div id="updateBanner" style="display:none; position:fixed; bottom:0; left:0; right:0; background:linear-gradient(135deg,#f59e0b,#d97706); color:white; padding:14px 20px; z-index:99998; align-items:center; justify-content:space-between; gap:12px; box-shadow:0 -4px 20px rgba(0,0,0,0.3);">
-            <div style="display:flex; align-items:center; gap:10px;">
-                <span style="font-size:1.4rem;">🔄</span>
-                <div>
-                    <div style="font-weight:800; font-size:0.95rem;">New Update Available!</div>
-                    <div style="font-size:0.75rem; opacity:0.9;">Tap to get the latest version</div>
-                </div>
+    <!-- ===== FORCE UPDATE BANNER ===== -->
+    <div id="updateBanner" style="display:none; position:fixed; bottom:0; left:0; right:0; background:linear-gradient(135deg,#f59e0b,#d97706); color:white; padding:14px 20px; z-index:99998; align-items:center; justify-content:space-between; gap:12px; box-shadow:0 -4px 20px rgba(0,0,0,0.3);">
+        <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:1.4rem;">🔄</span>
+            <div>
+                <div style="font-weight:800; font-size:0.95rem;">New Update Available!</div>
+                <div style="font-size:0.75rem; opacity:0.9;">Tap to get the latest version</div>
             </div>
-            <button id="updateNowBtn" style="background:white; color:#d97706; border:none; padding:8px 18px; border-radius:50px; font-weight:800; font-size:0.85rem; cursor:pointer; flex-shrink:0;">Update Now</button>
         </div>
-        <div id="browserBanner" style="display:block; background:#ff6600; color:white; text-align:center; padding:10px 16px; font-size:0.82rem; font-weight:700; position:fixed; top:0; left:0; right:0; z-index:9999; line-height:1.5;">
-            ☝️ ለማዘዝ፦ ከላይ <strong>••• → Open in browser</strong> ይጫኑ
-            <button onclick="document.getElementById('browserBanner').style.display='none'" style="background:none;border:none;color:white;font-size:1.1rem;margin-left:10px;cursor:pointer;vertical-align:middle;">✕</button>
-        </div>
-        <!-- Hide banner immediately if NOT in TikTok/Instagram browser -->
-        <script>
-            (function() {
-                var ua = navigator.userAgent || '';
-                var isRestricted = /TikTok|BytedanceWebview|musical_ly|Instagram|FBAN|FBAV/i.test(ua);
-                if (!isRestricted) {
-                    document.getElementById('browserBanner').style.display = 'none';
-                } else {
-                    var nav = document.getElementById('mainNav');
-                    if (nav) nav.style.top = '40px';
-                }
-            })();
-        </script>
-        <nav class="navbar" id="mainNav">            <div class="container">                <div class="logo">
-                    <img src="/logo.png.png" alt="Tag Bridge" style="width:38px; height:38px; object-fit:contain; border-radius:50%; background:white; padding:2px; box-shadow:0 2px 8px rgba(0,0,0,0.2);">
-                    <span data-en="<span class='logo-tag'>Tag</span> <span class='logo-bridge'>Bridge</span>" data-am="<span class='logo-tag'>ታግ</span> <span class='logo-bridge'>ብሪጅ</span>"><span class="logo-tag">ታግ</span> <span class="logo-bridge">ብሪጅ</span></span>
+        <button id="updateNowBtn" style="background:white; color:#d97706; border:none; padding:8px 18px; border-radius:50px; font-weight:800; font-size:0.85rem; cursor:pointer;">Update Now</button>
+    </div>
+
+    <!-- ===== TIKTOK/INSTAGRAM BROWSER BANNER ===== -->
+    <div id="browserBanner" style="display:block; background:#ff6600; color:white; text-align:center; padding:10px 16px; font-size:0.82rem; font-weight:700; position:fixed; top:0; left:0; right:0; z-index:9999; line-height:1.5;">
+        ☝️ ለማዘዝ፦ ከላይ <strong>••• → Open in browser</strong> ይጫኑ
+        <button onclick="document.getElementById('browserBanner').style.display='none'" style="background:none;border:none;color:white;font-size:1.1rem;margin-left:10px;cursor:pointer;vertical-align:middle;">✕</button>
+    </div>
+    <script>
+        (function() {
+            var ua = navigator.userAgent || '';
+            var isRestricted = /TikTok|BytedanceWebview|musical_ly|Instagram|FBAN|FBAV/i.test(ua);
+            if (!isRestricted) document.getElementById('browserBanner').style.display = 'none';
+        })();
+    </script>
+
+    <!-- ===== MAIN NAV ===== -->
+    <nav class="navbar" id="mainNav">
+        <div class="nav-container">
+            <a href="#home" class="nav-logo">
+                <div class="logo-icon">
+                    <img src="/logo.png.png" alt="Tag Bridge" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    <span style="display:none; align-items:center; justify-content:center; width:100%; height:100%; font-size:1.2rem; font-weight:900; color:#fff;">TB</span>
                 </div>
-                <div class="nav-right">
-                    <button class="mobile-menu-btn" id="mobileMenuBtn">
-                        <i class="fas fa-bars"></i>
+                <div class="logo-text">
+                    <span class="logo-tag">Tag</span><span class="logo-bridge">Bridge</span>
+                </div>
+            </a>
+
+            <div class="nav-links-wrap" id="navLinksWrap">
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#home" class="nav-link active" onclick="setActiveNav(this)"><i class="fas fa-home"></i> <span data-am="መነሻ" data-en="Home">መነሻ</span></a></li>
+                    <li><a href="#dashboard" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-chart-pie"></i> <span data-am="ዳሽቦርድ" data-en="Dashboard">ዳሽቦርድ</span></a></li>
+                    <li><a href="#charts" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-chart-candlestick"></i> <span data-am="ቻርቶች" data-en="Charts">ቻርቶች</span></a></li>
+                    <li><a href="#academy" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-graduation-cap"></i> <span data-am="አካዳሚ" data-en="Academy">አካዳሚ</span></a></li>
+                    <li><a href="#calculators" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-calculator"></i> <span data-am="ካልኩሌተሮች" data-en="Calculators">ካልኩሌተሮች</span></a></li>
+                    <li><a href="#journal" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-book-open"></i> <span data-am="ጆርናል" data-en="Journal">ጆርናል</span></a></li>
+                    <li><a href="#products" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-shopping-cart"></i> <span data-am="መጽሃፍት" data-en="Books">መጽሃፍት</span></a></li>
+                    <li><a href="#contact" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-envelope"></i> <span data-am="አግኙን" data-en="Contact">አግኙን</span></a></li>
+                </ul>
+            </div>
+
+            <div class="nav-actions">
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" id="themeToggle" title="Toggle theme" onclick="toggleTheme()">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                </button>
+                <!-- Lang Toggle -->
+                <div class="lang-toggle-wrap">
+                    <button class="lang-btn" id="langBtn" onclick="toggleLang()">
+                        <span id="langLabel">አማ</span>
+                        <i class="fas fa-globe"></i>
                     </button>
-                    <ul class="nav-links" id="navLinks">
-                        <li><a href="#home" data-en="Home" data-am="መነሻ">መነሻ</a></li>
-                        <li><a href="#products" data-en="Books" data-am="መጽሃፍቶች">መጽሃፍቶች</a></li>
-                        <li><a href="#services" data-en="Contents" data-am="ይዘቶች">ይዘቶች</a></li>
-                        <li><a href="#contact" data-en="Contact" data-am="አግኙን">አግኙን</a></li>
-                        <li class="nav-resources-li">
-                            <a href="#" class="nav-resources-toggle" data-en="Resources" data-am="ሪሶርሶች">ሪሶርሶች <i class="fas fa-chevron-down" style="font-size:0.65rem; margin-left:3px;"></i></a>
-                            <div class="nav-resources-dropdown">
-                                <a href="/read.html#brokers" class="nav-res-item">
-                                    <i class="fas fa-building"></i> Brokers & Exchanges
-                                </a>
-                                <a href="/read.html#analysis" class="nav-res-item">
-                                    <i class="fas fa-chart-line"></i> Analysis Tools
-                                </a>
-                                <a href="/read.html#backtesting" class="nav-res-item">
-                                    <i class="fas fa-history"></i> Backtesting
-                                </a>
-                                <a href="/read.html#education" class="nav-res-item">
-                                    <i class="fas fa-graduation-cap"></i> Education
-                                </a>
-                                <a href="/read.html#tools" class="nav-res-item">
-                                    <i class="fas fa-tools"></i> Trading Tools
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                    <div class="lang-switch">
-                        <input type="checkbox" id="langToggle" class="lang-toggle-checkbox">
-                        <label for="langToggle" class="lang-toggle-label">
-                            <span class="lang-option" data-lang="am">አማ</span>
-                            <span class="lang-option" data-lang="en">EN</span>
-                            <span class="lang-slider"></span>
-                        </label>
-                    </div>
-                    <!-- Dark/Light Mode Toggle -->
-                    
                 </div>
+                <!-- Mobile Menu -->
+                <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleMobileMenu()">
+                    <span></span><span></span><span></span>
+                </button>
             </div>
-        </nav>
-        <!-- Fix TikTok browser nav offset — runs after nav is in DOM -->
-        <script>
-            (function() {
-                var ua = navigator.userAgent || '';
-                var isRestricted = /TikTok|BytedanceWebview|musical_ly|Instagram|FBAN|FBAV|FBIOS/i.test(ua);
-                if (isRestricted) {
-                    var nav = document.getElementById('mainNav');
-                    if (nav) nav.style.top = '40px';
-                }
-            })();
-        </script>
-    </header>
+        </div>
+    </nav>
 
-    <!-- Scroll Progress Bar -->
-    <div id="scrollProgress"></div>
+    <!-- ===== SCROLL PROGRESS ===== -->
+    <div id="scrollProgress" class="scroll-progress"></div>
 
-    <!-- Back to Top Button -->
-    <button id="backToTop" title="Back to top">
-        <i class="fas fa-chevron-up"></i>
-    </button>
-    <!-- White separator band -->
-    <div style="height: 8px; background: white; margin-top: 70px; position: relative; z-index: 1;"></div>
-
-    <!-- LIVE MARKET TICKER -->
-    <div class="market-ticker">
-        <div class="ticker-label"><i class="fas fa-chart-bar"></i> LIVE</div>
-        <div class="ticker-scroll-wrap">
-            <div class="ticker-scroll" id="tickerScroll">
-                <span class="ticker-item" id="tick-btc"><i class="fab fa-bitcoin"></i> BTC/USD <span class="tick-price">...</span> <span class="tick-change">...</span></span>
-                <span class="ticker-dot">●</span>
-                <span class="ticker-item" id="tick-eth"><i class="fab fa-ethereum"></i> ETH/USD <span class="tick-price">...</span> <span class="tick-change">...</span></span>
-                <span class="ticker-dot">●</span>
-                <span class="ticker-item" id="tick-bnb"><i class="fas fa-certificate"></i> BNB/USD <span class="tick-price">...</span> <span class="tick-change">...</span></span>
-                <span class="ticker-dot">●</span>
-                <span class="ticker-item" id="tick-eur"><i class="fas fa-euro-sign"></i> EUR/USD <span class="tick-price">...</span> <span class="tick-change">...</span></span>
-                <span class="ticker-dot">●</span>
-                <span class="ticker-item" id="tick-gold"><i class="fas fa-coins"></i> XAU/USD <span class="tick-price">...</span> <span class="tick-change">...</span></span>
+    <!-- ===== LIVE TICKER ===== -->
+    <div class="market-ticker" id="marketTicker">
+        <div class="ticker-label"><span class="live-dot"></span> LIVE</div>
+        <div class="ticker-track">
+            <div class="ticker-items" id="tickerItems">
+                <span class="tick" id="tick-btc"><i class="fab fa-bitcoin"></i> BTC/USD <b class="tick-price">--</b> <em class="tick-chg">--</em></span>
+                <span class="tick-sep">◆</span>
+                <span class="tick" id="tick-eth"><i class="fab fa-ethereum"></i> ETH/USD <b class="tick-price">--</b> <em class="tick-chg">--</em></span>
+                <span class="tick-sep">◆</span>
+                <span class="tick" id="tick-bnb"><i class="fas fa-certificate"></i> BNB/USD <b class="tick-price">--</b> <em class="tick-chg">--</em></span>
+                <span class="tick-sep">◆</span>
+                <span class="tick" id="tick-sol"><i class="fas fa-sun"></i> SOL/USD <b class="tick-price">--</b> <em class="tick-chg">--</em></span>
+                <span class="tick-sep">◆</span>
+                <span class="tick" id="tick-eur"><i class="fas fa-euro-sign"></i> EUR/USD <b class="tick-price">--</b> <em class="tick-chg">--</em></span>
+                <span class="tick-sep">◆</span>
+                <span class="tick" id="tick-gold"><i class="fas fa-coins"></i> XAU/USD <b class="tick-price">--</b> <em class="tick-chg">--</em></span>
+                <span class="tick-sep">◆</span>
+                <span class="tick" id="tick-xrp"><i class="fas fa-water"></i> XRP/USD <b class="tick-price">--</b> <em class="tick-chg">--</em></span>
+                <span class="tick-sep">◆</span>
+                <span class="tick" id="tick-gbp"><i class="fas fa-sterling-sign"></i> GBP/USD <b class="tick-price">--</b> <em class="tick-chg">--</em></span>
             </div>
         </div>
     </div>
 
-    <!-- HERO -->
+    <!-- ===== HERO ===== -->
     <section id="home" class="hero">
-        <div class="container">
-            <h1 class="animated-text" data-en="Welcome to Tag Bridge" data-am="እንኳን ወደ ታግ ብሪጅ በደህና መጡ">እንኳን ወደ ታግ ብሪጅ በደህና መጡ</h1>
-            <p data-en="We provide professional content focused on digital applications, cryptocurrency, Forex trading, AI and online business" data-am="በዲጂታል መተግበሪያዎች፤ክሪፕቶ ከረንሲ ፣ፎሬክስ ትሬዲንግ፤AI እና የኦንላይን ቢዝነስ ላይ ያተኮሩ ሙያዊ ይዘቶችን እናቀርባለን፡፡">በዲጂታል መተግበሪያዎች፤ክሪፕቶ ከረንሲ ፣ፎሬክስ ትሬዲንግ፤AI እና የኦንላይን ቢዝነስ ላይ ያተኮሩ ሙያዊ ይዘቶችን እናቀርባለን፡፡</p>
-            <div class="social-links">
-                <h2 data-en="Follow Us on Social Media" data-am="በማህበራዊ ሚዲያዎቻችን ይከታተሉን">በማህበራዊ ሚዲያዎቻችን ይከታተሉን</h2>
-                <div class="social-icons">
-                    <div class="social-row">
-                        <a href="https://t.me/tagbridge" target="_blank" class="social-btn telegram">
-                            <i class="fab fa-telegram"></i>
-                            <span data-en="Join Our Telegram Channel" data-am="የቴሌግራም ቻናላችን ይቀላቀሉ">የቴሌግራም ቻናላችን ይቀላቀሉ</span>
-                        </a>
-                        <a href="https://www.tiktok.com/@tagbridge" target="_blank" rel="noopener noreferrer" onclick="window.open('https://www.tiktok.com/@tagbridge','_blank','noopener,noreferrer'); return false;" class="social-btn tiktok">
-                            <i class="fab fa-tiktok"></i>
-                            <span>TikTok</span>
-                        </a>
-                        <a href="https://whatsapp.com/channel/0029VbC9h9Z4o7qIBVOmFE1j" target="_blank" rel="noopener noreferrer" class="social-btn whatsapp-channel">
-                            <i class="fab fa-whatsapp"></i>
-                            <span data-en="WhatsApp Channel" data-am="ዋትስአፕ ቻናል">ዋትስአፕ ቻናል</span>
-                        </a>
-                    </div>
+        <div class="hero-particles" id="heroParticles"></div>
+        <div class="hero-grid-overlay"></div>
+        <div class="container hero-content">
+            <div class="hero-badge">
+                <span class="hero-badge-dot"></span>
+                <span data-am="ፕሮፌሽናል ትሬዲንግ ኢኮሲስተም" data-en="Professional Trading Ecosystem">ፕሮፌሽናል ትሬዲንግ ኢኮሲስተም</span>
+            </div>
+            <h1 class="hero-title">
+                <span class="gradient-text" data-am="ታግ ብሪጅ" data-en="Tag Bridge">ታግ ብሪጅ</span>
+                <br>
+                <span class="hero-subtitle-text" data-am="Trading Ecosystem" data-en="Trading Ecosystem">Trading Ecosystem</span>
+            </h1>
+            <p class="hero-desc" data-am="AI-powered የፎሬክስ፣ ክሪፕቶ እና ፋይናንሺያል ትሬዲንግ ትምህርት፣ ቻርቶች፣ ካልኩሌተሮች እና ጆርናል — በአማርኛ" data-en="AI-powered Forex, Crypto & Financial trading education, live charts, calculators & journal — in Amharic">AI-powered የፎሬክስ፣ ክሪፕቶ እና ፋይናንሺያል ትሬዲንግ ትምህርት፣ ቻርቶች፣ ካልኩሌተሮች እና ጆርናል — በአማርኛ</p>
+            <div class="hero-ctas">
+                <a href="#dashboard" class="btn-primary">
+                    <i class="fas fa-chart-pie"></i>
+                    <span data-am="ዳሽቦርዱን ክፈት" data-en="Open Dashboard">ዳሽቦርዱን ክፈት</span>
+                </a>
+                <a href="#academy" class="btn-secondary">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span data-am="ትምህርቱን ጀምር" data-en="Start Learning">ትምህርቱን ጀምር</span>
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="stat-num">9+</div>
+                    <div class="stat-label" data-am="ካልኩሌተሮች" data-en="Calculators">ካልኩሌተሮች</div>
+                </div>
+                <div class="hero-stat-divider"></div>
+                <div class="hero-stat">
+                    <div class="stat-num">50+</div>
+                    <div class="stat-label" data-am="የትምህርት ርዕሶች" data-en="Learning Topics">የትምህርት ርዕሶች</div>
+                </div>
+                <div class="hero-stat-divider"></div>
+                <div class="hero-stat">
+                    <div class="stat-num">AI</div>
+                    <div class="stat-label" data-am="አስተማሪ" data-en="Powered">Powered</div>
+                </div>
+                <div class="hero-stat-divider"></div>
+                <div class="hero-stat">
+                    <div class="stat-num">24/7</div>
+                    <div class="stat-label" data-am="ቻርቶች" data-en="Live Charts">Live Charts</div>
                 </div>
             </div>
         </div>
+        <div class="hero-scroll-hint">
+            <span data-am="ወደ ታች ሸብልሉ" data-en="Scroll down">Scroll down</span>
+            <i class="fas fa-chevron-down"></i>
+        </div>
     </section>
 
-    <!-- LIVE CHART -->
-    <section class="live-chart-section">
+    <!-- ===== MARKET DASHBOARD ===== -->
+    <section id="dashboard" class="section dashboard-section">
         <div class="container">
-            <div class="chart-header">
-                <div class="chart-title-wrap">
-                    <span class="chart-live-dot"></span>
-                    <span class="chart-title">Live Market Charts</span>
+            <div class="section-header">
+                <h2 class="section-title"><span class="live-dot"></span> <span data-am="የገበያ ዳሽቦርድ" data-en="Market Dashboard">የገበያ ዳሽቦርድ</span></h2>
+                <p class="section-sub" data-am="Real-time የክሪፕቶ፣ ፎሬክስ እና ወርቅ ዋጋ — CoinGecko API" data-en="Real-time Crypto, Forex & Gold prices via CoinGecko API">Real-time prices via CoinGecko API</p>
+            </div>
+
+            <!-- Market Cards -->
+            <div class="market-cards-grid" id="marketCardsGrid">
+                <div class="market-card loading" id="mc-btc">
+                    <div class="mc-icon"><i class="fab fa-bitcoin"></i></div>
+                    <div class="mc-info"><div class="mc-name">Bitcoin</div><div class="mc-sym">BTC/USD</div></div>
+                    <div class="mc-right"><div class="mc-price">--</div><div class="mc-change">--</div></div>
+                    <div class="mc-sparkline"><canvas id="sp-btc" width="80" height="30"></canvas></div>
                 </div>
-                <div class="chart-tabs" id="chartTabs">
-                    <button class="chart-tab active" onclick="switchChart('BTCUSDT','BTC/USDT',this)"><i class="fab fa-bitcoin"></i> BTC</button>
-                    <button class="chart-tab" onclick="switchChart('ETHUSDT','ETH/USDT',this)"><i class="fab fa-ethereum"></i> ETH</button>
-                    <button class="chart-tab" onclick="switchChart('BNBUSDT','BNB/USDT',this)"><i class="fas fa-certificate"></i> BNB</button>
-                    <button class="chart-tab" onclick="switchChart('SOLUSDT','SOL/USDT',this)"><i class="fas fa-sun"></i> SOL</button>
-                    <button class="chart-tab" onclick="switchChart('EURUSD','EUR/USD',this)"><i class="fas fa-euro-sign"></i> EUR</button>
-                    <button class="chart-tab" onclick="switchChart('XAUUSD','XAU/USD',this)"><i class="fas fa-coins"></i> GOLD</button>
+                <div class="market-card loading" id="mc-eth">
+                    <div class="mc-icon eth"><i class="fab fa-ethereum"></i></div>
+                    <div class="mc-info"><div class="mc-name">Ethereum</div><div class="mc-sym">ETH/USD</div></div>
+                    <div class="mc-right"><div class="mc-price">--</div><div class="mc-change">--</div></div>
+                    <div class="mc-sparkline"><canvas id="sp-eth" width="80" height="30"></canvas></div>
+                </div>
+                <div class="market-card loading" id="mc-bnb">
+                    <div class="mc-icon bnb"><i class="fas fa-certificate"></i></div>
+                    <div class="mc-info"><div class="mc-name">BNB</div><div class="mc-sym">BNB/USD</div></div>
+                    <div class="mc-right"><div class="mc-price">--</div><div class="mc-change">--</div></div>
+                    <div class="mc-sparkline"><canvas id="sp-bnb" width="80" height="30"></canvas></div>
+                </div>
+                <div class="market-card loading" id="mc-sol">
+                    <div class="mc-icon sol"><i class="fas fa-sun"></i></div>
+                    <div class="mc-info"><div class="mc-name">Solana</div><div class="mc-sym">SOL/USD</div></div>
+                    <div class="mc-right"><div class="mc-price">--</div><div class="mc-change">--</div></div>
+                    <div class="mc-sparkline"><canvas id="sp-sol" width="80" height="30"></canvas></div>
+                </div>
+                <div class="market-card loading" id="mc-xrp">
+                    <div class="mc-icon xrp"><i class="fas fa-water"></i></div>
+                    <div class="mc-info"><div class="mc-name">XRP</div><div class="mc-sym">XRP/USD</div></div>
+                    <div class="mc-right"><div class="mc-price">--</div><div class="mc-change">--</div></div>
+                    <div class="mc-sparkline"><canvas id="sp-xrp" width="80" height="30"></canvas></div>
+                </div>
+                <div class="market-card loading" id="mc-gold">
+                    <div class="mc-icon gold"><i class="fas fa-coins"></i></div>
+                    <div class="mc-info"><div class="mc-name">Gold</div><div class="mc-sym">XAU/USD</div></div>
+                    <div class="mc-right"><div class="mc-price">--</div><div class="mc-change">--</div></div>
+                    <div class="mc-sparkline"><canvas id="sp-gold" width="80" height="30"></canvas></div>
                 </div>
             </div>
-            <div class="chart-pair-label" id="chartPairLabel">BTC/USDT</div>
-            <div class="chart-widget-wrap" id="chartWidgetWrap">
-                <div id="tvChartContainer"></div>
+
+            <!-- Crypto Top Movers -->
+            <div class="dashboard-row">
+                <div class="dash-panel">
+                    <div class="dash-panel-header">
+                        <h3><i class="fas fa-rocket"></i> <span data-am="ምርጥ አሻጋሪዎች" data-en="Top Movers">Top Movers</span></h3>
+                        <span class="panel-badge green" data-am="ዛሬ" data-en="Today">ዛሬ</span>
+                    </div>
+                    <div class="movers-list" id="moversList">
+                        <div class="mover-skeleton"></div>
+                        <div class="mover-skeleton"></div>
+                        <div class="mover-skeleton"></div>
+                        <div class="mover-skeleton"></div>
+                        <div class="mover-skeleton"></div>
+                    </div>
+                </div>
+                <div class="dash-panel">
+                    <div class="dash-panel-header">
+                        <h3><i class="fas fa-fire"></i> <span data-am="ምርጥ ዋጋ" data-en="Market Cap Top 5">Market Cap Top 5</span></h3>
+                        <span class="panel-badge blue">CoinGecko</span>
+                    </div>
+                    <div class="movers-list" id="marketCapList">
+                        <div class="mover-skeleton"></div>
+                        <div class="mover-skeleton"></div>
+                        <div class="mover-skeleton"></div>
+                        <div class="mover-skeleton"></div>
+                        <div class="mover-skeleton"></div>
+                    </div>
+                </div>
+                <!-- Fear & Greed -->
+                <div class="dash-panel">
+                    <div class="dash-panel-header">
+                        <h3><i class="fas fa-gauge-high"></i> <span data-am="Fear & Greed Index" data-en="Fear & Greed Index">Fear &amp; Greed Index</span></h3>
+                        <span class="panel-badge" id="fgiBadge">--</span>
+                    </div>
+                    <div class="fgi-wrap" id="fgiWrap">
+                        <div class="fgi-gauge-wrap">
+                            <canvas id="fgiGauge" width="200" height="110"></canvas>
+                            <div class="fgi-value" id="fgiValue">--</div>
+                            <div class="fgi-label" id="fgiLabel">Loading...</div>
+                        </div>
+                        <div class="fgi-info">
+                            <p data-am="ዝቅ ሲሆን ፍርሃት ነው — ሊ አጋጣሚ ሊሆን ይችላል" data-en="Low = Fear = Potential buying opportunity">Low = Fear = Buy opportunity</p>
+                            <p data-am="ከፍ ሲሆን ስስት ነው — ጥንቃቄ ያስፈልጋል" data-en="High = Greed = Caution advised">High = Greed = Caution</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <!-- MARKET OVERVIEW -->
-            <div class="market-overview-wrap">
-                <button class="market-overview-toggle" onclick="toggleMarketOverview(this)">
-                    <span class="chart-live-dot"></span>
-                    <span>Market Overview — አሁናዊ የገበያ ሁኔታ</span>
-                    <i class="fas fa-chevron-down market-ov-chevron"></i>
-                </button>
-                <div class="market-overview-body" id="marketOverviewBody" style="display:none;">
-                    <div class="tradingview-widget-container" id="tvOverviewContainer">
+
+            <!-- TradingView Market Overview -->
+            <div class="tv-market-overview-wrap">
+                <div class="dash-panel-header">
+                    <h3><i class="fas fa-globe"></i> <span data-am="አሁናዊ የማርኬት ሁኔታ" data-en="Global Market Overview">Global Market Overview</span></h3>
+                    <button class="collapse-btn" onclick="togglePanel('tvOverviewPanel', this)"><i class="fas fa-chevron-down"></i></button>
+                </div>
+                <div id="tvOverviewPanel">
+                    <div class="tradingview-widget-container" id="tvMarketOverview">
                         <div class="tradingview-widget-container__widget"></div>
                     </div>
                 </div>
@@ -207,172 +290,435 @@
         </div>
     </section>
 
-    <!-- PRODUCTS -->
-    <section id="products" class="products">
+    <!-- ===== LIVE CHARTS ===== -->
+    <section id="charts" class="section charts-section">
         <div class="container">
-            <h2 data-en="Our Books" data-am="መጽሃፍቶች">መጽሃፍቶች</h2>
-            <p class="products-subtitle" data-en="To truly learn Forex and Crypto trading, you need to know and deeply understand the real secrets of the market — not social media myths. By reading and practicing this book, and doing your own research, you can make confident decisions in the market. To get the book they call &quot;My Starting Point&quot;, choose from the options below — Forex, Crypto, or both as a bundle — and order your preferred one." data-am="የፎሬክስ እና የክሪፕቶ ትሬዲንግን በጥልቀት ለመማር የሶሻል ሚዲያ ተረቶችን ሳይሆን እውነተኛውን የማርኬቱን ምስጢር ማወቅ እና በጥልቀት መረዳት ያስፈልጋል። ይህንን መጽሐፍ በማንበብ እና በመለማመድ፣ በሌሎች ግምት ሳይሆን በራስዎ ምርምር በማድረግ እና በማርኬት ውስጥ በራስ መተማመን መወሰን ይችላሉ። &quot;መነሻዬ&quot; ብለው የሚጠሩትን መጽሃፍ ለመውሰድ ከታች ካሉት አማራጮች — የፎሬክስ፣ የክሪፕቶ እና ሁለቱንም በአንድ ጥቅል — የመረጡትን ይዘዙ።">????? ?? ????? ?????? ????? ???? ???? ??? ????? ???? ??????? ?????? ???? ??? ?? ????? ???? ??????? ???? ???? ????? ?? ??????? ???? ??? ???? ???? ???? ????? ????? ??? ??? ????? ???? ????? ??? ??? &quot;????&quot; ??? ????? ???? ????? ??? ??? ????? &quot;????? ? ????? ?? ????? ???? ???&quot; ?????? ????</p>
-            <div class="products-grid">
-                <!-- Forex -->
-                <div class="product-card">
-                    <span class="ebook-badge lang-en-only">E-Book</span>
-                    <div class="product-image forex-img">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3 data-en="Forex Trading in Amharic" data-am="የፎሬክስ ትሬዲንግ በአማርኛ">የፎሬክስ ትሬዲንግ በአማርኛ</h3>
-                    <p data-en="Complete Forex trading guide fully prepared in Amharic" data-am="ሙሉ በሙሉ በአማርኛ የተዘጋጀ የፎሬክስ ትሬዲንግ መጽሃፍ">ሙሉ በሙሉ በአማርኛ የተዘጋጀ የፎሬክስ ትሬዲንግ መጽሃፍ</p>
-                    <div class="price" data-en="350 Birr" data-am="350 ብር">350 ብር</div>
-                    <button class="btn-buy" data-book="forex" data-en="Order Now" data-am="አሁኑኑ ይዘዙ">አሁኑኑ ይዘዙ</button>
+            <div class="section-header">
+                <h2 class="section-title"><i class="fas fa-chart-candlestick"></i> <span data-am="ቀጥታ ቻርቶች" data-en="Live Charts">ቀጥታ ቻርቶች</span></h2>
+                <p class="section-sub" data-am="TradingView የሚያቀርበው Interactive Charts" data-en="Interactive charts powered by TradingView">Interactive charts by TradingView</p>
+            </div>
+            <div class="chart-controls">
+                <div class="chart-tabs" id="chartTabs">
+                    <button class="chart-tab active" data-sym="BTCUSDT" data-label="BTC/USDT" onclick="switchChart(this)"><i class="fab fa-bitcoin"></i> BTC</button>
+                    <button class="chart-tab" data-sym="ETHUSDT" data-label="ETH/USDT" onclick="switchChart(this)"><i class="fab fa-ethereum"></i> ETH</button>
+                    <button class="chart-tab" data-sym="BNBUSDT" data-label="BNB/USDT" onclick="switchChart(this)"><i class="fas fa-certificate"></i> BNB</button>
+                    <button class="chart-tab" data-sym="SOLUSDT" data-label="SOL/USDT" onclick="switchChart(this)"><i class="fas fa-sun"></i> SOL</button>
+                    <button class="chart-tab" data-sym="EURUSD" data-label="EUR/USD" onclick="switchChart(this)"><i class="fas fa-euro-sign"></i> EUR</button>
+                    <button class="chart-tab" data-sym="XAUUSD" data-label="XAU/USD" onclick="switchChart(this)"><i class="fas fa-coins"></i> GOLD</button>
+                    <button class="chart-tab" data-sym="GBPUSD" data-label="GBP/USD" onclick="switchChart(this)"><i class="fas fa-sterling-sign"></i> GBP</button>
+                    <button class="chart-tab" data-sym="USDJPY" data-label="USD/JPY" onclick="switchChart(this)"><i class="fas fa-yen-sign"></i> JPY</button>
                 </div>
-
-                <!-- Crypto -->
-                <div class="product-card">
-                    <span class="ebook-badge lang-en-only">E-Book</span>
-                    <div class="product-image crypto-img">
-                        <i class="fab fa-bitcoin"></i>
-                    </div>
-                    <h3 data-en="Crypto Trading in Amharic" data-am="የክሪፕቶ ትሬዲንግ በአማርኛ">የክሪፕቶ ትሬዲንግ በአማርኛ</h3>
-                    <p data-en="Complete cryptocurrency trading guide fully prepared in Amharic" data-am="ሙሉ በሙሉ በአማርኛ የተዘጋጀ የክሪፕቶ ከረንሲ ትሬዲንግ መጽሃፍ">ሙሉ በሙሉ በአማርኛ የተዘጋጀ የክሪፕቶ ከረንሲ ትሬዲንግ መጽሃፍ</p>
-                    <div class="price" data-en="400 Birr" data-am="400 ብር">400 ብር</div>
-                    <button class="btn-buy" data-book="crypto" data-en="Order Now" data-am="አሁኑኑ ይዘዙ">አሁኑኑ ይዘዙ</button>
+                <div class="chart-info-bar">
+                    <span id="chartPairLabel" class="chart-pair-label">BTC/USDT</span>
+                    <button class="chart-fs-btn" onclick="toggleChartFullscreen()" title="Fullscreen"><i class="fas fa-expand"></i></button>
                 </div>
-
-                <!-- Bundle Package Card -->
-                <div class="product-card bundle-card">
-                    <span class="bundle-badge" data-en="BUNDLE" data-am="ጥቅል">ጥቅል</span>
-                    <div class="product-image bundle-img">
-                        <i class="fas fa-layer-group"></i>
-                    </div>
-                    <h3 data-en="Forex + Crypto Bundle" data-am="ፎሬክስ + ክሪፕቶ ጥቅል">ፎሬክስ + ክሪፕቶ ጥቅል</h3>
-                    <p data-en="Get both Forex and Crypto trading books together at a special price" data-am="ሁለቱንም የፎሬክስ እና ክሪፕቶ ትሬዲንግ መጽሃፍት በልዩ ዋጋ ያግኙ">ሁለቱንም የፎሬክስ እና ክሪፕቶ ትሬዲንግ መጽሃፍት በልዩ ዋጋ ያግኙ</p>
-                    <div class="price-bundle">
-                        <span class="price-old" data-en="750 Birr" data-am="750 ብር">750 ብር</span>
-                        <span class="price" data-en="500 Birr" data-am="500 ብር">500 ብር</span>
-                    </div>
-                    <button class="btn-buy btn-bundle" data-book="bundle" data-en="Order Bundle" data-am="ጥቅሉን ይዘዙ">ጥቅሉን ይዘዙ</button>
-                </div>
-
+            </div>
+            <div class="chart-container" id="chartContainer">
+                <div id="tvChartContainer"></div>
             </div>
         </div>
     </section>
 
-    <!-- TRADER QUIZ -->
-    <section class="quiz-section" id="quizSection">
+    <!-- ===== TRADING ACADEMY ===== -->
+    <section id="academy" class="section academy-section">
         <div class="container">
-            <!-- LANDING CARD -->
+            <div class="section-header">
+                <h2 class="section-title"><i class="fas fa-graduation-cap"></i> <span data-am="ትሬዲንግ አካዳሚ" data-en="Trading Academy">ትሬዲንግ አካዳሚ</span></h2>
+                <p class="section-sub" data-am="ከጀማሪ እስከ ፕሮ — ሁሉም ትምህርቶች በነፃ" data-en="Beginner to Pro — all lessons free">Beginner to Pro — all lessons free</p>
+            </div>
+            <div class="academy-tabs">
+                <button class="academy-tab active" data-cat="forex" onclick="switchAcademy(this, 'forex')"><i class="fas fa-chart-line"></i> Forex</button>
+                <button class="academy-tab" data-cat="crypto" onclick="switchAcademy(this, 'crypto')"><i class="fab fa-bitcoin"></i> Crypto</button>
+                <button class="academy-tab" data-cat="ta" onclick="switchAcademy(this, 'ta')"><i class="fas fa-wave-square"></i> Technical</button>
+                <button class="academy-tab" data-cat="smc" onclick="switchAcademy(this, 'smc')"><i class="fas fa-brain"></i> SMC / ICT</button>
+                <button class="academy-tab" data-cat="risk" onclick="switchAcademy(this, 'risk')"><i class="fas fa-shield-halved"></i> Risk Mgmt</button>
+                <button class="academy-tab" data-cat="psychology" onclick="switchAcademy(this, 'psychology')"><i class="fas fa-head-side-brain"></i> Psychology</button>
+            </div>
+            <div class="academy-content" id="academyContent">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CALCULATORS ===== -->
+    <section id="calculators" class="section calc-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fas fa-calculator"></i> <span data-am="ትሬዲንግ ካልኩሌተሮች" data-en="Trading Calculators">ትሬዲንግ ካልኩሌተሮች</span></h2>
+                <p class="section-sub" data-am="ትክክለኛ ስሌቶች — Position Size፣ Risk፣ Pip Value እና ሌሎች" data-en="Accurate calculations — Position Size, Risk, Pip Value & more">Accurate calculations — 9 professional tools</p>
+            </div>
+            <div class="calc-tabs">
+                <button class="calc-tab active" data-calc="possize" onclick="switchCalc(this, 'possize')"><i class="fas fa-expand-arrows-alt"></i> Position Size</button>
+                <button class="calc-tab" data-calc="riskpct" onclick="switchCalc(this, 'riskpct')"><i class="fas fa-percent"></i> Risk %</button>
+                <button class="calc-tab" data-calc="pip" onclick="switchCalc(this, 'pip')"><i class="fas fa-arrows-left-right"></i> Pip Value</button>
+                <button class="calc-tab" data-calc="lotsize" onclick="switchCalc(this, 'lotsize')"><i class="fas fa-layer-group"></i> Lot Size</button>
+                <button class="calc-tab" data-calc="rr" onclick="switchCalc(this, 'rr')"><i class="fas fa-balance-scale"></i> R:R Ratio</button>
+                <button class="calc-tab" data-calc="pl" onclick="switchCalc(this, 'pl')"><i class="fas fa-dollar-sign"></i> P&amp;L</button>
+                <button class="calc-tab" data-calc="compound" onclick="switchCalc(this, 'compound')"><i class="fas fa-chart-line"></i> Compound</button>
+                <button class="calc-tab" data-calc="fibonacci" onclick="switchCalc(this, 'fibonacci')"><i class="fas fa-swatchbook"></i> Fibonacci</button>
+                <button class="calc-tab" data-calc="sl" onclick="switchCalc(this, 'sl')"><i class="fas fa-stop-circle"></i> Stop Loss</button>
+            </div>
+            <div class="calc-container" id="calcContainer">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TRADING JOURNAL ===== -->
+    <section id="journal" class="section journal-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fas fa-book-open"></i> <span data-am="ትሬዲንግ ጆርናል" data-en="Trading Journal">ትሬዲንግ ጆርናል</span></h2>
+                <p class="section-sub" data-am="ትሬዶቻቸውን ይመዝግቡ፣ አፈጻጸሙን ይከታተሉ" data-en="Log trades, track performance & improve">Log trades, track performance &amp; improve</p>
+            </div>
+            <!-- Journal Stats -->
+            <div class="journal-stats-row" id="journalStats">
+                <div class="jstat-card">
+                    <div class="jstat-icon win"><i class="fas fa-trophy"></i></div>
+                    <div class="jstat-data"><div class="jstat-val" id="js-winrate">0%</div><div class="jstat-lbl" data-am="Win Rate" data-en="Win Rate">Win Rate</div></div>
+                </div>
+                <div class="jstat-card">
+                    <div class="jstat-icon profit"><i class="fas fa-arrow-trend-up"></i></div>
+                    <div class="jstat-data"><div class="jstat-val" id="js-totalpl">$0</div><div class="jstat-lbl" data-am="Total P&L" data-en="Total P&L">Total P&amp;L</div></div>
+                </div>
+                <div class="jstat-card">
+                    <div class="jstat-icon trades"><i class="fas fa-list-check"></i></div>
+                    <div class="jstat-data"><div class="jstat-val" id="js-totaltrades">0</div><div class="jstat-lbl" data-am="ጠቅላላ ትሬዶች" data-en="Total Trades">Total Trades</div></div>
+                </div>
+                <div class="jstat-card">
+                    <div class="jstat-icon rr"><i class="fas fa-balance-scale"></i></div>
+                    <div class="jstat-data"><div class="jstat-val" id="js-avgrr">0</div><div class="jstat-lbl" data-am="Avg R:R" data-en="Avg R:R">Avg R:R</div></div>
+                </div>
+            </div>
+            <!-- Add Trade Button -->
+            <div class="journal-actions">
+                <button class="btn-primary" onclick="openTradeModal()"><i class="fas fa-plus"></i> <span data-am="ትሬድ ጨምር" data-en="Add Trade">ትሬድ ጨምር</span></button>
+                <button class="btn-outline" onclick="exportJournal()"><i class="fas fa-download"></i> Export CSV</button>
+                <button class="btn-outline danger" onclick="clearJournal()"><i class="fas fa-trash"></i> <span data-am="ሁሉን አጥፋ" data-en="Clear All">ሁሉን አጥፋ</span></button>
+            </div>
+            <!-- Trade Log Table -->
+            <div class="trade-table-wrap">
+                <table class="trade-table" id="tradeTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th><th>Pair</th><th>Direction</th><th>Entry</th><th>SL</th><th>TP</th><th>Size</th><th>P&amp;L</th><th>R:R</th><th>Notes</th><th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tradeTableBody">
+                        <tr class="empty-row"><td colspan="11"><i class="fas fa-journal-whills"></i><br><span data-am="ምንም ትሬድ አልተመዘገበም — ተጀምሩ!" data-en="No trades logged yet — start adding!">No trades logged yet — start adding!</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== BOOKS / PRODUCTS ===== -->
+    <section id="products" class="section products-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fas fa-shopping-cart"></i> <span data-am="መጽሃፍቶቻችን" data-en="Our Books">መጽሃፍቶቻችን</span></h2>
+                <p class="section-sub" data-am="ሙሉ በሙሉ በአማርኛ የተዘጋጁ ሙያዊ ትሬዲንግ መጽሃፍቶች" data-en="Professional trading books fully written in Amharic">Professional trading books fully in Amharic</p>
+            </div>
+            <div class="products-grid">
+                <!-- Forex Book -->
+                <div class="product-card">
+                    <div class="product-glow"></div>
+                    <span class="product-badge ebook">E-Book</span>
+                    <div class="product-icon forex-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3 data-am="የፎሬክስ ትሬዲንግ በአማርኛ" data-en="Forex Trading in Amharic">የፎሬክስ ትሬዲንግ በአማርኛ</h3>
+                    <p data-am="ሙሉ በሙሉ በአማርኛ የተዘጋጀ የፎሬክስ ትሬዲንግ መጽሃፍ — SMC፣ TA፣ Risk Management ሁሉም ይዟል" data-en="Complete Forex guide in Amharic — SMC, TA, Risk Management included">Complete Forex guide in Amharic — SMC, TA, Risk Management included</p>
+                    <ul class="product-features">
+                        <li><i class="fas fa-check"></i> Market Structure</li>
+                        <li><i class="fas fa-check"></i> Smart Money Concepts</li>
+                        <li><i class="fas fa-check"></i> Risk Management</li>
+                        <li><i class="fas fa-check"></i> Trading Psychology</li>
+                    </ul>
+                    <div class="product-price">
+                        <span class="price-amount">350 ብር</span>
+                    </div>
+                    <button class="btn-buy" data-book="forex"><i class="fas fa-shopping-cart"></i> <span data-am="አሁኑኑ ይዘዙ" data-en="Order Now">አሁኑኑ ይዘዙ</span></button>
+                </div>
+                <!-- Crypto Book -->
+                <div class="product-card featured">
+                    <div class="product-glow crypto"></div>
+                    <span class="product-badge popular">⭐ Popular</span>
+                    <div class="product-icon crypto-icon"><i class="fab fa-bitcoin"></i></div>
+                    <h3 data-am="የክሪፕቶ ትሬዲንግ በአማርኛ" data-en="Crypto Trading in Amharic">የክሪፕቶ ትሬዲንግ በአማርኛ</h3>
+                    <p data-am="ሙሉ በሙሉ በአማርኛ የተዘጋጀ የክሪፕቶ ትሬዲንግ መጽሃፍ — DeFi፣ NFT፣ Blockchain ሁሉም ይዟል" data-en="Complete Crypto guide in Amharic — DeFi, NFTs, Blockchain included">Complete Crypto guide in Amharic — DeFi, NFTs, Blockchain included</p>
+                    <ul class="product-features">
+                        <li><i class="fas fa-check"></i> Blockchain Basics</li>
+                        <li><i class="fas fa-check"></i> DeFi & NFTs</li>
+                        <li><i class="fas fa-check"></i> Exchange Guide</li>
+                        <li><i class="fas fa-check"></i> Portfolio Management</li>
+                    </ul>
+                    <div class="product-price">
+                        <span class="price-amount">400 ብር</span>
+                    </div>
+                    <button class="btn-buy" data-book="crypto"><i class="fas fa-shopping-cart"></i> <span data-am="አሁኑኑ ይዘዙ" data-en="Order Now">አሁኑኑ ይዘዙ</span></button>
+                </div>
+                <!-- Bundle -->
+                <div class="product-card bundle">
+                    <div class="product-glow bundle"></div>
+                    <span class="product-badge bundle-badge">🎁 Bundle</span>
+                    <div class="product-icon bundle-icon"><i class="fas fa-layer-group"></i></div>
+                    <h3 data-am="ፎሬክስ + ክሪፕቶ ጥቅል" data-en="Forex + Crypto Bundle">ፎሬክስ + ክሪፕቶ ጥቅል</h3>
+                    <p data-am="ሁለቱንም በልዩ ዋጋ ያግኙ — 250 ብር ቁጠባ!" data-en="Get both at special price — Save 250 Birr!">Get both at special price — Save 250 Birr!</p>
+                    <ul class="product-features">
+                        <li><i class="fas fa-check"></i> Both Forex + Crypto Books</li>
+                        <li><i class="fas fa-check"></i> 33% Discount</li>
+                        <li><i class="fas fa-check"></i> Telegram Support</li>
+                        <li><i class="fas fa-check"></i> Free Updates</li>
+                    </ul>
+                    <div class="product-price bundle-price">
+                        <span class="price-old">750 ብር</span>
+                        <span class="price-amount">500 ብር</span>
+                    </div>
+                    <button class="btn-buy btn-bundle" data-book="bundle"><i class="fas fa-shopping-cart"></i> <span data-am="ጥቅሉን ይዘዙ" data-en="Order Bundle">ጥቅሉን ይዘዙ</span></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== QUIZ ===== -->
+    <section id="quiz" class="section quiz-section">
+        <div class="container">
             <div class="quiz-landing" id="quizLanding">
-                <div class="quiz-landing-glow"></div>
+                <div class="quiz-glow"></div>
                 <div class="quiz-ai-avatar">
-                    <div class="quiz-ai-ring"></div>
-                    <div class="quiz-ai-ring quiz-ai-ring2"></div>
-                    <div class="quiz-ai-face">
-                        <span class="quiz-ai-eye"></span>
-                        <span class="quiz-ai-eye"></span>
-                        <div class="quiz-ai-mouth"></div>
-                        <div class="quiz-ai-scan"></div>
+                    <div class="quiz-ring r1"></div>
+                    <div class="quiz-ring r2"></div>
+                    <div class="quiz-face">
+                        <span class="quiz-eye"></span><span class="quiz-eye"></span>
+                        <div class="quiz-mouth"></div>
+                        <div class="quiz-scan-line"></div>
                     </div>
                 </div>
-                <div class="quiz-landing-badge">TAG BRIDGE</div>
-                <h2 class="quiz-landing-title">የትሬዲንግ መጽሃፎቻችንን<br>በሚገባ አንብበዋል?</h2>
-                <p class="quiz-landing-sub">እንግዲያውስ ቀጥሎ የተዘጋጁ ፈተናዎችን ይወሰዱ</p>
-                <button class="quiz-launch-btn" onclick="launchQuiz()">
-                    <span class="quiz-launch-icon">📝</span>
-                    <span>ፈተናውን ይጀምሩ</span>
-                </button>
+                <div class="quiz-brand">TAG BRIDGE</div>
+                <h2 data-am="የትሬዲንግ ፈተና" data-en="Trading Quiz">የትሬዲንግ ፈተና</h2>
+                <p data-am="መጽሃፎቻቸውን ካነበቡ — ፈተናውን ይሞክሩ!" data-en="Read the books? Test your knowledge!">Read the books? Test your knowledge!</p>
+                <button class="btn-primary" onclick="launchQuiz()"><i class="fas fa-play"></i> <span data-am="ፈተናውን ጀምር" data-en="Start Quiz">ፈተናውን ጀምር</span></button>
             </div>
-            <!-- QUIZ BOX -->
             <div class="quiz-box" id="quizBox" style="display:none;">
-                <!-- Close button ABOVE box -->
                 <button class="quiz-close-top" onclick="retryQuiz()">✕ ዝጋ</button>
-                <div class="quiz-box-header">
-                    <div class="quiz-bot-pill">
-                        <div class="quiz-bot-dot"></div>
-                        <span>TAG BRIDGE AI BOT</span>
-                    </div>
-                    <div class="quiz-progress-wrap">
-                        <div class="quiz-progress-bar" id="quizProgressBar"></div>
-                    </div>
-                    <div class="quiz-score-counter">
-                        <span class="qsc-correct" id="qscCorrect">0</span>
-                        <span class="qsc-sep">|</span>
-                        <span class="qsc-wrong" id="qscWrong">0</span>
-                        <span class="qsc-sep">|</span>
-                        <span class="qsc-total" id="qscTotal">0</span>
-                    </div>
+                <div class="quiz-header">
+                    <div class="quiz-bot-pill"><div class="quiz-bot-dot"></div> TAG BRIDGE AI BOT</div>
+                    <div class="quiz-progress"><div class="quiz-progress-fill" id="quizProgressBar"></div></div>
+                    <div class="quiz-score"><span class="qs-correct" id="qscCorrect">0</span> | <span class="qs-wrong" id="qscWrong">0</span> | <span id="qscTotal">0</span></div>
                 </div>
                 <div class="quiz-chat" id="quizChat"></div>
-                <div class="quiz-options" id="quizOptions"></div>
+                <div class="quiz-opts" id="quizOptions"></div>
             </div>
         </div>
     </section>
 
-    <footer>
+    <!-- ===== CONTACT ===== -->
+    <section id="contact" class="section contact-section">
         <div class="container">
-            <p data-en="&copy; 2026 Tag Bridge. All rights reserved." data-am="&copy; 2026 ታግ ብሪጅ። ሁሉም መብቶች የተጠበቁ ናቸው።">&copy; 2026 ታግ ብሪጅ። ሁሉም መብቶች የተጠበቁ ናቸው።</p>
+            <div class="section-header">
+                <h2 class="section-title"><i class="fas fa-envelope"></i> <span data-am="አግኙን" data-en="Contact Us">አግኙን</span></h2>
+                <p class="section-sub" data-am="ለማዘዝ ወይም ለጥያቄ ያግኙን" data-en="To order or for any questions, contact us">To order or for any questions, contact us</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-card telegram">
+                    <i class="fab fa-telegram"></i>
+                    <h3>Telegram Channel</h3>
+                    <p data-am="የቴሌግራም ቻናላችን ይቀላቀሉ" data-en="Join our Telegram channel">Join our Telegram channel</p>
+                    <a href="https://t.me/tagbridge" target="_blank" class="contact-btn">@tagbridge</a>
+                </div>
+                <div class="contact-card bot">
+                    <i class="fas fa-robot"></i>
+                    <h3>Telegram Bot</h3>
+                    <p data-am="ቦቱን አናግሩ — ፈጣን ምላሽ" data-en="Chat with our bot — instant reply">Chat with our bot — instant reply</p>
+                    <a href="https://t.me/tagbridge_book_bot" target="_blank" class="contact-btn">@tagbridge_book_bot</a>
+                </div>
+                <div class="contact-card whatsapp">
+                    <i class="fab fa-whatsapp"></i>
+                    <h3>WhatsApp</h3>
+                    <p data-am="ዋትስአፕ ቻናላችን ይቀላቀሉ" data-en="Join our WhatsApp channel">Join our WhatsApp channel</p>
+                    <a href="https://whatsapp.com/channel/0029VbC9h9Z4o7qIBVOmFE1j" target="_blank" class="contact-btn">WhatsApp Channel</a>
+                </div>
+                <div class="contact-card youtube">
+                    <i class="fab fa-youtube"></i>
+                    <h3>YouTube</h3>
+                    <p data-am="ቻናላችን ሰብስክራይብ ያድርጉ" data-en="Subscribe to our channel">Subscribe to our channel</p>
+                    <a href="https://youtube.com/@tagbridge" target="_blank" class="contact-btn">@tagbridge</a>
+                </div>
+                <div class="contact-card tiktok">
+                    <i class="fab fa-tiktok"></i>
+                    <h3>TikTok</h3>
+                    <p data-am="TikTok ቻናላችን ይከተሉ" data-en="Follow our TikTok">Follow our TikTok</p>
+                    <a href="https://www.tiktok.com/@tagbridge" target="_blank" class="contact-btn">@tagbridge</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="footer-logo"><span class="logo-tag">Tag</span><span class="logo-bridge">Bridge</span></div>
+                    <p data-am="ፕሮፌሽናል ትሬዲንግ ትምህርት በአማርኛ" data-en="Professional trading education in Amharic">Professional trading education in Amharic</p>
+                </div>
+                <div class="footer-links">
+                    <h4 data-am="ፈጣን አገናኞች" data-en="Quick Links">Quick Links</h4>
+                    <a href="#dashboard">Dashboard</a>
+                    <a href="#charts">Charts</a>
+                    <a href="#academy">Academy</a>
+                    <a href="#calculators">Calculators</a>
+                    <a href="#journal">Journal</a>
+                </div>
+                <div class="footer-social">
+                    <h4 data-am="ተከተሉን" data-en="Follow Us">Follow Us</h4>
+                    <div class="social-icons-row">
+                        <a href="https://t.me/tagbridge" target="_blank" title="Telegram"><i class="fab fa-telegram"></i></a>
+                        <a href="https://youtube.com/@tagbridge" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.tiktok.com/@tagbridge" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://whatsapp.com/channel/0029VbC9h9Z4o7qIBVOmFE1j" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-am="© 2026 ታግ ብሪጅ። ሁሉም መብቶች የተጠበቁ ናቸው። | ይህ AI ትምህርታዊ መሣሪያ ነው — investment advice አይደለም።" data-en="© 2026 Tag Bridge. All rights reserved. | This is an AI educational tool — not investment advice.">© 2026 Tag Bridge. All rights reserved. | Educational tool — not investment advice.</p>
+            </div>
         </div>
     </footer>
 
-    <!-- TAG BRIDGE AI BOT FAB -->
-    <div class="tb-bot-fab" id="tbBotFab" onclick="toggleTbBot()">
-        <div class="tb-bot-fab-pulse"></div>
-        <span class="tb-bot-fab-icon" id="tbBotFabIcon">🤖</span>
-        <span class="tb-bot-fab-label" id="tbBotFabLabel">ቦቱን ያናግሩ</span>
+    <!-- ===== BACK TO TOP ===== -->
+    <button id="backToTop" class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- ===== AI BOT FAB ===== -->
+    <div class="bot-fab" id="botFab" onclick="toggleBot()">
+        <div class="bot-fab-pulse"></div>
+        <span class="bot-fab-icon">🤖</span>
+        <span class="bot-fab-label" id="botFabLabel" data-am="AI ቦት" data-en="AI Bot">AI ቦት</span>
     </div>
+    <div class="bot-overlay" id="botOverlay" onclick="toggleBot()"></div>
 
-    <!-- OVERLAY — click outside to close -->
-    <div class="tb-overlay" id="tbOverlay" onclick="toggleTbBot()"></div>
-
-    <!-- TAG BRIDGE AI BOT SIDEBAR -->
-    <div class="tb-bot-sidebar" id="tbBotWindow">
-        <div class="tb-bot-header">
-            <div class="tb-bot-header-info">
-                <div class="tb-bot-header-avatar">🤖</div>
+    <!-- ===== AI BOT SIDEBAR ===== -->
+    <div class="bot-sidebar" id="botSidebar">
+        <div class="bot-header">
+            <div class="bot-header-info">
+                <div class="bot-avatar">🤖</div>
                 <div>
-                    <div class="tb-bot-header-name">ታግ ብሪጅ AI ቦት</div>
-                    <div class="tb-bot-header-status"><span class="tb-bot-online-dot"></span> Online</div>
+                    <div class="bot-name" data-am="ታግ ብሪጅ AI ቦት" data-en="Tag Bridge AI Bot">ታግ ብሪጅ AI ቦት</div>
+                    <div class="bot-status"><span class="bot-dot"></span> Online</div>
                 </div>
             </div>
-            <button class="tb-bot-close" onclick="toggleTbBot()">✕</button>
+            <button class="bot-close" onclick="toggleBot()">✕</button>
         </div>
-        <div class="tb-bot-messages" id="tbBotMessages"></div>
-        <div class="tb-bot-opts" id="tbBotOpts"></div>
-        <div class="tb-bot-input-wrap">
-            <input type="text" id="tbBotInput" class="tb-bot-input"
-                placeholder="ጥያቄዎን ይጻፉ..."
-                onkeydown="if(event.key==='Enter') sendTbMessage()"
-                autocomplete="off" autocorrect="off">
-            <button class="tb-bot-send" onclick="sendTbMessage()">
-                <i class="fas fa-paper-plane"></i>
-            </button>
+        <div class="bot-messages" id="botMessages"></div>
+        <div class="bot-quick-opts" id="botOpts"></div>
+        <div class="bot-input-row">
+            <input type="text" id="botInput" class="bot-input" placeholder="ጥያቄዎን ይጻፉ..." onkeydown="if(event.key==='Enter')sendBotMsg()" autocomplete="off">
+            <button class="bot-send" onclick="sendBotMsg()"><i class="fas fa-paper-plane"></i></button>
         </div>
     </div>
 
+    <!-- ===== TRADE MODAL ===== -->
+    <div class="modal-overlay" id="tradeModalOverlay" onclick="closeTradeModal(event)">
+        <div class="modal" id="tradeModal">
+            <div class="modal-header">
+                <h3><i class="fas fa-plus"></i> <span id="modalTitle" data-am="ትሬድ ጨምር" data-en="Add Trade">ትሬድ ጨምር</span></h3>
+                <button class="modal-close" onclick="closeTradeModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="tradeForm" onsubmit="saveTrade(event)">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Date</label>
+                            <input type="date" id="tf-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Pair</label>
+                            <input type="text" id="tf-pair" placeholder="e.g. EUR/USD" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Direction</label>
+                            <select id="tf-dir">
+                                <option value="BUY">BUY</option>
+                                <option value="SELL">SELL</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Entry Price</label>
+                            <input type="number" id="tf-entry" step="any" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Stop Loss</label>
+                            <input type="number" id="tf-sl" step="any" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Take Profit</label>
+                            <input type="number" id="tf-tp" step="any" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Lot Size</label>
+                            <input type="number" id="tf-size" step="any" placeholder="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label>P&amp;L ($)</label>
+                            <input type="number" id="tf-pl" step="any" placeholder="actual P&L">
+                        </div>
+                        <div class="form-group">
+                            <label>Strategy</label>
+                            <select id="tf-strategy">
+                                <option value="">Select...</option>
+                                <option value="SMC">Smart Money Concepts</option>
+                                <option value="ICT">ICT Concepts</option>
+                                <option value="Breakout">Breakout</option>
+                                <option value="Trend">Trend Following</option>
+                                <option value="Scalp">Scalping</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group full">
+                            <label>Notes / Psychology</label>
+                            <textarea id="tf-notes" rows="3" placeholder="ምን ተማርኩ? ስሜቴ ምን ነበር?"></textarea>
+                        </div>
+                    </div>
+                    <input type="hidden" id="tf-editid">
+                    <div class="modal-footer">
+                        <button type="button" class="btn-outline" onclick="closeTradeModal()">Cancel</button>
+                        <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Save Trade</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- OneSignal -->
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <script>
-      window.OneSignalDeferred = window.OneSignalDeferred || [];
-      OneSignalDeferred.push(async function(OneSignal) {
-        await OneSignal.init({
-          appId: "aaa21a8f-75d0-4328-a5d8-15a2ec8a1e27",
-          safari_web_id: "web.onesignal.auto.aaa21a8f-75d0-4328-a5d8-15a2ec8a1e27",
-          notifyButton: { enable: false },
-          allowLocalhostAsSecureOrigin: true,
-          promptOptions: {
-            slidedown: {
-              prompts: [{
-                type: "push",
-                autoPrompt: true,
-                text: {
-                  actionMessage: "📚 ታግ ብሪጅ — አዲስ ምክሮችና ቅናሾች ሲኖሩ ወዲያው እናሳውቅዎታለን!",
-                  acceptButton: "እሺ",
-                  cancelButton: "አሁን አይደለም"
-                },
-                delay: { pageViews: 1, timeDelay: 5 }
-              }]
-            }
-          }
+        window.OneSignalDeferred = window.OneSignalDeferred || [];
+        OneSignalDeferred.push(async function(OneSignal) {
+            await OneSignal.init({
+                appId: "aaa21a8f-75d0-4328-a5d8-15a2ec8a1e27",
+                notifyButton: { enable: false },
+                allowLocalhostAsSecureOrigin: true,
+                promptOptions: {
+                    slidedown: {
+                        prompts: [{
+                            type: "push",
+                            autoPrompt: true,
+                            text: {
+                                actionMessage: "📚 ታግ ብሪጅ — አዲስ ምክሮችና ቅናሾች ሲኖሩ እናሳውቅዎታለን!",
+                                acceptButton: "እሺ",
+                                cancelButton: "አሁን አይደለም"
+                            },
+                            delay: { pageViews: 1, timeDelay: 5 }
+                        }]
+                    }
+                }
+            });
         });
-      });
     </script>
+
+    <!-- Main Scripts -->
     <script src="/script.js" defer></script>
+    <script src="/dashboard.js" defer></script>
 </body>
 </html>
