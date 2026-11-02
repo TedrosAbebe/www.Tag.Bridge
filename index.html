@@ -77,7 +77,7 @@
             <div class="nav-links-wrap" id="navLinksWrap">
                 <ul class="nav-links" id="navLinks">
                     <!-- FOREX BOOK: Top priority in Navigation -->
-                    <li><a href="#home" class="nav-link nav-link--forex-highlight active" onclick="setActiveNav(this)"><i class="fas fa-book-bookmark"></i> <span data-am="የፎሬክስ መጽሐፍ" data-en="Forex Book">የፎሬክስ መጽሐፍ</span> <span class="nav-badge-hot">450 ብር</span></a></li>
+                    <li><a href="#welcome" class="nav-link nav-link--forex-highlight active" onclick="setActiveNav(this)"><i class="fas fa-book-bookmark"></i> <span data-am="የፎሬክስ መጽሐፍ" data-en="Forex Book">የፎሬክስ መጽሐፍ</span> <span class="nav-badge-hot">450 ብር</span></a></li>
                     <li><a href="#dashboard" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-chart-pie"></i> <span data-am="ዳሽቦርድ" data-en="Dashboard">ዳሽቦርድ</span></a></li>
                     <li><a href="#charts" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-chart-candlestick"></i> <span data-am="ቻርቶች" data-en="Charts">ቻርቶች</span></a></li>
                     <li><a href="#indicators" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-bolt"></i> <span data-am="ኢንዲኬተሮች" data-en="Indicators">ኢንዲኬተሮች</span> <span class="nav-badge-pill">200+</span></a></li>
@@ -374,6 +374,197 @@
         .hfx-title{font-size:2rem;}
     }
     </style>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--  WELCOME SECTION — እንኳን ወደ ታግ ብሪጅ በደህና መጡ       -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <style>
+    .wlc{
+        background:#0d1117;
+        padding:72px 24px 60px;
+        text-align:center;
+        position:relative;
+        overflow:hidden;
+        padding-top:calc(68px + 36px + 48px);
+    }
+    [data-theme="light"] .wlc{background:#f8fafc;}
+    .wlc-glow{
+        position:absolute;top:-80px;left:50%;transform:translateX(-50%);
+        width:600px;height:300px;
+        background:radial-gradient(ellipse,rgba(99,102,241,.13) 0%,transparent 70%);
+        pointer-events:none;
+    }
+    .wlc-inner{position:relative;z-index:1;max-width:760px;margin:0 auto;}
+    .wlc-tag{
+        display:inline-flex;align-items:center;gap:8px;
+        background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.28);
+        color:#818cf8;font-size:.68rem;font-weight:800;letter-spacing:1.5px;
+        padding:5px 16px;border-radius:50px;margin-bottom:20px;text-transform:uppercase;
+        animation:wlc-in .5s ease both;
+    }
+    .wlc-dot{width:6px;height:6px;border-radius:50%;background:#10b981;animation:wlc-pulse 1.5s infinite;}
+    @keyframes wlc-pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(1.4);}}
+    @keyframes wlc-in{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+    .wlc-headline{
+        font-size:clamp(1.9rem,5vw,3.2rem);font-weight:900;
+        letter-spacing:-1px;line-height:1.15;margin-bottom:16px;
+        animation:wlc-in .5s .1s ease both;
+    }
+    .wlc-headline .wlc-am{
+        display:block;
+        background:linear-gradient(135deg,#c7d2fe,#818cf8,#6366f1);
+        -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+        background-clip:text;
+    }
+    .wlc-headline .wlc-en{
+        display:block;font-size:.45em;font-weight:500;
+        letter-spacing:2px;text-transform:uppercase;
+        color:#8b949e;-webkit-text-fill-color:#8b949e;margin-top:6px;
+    }
+    [data-theme="light"] .wlc-headline .wlc-en{color:#64748b;-webkit-text-fill-color:#64748b;}
+
+    .wlc-desc{
+        font-size:1rem;color:#8b949e;line-height:1.8;
+        margin:0 auto 32px;max-width:600px;
+        animation:wlc-in .5s .2s ease both;
+    }
+    [data-theme="light"] .wlc-desc{color:#475569;}
+
+    /* Social buttons */
+    .wlc-socials{
+        display:flex;flex-wrap:wrap;gap:12px;justify-content:center;
+        margin-bottom:36px;
+        animation:wlc-in .5s .3s ease both;
+    }
+    .wlc-soc-btn{
+        display:inline-flex;align-items:center;gap:9px;
+        padding:12px 22px;border-radius:50px;
+        font-size:.86rem;font-weight:700;text-decoration:none;
+        transition:all .25s;border:1px solid transparent;
+        cursor:pointer;
+    }
+    .wlc-soc-btn:hover{transform:translateY(-3px);}
+    .wlc-soc-tg{background:#229ED9;color:#fff;box-shadow:0 4px 18px rgba(34,158,217,.4);}
+    .wlc-soc-tg:hover{box-shadow:0 8px 28px rgba(34,158,217,.6);}
+    .wlc-soc-wa{background:#25D366;color:#fff;box-shadow:0 4px 18px rgba(37,211,102,.35);}
+    .wlc-soc-wa:hover{box-shadow:0 8px 28px rgba(37,211,102,.55);}
+    .wlc-soc-yt{background:#FF0000;color:#fff;box-shadow:0 4px 18px rgba(255,0,0,.3);}
+    .wlc-soc-yt:hover{box-shadow:0 8px 28px rgba(255,0,0,.5);}
+    .wlc-soc-tt{background:rgba(255,255,255,.06);color:#e6edf3;border-color:rgba(255,255,255,.14);}
+    .wlc-soc-tt:hover{background:rgba(255,255,255,.1);}
+    [data-theme="light"] .wlc-soc-tt{background:rgba(0,0,0,.05);color:#0f172a;border-color:rgba(0,0,0,.12);}
+
+    /* Stat strip */
+    .wlc-stats{
+        display:flex;align-items:center;justify-content:center;
+        flex-wrap:wrap;gap:0;
+        border:1px solid rgba(255,255,255,.07);border-radius:16px;
+        background:rgba(255,255,255,.02);padding:20px 24px;
+        animation:wlc-in .5s .4s ease both;
+    }
+    [data-theme="light"] .wlc-stats{background:rgba(0,0,0,.02);border-color:rgba(0,0,0,.07);}
+    .wlc-stat{padding:0 28px;text-align:center;}
+    .wlc-stat-n{font-size:1.8rem;font-weight:900;color:#6366f1;letter-spacing:-1px;}
+    .wlc-stat-l{font-size:.7rem;color:#8b949e;text-transform:uppercase;letter-spacing:.8px;margin-top:2px;}
+    [data-theme="light"] .wlc-stat-l{color:#64748b;}
+    .wlc-stat-div{width:1px;height:40px;background:rgba(255,255,255,.07);}
+    [data-theme="light"] .wlc-stat-div{background:rgba(0,0,0,.08);}
+
+    /* Scroll arrow */
+    .wlc-arrow{
+        display:inline-flex;flex-direction:column;align-items:center;gap:6px;
+        color:#484f58;font-size:.72rem;margin-top:32px;
+        animation:wlc-bounce 2s ease-in-out infinite;
+        cursor:pointer;text-decoration:none;
+    }
+    [data-theme="light"] .wlc-arrow{color:#94a3b8;}
+    @keyframes wlc-bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(7px);}}
+
+    @media(max-width:600px){
+        .wlc{padding:calc(68px+36px+32px) 16px 44px;}
+        .wlc-stat{padding:0 16px;}
+        .wlc-stat-n{font-size:1.4rem;}
+        .wlc-socials{flex-direction:column;align-items:center;}
+        .wlc-soc-btn{width:100%;max-width:280px;justify-content:center;}
+    }
+    </style>
+
+    <section id="welcome">
+        <div class="wlc">
+            <div class="wlc-glow"></div>
+            <div class="wlc-inner">
+
+                <!-- Tag -->
+                <div class="wlc-tag">
+                    <span class="wlc-dot"></span>
+                    TAG BRIDGE — Professional Trading Education
+                </div>
+
+                <!-- Headline -->
+                <h1 class="wlc-headline">
+                    <span class="wlc-am">እንኳን ወደ ታግ ብሪጅ<br>በደህና መጡ!</span>
+                    <span class="wlc-en">Welcome to Tag Bridge</span>
+                </h1>
+
+                <!-- Description (original text from the site) -->
+                <p class="wlc-desc">
+                    በዲጂታል መተግበሪያዎች፣ ክሪፕቶ ከረንሲ፣ ፎሬክስ ትሬዲንግ፣ AI እና የኦንላይን ቢዝነስ ላይ ያተኮሩ ሙያዊ ይዘቶችን እናቀርባለን።<br>
+                    <small style="font-size:.85em;opacity:.8;">Professional Forex, Crypto &amp; Financial Market Education — fully in Amharic.</small>
+                </p>
+
+                <!-- Social Links (original from old site) -->
+                <div class="wlc-socials">
+                    <a href="https://t.me/tagbridge" target="_blank" rel="noopener noreferrer" class="wlc-soc-btn wlc-soc-tg">
+                        <i class="fab fa-telegram"></i>
+                        <span>የቴሌግራም ቻናላችን ይቀላቀሉ</span>
+                    </a>
+                    <a href="https://whatsapp.com/channel/0029VbC9h9Z4o7qIBVOmFE1j" target="_blank" rel="noopener noreferrer" class="wlc-soc-btn wlc-soc-wa">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>WhatsApp Channel</span>
+                    </a>
+                    <a href="https://youtube.com/@tagbridge" target="_blank" rel="noopener noreferrer" class="wlc-soc-btn wlc-soc-yt">
+                        <i class="fab fa-youtube"></i>
+                        <span>YouTube</span>
+                    </a>
+                    <a href="https://www.tiktok.com/@tagbridge" target="_blank" rel="noopener noreferrer" class="wlc-soc-btn wlc-soc-tt">
+                        <i class="fab fa-tiktok"></i>
+                        <span>TikTok</span>
+                    </a>
+                </div>
+
+                <!-- Stats strip -->
+                <div class="wlc-stats">
+                    <div class="wlc-stat">
+                        <div class="wlc-stat-n">2</div>
+                        <div class="wlc-stat-l">መጽሃፍቶች</div>
+                    </div>
+                    <div class="wlc-stat-div"></div>
+                    <div class="wlc-stat">
+                        <div class="wlc-stat-n">1,200+</div>
+                        <div class="wlc-stat-l">አንባቢዎች</div>
+                    </div>
+                    <div class="wlc-stat-div"></div>
+                    <div class="wlc-stat">
+                        <div class="wlc-stat-n">7</div>
+                        <div class="wlc-stat-l">Academy Chapters</div>
+                    </div>
+                    <div class="wlc-stat-div"></div>
+                    <div class="wlc-stat">
+                        <div class="wlc-stat-n">AI</div>
+                        <div class="wlc-stat-l">ረዳት ቦት</div>
+                    </div>
+                </div>
+
+                <!-- Scroll down hint -->
+                <a href="#home" class="wlc-arrow">
+                    <span>ወደ ፎሬክስ መጽሃፍ ↓</span>
+                    <i class="fas fa-chevron-down"></i>
+                </a>
+
+            </div>
+        </div>
+    </section>
 
     <section id="home" class="hfx">
         <div class="hfx-particles" id="heroParticles"></div>
