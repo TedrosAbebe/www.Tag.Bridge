@@ -342,6 +342,56 @@ function loadTVMarketOverview() {
     container.appendChild(s);
 }
 
+function loadTVEconomicCalendar() {
+    const container = document.getElementById('tvCalendarContainer');
+    if (!container) return;
+    const isDark = currentTheme === 'dark';
+    const wrap = document.createElement('div');
+    wrap.className = 'tradingview-widget-container';
+    wrap.style.cssText = 'height:100%;width:100%;min-height:480px;';
+    wrap.innerHTML = '<div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>';
+    const s = document.createElement('script');
+    s.src = 'https://s3.tradingview.com/external-embedding/embed-widget-events.js';
+    s.async = true;
+    s.textContent = JSON.stringify({
+        colorTheme: isDark ? 'dark' : 'light',
+        isTransparent: true,
+        width: '100%',
+        height: '480',
+        locale: 'en',
+        importanceFilter: '0,1',
+        countryFilter: 'us,eu,gb,jp,ch,ca,au'
+    });
+    wrap.appendChild(s);
+    container.innerHTML = '';
+    container.appendChild(wrap);
+}
+
+function loadTVMarketNews() {
+    const container = document.getElementById('tvNewsContainer');
+    if (!container) return;
+    const isDark = currentTheme === 'dark';
+    const wrap = document.createElement('div');
+    wrap.className = 'tradingview-widget-container';
+    wrap.style.cssText = 'height:100%;width:100%;min-height:480px;';
+    wrap.innerHTML = '<div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>';
+    const s = document.createElement('script');
+    s.src = 'https://s3.tradingview.com/external-embedding/embed-widget-timeline.js';
+    s.async = true;
+    s.textContent = JSON.stringify({
+        feedMode: 'all_symbols',
+        isTransparent: true,
+        displayMode: 'regular',
+        width: '100%',
+        height: '480',
+        colorTheme: isDark ? 'dark' : 'light',
+        locale: 'en'
+    });
+    wrap.appendChild(s);
+    container.innerHTML = '';
+    container.appendChild(wrap);
+}
+
 function toggleChartFullscreen() {
     const el = document.getElementById('chartContainer');
     if (!el) return;
@@ -352,80 +402,11 @@ function toggleChartFullscreen() {
 
 // ══════════════════════════════════════════════
 //  6. TRADING ACADEMY
+//  Free preview removed — full content at /academy (password protected)
+//  switchAcademy / renderAcademy stubs kept to avoid any residual calls
 // ══════════════════════════════════════════════
-
-const ACADEMY = {
-    forex:[
-        {n:'01',t:'ፎሬክስ ምንድን ነው?',d:'Foreign Exchange Market — $7.5T daily volume, world\'s largest financial market. 5 days/week, 24 hours. Major participants: banks, institutions, hedge funds, retail traders.',tags:['Beginner','Forex']},
-        {n:'02',t:'Currency Pairs',d:'Major pairs (EUR/USD, GBP/USD, USD/JPY). Minor & Exotic pairs. Base vs Quote currency. Bid/Ask/Spread explained.',tags:['Beginner','Pairs']},
-        {n:'03',t:'Pips & Lots',d:'1 pip = 0.0001 for most pairs. Standard = 100,000 units. Mini = 10,000. Micro = 1,000. Leverage amplifies both profit and loss.',tags:['Beginner','Pips','Lots']},
-        {n:'04',t:'Market Structure — HH, HL, LH, LL',d:'Higher Highs (HH) + Higher Lows (HL) = Uptrend. Lower Highs + Lower Lows = Downtrend. BOS (Break of Structure) signals continuation. CHOCH signals reversal.',tags:['Intermediate','SMC','Structure']},
-        {n:'05',t:'Support & Resistance',d:'Key price levels where price reacts. Historical S/R areas are powerful. Role reversal: broken support becomes resistance. Confluence = multiple factors aligning.',tags:['Beginner','S&R']},
-        {n:'06',t:'Candlestick Patterns',d:'Doji, Engulfing, Hammer, Shooting Star, Marubozu, Pinbar. Each candle = Open, High, Low, Close. Pattern + context + level = entry signal.',tags:['Intermediate','Candles']},
-        {n:'07',t:'Fibonacci Retracement',d:'0.236, 0.382, 0.5, 0.618, 0.786. Golden pocket = 0.618–0.65. Draw from major swing high to low. Use with OBs and FVGs for confluence.',tags:['Intermediate','Fibonacci']},
-        {n:'08',t:'Trading Sessions',d:'Tokyo (23:00-08:00 UTC): Low volatility. London (07:00-16:00): Most active. New York (12:00-21:00): High volume. NY+London overlap = best setups.',tags:['Beginner','Sessions']},
-        {n:'09',t:'Risk Management — Essential',d:'Never risk > 1-2% per trade. Position sizing formula: Risk$ / (Entry-SL in pips × pip value). Risk:Reward ≥ 1:2. Protect capital above all.',tags:['Essential','Risk']},
-        {n:'10',t:'Trading Plan — Structure',d:'Define: entry criteria, SL placement, TP targets, position size, max daily loss, session preference. Trade the plan, not emotions.',tags:['Essential','Plan']}
-    ],
-    crypto:[
-        {n:'01',t:'Blockchain Basics',d:'Decentralized distributed ledger. Blocks linked cryptographically. Immutable. Bitcoin was first (2009). Consensus mechanisms: PoW vs PoS.',tags:['Beginner','Blockchain']},
-        {n:'02',t:'Bitcoin vs Altcoins',d:'Bitcoin = store of value, digital gold. Ethereum = programmable blockchain, smart contracts. Altcoins vary in use case. Market cap = price × circulating supply.',tags:['Beginner','BTC','ETH']},
-        {n:'03',t:'DeFi — Decentralized Finance',d:'Uniswap, Aave, Compound. No intermediaries. Liquidity pools, yield farming, staking. Smart contracts automate everything. High risk/reward.',tags:['Advanced','DeFi']},
-        {n:'04',t:'Crypto Market Cycles',d:'Bull → Distribution → Bear → Accumulation. 4-year Bitcoin halving cycle historically drives bull markets. Understanding cycles helps timing.',tags:['Intermediate','Cycles']},
-        {n:'05',t:'Exchange & Wallet Guide',d:'CEX (Binance, Coinbase) vs DEX (Uniswap). Hot wallet = convenience, cold wallet = security. Hardware wallets best for large amounts. Never share seed phrase.',tags:['Beginner','Security']},
-        {n:'06',t:'NFTs & Web3',d:'Non-fungible tokens = unique digital ownership. ERC-721. Use cases: art, gaming, real estate, identity. Gas fees on Ethereum can be high.',tags:['Intermediate','NFT','Web3']}
-    ],
-    ta:[
-        {n:'01',t:'RSI — Relative Strength Index',d:'Momentum oscillator 0-100. Overbought >70, Oversold <30. RSI divergence = powerful reversal signal. Default period: 14.',tags:['Indicator','RSI']},
-        {n:'02',t:'MACD',d:'MACD line crosses signal = buy/sell. Histogram = momentum. Zero line crossover confirms trend. Use on higher timeframes for reliability.',tags:['Indicator','MACD']},
-        {n:'03',t:'Moving Averages',d:'SMA = equal weight. EMA = recency-weighted. Golden cross (50>200 MA) = bull. Death cross = bear. 200 MA = key institutional level.',tags:['Indicator','MA','EMA']},
-        {n:'04',t:'Bollinger Bands',d:'20 SMA ± 2 SD. Upper band touch = potentially overbought. Lower band = oversold. BB squeeze before breakout. Walk the bands in trending markets.',tags:['Indicator','Volatility']},
-        {n:'05',t:'Volume Analysis',d:'Volume confirms price moves. High-volume breakout = strong. Volume divergence (price up, volume down) = weakness. OBV, VWAP indicators.',tags:['Intermediate','Volume']},
-        {n:'06',t:'Chart Patterns',d:'Head & Shoulders, Double Top/Bottom, Triangle, Wedge, Flag, Pennant. Each has a measured move. Pattern + volume + level = high probability.',tags:['Intermediate','Patterns']}
-    ],
-    smc:[
-        {n:'01',t:'Smart Money Concepts Intro',d:'SMC = trading with institutional footprints. Banks and institutions move markets. Retail is on the opposite side. Learn to align with smart money.',tags:['SMC','ICT']},
-        {n:'02',t:'Order Blocks',d:'Bullish OB = last bearish candle before bullish displacement. Bearish OB = last bullish candle before bearish move. Institutional entry zones. Expect reactions.',tags:['SMC','OB']},
-        {n:'03',t:'Liquidity',d:'Buy-side: above swing highs (stop losses of shorts). Sell-side: below swing lows. Banks hunt liquidity BEFORE reversing. This creates stop hunts.',tags:['SMC','Liquidity']},
-        {n:'04',t:'Fair Value Gaps (FVG)',d:'3-candle pattern with a gap (imbalance). Price returns to fill FVGs. Bullish FVG = bottom of candle 1 to top of candle 3. Used as entry zones.',tags:['SMC','FVG']},
-        {n:'05',t:'BOS & CHOCH',d:'Break of Structure (BOS) = trend continuation. Change of Character (CHOCH) = reversal signal. Wait for displacement + retest for entry.',tags:['SMC','BOS','CHOCH']},
-        {n:'06',t:'Displacement & Mitigation',d:'Displacement = fast, strong move leaving imbalance. Smart money returns to mitigate (fill) its OB. Mitigation entry = wait for price to return to origin zone.',tags:['Advanced','SMC']}
-    ],
-    risk:[
-        {n:'01',t:'The 1% Rule',d:'Risk ≤ 1-2% of account per trade. $1000 account → $10-$20 max risk. 10 consecutive losses = only 10-20% drawdown. This rule prevents account ruin.',tags:['Essential','Rule']},
-        {n:'02',t:'Position Sizing Formula',d:'Lots = Account Risk $ ÷ (SL in pips × pip value). Example: $1000, 1% = $10 risk. SL=20 pips, pip value=$10 → 0.05 lots. Always calculate before entry.',tags:['Essential','Formula']},
-        {n:'03',t:'Risk:Reward Ratio',d:'Minimum 1:2 RR. At 50% WR with 1:2 RR = profit. Higher RR = need lower WR. Never take trades below 1:1. Log every RR to find your edge.',tags:['Essential','R:R']},
-        {n:'04',t:'Drawdown Management',d:'Max drawdown limit = 10-15%. If hit → stop, review. Never revenge trade. Drawdown is normal. Protect capital to fight another day.',tags:['Advanced','Drawdown']},
-        {n:'05',t:'Correlation Risk',d:'EUR/USD and GBP/USD highly correlated = double risk. Diversify across uncorrelated pairs. Check correlation before trading multiple pairs simultaneously.',tags:['Intermediate','Correlation']}
-    ],
-    psychology:[
-        {n:'01',t:'Trading Psychology',d:'90% of trading success = mindset. Fear and greed destroy accounts. Stick to your plan. Keep a journal for self-awareness and continuous improvement.',tags:['Psychology','Mindset']},
-        {n:'02',t:'FOMO',d:'Fear of Missing Out leads to late entries = poor RR. Miss one? Another comes. The market is always there. Missing trades > taking bad setups.',tags:['Psychology','FOMO']},
-        {n:'03',t:'Revenge Trading',d:'Never try to "win back" a loss immediately. Step away, breathe, review objectively. Revenge = emotional decision = another loss. Break the cycle.',tags:['Psychology','Discipline']},
-        {n:'04',t:'The Trading Plan',d:'Setup criteria + entry rules + SL placement + TP targets + position size + max daily loss. Write it down. Review it before every trading session.',tags:['Essential','Plan']},
-        {n:'05',t:'The Trading Journal',d:'Record every trade: entry, SL, TP, reason, result, emotion. Review weekly. Find patterns in mistakes. A journal turns losses into lessons.',tags:['Essential','Journal']}
-    ]
-};
-
-function switchAcademy(btn, cat) {
-    document.querySelectorAll('.academy-tab').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
-    renderAcademy(cat);
-}
-
-function renderAcademy(cat) {
-    const lessons = ACADEMY[cat] || [];
-    const el = document.getElementById('academyContent');
-    if (!el) return;
-    el.innerHTML = '<div class="academy-grid">' + lessons.map(l =>
-        `<div class="lesson-card">
-            <div class="lesson-num">Lesson ${l.n}</div>
-            <div class="lesson-title">${l.t}</div>
-            <div class="lesson-desc">${l.d}</div>
-            <div class="lesson-tags">${l.tags.map(t=>`<span class="lesson-tag">${t}</span>`).join('')}</div>
-        </div>`
-    ).join('') + '</div>';
-}
+function switchAcademy() {}
+function renderAcademy() {}
 
 // ══════════════════════════════════════════════
 //  7. TRADING CALCULATORS
@@ -665,133 +646,464 @@ function runCalc(id) {
 }
 
 // ══════════════════════════════════════════════
-//  8. TRADING JOURNAL (localStorage)
+//  200+ TECHNICAL INDICATORS MODULE
+// ══════════════════════════════════════════════
+let activeIndicatorCategory = 'all';
+let indicatorSearchQuery = '';
+let visibleIndicatorCount = 18;
+
+function initIndicators() {
+    renderIndicatorCategories();
+    renderIndicators();
+}
+
+function renderIndicatorCategories() {
+    const tabsContainer = document.getElementById('indicatorCategoryTabs');
+    if (!tabsContainer || !window.INDICATOR_CATEGORIES) return;
+
+    tabsContainer.innerHTML = window.INDICATOR_CATEGORIES.map(cat => `
+        <button class="indicator-cat-btn ${cat.id === activeIndicatorCategory ? 'active' : ''}" 
+                onclick="switchIndicatorCategory('${cat.id}')">
+            <i class="${cat.icon}"></i>
+            <span>${currentLang === 'am' ? cat.nameAm : cat.nameEn}</span>
+        </button>
+    `).join('');
+}
+
+function switchIndicatorCategory(catId) {
+    activeIndicatorCategory = catId;
+    visibleIndicatorCount = 18;
+    renderIndicatorCategories();
+    renderIndicators();
+}
+
+function handleIndicatorSearch(q) {
+    indicatorSearchQuery = (q || '').trim().toLowerCase();
+    visibleIndicatorCount = 18;
+    renderIndicators();
+}
+
+function renderIndicators() {
+    const grid = document.getElementById('indicatorsGrid');
+    const badge = document.getElementById('indicatorCountBadge');
+    const loadMoreWrap = document.getElementById('indicatorLoadMoreWrap');
+    if (!grid || !window.INDICATORS_DATA) return;
+
+    let filtered = window.INDICATORS_DATA;
+
+    // Filter by Category
+    if (activeIndicatorCategory !== 'all') {
+        filtered = filtered.filter(item => item.cat === activeIndicatorCategory);
+    }
+
+    // Filter by Search Query
+    if (indicatorSearchQuery) {
+        filtered = filtered.filter(item =>
+            item.name.toLowerCase().includes(indicatorSearchQuery) ||
+            item.short.toLowerCase().includes(indicatorSearchQuery) ||
+            (item.desc && item.desc.toLowerCase().includes(indicatorSearchQuery)) ||
+            (item.descAm && item.descAm.toLowerCase().includes(indicatorSearchQuery))
+        );
+    }
+
+    if (badge) {
+        badge.textContent = `${filtered.length} Indicators`;
+    }
+
+    if (!filtered.length) {
+        grid.innerHTML = `
+            <div class="indicator-empty-state">
+                <i class="fas fa-search" style="font-size:2rem;color:var(--brand-primary);margin-bottom:10px;"></i>
+                <p>ምንም የሚዛመድ ኢንዲኬተር አልተገኘም / No matching indicators found.</p>
+            </div>
+        `;
+        if (loadMoreWrap) loadMoreWrap.style.display = 'none';
+        return;
+    }
+
+    const toShow = filtered.slice(0, visibleIndicatorCount);
+
+    grid.innerHTML = toShow.map(ind => {
+        const hasCalc = !!ind.calcKey && !!window.INDICATOR_CALCULATORS && !!window.INDICATOR_CALCULATORS[ind.calcKey];
+        const catObj = (window.INDICATOR_CATEGORIES || []).find(c => c.id === ind.cat);
+        const catLabel = catObj ? (currentLang === 'am' ? catObj.nameAm : catObj.nameEn) : ind.cat;
+
+        return `
+            <div class="indicator-card" onclick="openIndicatorModal('${ind.id}')">
+                <div class="ind-card-top">
+                    <span class="ind-cat-tag"><i class="fas fa-tag"></i> ${catLabel}</span>
+                    <span class="ind-short-badge">${ind.short}</span>
+                </div>
+                <h4 class="ind-name">${ind.name}</h4>
+                <p class="ind-desc">${currentLang === 'am' && ind.descAm ? ind.descAm : ind.desc}</p>
+                <div class="ind-card-footer">
+                    <span class="ind-tf"><i class="fas fa-clock"></i> ${ind.timeframe || 'All TFs'}</span>
+                    <span class="ind-action-link">
+                        ${hasCalc ? '<i class="fas fa-calculator"></i> Test Live' : '<i class="fas fa-info-circle"></i> View Formula'}
+                    </span>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    if (loadMoreWrap) {
+        loadMoreWrap.style.display = visibleIndicatorCount < filtered.length ? 'block' : 'none';
+    }
+}
+
+function loadMoreIndicators() {
+    visibleIndicatorCount += 18;
+    renderIndicators();
+}
+
+let activeIndicatorForCalc = null;
+
+function openIndicatorModal(id) {
+    const ind = (window.INDICATORS_DATA || []).find(x => x.id === id);
+    if (!ind) return;
+
+    activeIndicatorForCalc = ind;
+
+    const overlay = document.getElementById('indicatorModalOverlay');
+    const modal = document.getElementById('indicatorModal');
+    if (!overlay || !modal) return;
+
+    document.getElementById('imTitle').textContent = ind.name;
+    document.getElementById('imShort').textContent = ind.short;
+    document.getElementById('imCatBadge').textContent = ind.cat.toUpperCase();
+    document.getElementById('imDesc').innerHTML = `
+        <p style="font-size:0.95rem;line-height:1.6;margin-bottom:8px"><strong>English:</strong> ${ind.desc}</p>
+        <p style="font-size:0.95rem;line-height:1.6;color:var(--brand-gold);"><strong>አማርኛ:</strong> ${ind.descAm || ind.desc}</p>
+    `;
+    document.getElementById('imFormula').textContent = ind.formula;
+    document.getElementById('imBullish').textContent = ind.bullish;
+    document.getElementById('imBearish').textContent = ind.bearish;
+    document.getElementById('imTimeframe').textContent = ind.timeframe || 'All Timeframes (15M, 1H, 4H, 1D)';
+
+    // Calculator Section
+    const calcBox = document.getElementById('imCalcBox');
+    const calcFields = document.getElementById('imCalcFields');
+    const calcResult = document.getElementById('imCalcResult');
+    if (calcResult) { calcResult.style.display = 'none'; calcResult.innerHTML = ''; }
+
+    const calcConfig = ind.calcKey && window.INDICATOR_CALCULATORS ? window.INDICATOR_CALCULATORS[ind.calcKey] : null;
+
+    if (calcConfig) {
+        calcBox.style.display = 'block';
+        document.getElementById('imCalcTitle').textContent = calcConfig.title;
+        calcFields.innerHTML = calcConfig.fields.map(f => {
+            if (f.type === 'select') {
+                return `
+                    <div class="form-group">
+                        <label>${f.label}</label>
+                        <select id="imf_${f.id}">
+                            ${f.opts.map(o => `<option value="${o}">${o}</option>`).join('')}
+                        </select>
+                    </div>
+                `;
+            }
+            return `
+                <div class="form-group">
+                    <label>${f.label}</label>
+                    <input type="number" id="imf_${f.id}" value="${f.val || ''}" step="${f.step || 'any'}">
+                </div>
+            `;
+        }).join('');
+    } else {
+        calcBox.style.display = 'none';
+    }
+
+    overlay.classList.add('open');
+}
+
+function closeIndicatorModal(e) {
+    if (e && e.target !== e.currentTarget && !e.target.classList.contains('modal-close')) return;
+    const overlay = document.getElementById('indicatorModalOverlay');
+    if (overlay) overlay.classList.remove('open');
+    activeIndicatorForCalc = null;
+}
+
+function runIndicatorCalc() {
+    if (!activeIndicatorForCalc || !activeIndicatorForCalc.calcKey) return;
+    const calcConfig = window.INDICATOR_CALCULATORS[activeIndicatorForCalc.calcKey];
+    if (!calcConfig) return;
+
+    const vals = {};
+    calcConfig.fields.forEach(f => {
+        const el = document.getElementById('imf_' + f.id);
+        if (el) vals[f.id] = el.value;
+    });
+
+    const res = calcConfig.calc(vals);
+    const resultBox = document.getElementById('imCalcResult');
+    if (!res || !resultBox) return;
+
+    const metricsHtml = (res.metrics || []).map(m => `
+        <div class="im-metric-pill">
+            <span class="lbl">${m.label}</span>
+            <span class="val">${m.val}</span>
+        </div>
+    `).join('');
+
+    resultBox.innerHTML = `
+        <div class="im-calc-status-badge ${res.color || 'blue'}">
+            <i class="fas fa-signal"></i> ${res.signal}
+        </div>
+        <p class="im-calc-explanation">${res.text}</p>
+        <div class="im-metrics-row">${metricsHtml}</div>
+    `;
+    resultBox.style.display = 'block';
+}
+
+// ══════════════════════════════════════════════
+//  8. ENHANCED TRADING JOURNAL (localStorage)
 // ══════════════════════════════════════════════
 
-const JKEY = 'tb-journal-v2';
+const JKEY = 'tb-journal-v3';
 
-function jLoad() { try { return JSON.parse(localStorage.getItem(JKEY))||[]; } catch(e){ return []; } }
-function jSave(t) { localStorage.setItem(JKEY, JSON.stringify(t)); }
+function jLoad() {
+    try {
+        const v3 = localStorage.getItem(JKEY);
+        if (v3) return JSON.parse(v3);
+        const v2 = localStorage.getItem('tb-journal-v2');
+        if (v2) {
+            const parsed = JSON.parse(v2);
+            localStorage.setItem(JKEY, JSON.stringify(parsed));
+            return parsed;
+        }
+        return [];
+    } catch(e) {
+        return [];
+    }
+}
+
+function jSave(t) {
+    try {
+        localStorage.setItem(JKEY, JSON.stringify(t));
+    } catch(e) {}
+}
 
 function openTradeModal(editId) {
-    const ov = document.getElementById('tradeModalOverlay'); if(!ov) return;
+    const ov = document.getElementById('tradeModalOverlay');
+    if (!ov) return;
     document.getElementById('tradeForm').reset();
     const di = document.getElementById('tf-date');
-    if(di) di.value = new Date().toISOString().split('T')[0];
+    if (di) di.value = new Date().toISOString().split('T')[0];
     document.getElementById('tf-editid').value = '';
-    document.getElementById('modalTitle').textContent = 'Add Trade';
-    if(editId) {
-        const t = jLoad().find(x=>x.id===editId); if(!t) return;
-        ['date','pair','dir','entry','sl','tp','size','pl','strategy','notes'].forEach(k => {
-            const el = document.getElementById('tf-'+k);
-            if(el) el.value = t[k]??'';
-        });
-        document.getElementById('tf-editid').value = editId;
-        document.getElementById('modalTitle').textContent = 'Edit Trade';
+    document.getElementById('modalTitle').textContent = currentLang === 'am' ? 'አዲስ ትሬድ መዝግብ' : 'Add Trade';
+
+    if (editId) {
+        const t = jLoad().find(x => x.id === editId);
+        if (t) {
+            ['date','pair','dir','entry','exit','sl','tp','size','pl','strategy','screenshot','notes','instrument'].forEach(k => {
+                const el = document.getElementById('tf-' + k);
+                if (el) el.value = t[k] ?? '';
+            });
+            document.getElementById('tf-editid').value = editId;
+            document.getElementById('modalTitle').textContent = currentLang === 'am' ? 'ትሬድ አስተካክል' : 'Edit Trade';
+        }
     }
     ov.classList.add('open');
 }
 
 function closeTradeModal(e) {
-    if(e && e.target !== e.currentTarget) return;
+    if (e && e.target !== e.currentTarget && !e.target.classList.contains('modal-close')) return;
     const ov = document.getElementById('tradeModalOverlay');
-    if(ov) ov.classList.remove('open');
+    if (ov) ov.classList.remove('open');
 }
 
 function saveTrade(e) {
     e.preventDefault();
     const editId = document.getElementById('tf-editid').value;
     const trades = jLoad();
-    const en=parseFloat(document.getElementById('tf-entry').value);
-    const sl=parseFloat(document.getElementById('tf-sl').value);
-    const tp=parseFloat(document.getElementById('tf-tp').value);
+
+    const en = parseFloat(document.getElementById('tf-entry').value) || 0;
+    const ex = parseFloat(document.getElementById('tf-exit').value) || null;
+    const sl = parseFloat(document.getElementById('tf-sl').value) || 0;
+    const tp = parseFloat(document.getElementById('tf-tp').value) || 0;
     const plRaw = document.getElementById('tf-pl').value;
-    const pl = plRaw!=='' ? parseFloat(plRaw) : null;
-    const risk = Math.abs(en-sl), reward = Math.abs(tp-en);
-    const rr = risk>0 ? (reward/risk).toFixed(2) : null;
+    const pl = plRaw !== '' ? parseFloat(plRaw) : null;
+
+    const risk = Math.abs(en - sl);
+    const reward = Math.abs(tp - en);
+    const rr = risk > 0 ? (reward / risk).toFixed(2) : '1:2';
+
     const trade = {
         id: editId || Date.now().toString(),
         date: document.getElementById('tf-date').value,
-        pair: document.getElementById('tf-pair').value.toUpperCase(),
-        dir:  document.getElementById('tf-dir').value,
-        entry: en, sl, tp, size: parseFloat(document.getElementById('tf-size').value)||0,
-        pl, rr, strategy: document.getElementById('tf-strategy').value,
-        notes: document.getElementById('tf-notes').value
+        instrument: document.getElementById('tf-instrument')?.value || 'Forex',
+        pair: document.getElementById('tf-pair').value.toUpperCase().trim(),
+        dir: document.getElementById('tf-dir').value,
+        entry: en,
+        exit: ex,
+        sl: sl,
+        tp: tp,
+        size: parseFloat(document.getElementById('tf-size').value) || 0,
+        pl: pl,
+        rr: rr,
+        strategy: document.getElementById('tf-strategy').value,
+        screenshot: document.getElementById('tf-screenshot')?.value?.trim() || '',
+        notes: document.getElementById('tf-notes').value.trim()
     };
-    if(editId) {
-        const idx = trades.findIndex(x=>x.id===editId);
-        if(idx>-1) trades[idx]=trade; else trades.push(trade);
-    } else { trades.push(trade); }
+
+    if (editId) {
+        const idx = trades.findIndex(x => x.id === editId);
+        if (idx > -1) trades[idx] = trade;
+        else trades.push(trade);
+    } else {
+        trades.push(trade);
+    }
+
     jSave(trades);
     closeTradeModal();
     renderJournal();
 }
 
 function deleteTrade(id) {
-    if(!confirm('Delete this trade?')) return;
-    jSave(jLoad().filter(t=>t.id!==id));
+    if (!confirm(currentLang === 'am' ? 'ይህን ትሬድ ማጥፋት ይፈልጋሉ?' : 'Delete this trade from your journal?')) return;
+    jSave(jLoad().filter(t => t.id !== id));
     renderJournal();
 }
 
 function exportJournal() {
     const trades = jLoad();
-    if(!trades.length) return alert('No trades to export.');
-    const header = ['Date','Pair','Dir','Entry','SL','TP','Size','P&L','R:R','Strategy','Notes'];
-    const rows = trades.map(t=>[t.date,t.pair,t.dir,t.entry,t.sl,t.tp,t.size,t.pl??'',t.rr??'',t.strategy,t.notes?.replace(/,/g,' ')].join(','));
-    const csv = [header.join(','),...rows].join('\n');
+    if (!trades.length) return alert(currentLang === 'am' ? 'ምንም የሚወጣ ትሬድ የለም።' : 'No trades to export.');
+    const header = ['Date','Instrument','Pair','Direction','Entry','Exit','SL','TP','Size','PL','RR','Strategy','Screenshot','Notes'];
+    const rows = trades.map(t => [
+        t.date || '',
+        t.instrument || 'Forex',
+        t.pair || '',
+        t.dir || '',
+        t.entry || '',
+        t.exit || '',
+        t.sl || '',
+        t.tp || '',
+        t.size || '',
+        t.pl ?? '',
+        t.rr || '',
+        t.strategy || '',
+        t.screenshot || '',
+        (t.notes || '').replace(/,/g, ' ').replace(/\n/g, ' ')
+    ].join(','));
+    const csv = [header.join(','), ...rows].join('\n');
     const a = document.createElement('a');
-    a.href = 'data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
-    a.download = 'tagbridge-journal.csv'; a.click();
+    a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+    a.download = `tagbridge-trading-journal-${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+}
+
+function importJournal(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+        try {
+            const lines = (evt.target.result || '').split(/\r?\n/).filter(l => l.trim().length > 0);
+            if (lines.length < 2) return alert('Invalid or empty CSV file.');
+            const existing = jLoad();
+
+            for (let i = 1; i < lines.length; i++) {
+                const cols = lines[i].split(',').map(c => c.trim());
+                if (cols.length >= 4) {
+                    existing.push({
+                        id: Date.now().toString() + '_' + i,
+                        date: cols[0] || new Date().toISOString().split('T')[0],
+                        instrument: cols[1] || 'Forex',
+                        pair: cols[2] ? cols[2].toUpperCase() : 'EUR/USD',
+                        dir: cols[3] || 'BUY',
+                        entry: parseFloat(cols[4]) || 0,
+                        exit: parseFloat(cols[5]) || null,
+                        sl: parseFloat(cols[6]) || 0,
+                        tp: parseFloat(cols[7]) || 0,
+                        size: parseFloat(cols[8]) || 0.1,
+                        pl: cols[9] !== '' ? parseFloat(cols[9]) : null,
+                        rr: cols[10] || '1:2',
+                        strategy: cols[11] || '',
+                        screenshot: cols[12] || '',
+                        notes: cols.slice(13).join(' ') || ''
+                    });
+                }
+            }
+            jSave(existing);
+            renderJournal();
+            alert(`Successfully imported trades! Total: ${existing.length}`);
+        } catch(err) {
+            alert('Failed to parse CSV file: ' + err.message);
+        }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
 }
 
 function clearJournal() {
-    if(!confirm('Clear ALL trades? This cannot be undone.')) return;
-    jSave([]); renderJournal();
+    if (!confirm(currentLang === 'am' ? 'ሁሉንም ትሬዶች ማጥፋት ይፈልጋሉ? ይህ አይመለስም።' : 'Clear ALL trades? This cannot be undone.')) return;
+    jSave([]);
+    renderJournal();
 }
 
 function renderJournal() {
     const trades = jLoad();
-    const tbody = document.getElementById('tradeTableBody'); if(!tbody) return;
-    if(!trades.length) {
-        tbody.innerHTML = `<tr class="empty-row"><td colspan="11"><i class="fas fa-journal-whills"></i><br>No trades logged yet — start adding!</td></tr>`;
-        updateJournalStats([]); return;
+    const tbody = document.getElementById('tradeTableBody');
+    if (!tbody) return;
+
+    if (!trades.length) {
+        tbody.innerHTML = `<tr class="empty-row"><td colspan="13"><i class="fas fa-journal-whills"></i><br>${currentLang === 'am' ? 'ምንም የተመዘገበ ትሬድ የለም — አዲስ ትሬድ መዝግብ የሚለውን ይጫኑ!' : 'No trades logged yet — start adding!'}</td></tr>`;
+        updateJournalStats([]);
+        return;
     }
-    tbody.innerHTML = trades.sort((a,b)=>new Date(b.date)-new Date(a.date)).map(t => {
-        const plCls = t.pl!=null ? (t.pl>=0?'win':'loss') : '';
-        const plStr = t.pl!=null ? (t.pl>=0?'+':'')+t.pl.toFixed(2) : '--';
+
+    tbody.innerHTML = trades.sort((a,b) => new Date(b.date) - new Date(a.date)).map(t => {
+        const plCls = t.pl != null ? (t.pl >= 0 ? 'win' : 'loss') : '';
+        const plStr = t.pl != null ? (t.pl >= 0 ? '+' : '') + '$' + t.pl.toFixed(2) : '--';
+        const chartLink = t.screenshot ? `<a href="${t.screenshot}" target="_blank" rel="noopener noreferrer" class="trade-chart-thumb-link" title="Open Chart"><i class="fas fa-image"></i></a>` : '<span style="opacity:0.4;">--</span>';
+
         return `<tr>
-            <td>${t.date||'--'}</td>
-            <td><strong>${t.pair||'--'}</strong></td>
-            <td><span class="trade-dir ${(t.dir||'').toLowerCase()}">${t.dir||'--'}</span></td>
-            <td>${t.entry||'--'}</td>
-            <td>${t.sl||'--'}</td>
-            <td>${t.tp||'--'}</td>
-            <td>${t.size||'--'}</td>
-            <td class="trade-pl ${plCls}">$${plStr}</td>
-            <td>${t.rr||'--'}</td>
-            <td title="${t.notes||''}">${(t.strategy||t.notes||'').substring(0,20)||'--'}</td>
+            <td>${t.date || '--'}</td>
+            <td><strong>${t.pair || '--'}</strong> <small style="opacity:0.7;display:block;">${t.instrument || ''}</small></td>
+            <td><span class="trade-dir ${(t.dir || '').toLowerCase()}">${t.dir || '--'}</span></td>
+            <td>${t.entry || '--'}</td>
+            <td>${t.exit != null ? t.exit : '--'}</td>
+            <td>${t.sl || '--'}</td>
+            <td>${t.tp || '--'}</td>
+            <td>${t.size || '--'}</td>
+            <td class="trade-pl ${plCls}">${plStr}</td>
+            <td>${t.rr || '--'}</td>
+            <td title="${t.notes || ''}">${(t.strategy || '--')}</td>
+            <td style="text-align:center;">${chartLink}</td>
             <td>
                 <button class="trade-action-btn" onclick="openTradeModal('${t.id}')" title="Edit"><i class="fas fa-pen"></i></button>
                 <button class="trade-action-btn del" onclick="deleteTrade('${t.id}')" title="Delete"><i class="fas fa-trash"></i></button>
             </td>
         </tr>`;
     }).join('');
+
     updateJournalStats(trades);
 }
 
 function updateJournalStats(trades) {
-    const wins  = trades.filter(t=>t.pl!=null&&t.pl>0).length;
-    const total = trades.filter(t=>t.pl!=null).length;
-    const wr    = total>0 ? ((wins/total)*100).toFixed(1)+'%' : '0%';
-    const totalPL = trades.reduce((s,t)=>s+(t.pl||0),0);
-    const avgRR   = trades.filter(t=>t.rr).reduce((s,t)=>s+parseFloat(t.rr||0),0) / (trades.filter(t=>t.rr).length||1);
-    const set = (id,v)=>{ const el=document.getElementById(id); if(el) el.textContent=v; };
+    const settled = trades.filter(t => t.pl != null);
+    const wins = settled.filter(t => t.pl > 0).length;
+    const losses = settled.filter(t => t.pl < 0).length;
+    const total = settled.length;
+    const wr = total > 0 ? ((wins / total) * 100).toFixed(1) + '%' : '0%';
+    const totalPL = settled.reduce((s,t) => s + (t.pl || 0), 0);
+    const avgRR = trades.filter(t => t.rr).reduce((s,t) => s + parseFloat(t.rr || 0), 0) / (trades.filter(t => t.rr).length || 1);
+
+    const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
     set('js-winrate', wr);
-    set('js-totalpl', (totalPL>=0?'+':'')+'$'+Math.abs(totalPL).toFixed(2));
+    set('js-totalpl', (totalPL >= 0 ? '+' : '') + '$' + totalPL.toFixed(2));
     set('js-totaltrades', trades.length);
     set('js-avgrr', avgRR.toFixed(2));
+
     const plEl = document.getElementById('js-totalpl');
-    if(plEl) plEl.style.color = totalPL>=0?'var(--brand-green)':'var(--brand-red)';
+    if (plEl) plEl.style.color = totalPL >= 0 ? 'var(--brand-green)' : 'var(--brand-red)';
+
+    const winBar = document.getElementById('journalWinBar');
+    if (winBar) {
+        const pct = total > 0 ? Math.round((wins / total) * 100) : 50;
+        winBar.style.width = pct + '%';
+        winBar.title = `Wins: ${wins} | Losses: ${losses}`;
+    }
 }
 
 // ══════════════════════════════════════════════
@@ -813,15 +1125,31 @@ function toggleBot() {
 
 function initBotGreeting() {
     botMsg('bot', currentLang==='am'
-        ? 'ሰላም! 👋 እኔ ታግ ብሪጅ AI ቦት ነኝ። ስለ ፎሬክስ፣ ክሪፕቶ፣ ትሬዲንግ ወይም ስሌቶች ጥያቄ ሊጠይቁኝ ይችላሉ!'
-        : 'Hello! 👋 I\'m the Tag Bridge AI Bot. Ask me anything about Forex, Crypto, trading strategies, or calculations!');
+        ? 'ሰላም! 👋 እኔ ታግ ብሪጅ AI ረዳት ነኝ። ስለ ፎሬክስ፣ ክሪፕቶ፣ SMC፣ ቴክኒካል እና ፈንደመንታል ትንታኔ፣ ወይም የስጋት አስተዳደር ጥያቄዎችን በነፃነት ይጠይቁኝ!'
+        : 'Hello! 👋 I\'m the Tag Bridge AI Assistant. Ask me anything about Forex, Crypto, Smart Money Concepts (SMC), Technical & Fundamental analysis, or Risk Management!');
     setQuickOpts([
         '📊 What is Forex trading?',
-        '₿ How does crypto work?',
-        '📐 Explain risk management',
-        '🧠 What is SMC / ICT?',
-        '📖 How to use the calculators?'
+        '🧠 Explain Smart Money Concepts (SMC)',
+        '📐 How to calculate Position Size?',
+        '📈 What is RSI Divergence?',
+        '₿ How does Crypto & DeFi work?',
+        '🧘 How to overcome FOMO in trading?'
     ]);
+}
+
+function handleTopicChip(topic) {
+    const prompts = {
+        'Forex': currentLang === 'am' ? 'ስለ ፎሬክስ ገበያ መሰረታዊ ህጎች እና ከጀማሪነት ወደ ፕሮፌሽናልነት እንዴት መሸጋገር እንዳለብኝ አብራራልኝ?' : 'Explain the fundamentals of Forex trading and how beginners can become consistent.',
+        'Crypto': currentLang === 'am' ? 'የክሪፕቶ ከረንሲ እና የብሎክቼይን መሰረታዊ መርሆዎችን አብራራልኝ?' : 'Explain the core principles of Cryptocurrency, DeFi, and Blockchain.',
+        'SMC': currentLang === 'am' ? 'Smart Money Concepts (SMC) ምንድን ነው? Order Block እና Fair Value Gap (FVG) እንዴት እንደሚሰሩ አብራራልኝ?' : 'What are Smart Money Concepts (SMC)? Explain Order Blocks and Fair Value Gaps in detail.',
+        'Technical': currentLang === 'am' ? 'ዋና ዋና የቴክኒካል አናሊሲስ ሻማዎች (Candlestick patterns) እና ድጋፍና ተቃውሞን እንዴት መለየት እችላለሁ?' : 'What are the most reliable candlestick and chart patterns in technical analysis?',
+        'Risk': currentLang === 'am' ? 'የትሬዲንግ 1% Risk Rule እና የ Position Size ስሌት እንዴት ካፒታሌን ይጠብቅልኛል?' : 'How does the 1% risk rule and proper position sizing protect trading capital?',
+        'Psychology': currentLang === 'am' ? 'የትሬዲንግ ጭንቀትን፣ ስግብግብነትን (Greed) እና FOMOን እንዴት መቆጣጠር እችላለሁ?' : 'How can a trader overcome psychological barriers like FOMO, fear, and revenge trading?',
+        'Terminology': currentLang === 'am' ? 'ዋና ዋና የፎሬክስ ቃላትን (Pips, Lots, Spread, Leverage, Margin) በአጭሩ አስረዳኝ?' : 'Provide a clear glossary of key trading terms: Pip, Lot, Leverage, Margin, Spread.'
+    };
+
+    const text = prompts[topic] || `Tell me about ${topic}`;
+    sendBotMsg(text);
 }
 
 function botMsg(type, text) {
@@ -884,7 +1212,7 @@ Rules:
 3. NEVER provide specific buy/sell signals or guaranteed profit predictions.
 4. ALWAYS emphasize risk management and capital protection.
 5. Keep responses concise but informative.
-6. Mention Tag Bridge books when relevant.
+6. Mention Tag Bridge books when relevant (Forex Book at 350 Birr on Telegram: https://t.me/tagbridge123).
 7. For calculations, encourage the user to use the built-in calculators.`;
 
     const res = await fetch('/api/chat', {
@@ -906,19 +1234,34 @@ function formatBotReply(text) {
 }
 
 // ══════════════════════════════════════════════
-//  10. BOOK ORDER (preserved from original)
+//  10. BOOK ORDER — REDIRECTION TO TELEGRAM
+//  Forex book MUST redirect directly to: https://t.me/tagbridge123
 // ══════════════════════════════════════════════
 
 document.addEventListener('click', e => {
+    // Intercept clicks on any element with data-book or specific class
     const btn = e.target.closest('.btn-buy');
-    if(!btn) return;
-    const book = btn.dataset.book;
-    const msgs = {
-        forex:  'https://t.me/tagbridge123',
-        crypto: 'https://t.me/tagbridge_book_bot?start=crypto_book',
-        bundle: 'https://t.me/tagbridge_book_bot?start=bundle_order'
-    };
-    if(msgs[book]) window.open(msgs[book], '_blank', 'noopener,noreferrer');
+    if(btn) {
+        const book = btn.dataset.book;
+        const msgs = {
+            forex:  'https://t.me/tagbridge123',
+            crypto: 'https://t.me/tagbridge_book_bot?start=crypto_book',
+            bundle: 'https://t.me/tagbridge_book_bot?start=bundle_order'
+        };
+        if(msgs[book]) {
+            e.preventDefault();
+            window.open(msgs[book], '_blank', 'noopener,noreferrer');
+        }
+        return;
+    }
+
+    // Intercept any clicks on Forex book elements
+    const forexTarget = e.target.closest('.btn-buy-forex-hero, .forex-title-link, .hero-price-link, .forex-book-3d-link, .product-card--forex-link');
+    if(forexTarget) {
+        // Let natural <a> link open in new tab or ensure redirection
+        window.open('https://t.me/tagbridge123', '_blank', 'noopener,noreferrer');
+        e.preventDefault();
+    }
 });
 
 // ══════════════════════════════════════════════
@@ -957,12 +1300,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Particles
     initParticles();
 
-    // Charts: load default BTC
-    loadTVChart('BTCUSDT');
+    // Charts: load default EUR/USD
+    loadTVChart('EURUSD');
     loadTVMarketOverview();
 
-    // Academy: load default category
-    renderAcademy('forex');
+    // Load Economic Calendar & Market News
+    loadTVEconomicCalendar();
+    loadTVMarketNews();
+
+    // Initialize 200+ Indicators
+    if (typeof initIndicators === 'function') {
+        initIndicators();
+    }
+
+    // Academy preview removed — full content lives at /academy (password protected)
 
     // Calculators: load default
     renderCalc('possize');
@@ -991,5 +1342,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    console.log('🚀 Tag Bridge Trading Ecosystem v2.0 loaded');
+    console.log('🚀 Tag Bridge Trading Ecosystem v2.0 Upgraded & Initialized');
 });
