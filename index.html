@@ -291,108 +291,15 @@
     <section id="dashboard" class="section dashboard-section">
         <div class="container">
             <div class="section-header">
-                <div class="section-tag-pill"><i class="fas fa-signal"></i> REAL-TIME MARKET DATA</div>
-                <h2 class="section-title"><span class="live-dot"></span> <span data-am="የቀጥታ ገበያ ዳሽቦርድ" data-en="Live Market Dashboard">የቀጥታ ገበያ ዳሽቦርድ</span></h2>
-                <p class="section-sub" data-am="የክሪፕቶ፣ ፎሬክስ እና የወርቅ የቀጥታ ዋጋዎች — በ CoinGecko እና TradingView የተደገፈ" data-en="Real-time Crypto, Forex & Gold prices via CoinGecko and TradingView">Real-time Crypto, Forex &amp; Gold prices</p>
+                <div class="section-tag-pill"><i class="fas fa-globe"></i> REAL-TIME MARKET DATA</div>
+                <h2 class="section-title"><span class="live-dot"></span> <span data-am="አጠቃላይ የዓለም ገበያዎች" data-en="Global Market Overview">አጠቃላይ የዓለም ገበያዎች</span></h2>
+                <p class="section-sub" data-am="TradingView የሚያቀርበው የቀጥታ ዓለም አቀፍ ገበያ ሁኔታ — Crypto፣ Forex፣ Commodities" data-en="Live global market overview by TradingView — Crypto, Forex, Commodities">Live global market overview by TradingView</p>
             </div>
 
-            <!-- Market Cards -->
-            <div class="market-cards-grid" id="marketCardsGrid">
-                <div class="market-card loading" id="mc-btc">
-                    <div class="mc-icon"><i class="fab fa-bitcoin"></i></div>
-                    <div class="mc-info"><div class="mc-name">Bitcoin</div><div class="mc-sym">BTC/USD</div></div>
-                    <div class="mc-right"><div class="mc-price">--</div><div class="mc-change">--</div></div>
-                    <div class="mc-sparkline"><canvas id="sp-btc" width="80" height="30"></canvas></div>
-                </div>
-                <div class="market-card loading" id="mc-eth">
-                    <div class="mc-icon eth"><i class="fab fa-ethereum"></i></div>
-                    <div class="mc-info"><div class="mc-name">Ethereum</div><div class="mc-sym">ETH/USD</div></div>
-                    <div class="mc-right"><div class="mc-price">--</div><div class="mc-change">--</div></div>
-                    <div class="mc-sparkline"><canvas id="sp-eth" width="80" height="30"></canvas></div>
-                </div>
-                <div class="market-card loading" id="mc-bnb">
-                    <div class="mc-icon bnb"><i class="fas fa-certificate"></i></div>
-                    <div class="mc-info"><div class="mc-name">BNB</div><div class="mc-sym">BNB/USD</div></div>
-                    <div class="mc-right"><div class="mc-price">--</div><div class="mc-change">--</div></div>
-                    <div class="mc-sparkline"><canvas id="sp-bnb" width="80" height="30"></canvas></div>
-                </div>
-                <div class="market-card loading" id="mc-sol">
-                    <div class="mc-icon sol"><i class="fas fa-sun"></i></div>
-                    <div class="mc-info"><div class="mc-name">Solana</div><div class="mc-sym">SOL/USD</div></div>
-                    <div class="mc-right"><div class="mc-price">--</div><div class="mc-change">--</div></div>
-                    <div class="mc-sparkline"><canvas id="sp-sol" width="80" height="30"></canvas></div>
-                </div>
-                <div class="market-card loading" id="mc-xrp">
-                    <div class="mc-icon xrp"><i class="fas fa-water"></i></div>
-                    <div class="mc-info"><div class="mc-name">XRP</div><div class="mc-sym">XRP/USD</div></div>
-                    <div class="mc-right"><div class="mc-price">--</div><div class="mc-change">--</div></div>
-                    <div class="mc-sparkline"><canvas id="sp-xrp" width="80" height="30"></canvas></div>
-                </div>
-                <div class="market-card loading" id="mc-gold">
-                    <div class="mc-icon gold"><i class="fas fa-coins"></i></div>
-                    <div class="mc-info"><div class="mc-name">Gold</div><div class="mc-sym">XAU/USD</div></div>
-                    <div class="mc-right"><div class="mc-price">--</div><div class="mc-change">--</div></div>
-                    <div class="mc-sparkline"><canvas id="sp-gold" width="80" height="30"></canvas></div>
-                </div>
-            </div>
-
-            <!-- Top Movers & Fear/Greed Row -->
-            <div class="dashboard-row">
-                <div class="dash-panel">
-                    <div class="dash-panel-header">
-                        <h3><i class="fas fa-rocket"></i> <span data-am="ከፍተኛ አሻጋሪዎች (Top Movers)" data-en="Top Movers">Top Movers</span></h3>
-                        <span class="panel-badge green" data-am="ዛሬ" data-en="Today">ዛሬ</span>
-                    </div>
-                    <div class="movers-list" id="moversList">
-                        <div class="mover-skeleton"></div>
-                        <div class="mover-skeleton"></div>
-                        <div class="mover-skeleton"></div>
-                        <div class="mover-skeleton"></div>
-                    </div>
-                </div>
-
-                <div class="dash-panel">
-                    <div class="dash-panel-header">
-                        <h3><i class="fas fa-fire"></i> <span data-am="ትላልቅ ገበያዎች (Top 5)" data-en="Market Cap Top 5">Market Cap Top 5</span></h3>
-                        <span class="panel-badge blue">CoinGecko</span>
-                    </div>
-                    <div class="movers-list" id="marketCapList">
-                        <div class="mover-skeleton"></div>
-                        <div class="mover-skeleton"></div>
-                        <div class="mover-skeleton"></div>
-                        <div class="mover-skeleton"></div>
-                    </div>
-                </div>
-
-                <div class="dash-panel">
-                    <div class="dash-panel-header">
-                        <h3><i class="fas fa-gauge-high"></i> <span data-am="የፍርሃትና ስስት መለኪያ (Fear & Greed)" data-en="Fear & Greed Index">Fear &amp; Greed Index</span></h3>
-                        <span class="panel-badge" id="fgiBadge">--</span>
-                    </div>
-                    <div class="fgi-wrap" id="fgiWrap">
-                        <div class="fgi-gauge-wrap">
-                            <canvas id="fgiGauge" width="200" height="110"></canvas>
-                            <div class="fgi-value" id="fgiValue">--</div>
-                            <div class="fgi-label" id="fgiLabel">Loading...</div>
-                        </div>
-                        <div class="fgi-info">
-                            <p data-am="ዝቅ ሲል ፍርሃት ነው — የዋጋ ቅናሽ አጋጣሚ ሊሆን ይችላል" data-en="Low = Extreme Fear = Potential opportunity">Low = Fear = Opportunity</p>
-                            <p data-am="ከፍ ሲል ስስት ነው — ጥንቃቄ ያስፈልጋል" data-en="High = Greed = Caution advised">High = Greed = Caution</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Global Market Overview Widget -->
+            <!-- TradingView Global Market Overview Widget only -->
             <div class="tv-market-overview-wrap">
-                <div class="dash-panel-header">
-                    <h3><i class="fas fa-globe"></i> <span data-am="አጠቃላይ የዓለም ገበያዎች ሁኔታ" data-en="Global Market Overview">Global Market Overview</span></h3>
-                    <button class="collapse-btn" onclick="togglePanel('tvOverviewPanel', this)"><i class="fas fa-chevron-down"></i></button>
-                </div>
-                <div id="tvOverviewPanel">
-                    <div class="tradingview-widget-container" id="tvMarketOverview">
-                        <div class="tradingview-widget-container__widget"></div>
-                    </div>
+                <div class="tradingview-widget-container" id="tvMarketOverview">
+                    <div class="tradingview-widget-container__widget"></div>
                 </div>
             </div>
         </div>
