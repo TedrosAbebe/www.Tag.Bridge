@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Academy Admin — Tag Bridge</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0d1117;--bg2:#161b22;--bg3:#1c2333;--card:#1e2130;--primary:#6366f1;--green:#10b981;--red:#ef4444;--gold:#f59e0b;--text:#e6edf3;--text2:#8b949e;--border:rgba(255,255,255,0.08);}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:24px}
+h1{font-size:1.5rem;font-weight:900;margin-bottom:4px}
+.subtitle{color:var(--text2);font-size:.85rem;margin-bottom:28px}
+
+/* Auth Gate */
+#authGate{max-width:400px;margin:80px auto;background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:32px;text-align:center}
+#authGate h2{font-size:1.3rem;font-weight:800;margin-bottom:6px}
+#authGate p{color:var(--text2);font-size:.85rem;margin-bottom:20px}
+.admin-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--text);font-size:.9rem;font-family:inherit;margin-bottom:12px}
+.admin-input:focus{outline:none;border-color:var(--primary)}
+.btn-p{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;padding:12px 24px;border-radius:10px;font-weight:700;font-size:.9rem;cursor:pointer;transition:.2s;width:100%}
+.btn-p:hover{opacity:.9;transform:translateY(-1px)}
+.error-msg{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,.3);color:var(--red);border-radius:8px;padding:10px 14px;font-size:.82rem;margin-bottom:10px;display:none}
+.error-msg.show{display:block}
+
+/* Main UI */
+#adminUI{display:none;max-width:900px;margin:0 auto}
+.admin-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:gap}
+.logout-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:7px 16px;border-radius:50px;font-size:.8rem;font-weight:600;cursor:pointer;transition:.2s}
+.logout-btn:hover{border-color:var(--red);color:var(--red)}
+
+/* Create form */
+.create-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:24px}
+.create-card h3{font-size:1rem;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.create-card h3 i{color:var(--primary)}
+.form-row{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end}
+.form-group{display:flex;flex-direction:column;gap:5px}
+.form-group label{font-size:.72rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px}
+.btn-create{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;padding:11px 20px;border-radius:10px;font-weight:700;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px;font-size:.85rem}
+.btn-create:hover{opacity:.9}
+
+/* Generated password */
+.gen-result{background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,.25);border-radius:12px;padding:18px;margin-top:14px;display:none}
+.gen-result.show{display:block}
+.gen-label{font-size:.72rem;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.gen-pw{font-family:'Courier New',monospace;font-size:1.3rem;font-weight:700;color:var(--text);letter-spacing:.1em;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 16px;margin-bottom:10px}
+.gen-meta{font-size:.78rem;color:var(--text2)}
+.copy-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:6px 14px;border-radius:8px;font-size:.78rem;font-weight:600;cursor:pointer;transition:.2s}
+.copy-btn:hover{border-color:var(--green);color:var(--green)}
+.warn-once{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);border-radius:8px;padding:10px 14px;font-size:.78rem;color:var(--gold);margin-top:10px;display:flex;align-items:flex-start;gap:8px}
+
+/* Table */
+.table-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.table-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.table-header h3{font-size:.95rem;font-weight:800;display:flex;align-items:center;gap:8px}
+.table-header h3 i{color:var(--primary)}
+.refresh-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:6px 14px;border-radius:8px;font-size:.78rem;font-weight:600;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:5px}
+.refresh-btn:hover{color:var(--primary);border-color:var(--primary)}
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+th{background:var(--bg3);padding:10px 14px;text-align:left;font-size:.68rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+td{padding:11px 14px;border-top:1px solid var(--border);vertical-align:middle}
+tr:hover td{background:rgba(255,255,255,.02)}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:50px;font-size:.68rem;font-weight:700;text-transform:uppercase}
+.badge.active{background:rgba(16,185,129,.1);color:var(--green)}
+.badge.inactive{background:rgba(239,68,68,.1);color:var(--red)}
+.badge.expired{background:rgba(245,158,11,.1);color:var(--gold)}
+.action-btn{background:none;border:1px solid var(--border);color:var(--text2);padding:4px 10px;border-radius:6px;font-size:.72rem;font-weight:600;cursor:pointer;transition:.2s;margin-right:4px}
+.action-btn:hover{background:var(--bg3)}
+.action-btn.revoke:hover{border-color:var(--red);color:var(--red)}
+.action-btn.activate:hover{border-color:var(--green);color:var(--green)}
+.action-btn.delete:hover{border-color:var(--red);color:var(--red);background:rgba(239,68,68,.05)}
+.empty-state{text-align:center;padding:48px;color:var(--text2);font-size:.9rem}
+.empty-state i{font-size:2rem;display:block;margin-bottom:12px;color:var(--text2)}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
+.stat-n{font-size:1.6rem;font-weight:900;color:var(--primary)}
+.stat-l{font-size:.72rem;color:var(--text2);text-transform:uppercase;letter-spacing:.5px}
+@media(max-width:600px){.form-row{grid-template-columns:1fr}.stats-row{grid-template-columns:1fr 1fr}.table-wrap{overflow-x:auto}}
+</style>
+</head>
+<body>
+
+<!-- Auth Gate -->
+<div id="authGate">
+    <div style="font-size:2rem;margin-bottom:12px">🔐</div>
+    <h2>Academy Admin</h2>
+    <p>Tag Bridge — Password Management</p>
+    <div class="error-msg" id="authError">Incorrect admin key.</div>
+    <input type="password" class="admin-input" id="adminKeyInput" placeholder="Admin key..." onkeydown="if(event.key==='Enter')adminLogin()">
+    <button class="btn-p" onclick="adminLogin()"><i class="fas fa-unlock"></i> Access Admin Panel</button>
+</div>
+
+<!-- Admin UI -->
+<div id="adminUI">
+    <div class="admin-header">
+        <div>
+            <h1>🎓 Academy Admin</h1>
+            <div class="subtitle">Generate and manage access passwords for book buyers</div>
+        </div>
+        <button class="logout-btn" onclick="adminLogout()"><i class="fas fa-right-from-bracket"></i> Logout</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+        <div class="stat-card"><div class="stat-n" id="st-total">0</div><div class="stat-l">Total Passwords</div></div>
+        <div class="stat-card"><div class="stat-n" id="st-active">0</div><div class="stat-l">Active</div></div>
+        <div class="stat-card"><div class="stat-n" id="st-used">0</div><div class="stat-l">Used (Logged in)</div></div>
+        <div class="stat-card"><div class="stat-n" id="st-expired">0</div><div class="stat-l">Expired</div></div>
+    </div>
+
+    <!-- Create -->
+    <div class="create-card">
+        <h3><i class="fas fa-plus-circle"></i> Generate New Access Password</h3>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Buyer Name (for your reference)</label>
+                <input type="text" class="admin-input" id="buyerInput" placeholder="e.g. Abebe Girma" style="margin:0">
+            </div>
+            <div class="form-group">
+                <label>Expiry (days — leave blank for no expiry)</label>
+                <input type="number" class="admin-input" id="expiryInput" placeholder="e.g. 365" min="1" style="margin:0">
+            </div>
+            <button class="btn-create" onclick="createPassword()"><i class="fas fa-key"></i> Generate</button>
+        </div>
+
+        <div class="gen-result" id="genResult">
+            <div class="gen-label">✅ Password Generated — Copy & Send to Buyer NOW</div>
+            <div class="gen-pw" id="genPw">--</div>
+            <div class="gen-meta" id="genMeta"></div>
+            <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+                <button class="copy-btn" onclick="copyPassword()"><i class="fas fa-copy"></i> Copy Password</button>
+                <button class="copy-btn" onclick="copyMessage()"><i class="fas fa-message"></i> Copy Full Message</button>
+            </div>
+            <div class="warn-once">
+                <i class="fas fa-triangle-exclamation"></i>
+                <span>⚠️ This password is only shown ONCE. Copy it now and send it to the buyer. If lost, generate a new one.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-card">
+        <div class="table-header">
+            <h3><i class="fas fa-list"></i> All Access Passwords</h3>
+            <button class="refresh-btn" onclick="loadPasswords()"><i class="fas fa-rotate-right"></i> Refresh</button>
+        </div>
+        <div style="overflow-x:auto">
+            <table>
+                <thead>
+                    <tr><th>#</th><th>Buyer</th><th>Status</th><th>Created</th><th>Expires</th><th>Last Used</th><th>Uses</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="pwTableBody">
+                    <tr><td colspan="8" class="empty-state"><i class="fas fa-key"></i>No passwords yet</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+let ADMIN_KEY = '';
+let lastGeneratedPw = '';
+let lastBuyer = '';
+
+// ── AUTH ─────────────────────────────────────────────
+async function adminLogin() {
+    const key = document.getElementById('adminKeyInput').value.trim();
+    if (!key) return;
+
+    // Test the key by calling list endpoint
+    const res = await callAdmin({ action: 'list' }, key);
+    if (res.success !== undefined || res.records !== undefined) {
+        ADMIN_KEY = key;
+        document.getElementById('authGate').style.display = 'none';
+        document.getElementById('adminUI').style.display = 'block';
+        renderRecords(res.records || []);
+        updateStats(res.records || []);
+    } else {
+        document.getElementById('authError').classList.add('show');
+        document.getElementById('authError').textContent = res.error || 'Invalid admin key.';
+    }
+}
+
+function adminLogout() {
+    ADMIN_KEY = '';
+    document.getElementById('adminUI').style.display = 'none';
+    document.getElementById('authGate').style.display = 'block';
+    document.getElementById('adminKeyInput').value = '';
+}
+
+async function callAdmin(body, keyOverride) {
+    try {
+        const res = await fetch('/api/academy-admin', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-admin-key': keyOverride || ADMIN_KEY },
+            body: JSON.stringify(body)
+        });
+        return await res.json();
+    } catch(e) { return { error: e.message }; }
+}
+
+// ── CREATE ────────────────────────────────────────────
+async function createPassword() {
+    const buyer  = document.getElementById('buyerInput').value.trim() || 'Unknown';
+    const expiry = parseInt(document.getElementById('expiryInput').value) || null;
+
+    const res = await callAdmin({ action: 'create', buyer, expiryDays: expiry });
+    if (!res.success) { alert('Error: ' + (res.error || 'Unknown error')); return; }
+
+    lastGeneratedPw = res.password;
+    lastBuyer = buyer;
+
+    document.getElementById('genPw').textContent = res.password;
+    document.getElementById('genMeta').innerHTML =
+        `Buyer: <strong>${buyer}</strong> &nbsp;|&nbsp; ID: ${res.id} &nbsp;|&nbsp; Expires: ${res.expiresAt ? new Date(res.expiresAt).toLocaleDateString() : 'Never'}`;
+    document.getElementById('genResult').classList.add('show');
+    document.getElementById('buyerInput').value = '';
+    document.getElementById('expiryInput').value = '';
+    loadPasswords();
+}
+
+function copyPassword() {
+    navigator.clipboard.writeText(lastGeneratedPw).then(() => {
+        const btn = document.querySelector('.copy-btn');
+        btn.textContent = '✓ Copied!';
+        setTimeout(() => btn.innerHTML = '<i class="fas fa-copy"></i> Copy Password', 2000);
+    });
+}
+
+function copyMessage() {
+    const msg = `ሰላም ${lastBuyer}! 👋\n\nታግ ብሪጅ Trading Academy ሙሉ ትምህርቶችን ለማግኘት ከዚህ ሊንክ ይግቡ:\n\nhttps://www-tag-bridge.vercel.app/academy\n\nየመዳረሻ ኮድዎ (Access Password):\n${lastGeneratedPw}\n\n⚠️ ይህ ኮድ ለእርስዎ ብቻ ነው — ለሌሎች አያጋሩ።\n\nTag Bridge 📚`;
+    navigator.clipboard.writeText(msg).then(() => {
+        const btns = document.querySelectorAll('.copy-btn');
+        btns[1].textContent = '✓ Message Copied!';
+        setTimeout(() => btns[1].innerHTML = '<i class="fas fa-message"></i> Copy Full Message', 2500);
+    });
+}
+
+// ── LOAD TABLE ────────────────────────────────────────
+async function loadPasswords() {
+    const res = await callAdmin({ action: 'list' });
+    if (res.records) { renderRecords(res.records); updateStats(res.records); }
+}
+
+function renderRecords(records) {
+    const tbody = document.getElementById('pwTableBody');
+    if (!records.length) {
+        tbody.innerHTML = '<tr><td colspan="8" class="empty-state"><i class="fas fa-key"></i>No passwords generated yet</td></tr>';
+        return;
+    }
+    tbody.innerHTML = records.map((r, i) => {
+        const status = r.expired ? 'expired' : (r.active ? 'active' : 'inactive');
+        const badge  = `<span class="badge ${status}">${status}</span>`;
+        const created = new Date(r.createdAt).toLocaleDateString();
+        const expires = r.expiresAt ? new Date(r.expiresAt).toLocaleDateString() : '—';
+        const used    = r.usedAt ? new Date(r.usedAt).toLocaleString() : 'Never';
+        return `<tr>
+            <td style="color:var(--text2)">${i+1}</td>
+            <td><strong>${r.buyer}</strong><br><small style="color:var(--text2);font-size:.7rem">${r.id}</small></td>
+            <td>${badge}</td>
+            <td style="color:var(--text2)">${created}</td>
+            <td style="color:${r.expired?'var(--red)':'var(--text2)'}">${expires}</td>
+            <td style="color:var(--text2)">${used}</td>
+            <td style="text-align:center">${r.usedCount||0}</td>
+            <td>
+                ${r.active && !r.expired
+                    ? `<button class="action-btn revoke" onclick="doAction('revoke','${r.id}')">Revoke</button>`
+                    : `<button class="action-btn activate" onclick="doAction('activate','${r.id}')">Activate</button>`
+                }
+                <button class="action-btn delete" onclick="doAction('delete','${r.id}')">Delete</button>
+            </td>
+        </tr>`;
+    }).join('');
+}
+
+function updateStats(records) {
+    document.getElementById('st-total').textContent   = records.length;
+    document.getElementById('st-active').textContent  = records.filter(r => r.active && !r.expired).length;
+    document.getElementById('st-used').textContent    = records.filter(r => r.usedCount > 0).length;
+    document.getElementById('st-expired').textContent = records.filter(r => r.expired).length;
+}
+
+async function doAction(action, id) {
+    if (action === 'delete' && !confirm('Permanently delete this password?')) return;
+    const res = await callAdmin({ action, id });
+    if (res.success) loadPasswords();
+    else alert('Error: ' + (res.error || 'Failed'));
+}
+
+document.getElementById('adminKeyInput').addEventListener('keydown', e => { if(e.key==='Enter') adminLogin(); });
+</script>
+</body>
+</html>
