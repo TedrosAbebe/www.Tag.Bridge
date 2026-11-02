@@ -406,77 +406,16 @@ body {
 }
 
 /* ===== DASHBOARD SECTION ===== */
+/* ===== DASHBOARD SECTION ===== */
 .dashboard-section { background: var(--bg-base); }
 
-.market-cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 14px; margin-bottom: 32px;
-}
-
-.market-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
-    padding: 16px; display: grid;
-    grid-template-areas: "icon info right" "spark spark spark";
-    grid-template-columns: auto 1fr auto;
-    gap: 8px; align-items: center;
-    transition: var(--transition); cursor: default;
-    position: relative; overflow: hidden;
-}
-.market-card::before {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(135deg, rgba(99,102,241,0.05), transparent);
-    opacity: 0; transition: var(--transition);
-}
-.market-card:hover { border-color: var(--border-hover); transform: translateY(-2px); box-shadow: var(--shadow-md); }
-.market-card:hover::before { opacity: 1; }
-.market-card.up { border-color: rgba(16,185,129,0.2); }
-.market-card.down { border-color: rgba(239,68,68,0.2); }
-.market-card.loading { animation: shimmer 1.5s ease-in-out infinite; }
-
-@keyframes shimmer {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-}
-
-.mc-icon {
-    grid-area: icon; width: 38px; height: 38px;
-    background: rgba(99,102,241,0.15); border-radius: var(--radius-md);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.1rem; color: var(--brand-primary);
-}
-.mc-icon.eth { background: rgba(98,126,234,0.15); color: #627eea; }
-.mc-icon.bnb { background: rgba(243,186,47,0.15); color: #f3ba2f; }
-.mc-icon.sol { background: rgba(153,69,255,0.15); color: #9945ff; }
-.mc-icon.xrp { background: rgba(0,148,220,0.15); color: #0094dc; }
-.mc-icon.gold { background: rgba(245,158,11,0.15); color: var(--brand-gold); }
-
-.mc-info { grid-area: info; }
-.mc-name { font-weight: 700; font-size: 0.85rem; }
-.mc-sym { font-size: 0.72rem; color: var(--text-muted); }
-
-.mc-right { grid-area: right; text-align: right; }
-.mc-price { font-weight: 700; font-size: 0.9rem; font-variant-numeric: tabular-nums; }
-.mc-change { font-size: 0.72rem; font-weight: 600; }
-.mc-change.up { color: var(--brand-green); }
-.mc-change.down { color: var(--brand-red); }
-
-.mc-sparkline { grid-area: spark; margin-top: 4px; }
-
-.dashboard-row {
-    display: grid; grid-template-columns: 1fr 1fr 1fr;
-    gap: 20px; margin-bottom: 28px;
-}
-
-.dash-panel {
+/* Market Overview wrapper — hosts the TradingView widget */
+.tv-market-overview-wrap {
     background: var(--bg-card); border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg); padding: 20px;
-    transition: var(--transition);
+    border-radius: var(--radius-lg); padding: 20px; overflow: hidden;
 }
-.dash-panel:hover { border-color: var(--border-hover); }
 
+/* Shared panel header used by overview wrap */
 .dash-panel-header {
     display: flex; align-items: center; justify-content: space-between;
     margin-bottom: 16px;
@@ -493,42 +432,7 @@ body {
     background: var(--bg-elevated); color: var(--text-muted);
 }
 .panel-badge.green { background: rgba(16,185,129,0.1); color: var(--brand-green); }
-.panel-badge.blue { background: rgba(6,182,212,0.1); color: var(--brand-accent); }
-
-.movers-list { display: flex; flex-direction: column; gap: 8px; }
-
-.mover-item {
-    display: flex; align-items: center; gap: 10px;
-    padding: 8px; border-radius: var(--radius-md);
-    transition: var(--transition); cursor: default;
-}
-.mover-item:hover { background: var(--bg-elevated); }
-.mover-rank { font-size: 0.7rem; color: var(--text-muted); width: 16px; text-align: center; }
-.mover-icon { font-size: 1rem; width: 28px; text-align: center; }
-.mover-name { font-weight: 600; font-size: 0.82rem; flex: 1; }
-.mover-sym { font-size: 0.7rem; color: var(--text-muted); }
-.mover-chg { font-size: 0.8rem; font-weight: 700; }
-.mover-chg.up { color: var(--brand-green); }
-.mover-chg.down { color: var(--brand-red); }
-
-.mover-skeleton {
-    height: 36px; background: var(--bg-elevated);
-    border-radius: var(--radius-md); animation: shimmer 1.5s infinite;
-}
-
-/* Fear & Greed */
-.fgi-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; }
-.fgi-gauge-wrap { position: relative; text-align: center; }
-.fgi-value { font-size: 2.2rem; font-weight: 900; margin-top: -20px; }
-.fgi-label { font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); }
-.fgi-info { text-align: center; font-size: 0.72rem; color: var(--text-muted); }
-.fgi-info p { margin: 3px 0; }
-
-/* Market Overview */
-.tv-market-overview-wrap {
-    background: var(--bg-card); border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg); padding: 20px;
-}
+.panel-badge.blue  { background: rgba(6,182,212,0.1);  color: var(--brand-accent); }
 
 .collapse-btn {
     background: none; border: none; cursor: pointer;
