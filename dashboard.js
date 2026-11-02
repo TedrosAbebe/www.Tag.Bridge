@@ -914,7 +914,7 @@ document.addEventListener('click', e => {
     if(!btn) return;
     const book = btn.dataset.book;
     const msgs = {
-        forex:  'https://t.me/tagbridge_book_bot?start=forex_book',
+        forex:  'https://t.me/tagbridge123',
         crypto: 'https://t.me/tagbridge_book_bot?start=crypto_book',
         bundle: 'https://t.me/tagbridge_book_bot?start=bundle_order'
     };
