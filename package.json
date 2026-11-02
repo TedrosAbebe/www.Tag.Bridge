@@ -1,19 +1,12 @@
 {
-  "name": "tag-bridge-website",
-  "version": "1.0.0",
-  "description": "Tag Bridge - Professional PDF Books Store",
+  "name": "tag-bridge-trading-ecosystem",
+  "version": "2.0.0",
+  "description": "Tag Bridge - Professional Trading Ecosystem in Amharic",
+  "private": true,
   "scripts": {
-    "start": "serve .",
-    "build": "echo 'No build required for static site'"
+    "start": "npx serve .",
+    "dev": "npx serve ."
   },
-  "keywords": [
-    "pdf",
-    "books",
-    "forex",
-    "crypto",
-    "youtube",
-    "amharic"
-  ],
-  "author": "Tag Bridge",
+  "keywords": ["forex", "crypto", "trading", "amharic"],
   "license": "MIT"
 }
