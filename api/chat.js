@@ -1,59 +1,61 @@
-// Vercel Serverless Function — Gemini Proxy
+// Vercel Serverless Function — Gemini AI Proxy (Tag Bridge)
+// API key must be set as GEMINI_API_KEY environment variable in Vercel dashboard
+
 export default async function handler(req, res) {
-    // CORS headers
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    // CORS
+    res.setHeader('Access-Control-Allow-Origin', 'https://www-tag-bridge.vercel.app');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-    if (req.method === 'OPTIONS') {
-        return res.status(200).end();
-    }
+    if (req.method === 'OPTIONS') return res.status(200).end();
+    if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-    if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method not allowed' });
-    }
+    const { text, system } = req.body || {};
+    if (!text || typeof text !== 'string') return res.status(400).json({ error: 'No text provided' });
+    if (text.length > 2000) return res.status(400).json({ error: 'Message too long' });
 
-    const { text, system } = req.body;
-    if (!text) return res.status(400).json({ error: 'No text provided' });
+    const API_KEY = process.env.GEMINI_API_KEY;
+    if (!API_KEY) return res.status(500).json({ error: 'API key not configured' });
 
-    const API_KEY = process.env.GEMINI_API_KEY || 'AIzaSyBS0214z1N7rZe2RWQ56AOKLvEYIIQyFJI';
+    const MODEL = 'gemini-1.5-flash';
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`;
+
+    const body = {
+        contents: [{ role: 'user', parts: [{ text }] }],
+        systemInstruction: system ? { parts: [{ text: system }] } : undefined,
+        generationConfig: {
+            maxOutputTokens: 800,
+            temperature: 0.7,
+            topP: 0.9
+        },
+        safetySettings: [
+            { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
+            { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_MEDIUM_AND_ABOVE' }
+        ]
+    };
 
     try {
-        const geminiRes = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/interactions?key=${API_KEY}`,
-            {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    model: 'gemini-3.8-flash',
-                    input: text,
-                    system_instruction: system || '',
-                    store: false
-                })
-            }
-        );
+        const geminiRes = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+            signal: AbortSignal.timeout(15000)
+        });
 
         const data = await geminiRes.json();
 
         if (!geminiRes.ok) {
-            return res.status(geminiRes.status).json({ error: data.error || 'Gemini error' });
+            const errMsg = data?.error?.message || 'Gemini API error';
+            const status = geminiRes.status;
+            if (status === 429) return res.status(429).json({ error: 'Rate limit reached. Try again in a moment.' });
+            return res.status(status).json({ error: errMsg });
         }
 
-        // Extract reply from output_text or steps
-        let reply = data.output_text || '';
-        if (!reply && data.steps) {
-            for (const step of data.steps) {
-                if (step.model_output?.parts) {
-                    for (const part of step.model_output.parts) {
-                        if (part.text) reply += part.text;
-                    }
-                }
-            }
-        }
-
-        return res.status(200).json({ reply: reply || 'ምላሽ አልተገኘም።' });
+        const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'ምላሽ አልተገኘም።';
+        return res.status(200).json({ reply });
 
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        console.error('Gemini proxy error:', err.message);
+        return res.status(500).json({ error: 'Service temporarily unavailable.' });
     }
 }
