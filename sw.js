@@ -1,28 +1,62 @@
-const CACHE = 'tagbridge-v9';
+// Tag Bridge Service Worker v10
+// Network-first strategy with selective cache fallback
 
-// Clear ALL old caches immediately
-self.addEventListener('install', e => {
-    e.waitUntil(
+const CACHE_NAME = 'tagbridge-v10';
+const OFFLINE_URL = '/offline.html';
+
+const PRECACHE = [
+    '/',
+    '/index.html',
+    '/dashboard.css',
+    '/styles.css',
+    '/dashboard.js',
+    '/script.js',
+    '/manifest.json',
+    '/icon-192.png',
+    '/icon-512.png',
+    '/offline.html'
+];
+
+// Install: precache shell
+self.addEventListener('install', event => {
+    event.waitUntil(
+        caches.open(CACHE_NAME).then(cache => cache.addAll(PRECACHE.map(url => new Request(url, { cache: 'reload' })))).catch(() => {})
+    );
+    self.skipWaiting();
+});
+
+// Activate: clean old caches
+self.addEventListener('activate', event => {
+    event.waitUntil(
         caches.keys().then(keys =>
-            Promise.all(keys.map(k => caches.delete(k)))
-        ).then(() => self.skipWaiting())
+            Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
+        )
+    );
+    self.clients.claim();
+});
+
+// Fetch: network-first
+self.addEventListener('fetch', event => {
+    const { request } = event;
+    if (request.method !== 'GET') return;
+    if (request.url.includes('/api/')) return; // Never cache API calls
+
+    event.respondWith(
+        fetch(request)
+            .then(response => {
+                if (response.ok) {
+                    const clone = response.clone();
+                    caches.open(CACHE_NAME).then(cache => cache.put(request, clone)).catch(() => {});
+                }
+                return response;
+            })
+            .catch(() =>
+                caches.match(request).then(cached => cached || caches.match(OFFLINE_URL))
+            )
     );
 });
 
-self.addEventListener('activate', e => {
-    e.waitUntil(
-        caches.keys().then(keys =>
-            Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-        ).then(() => self.clients.claim())
-        .then(() => self.clients.matchAll({ includeUncontrolled: true }))
-        .then(clients => clients.forEach(c => c.postMessage({ type: 'SW_UPDATED' })))
-    );
-});
-
-// Always network first — never serve stale cache
-self.addEventListener('fetch', e => {
-    if (e.request.method !== 'GET') return;
-    e.respondWith(
-        fetch(e.request).catch(() => caches.match(e.request))
-    );
+// Listen for skipWaiting message
+self.addEventListener('message', event => {
+    if (event.data?.type === 'SKIP_WAITING') self.skipWaiting();
 });
