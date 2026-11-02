@@ -515,202 +515,402 @@
     </section>
 
     <!-- ============================================================== -->
-    <!--  8. PREMIUM BOOKSTORE                                          -->
+    <!--  8. PREMIUM BOOKSTORE — BOOKS FIRST, ABOVE THE FOLD           -->
     <!-- ============================================================== -->
-    <section id="products" class="section bookstore-section">
-        <div class="container">
+    <style>
+    /* ═══ BOOKSTORE SELF-CONTAINED STYLES (override-proof) ═══ */
+    .bs-section{background:#0d1117;padding:80px 0;}
+    [data-theme="light"] .bs-section{background:#f8fafc;}
+    .bs-container{max-width:1100px;margin:0 auto;padding:0 20px;}
+    .bs-header{text-align:center;margin-bottom:52px;}
+    .bs-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.25);color:#818cf8;font-size:.68rem;font-weight:800;letter-spacing:1.5px;padding:5px 14px;border-radius:50px;margin-bottom:14px;text-transform:uppercase;}
+    .bs-title{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:900;color:#e6edf3;letter-spacing:-.5px;margin-bottom:10px;}
+    [data-theme="light"] .bs-title{color:#0f172a;}
+    .bs-sub{font-size:.95rem;color:#8b949e;}
 
-            <!-- Section Header -->
-            <div class="bookstore-header">
-                <div class="section-tag-pill"><i class="fas fa-book-open-reader"></i> TAG BRIDGE BOOKSTORE</div>
-                <h2 class="section-title">
-                    <span data-am="የትሬዲንግ መጽሃፍቶቻችን" data-en="Our Trading Books">የትሬዲንግ መጽሃፍቶቻችን</span>
-                </h2>
-                <p class="section-sub" data-am="ሙሉ በሙሉ በአማርኛ የተዘጋጁ ሙያዊ የፎሬክስ እና የክሪፕቶ ትሬዲንግ መጽሃፍት — ወደ ቴሌግራም ተወስደው ይዘዛሉ" data-en="Professional trading books fully in Amharic — order directly via Telegram">Professional Amharic trading books — order via Telegram</p>
+    /* ── Forex Hero Card ── */
+    .bk-forex{
+        display:grid;grid-template-columns:260px 1fr;gap:44px;align-items:center;
+        background:linear-gradient(135deg,rgba(99,102,241,.12) 0%,rgba(22,27,34,.98) 55%);
+        border:1px solid rgba(99,102,241,.4);border-radius:24px;
+        padding:44px;margin-bottom:24px;
+        text-decoration:none!important;color:inherit!important;
+        position:relative;overflow:hidden;
+        transition:transform .3s,box-shadow .3s,border-color .3s;
+        cursor:pointer;
+        box-shadow:0 4px 24px rgba(99,102,241,.15),0 1px 3px rgba(0,0,0,.5);
+    }
+    .bk-forex:hover{transform:translateY(-5px);border-color:rgba(99,102,241,.7);box-shadow:0 16px 56px rgba(99,102,241,.28),0 4px 16px rgba(0,0,0,.5);}
+    .bk-forex:active{transform:translateY(-2px);}
+    [data-theme="light"] .bk-forex{background:linear-gradient(135deg,rgba(99,102,241,.07),#fff);border-color:rgba(99,102,241,.35);}
+
+    .bk-forex-bg-glow{position:absolute;top:-80px;left:-80px;width:320px;height:320px;background:radial-gradient(circle,rgba(99,102,241,.18) 0%,transparent 70%);pointer-events:none;animation:bs-glow 4s ease-in-out infinite;}
+    .bk-forex-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(99,102,241,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(99,102,241,.04) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;}
+    @keyframes bs-glow{0%,100%{opacity:.5;transform:scale(.9);}50%{opacity:1;transform:scale(1.1);}}
+
+    /* ── 3D Book Mockup ── */
+    .bk-book3d-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;position:relative;z-index:2;}
+    .bk-book3d{
+        width:170px;height:226px;position:relative;
+        transform-style:preserve-3d;
+        transform:perspective(900px) rotateY(-22deg) rotateX(4deg);
+        transition:transform .4s ease;flex-shrink:0;
+    }
+    .bk-forex:hover .bk-book3d{transform:perspective(900px) rotateY(-12deg) rotateX(2deg) scale(1.04);}
+    .bk-book3d-front{
+        position:absolute;inset:0;
+        background:linear-gradient(160deg,#1a1f35 0%,#0d1117 100%);
+        border:1px solid rgba(99,102,241,.4);border-radius:0 7px 7px 0;
+        display:flex;flex-direction:column;align-items:center;
+        overflow:hidden;
+        box-shadow:6px 8px 32px rgba(0,0,0,.75),inset 0 0 30px rgba(99,102,241,.07);
+    }
+    .bk-book3d-spine{
+        position:absolute;left:-15px;top:0;bottom:0;width:15px;
+        background:linear-gradient(to right,#2d3168,#4f52a0);
+        border-radius:3px 0 0 3px;
+        transform-origin:right;transform:rotateY(90deg);
+        box-shadow:-4px 0 12px rgba(0,0,0,.5);
+    }
+    .bk-book3d-shadow{position:absolute;bottom:-18px;left:10px;right:-10px;height:22px;background:rgba(0,0,0,.45);filter:blur(12px);border-radius:50%;}
+    .b3f-topband{width:100%;padding:7px 8px;background:rgba(99,102,241,.22);color:#a5a8ff;font-size:.48rem;font-weight:800;text-align:center;letter-spacing:1.5px;text-transform:uppercase;}
+    .b3f-icon{font-size:2.4rem;color:#6366f1;margin:8px 0 4px;filter:drop-shadow(0 0 14px rgba(99,102,241,.65));}
+    .b3f-title{font-size:1.15rem;font-weight:900;color:#fff;text-align:center;line-height:1.2;padding:0 8px;letter-spacing:-.2px;}
+    .b3f-subtitle{font-size:.65rem;font-weight:700;color:rgba(255,255,255,.45);letter-spacing:2px;text-transform:uppercase;margin:4px 0 2px;}
+    .b3f-author{font-size:.52rem;color:rgba(99,102,241,.7);font-weight:600;}
+    .b3f-bottomstrip{width:100%;padding:5px 8px;background:rgba(99,102,241,.14);color:rgba(163,165,255,.8);font-size:.42rem;font-weight:700;text-align:center;letter-spacing:1px;text-transform:uppercase;margin-top:auto;}
+    .bk-badge-under{font-size:.72rem;font-weight:800;color:#ff6b35;background:rgba(255,107,53,.12);border:1px solid rgba(255,107,53,.3);padding:4px 12px;border-radius:50px;animation:bs-badge 2s ease-in-out infinite;}
+    @keyframes bs-badge{0%,100%{box-shadow:0 0 8px rgba(255,107,53,.2);}50%{box-shadow:0 0 18px rgba(255,107,53,.5);}}
+
+    /* ── Forex Info Column ── */
+    .bk-info{position:relative;z-index:2;}
+    .bk-badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+    .bk-badge-pill{padding:4px 12px;border-radius:50px;font-size:.65rem;font-weight:800;letter-spacing:.8px;text-transform:uppercase;}
+    .bk-badge-pill.hot{background:rgba(255,107,53,.14);color:#ff6b35;border:1px solid rgba(255,107,53,.3);}
+    .bk-badge-pill.type{background:rgba(99,102,241,.14);color:#818cf8;border:1px solid rgba(99,102,241,.3);}
+    .bk-h3{margin-bottom:12px;}
+    .bk-h3-am{display:block;font-size:clamp(1.25rem,2.5vw,1.75rem);font-weight:900;color:#e6edf3;letter-spacing:-.4px;line-height:1.2;}
+    [data-theme="light"] .bk-h3-am{color:#0f172a;}
+    .bk-h3-en{display:block;font-size:.84rem;font-weight:500;color:#8b949e;margin-top:4px;}
+    .bk-desc{font-size:.88rem;color:#8b949e;line-height:1.7;margin-bottom:18px;max-width:520px;}
+    [data-theme="light"] .bk-desc{color:#475569;}
+    .bk-topics{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:7px 20px;margin-bottom:22px;padding:0;}
+    .bk-topics li{font-size:.81rem;color:#8b949e;display:flex;align-items:flex-start;gap:7px;line-height:1.4;}
+    .bk-topics li i{color:#10b981;font-size:.72rem;flex-shrink:0;margin-top:2px;}
+    [data-theme="light"] .bk-topics li{color:#475569;}
+    .bk-price-row{display:flex;align-items:baseline;gap:12px;margin-bottom:18px;}
+    .bk-price-currency{font-size:.95rem;font-weight:700;color:#6366f1;}
+    .bk-price-num{font-size:2.5rem;font-weight:900;color:#6366f1;letter-spacing:-1.5px;line-height:1;filter:drop-shadow(0 0 12px rgba(99,102,241,.4));}
+    .bk-price-note{font-size:.74rem;color:#484f58;}
+    .bk-order-btn{
+        display:inline-flex;align-items:center;gap:10px;
+        padding:14px 32px;background:linear-gradient(135deg,#229ED9,#1a7fbf);
+        color:#fff;border-radius:50px;font-weight:800;font-size:.96rem;
+        box-shadow:0 6px 24px rgba(34,158,217,.45);transition:all .25s;
+        margin-bottom:12px;cursor:pointer;
+    }
+    .bk-forex:hover .bk-order-btn{box-shadow:0 10px 32px rgba(34,158,217,.6);transform:translateY(-2px);}
+    .bk-arrow{transition:transform .2s;}
+    .bk-forex:hover .bk-arrow{transform:translateX(5px);}
+    .bk-tap-hint{display:flex;align-items:center;gap:6px;font-size:.72rem;color:rgba(99,102,241,.65);font-weight:600;animation:bs-hint 2.5s ease-in-out infinite;}
+    @keyframes bs-hint{0%,100%{opacity:.55;}50%{opacity:1;}}
+
+    /* ── Lower Grid ── */
+    .bs-lower{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:28px;}
+
+    .bk-card{
+        display:flex;flex-direction:column;gap:16px;
+        border-radius:22px;padding:28px 24px;
+        text-decoration:none!important;color:inherit!important;
+        position:relative;overflow:hidden;
+        transition:transform .3s,box-shadow .3s,border-color .3s;
+        cursor:pointer;border:1px solid;
+    }
+    .bk-card:hover{transform:translateY(-5px);}
+    .bk-card:active{transform:translateY(-2px);}
+    .bk-card--crypto{
+        background:linear-gradient(155deg,rgba(245,158,11,.08) 0%,#1e2130 60%);
+        border-color:rgba(245,158,11,.28);
+    }
+    .bk-card--crypto:hover{border-color:rgba(245,158,11,.55);box-shadow:0 16px 48px rgba(245,158,11,.15),0 4px 16px rgba(0,0,0,.5);}
+    .bk-card--bundle{
+        background:linear-gradient(155deg,rgba(16,185,129,.07) 0%,#1e2130 60%);
+        border-color:rgba(16,185,129,.28);
+    }
+    .bk-card--bundle:hover{border-color:rgba(16,185,129,.55);box-shadow:0 16px 48px rgba(16,185,129,.15),0 4px 16px rgba(0,0,0,.5);}
+    [data-theme="light"] .bk-card--crypto{background:linear-gradient(155deg,rgba(245,158,11,.06),#fff);}
+    [data-theme="light"] .bk-card--bundle{background:linear-gradient(155deg,rgba(16,185,129,.05),#fff);}
+
+    .bk-card-glow-crypto{position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(245,158,11,.15) 0%,transparent 70%);pointer-events:none;}
+    .bk-card-glow-bundle{position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(16,185,129,.14) 0%,transparent 70%);pointer-events:none;}
+
+    /* Small 3D book in cards */
+    .bk-sm-book{
+        width:90px;height:122px;position:relative;flex-shrink:0;
+        transform-style:preserve-3d;
+        transform:perspective(600px) rotateY(-20deg) rotateX(3deg);
+        transition:transform .35s;
+    }
+    .bk-card:hover .bk-sm-book{transform:perspective(600px) rotateY(-10deg) rotateX(2deg) scale(1.05);}
+    .bk-sm-front{position:absolute;inset:0;border-radius:0 5px 5px 0;display:flex;flex-direction:column;align-items:center;overflow:hidden;box-shadow:4px 5px 18px rgba(0,0,0,.65);}
+    .bk-sm-front--crypto{background:linear-gradient(160deg,#1a1a0d,#110d00);border:1px solid rgba(245,158,11,.35);}
+    .bk-sm-front--bundle-a{background:linear-gradient(160deg,#1a1a0d,#110d00);border:1px solid rgba(245,158,11,.3);}
+    .bk-sm-front--bundle-b{background:linear-gradient(160deg,#1a1f35,#0d1117);border:1px solid rgba(99,102,241,.3);}
+    .bk-sm-spine{position:absolute;left:-10px;top:0;bottom:0;width:10px;border-radius:2px 0 0 2px;transform-origin:right;transform:rotateY(90deg);}
+    .bk-sm-spine--crypto{background:linear-gradient(to right,#5c4a00,#8a6e00);}
+    .bk-sm-spine--bundle{background:linear-gradient(to right,#0a3d2b,#0d5c40);}
+    .bk-sm-shadow{position:absolute;bottom:-12px;left:6px;right:-6px;height:14px;background:rgba(0,0,0,.4);filter:blur(8px);border-radius:50%;}
+    .bk-sm-icon{font-size:1.5rem;margin:10px 0 5px;}
+    .bk-sm-title{font-size:.58rem;font-weight:800;color:#fff;text-align:center;line-height:1.3;padding:0 5px;}
+    .bk-sm-strip{width:100%;padding:4px 5px;font-size:.38rem;font-weight:700;text-align:center;letter-spacing:1px;text-transform:uppercase;margin-top:auto;}
+    .bk-sm-strip--crypto{background:rgba(245,158,11,.18);color:rgba(245,158,11,.8);}
+    .bk-sm-strip--bundle{background:rgba(16,185,129,.18);color:rgba(16,185,129,.8);}
+
+    /* Bundle stacked */
+    .bs-bundle-books{position:relative;width:110px;height:90px;flex-shrink:0;}
+    .bs-bk-back{position:absolute;width:76px;height:100px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:transform .3s;}
+    .bs-bk-front-card{position:absolute;width:76px;height:100px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:transform .3s;box-shadow:4px 4px 16px rgba(0,0,0,.5);}
+    .bs-bk-back{background:linear-gradient(135deg,#1a1a0d,#110d00);border:1px solid rgba(245,158,11,.25);top:10px;left:0;transform:rotate(-8deg);z-index:1;}
+    .bs-bk-front-card{background:linear-gradient(135deg,#1a1f35,#0d1117);border:1px solid rgba(99,102,241,.3);top:0;left:20px;transform:rotate(4deg);z-index:2;}
+    .bk-card--bundle:hover .bs-bk-back{transform:rotate(-14deg) translateX(-4px);}
+    .bk-card--bundle:hover .bs-bk-front-card{transform:rotate(8deg) translateX(4px);}
+    .bs-save-chip{position:absolute;bottom:0;right:0;background:linear-gradient(135deg,#10b981,#059669);color:#fff;font-size:.58rem;font-weight:800;padding:3px 8px;border-radius:50px;z-index:3;white-space:nowrap;box-shadow:0 2px 8px rgba(16,185,129,.4);}
+
+    /* Card content */
+    .bk-card-top{display:flex;gap:18px;align-items:flex-start;}
+    .bk-card-body{display:flex;flex-direction:column;gap:8px;flex:1;}
+    .bk-badge-sm{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:50px;font-size:.64rem;font-weight:800;letter-spacing:.8px;text-transform:uppercase;width:fit-content;}
+    .bk-badge-sm--crypto{background:rgba(245,158,11,.12);color:#f59e0b;border:1px solid rgba(245,158,11,.3);}
+    .bk-badge-sm--bundle{background:rgba(16,185,129,.12);color:#10b981;border:1px solid rgba(16,185,129,.3);}
+    .bk-card-title{font-size:1.12rem;font-weight:900;color:#e6edf3;letter-spacing:-.3px;line-height:1.2;}
+    .bk-card-title span{display:block;font-size:.9rem;font-weight:500;color:#8b949e;}
+    [data-theme="light"] .bk-card-title{color:#0f172a;}
+    [data-theme="light"] .bk-card-title span{color:#475569;}
+    .bk-card-desc{font-size:.82rem;color:#8b949e;line-height:1.6;}
+    [data-theme="light"] .bk-card-desc{color:#475569;}
+    .bk-card-topics{list-style:none;display:flex;flex-direction:column;gap:5px;padding:0;flex:1;}
+    .bk-card-topics li{font-size:.79rem;color:#8b949e;display:flex;align-items:center;gap:6px;}
+    .bk-card-topics li i{font-size:.68rem;color:#10b981;}
+    [data-theme="light"] .bk-card-topics li{color:#475569;}
+
+    /* Savings box */
+    .bs-savings{background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.2);border-radius:10px;padding:12px 14px;margin:4px 0;}
+    .bss-row{display:flex;justify-content:space-between;font-size:.78rem;color:#8b949e;padding:3px 0;}
+    .bss-div{border-top:1px dashed rgba(255,255,255,.09);margin:6px 0;}
+    .bss-total{color:#484f58;}
+    .bss-strike{text-decoration:line-through;}
+    .bss-deal{font-weight:800;color:#10b981;margin-top:2px;}
+    .bss-price{font-size:.92rem;font-weight:900;color:#10b981;}
+
+    /* Price rows */
+    .bk-card-price{display:flex;align-items:baseline;gap:10px;margin-top:4px;}
+    .bk-price-main-crypto{font-size:1.7rem;font-weight:900;color:#f59e0b;letter-spacing:-.5px;}
+    .bk-price-main-bundle{font-size:1.7rem;font-weight:900;color:#10b981;letter-spacing:-.5px;}
+    .bk-price-strike{font-size:.88rem;color:#484f58;text-decoration:line-through;}
+    .bk-price-main-crypto small,.bk-price-main-bundle small{font-size:.75rem;font-weight:600;}
+
+    /* Order buttons */
+    .bk-card-btn{
+        display:flex;align-items:center;justify-content:center;gap:8px;
+        padding:12px 18px;border-radius:12px;
+        color:#fff;font-weight:800;font-size:.86rem;
+        transition:all .25s;margin-top:auto;cursor:pointer;
+    }
+    .bk-card-btn--crypto{background:linear-gradient(135deg,#229ED9,#1a7fbf);box-shadow:0 4px 16px rgba(34,158,217,.35);}
+    .bk-card:hover .bk-card-btn--crypto{box-shadow:0 8px 24px rgba(34,158,217,.55);}
+    .bk-card-btn--bundle{background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 4px 16px rgba(16,185,129,.35);}
+    .bk-card:hover .bk-card-btn--bundle{box-shadow:0 8px 24px rgba(16,185,129,.55);}
+
+    /* Trust bar */
+    .bs-trust{display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;padding:18px 24px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;}
+    [data-theme="light"] .bs-trust{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.07);}
+    .bs-trust-item{display:flex;align-items:center;gap:8px;font-size:.81rem;color:#8b949e;font-weight:500;}
+    .bs-trust-item i{color:#6366f1;font-size:.88rem;}
+
+    /* Responsive */
+    @media(max-width:900px){
+        .bk-forex{grid-template-columns:1fr;padding:28px 22px;gap:28px;text-align:center;}
+        .bk-book3d-wrap{align-items:center;}
+        .bk-badges,.bk-price-row,.bk-tap-hint{justify-content:center;}
+        .bk-topics{grid-template-columns:1fr;}
+        .bk-order-btn{width:100%;justify-content:center;}
+        .bk-desc{margin-left:auto;margin-right:auto;}
+    }
+    @media(max-width:680px){
+        .bs-lower{grid-template-columns:1fr;}
+        .bk-book3d{width:140px;height:186px;}
+        .bs-section{padding:52px 0;}
+    }
+    @media(max-width:440px){
+        .bk-order-btn{padding:13px 20px;font-size:.88rem;}
+        .bk-price-num{font-size:2rem;}
+        .bs-trust{gap:14px;}
+    }
+    </style>
+
+    <section id="products" class="bs-section">
+        <div class="bs-container">
+
+            <!-- Header -->
+            <div class="bs-header">
+                <div class="bs-pill"><i class="fas fa-book-open-reader"></i> TAG BRIDGE BOOKSTORE</div>
+                <h2 class="bs-title">የትሬዲንግ መጽሃፍቶቻችን</h2>
+                <p class="bs-sub">ሙሉ በሙሉ በአማርኛ — ቴሌግራም ላይ ይዘዙ · Order via Telegram</p>
             </div>
 
-            <!-- ===================================================== -->
-            <!--  BOOK 1: FOREX — FULL WIDTH HERO CARD                 -->
-            <!-- ===================================================== -->
+            <!-- ════ BOOK 1: FOREX — HERO CARD ════ -->
             <a href="https://t.me/tagbridge123"
-               target="_blank"
-               rel="noopener noreferrer"
-               class="book-hero-card"
-               aria-label="Order Forex Trading Book — 450 ETB">
+               target="_blank" rel="noopener noreferrer"
+               class="bk-forex"
+               aria-label="Order Forex Trading Book 450 ETB on Telegram">
+                <div class="bk-forex-bg-glow"></div>
+                <div class="bk-forex-grid"></div>
 
-                <!-- Animated background glow -->
-                <div class="bhc-glow"></div>
-                <div class="bhc-grid"></div>
-
-                <!-- Left: 3D Book Cover Mock-up -->
-                <div class="bhc-cover-col">
-                    <div class="book3d book3d--forex">
-                        <div class="book3d-spine"></div>
-                        <div class="book3d-front">
-                            <div class="b3d-top-band">TAG BRIDGE</div>
-                            <div class="b3d-icon"><i class="fas fa-chart-line"></i></div>
-                            <div class="b3d-title">የፎሬክስ<br>ትሬዲንግ</div>
-                            <div class="b3d-subtitle">በአማርኛ</div>
-                            <div class="b3d-author">@tagbridge123</div>
-                            <div class="b3d-bottom-strip">FOREX TRADING IN AMHARIC</div>
+                <!-- 3D Book Cover -->
+                <div class="bk-book3d-wrap">
+                    <div class="bk-book3d">
+                        <div class="bk-book3d-spine"></div>
+                        <div class="bk-book3d-front">
+                            <div class="b3f-topband">TAG BRIDGE</div>
+                            <div class="b3f-icon"><i class="fas fa-chart-line"></i></div>
+                            <div class="b3f-title">የፎሬክስ<br>ትሬዲንግ</div>
+                            <div class="b3f-subtitle">በአማርኛ</div>
+                            <div class="b3f-author">@tagbridge123</div>
+                            <div class="b3f-bottomstrip">FOREX TRADING IN AMHARIC</div>
                         </div>
-                        <div class="book3d-shadow"></div>
+                        <div class="bk-book3d-shadow"></div>
                     </div>
-                    <div class="bhc-cover-badge">🔥 #1 ምርጥ መጽሃፍ</div>
+                    <div class="bk-badge-under">🔥 #1 ምርጥ መጽሃፍ</div>
                 </div>
 
-                <!-- Right: Info -->
-                <div class="bhc-info-col">
-                    <div class="bhc-badge-row">
-                        <span class="bhc-badge-pill hot">🔥 #1 BEST SELLER</span>
-                        <span class="bhc-badge-pill new">E-BOOK</span>
+                <!-- Info -->
+                <div class="bk-info">
+                    <div class="bk-badges">
+                        <span class="bk-badge-pill hot">🔥 #1 BEST SELLER</span>
+                        <span class="bk-badge-pill type">E-BOOK</span>
                     </div>
-
-                    <h3 class="bhc-title">
-                        <span class="bhc-title-am">የፎሬክስ ትሬዲንግ በአማርኛ</span>
-                        <span class="bhc-title-en">Forex Trading in Amharic</span>
+                    <h3 class="bk-h3">
+                        <span class="bk-h3-am">የፎሬክስ ትሬዲንግ በአማርኛ</span>
+                        <span class="bk-h3-en">Forex Trading in Amharic</span>
                     </h3>
-
-                    <p class="bhc-desc">ሙሉ በሙሉ በአማርኛ የተዘጋጀ ሙያዊ የፎሬክስ ትሬዲንግ መጽሃፍ — Smart Money Concepts (SMC)፣ Technical Analysis፣ Risk Management እና Trading Psychology ሁሉም ይዟል።</p>
-
-                    <ul class="bhc-topics">
+                    <p class="bk-desc">ሙሉ በሙሉ በአማርኛ የተዘጋጀ ሙያዊ የፎሬክስ ትሬዲንግ መጽሃፍ — Smart Money Concepts (SMC)፣ Technical Analysis፣ Risk Management እና Trading Psychology ሁሉም ይዟል።</p>
+                    <ul class="bk-topics">
                         <li><i class="fas fa-check-circle"></i> Market Structure &amp; Price Action</li>
                         <li><i class="fas fa-check-circle"></i> Smart Money Concepts (SMC) &amp; ICT</li>
                         <li><i class="fas fa-check-circle"></i> Risk Management &amp; Position Sizing</li>
                         <li><i class="fas fa-check-circle"></i> Candlestick Patterns &amp; Chart Reading</li>
                         <li><i class="fas fa-check-circle"></i> Trading Psychology &amp; Discipline</li>
-                        <li><i class="fas fa-check-circle"></i> ነፃ VIP Trading Academy የይለፍ ቃል</li>
+                        <li><i class="fas fa-check-circle"></i> ነፃ VIP Trading Academy Password</li>
                     </ul>
-
-                    <div class="bhc-price-row">
-                        <div class="bhc-price-main">
-                            <span class="bhc-currency">ETB</span>
-                            <span class="bhc-amount">450</span>
-                        </div>
-                        <div class="bhc-price-note">ቴሌግራም ላይ ለማዘዝ ጠቅ ያድርጉ</div>
+                    <div class="bk-price-row">
+                        <span class="bk-price-currency">ETB</span>
+                        <span class="bk-price-num">450</span>
+                        <span class="bk-price-note">ጠቅ ያድርጉ — ቴሌግራም ይከፈታል</span>
                     </div>
-
-                    <div class="bhc-order-btn">
+                    <div class="bk-order-btn">
                         <i class="fab fa-telegram"></i>
                         <span>አሁኑኑ ይዘዙ — 450 ብር</span>
-                        <i class="fas fa-arrow-right bhc-arrow"></i>
+                        <i class="fas fa-arrow-right bk-arrow"></i>
                     </div>
-
-                    <div class="bhc-tap-hint">
+                    <div class="bk-tap-hint">
                         <i class="fas fa-hand-pointer"></i>
                         <span>ይህን ካርድ ጠቅ ሲያደርጉ ቴሌግራም ይከፈታል</span>
                     </div>
                 </div>
             </a>
 
-            <!-- ===================================================== -->
-            <!--  BOOKS 2 & 3: CRYPTO + BUNDLE — SIDE BY SIDE          -->
-            <!-- ===================================================== -->
-            <div class="bookstore-lower-grid">
+            <!-- ════ BOOKS 2 & 3 ════ -->
+            <div class="bs-lower">
 
                 <!-- BOOK 2: CRYPTO -->
                 <a href="https://t.me/tagbridge123"
-                   target="_blank"
-                   rel="noopener noreferrer"
-                   class="book-card book-card--crypto"
-                   aria-label="Order Crypto Trading Book — 500 ETB">
-
-                    <div class="bc-glow"></div>
-
-                    <!-- 3D Cover -->
-                    <div class="book3d book3d--crypto book3d--sm">
-                        <div class="book3d-spine book3d-spine--crypto"></div>
-                        <div class="book3d-front book3d-front--crypto">
-                            <div class="b3d-top-band" style="background:rgba(245,158,11,0.25);color:#f59e0b;">TAG BRIDGE</div>
-                            <div class="b3d-icon" style="color:#f59e0b;"><i class="fab fa-bitcoin"></i></div>
-                            <div class="b3d-title" style="font-size:1rem;">የክሪፕቶ<br>ትሬዲንግ</div>
-                            <div class="b3d-subtitle">በአማርኛ</div>
-                            <div class="b3d-bottom-strip" style="background:rgba(245,158,11,0.2);color:#f59e0b;">CRYPTO TRADING IN AMHARIC</div>
+                   target="_blank" rel="noopener noreferrer"
+                   class="bk-card bk-card--crypto"
+                   aria-label="Order Crypto Trading Book 500 ETB">
+                    <div class="bk-card-glow-crypto"></div>
+                    <div class="bk-card-top">
+                        <!-- Small 3D book -->
+                        <div class="bk-sm-book">
+                            <div class="bk-sm-spine bk-sm-spine--crypto"></div>
+                            <div class="bk-sm-front bk-sm-front--crypto">
+                                <div class="b3f-topband" style="background:rgba(245,158,11,.2);color:#f59e0b;font-size:.4rem;">TAG BRIDGE</div>
+                                <div class="bk-sm-icon" style="color:#f59e0b;"><i class="fab fa-bitcoin"></i></div>
+                                <div class="bk-sm-title">የክሪፕቶ<br>ትሬዲንግ</div>
+                                <div class="bk-sm-strip bk-sm-strip--crypto">CRYPTO IN AMHARIC</div>
+                            </div>
+                            <div class="bk-sm-shadow"></div>
                         </div>
-                        <div class="book3d-shadow"></div>
+                        <div class="bk-card-body">
+                            <span class="bk-badge-sm bk-badge-sm--crypto">₿ CRYPTO</span>
+                            <div class="bk-card-title">የክሪፕቶ ትሬዲንግ<br><span>በአማርኛ</span></div>
+                            <p class="bk-card-desc">Blockchain፣ DeFi፣ NFT፣ Spot &amp; Futures ትሬዲንግ ሙሉ ለሙሉ በአማርኛ።</p>
+                        </div>
                     </div>
-
-                    <div class="bc-info">
-                        <span class="bc-badge crypto-badge">₿ CRYPTO</span>
-                        <h3 class="bc-title">የክሪፕቶ ትሬዲንግ<br><span>በአማርኛ</span></h3>
-                        <p class="bc-desc">ሙሉ በሙሉ በአማርኛ — Blockchain፣ DeFi፣ NFT፣ Spot &amp; Futures ትሬዲንግ ይዟል።</p>
-                        <ul class="bc-topics">
-                            <li><i class="fas fa-check-circle"></i> Blockchain &amp; Crypto Basics</li>
-                            <li><i class="fas fa-check-circle"></i> DeFi &amp; Wallets Guide</li>
-                            <li><i class="fas fa-check-circle"></i> Spot &amp; Futures Trading</li>
-                            <li><i class="fas fa-check-circle"></i> Portfolio &amp; Risk Management</li>
-                        </ul>
-                        <div class="bc-price-row">
-                            <span class="bc-price">500 <small>ETB</small></span>
-                        </div>
-                        <div class="bc-order-btn">
-                            <i class="fab fa-telegram"></i> አሁኑኑ ይዘዙ — 500 ETB
-                        </div>
+                    <ul class="bk-card-topics">
+                        <li><i class="fas fa-check-circle"></i> Introduction to Cryptocurrency</li>
+                        <li><i class="fas fa-check-circle"></i> Bitcoin, Ethereum &amp; Blockchain</li>
+                        <li><i class="fas fa-check-circle"></i> Binance &amp; MetaMask Guide</li>
+                        <li><i class="fas fa-check-circle"></i> Spot &amp; Futures Trading</li>
+                        <li><i class="fas fa-check-circle"></i> DeFi, NFTs &amp; Portfolio</li>
+                        <li><i class="fas fa-check-circle"></i> Crypto Risk Management</li>
+                    </ul>
+                    <div class="bk-card-price">
+                        <span class="bk-price-main-crypto">500 <small>ETB</small></span>
+                    </div>
+                    <div class="bk-card-btn bk-card-btn--crypto">
+                        <i class="fab fa-telegram"></i> አሁኑኑ ይዘዙ — 500 ብር
                     </div>
                 </a>
 
                 <!-- BOOK 3: BUNDLE -->
                 <a href="https://t.me/tagbridge123"
-                   target="_blank"
-                   rel="noopener noreferrer"
-                   class="book-card book-card--bundle"
-                   aria-label="Order Forex + Crypto Bundle — 700 ETB">
-
-                    <div class="bc-glow bc-glow--bundle"></div>
-
-                    <!-- Bundle stacked covers -->
-                    <div class="bundle-covers-wrap">
-                        <div class="bundle-cover bundle-cover--back">
-                            <i class="fab fa-bitcoin" style="color:#f59e0b;font-size:1.4rem;"></i>
+                   target="_blank" rel="noopener noreferrer"
+                   class="bk-card bk-card--bundle"
+                   aria-label="Order Forex plus Crypto Bundle 700 ETB">
+                    <div class="bk-card-glow-bundle"></div>
+                    <div class="bk-card-top">
+                        <!-- Stacked covers -->
+                        <div class="bs-bundle-books">
+                            <div class="bs-bk-back"><i class="fab fa-bitcoin" style="color:#f59e0b;font-size:1.3rem;"></i></div>
+                            <div class="bs-bk-front-card"><i class="fas fa-chart-line" style="color:#6366f1;font-size:1.3rem;"></i></div>
+                            <div class="bs-save-chip">250 ብር ቁጠባ!</div>
                         </div>
-                        <div class="bundle-cover bundle-cover--front">
-                            <i class="fas fa-chart-line" style="color:#6366f1;font-size:1.4rem;"></i>
+                        <div class="bk-card-body">
+                            <span class="bk-badge-sm bk-badge-sm--bundle">🎁 BUNDLE DEAL</span>
+                            <div class="bk-card-title">ፎሬክስ + ክሪፕቶ<br><span>ጥቅል ቅናሽ</span></div>
+                            <p class="bk-card-desc">ሁለቱንም ሙሉ መጽሃፎች አንድ ላይ ገዝተው <strong style="color:#10b981;">250 ብር ይቆጥቡ!</strong></p>
                         </div>
-                        <div class="bundle-save-chip">250 ብር ቁጠባ!</div>
                     </div>
-
-                    <div class="bc-info">
-                        <span class="bc-badge bundle-b-badge">🎁 BUNDLE DEAL</span>
-                        <h3 class="bc-title">ፎሬክስ + ክሪፕቶ<br><span>ጥቅል ቅናሽ</span></h3>
-                        <p class="bc-desc">ሁለቱንም ሙሉ መጽሃፎች አንድ ላይ ገዝተው <strong>250 ብር ይቆጥቡ!</strong></p>
-                        <div class="bundle-savings-box">
-                            <div class="bsb-row">
-                                <span>የፎሬክስ መጽሃፍ</span><span>450 ETB</span>
-                            </div>
-                            <div class="bsb-row">
-                                <span>የክሪፕቶ መጽሃፍ</span><span>500 ETB</span>
-                            </div>
-                            <div class="bsb-divider"></div>
-                            <div class="bsb-row bsb-total-row">
-                                <span>ሁለቱ ብቻቸውን</span><span class="bsb-strikethrough">950 ETB</span>
-                            </div>
-                            <div class="bsb-row bsb-deal-row">
-                                <span>🎁 የጥቅሉ ዋጋ</span><span class="bsb-deal-price">700 ETB</span>
-                            </div>
-                        </div>
-                        <ul class="bc-topics">
-                            <li><i class="fas fa-check-circle"></i> ሁለቱም ሙሉ መጽሃፎች</li>
-                            <li><i class="fas fa-check-circle"></i> VIP Academy የይለፍ ቃል</li>
-                            <li><i class="fas fa-check-circle"></i> ቀጥታ Telegram ድጋፍ</li>
-                        </ul>
-                        <div class="bc-price-row">
-                            <span class="bc-price-old">950 ETB</span>
-                            <span class="bc-price bundle-price-highlight">700 <small>ETB</small></span>
-                        </div>
-                        <div class="bc-order-btn bc-order-btn--bundle">
-                            <i class="fab fa-telegram"></i> ጥቅሉን ይዘዙ — 700 ብር
-                        </div>
+                    <!-- Savings breakdown -->
+                    <div class="bs-savings">
+                        <div class="bss-row"><span>የፎሬክስ መጽሃፍ</span><span>450 ETB</span></div>
+                        <div class="bss-row"><span>የክሪፕቶ መጽሃፍ</span><span>500 ETB</span></div>
+                        <div class="bss-div"></div>
+                        <div class="bss-row bss-total"><span>ሁለቱ ብቻቸውን</span><span class="bss-strike">950 ETB</span></div>
+                        <div class="bss-row bss-deal"><span>🎁 የጥቅሉ ዋጋ</span><span class="bss-price">700 ETB</span></div>
+                    </div>
+                    <ul class="bk-card-topics">
+                        <li><i class="fas fa-check-circle"></i> ሁለቱም ሙሉ መጽሃፎች (Forex + Crypto)</li>
+                        <li><i class="fas fa-check-circle"></i> VIP Academy Password ተካቷል</li>
+                        <li><i class="fas fa-check-circle"></i> ቀጥታ Telegram 1-on-1 ድጋፍ</li>
+                    </ul>
+                    <div class="bk-card-price">
+                        <span class="bk-price-strike">950 ETB</span>
+                        <span class="bk-price-main-bundle">700 <small>ETB</small></span>
+                    </div>
+                    <div class="bk-card-btn bk-card-btn--bundle">
+                        <i class="fab fa-telegram"></i> ጥቅሉን ይዘዙ — 700 ብር
                     </div>
                 </a>
+            </div><!-- /.bs-lower -->
 
-            </div><!-- /.bookstore-lower-grid -->
-
-            <!-- Bottom trust bar -->
-            <div class="bookstore-trust-bar">
-                <div class="trust-item"><i class="fab fa-telegram"></i> <span>ቴሌግራም ላይ ይዘዛሉ</span></div>
-                <div class="trust-item"><i class="fas fa-bolt"></i> <span>ፈጣን ምላሽ</span></div>
-                <div class="trust-item"><i class="fas fa-shield-halved"></i> <span>100% ተዓማኒ</span></div>
-                <div class="trust-item"><i class="fas fa-headset"></i> <span>ድጋፍ ዝግጁ</span></div>
+            <!-- Trust Bar -->
+            <div class="bs-trust">
+                <div class="bs-trust-item"><i class="fab fa-telegram"></i> <span>ቴሌግራም ላይ ይዘዛሉ</span></div>
+                <div class="bs-trust-item"><i class="fas fa-bolt"></i> <span>ፈጣን PDF አቅርቦት</span></div>
+                <div class="bs-trust-item"><i class="fas fa-shield-halved"></i> <span>100% ተዓማኒ</span></div>
+                <div class="bs-trust-item"><i class="fas fa-headset"></i> <span>ድጋፍ ዝግጁ ነው</span></div>
+                <div class="bs-trust-item"><i class="fas fa-graduation-cap"></i> <span>VIP Academy ተካቷል</span></div>
             </div>
 
         </div>
