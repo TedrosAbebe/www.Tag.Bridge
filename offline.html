@@ -3,54 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ታግ ብሪጅ - Offline</title>
+    <title>Offline — ታግ ብሪጅ</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #5b7de8, #6b6bb8);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-            padding: 24px;
-        }
-        .card {
-            background: rgba(255,255,255,0.15);
-            border-radius: 24px;
-            padding: 40px 28px;
-            max-width: 340px;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-        .icon { font-size: 4rem; margin-bottom: 16px; }
-        h1 { font-size: 1.4rem; font-weight: 800; margin-bottom: 10px; }
-        p { font-size: 0.9rem; opacity: 0.85; line-height: 1.7; margin-bottom: 24px; }
-        .btn {
-            display: inline-block;
-            background: white;
-            color: #5b7de8;
-            padding: 12px 28px;
-            border-radius: 50px;
-            font-weight: 800;
-            font-size: 0.95rem;
-            text-decoration: none;
-            cursor: pointer;
-            border: none;
-        }
-        .brand { font-size: 1.1rem; font-weight: 900; margin-bottom: 20px; }
-        .tag { color: #38ef7d; }
-        .bridge { color: #ffd200; }
+        body { font-family: 'Inter', sans-serif; background: #0d1117; color: #e6edf3; min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 24px; }
+        .card { max-width: 420px; }
+        .icon { font-size: 4rem; margin-bottom: 24px; }
+        h1 { font-size: 1.8rem; font-weight: 800; margin-bottom: 12px; }
+        p { color: #8b949e; line-height: 1.6; margin-bottom: 24px; }
+        a { display: inline-block; padding: 12px 28px; border-radius: 50px; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; text-decoration: none; font-weight: 700; }
     </style>
 </head>
 <body>
     <div class="card">
         <div class="icon">📡</div>
-        <div class="brand"><span class="tag">ታግ</span> <span class="bridge">ብሪጅ</span></div>
         <h1>ኢንተርኔት የለም</h1>
-        <p>በዚህ ጊዜ ኢንተርኔት አልተገናኘም።<br>ኢንተርኔት ካገናኙ በኋላ እንደገና ይሞክሩ።</p>
-        <button class="btn" onclick="window.location.reload()">🔄 እንደገና ሞክር</button>
+        <p>ታግ ብሪጅ ለመጠቀም ኢንተርኔት ግንኙነት ያስፈልጋል። ግንኙነትዎን ያረጋግጡ።<br><br>You need an internet connection to use Tag Bridge.</p>
+        <a href="/">🔄 Try Again</a>
     </div>
 </body>
 </html>
