@@ -421,21 +421,45 @@ const CALCS = {
             {id:'ps-risk', label:'Risk % per Trade',    type:'number', ph:'1', step:'0.1'},
             {id:'ps-entry',label:'Entry Price',          type:'number', ph:'1.0850', step:'any'},
             {id:'ps-sl',   label:'Stop Loss Price',      type:'number', ph:'1.0800', step:'any'},
-            {id:'ps-type', label:'Instrument',           type:'select', opts:['Forex (xxx/USD)','Crypto (USD quote)','Gold (XAU/USD)']}
+            {id:'ps-type', label:'Instrument',           type:'select', opts:['Forex (xxx/USD)','Forex (xxx/JPY)','Crypto (USD quote)','Gold (XAU/USD)']}
         ],
         fn(v) {
             const bal=+v['ps-bal'], rp=+v['ps-risk']/100, en=+v['ps-entry'], sl=+v['ps-sl'];
-            if(!bal||!rp||!en||!sl) return null;
-            const riskUSD = bal*rp, slDist = Math.abs(en-sl);
-            let lots;
-            if(v['ps-type']?.includes('Crypto')) lots = riskUSD/(slDist*en);
-            else if(v['ps-type']?.includes('Gold')) lots = riskUSD/(slDist*100);
-            else { const pips=slDist*10000; lots=riskUSD/(pips*10); }
+            if(!bal||!rp||!en||!sl||en<=0||sl<=0||bal<=0) return null;
+            if(rp<=0||rp>1) return null; // max 100% risk guard
+            const riskUSD = bal * rp;
+            const slDist  = Math.abs(en - sl);
+            if(slDist === 0) return null;
+            let lots, pipVal, pipDist;
+            const type = v['ps-type'] || '';
+            if(type.includes('JPY')) {
+                // JPY pairs: pip = 0.01, contract = 100,000, pip value = (0.01/price)*100000
+                pipDist = slDist / 0.01; // pips
+                pipVal  = (0.01 / en) * 100000; // $ per pip per std lot
+                lots    = riskUSD / (pipDist * pipVal);
+            } else if(type.includes('Crypto')) {
+                // Crypto: no fixed pip, direct $ value
+                lots = riskUSD / (slDist * en);
+            } else if(type.includes('Gold')) {
+                // Gold (XAU/USD): 1 lot = 100 oz, pip = $0.01
+                pipDist = slDist / 0.01;
+                pipVal  = 1.00; // $1 per pip per std lot (100 oz × $0.01)
+                lots    = riskUSD / (pipDist * pipVal);
+            } else {
+                // Standard Forex xxx/USD: pip = 0.0001, contract = 100,000, pip value = $10
+                pipDist = slDist / 0.0001;
+                pipVal  = 10;
+                lots    = riskUSD / (pipDist * pipVal);
+            }
+            const miniLots  = lots * 10;
+            const microLots = lots * 100;
             return [
-                {v:lots.toFixed(3)+' lots', l:'Lot Size'},
-                {v:'$'+riskUSD.toFixed(2), l:'Risk Amount'},
-                {v:(slDist*10000).toFixed(1), l:'SL in Pips'},
-                {v:(rp*100)+'%', l:'Risk %'}
+                {v: lots.toFixed(3) + ' lots', l:'Position Size'},
+                {v: '$' + riskUSD.toFixed(2),  l:'Risk Amount'},
+                {v: (type.includes('Crypto') ? slDist.toFixed(6) : (type.includes('JPY') ? pipDist.toFixed(1)+' pips' : pipDist.toFixed(1)+' pips')), l:'SL Distance'},
+                {v: miniLots.toFixed(2) + ' mini', l:'Mini Lots'},
+                {v: microLots.toFixed(1) + ' micro', l:'Micro Lots'},
+                {v: (rp*100).toFixed(2) + '%', l:'Risk %'}
             ];
         }
     },
@@ -443,165 +467,288 @@ const CALCS = {
         title:'Risk % Calculator',
         desc:'Find what percentage of your account you are risking.',
         fields:[
-            {id:'rp-bal', label:'Account Balance ($)', type:'number', ph:'10000'},
-            {id:'rp-amt', label:'Risk Amount ($)',      type:'number', ph:'100'}
+            {id:'rp-bal',   label:'Account Balance ($)', type:'number', ph:'10000'},
+            {id:'rp-entry', label:'Entry Price',          type:'number', ph:'1.0850', step:'any'},
+            {id:'rp-sl',    label:'Stop Loss Price',      type:'number', ph:'1.0800', step:'any'},
+            {id:'rp-lot',   label:'Lot Size',             type:'number', ph:'0.20',   step:'0.01'},
+            {id:'rp-type',  label:'Instrument',           type:'select', opts:['Forex (xxx/USD)','Forex (xxx/JPY)','Gold (XAU/USD)']}
         ],
         fn(v) {
-            const bal=+v['rp-bal'], amt=+v['rp-amt'];
-            if(!bal||!amt) return null;
-            const pct=(amt/bal)*100;
-            const status = pct<=1?'✅ Conservative':pct<=2?'⚠️ Moderate':'❌ High Risk!';
+            const bal=+v['rp-bal'], en=+v['rp-entry'], sl=+v['rp-sl'], lot=+v['rp-lot'];
+            if(!bal||!en||!sl||!lot||bal<=0||lot<=0) return null;
+            const slDist = Math.abs(en - sl);
+            if(slDist === 0) return null;
+            const type = v['rp-type'] || '';
+            let pipVal, pipDist, riskUSD;
+            if(type.includes('JPY')) {
+                pipDist = slDist / 0.01;
+                pipVal  = (0.01 / en) * 100000;
+                riskUSD = pipDist * pipVal * lot;
+            } else if(type.includes('Gold')) {
+                pipDist = slDist / 0.01;
+                pipVal  = 1.00;
+                riskUSD = pipDist * pipVal * lot;
+            } else {
+                pipDist = slDist / 0.0001;
+                pipVal  = 10;
+                riskUSD = pipDist * pipVal * lot;
+            }
+            const pct     = (riskUSD / bal) * 100;
+            const remain  = bal - riskUSD;
+            const status  = pct <= 1 ? '✅ Conservative' : pct <= 2 ? '⚠️ Moderate' : '❌ High Risk!';
             return [
-                {v:pct.toFixed(2)+'%', l:'Risk %'},
-                {v:status, l:'Status'},
-                {v:'$'+(bal*0.01).toFixed(2), l:'1% = '},
-                {v:'$'+(bal*0.02).toFixed(2), l:'2% = '}
+                {v: pct.toFixed(2) + '%',       l:'Risk %'},
+                {v: '$' + riskUSD.toFixed(2),   l:'Risk Amount'},
+                {v: status,                      l:'Assessment'},
+                {v: '$' + remain.toFixed(2),     l:'Remaining Balance'},
+                {v: pipDist.toFixed(1) + ' pips',l:'SL in Pips'},
+                {v: '$' + pipVal.toFixed(4),     l:'Pip Value / Std Lot'}
             ];
         }
     },
     pip:{
         title:'Pip Value Calculator',
-        desc:'Monetary value of 1 pip based on lot size.',
+        desc:'Monetary value of 1 pip based on lot size and instrument.',
         fields:[
-            {id:'pv-type', label:'Pair Type', type:'select', opts:['Forex (xxx/USD)','Forex (xxx/JPY)','Gold (XAU/USD)']},
-            {id:'pv-lot',  label:'Lot Size',  type:'number', ph:'0.1', step:'0.01'},
-            {id:'pv-px',   label:'Current Price (JPY/Gold)', type:'number', ph:'150.00', step:'any'}
+            {id:'pv-type', label:'Instrument',                 type:'select', opts:['Forex (xxx/USD)','Forex (xxx/JPY)','Forex (EUR/USD)','Forex (GBP/USD)','Gold (XAU/USD)','Silver (XAG/USD)']},
+            {id:'pv-lot',  label:'Lot Size',                   type:'number', ph:'1.0', step:'0.01'},
+            {id:'pv-px',   label:'Current Price (required for JPY)', type:'number', ph:'150.00', step:'any'}
         ],
         fn(v) {
-            const lot=+v['pv-lot']||0.1, px=+v['pv-px']||150;
-            let pip;
-            if(v['pv-type']?.includes('JPY')) pip=(0.01/px)*100000*lot;
-            else if(v['pv-type']?.includes('Gold')) pip=0.1*100*lot;
-            else pip=0.0001*100000*lot;
+            const lot = +v['pv-lot'] || 1, px = +v['pv-px'] || 150;
+            const type = v['pv-type'] || '';
+            let pipPerStdLot;
+            if(type.includes('JPY')) {
+                // JPY: pip = 0.01, contract 100,000 units, pip value in USD = (0.01/price)*100,000
+                pipPerStdLot = (0.01 / px) * 100000;
+            } else if(type.includes('Gold')) {
+                // XAU/USD: 1 lot = 100 oz, 1 pip = $0.01/oz → $1 per pip per lot
+                pipPerStdLot = 1.00;
+            } else if(type.includes('Silver')) {
+                // XAG/USD: 1 lot = 5000 oz, pip = $0.001/oz → $5 per pip per lot
+                pipPerStdLot = 5.00;
+            } else {
+                // Standard xxx/USD: pip = 0.0001, contract 100,000 → $10 per pip per lot
+                pipPerStdLot = 10.00;
+            }
+            const pipValue  = pipPerStdLot * lot;
+            const miniPip   = pipPerStdLot * 0.1 * lot;
+            const microPip  = pipPerStdLot * 0.01 * lot;
             return [
-                {v:'$'+pip.toFixed(4), l:'1 Pip'},
-                {v:'$'+(pip*10).toFixed(4), l:'10 Pips'},
-                {v:'$'+(pip*50).toFixed(4), l:'50 Pips'},
-                {v:'$'+(pip*100).toFixed(4), l:'100 Pips'}
+                {v: '$' + pipValue.toFixed(4),  l:'1 Pip (your lot)'},
+                {v: '$' + pipPerStdLot.toFixed(4), l:'1 Pip (1 std lot)'},
+                {v: '$' + miniPip.toFixed(4),   l:'1 Pip (mini lot)'},
+                {v: '$' + microPip.toFixed(4),  l:'1 Pip (micro lot)'},
+                {v: '$' + (pipValue*10).toFixed(3), l:'10 Pips'},
+                {v: '$' + (pipValue*50).toFixed(3), l:'50 Pips'}
             ];
         }
     },
     lotsize:{
         title:'Lot Size Calculator',
-        desc:'Ideal lot size from risk amount and stop loss in pips.',
+        desc:'Ideal lot size from account balance, risk % and SL pips.',
         fields:[
-            {id:'ls-bal',  label:'Account Balance ($)', type:'number', ph:'5000'},
-            {id:'ls-risk', label:'Risk Amount ($)',      type:'number', ph:'50'},
-            {id:'ls-pips', label:'Stop Loss (Pips)',     type:'number', ph:'20'}
+            {id:'ls-bal',  label:'Account Balance ($)', type:'number', ph:'10000'},
+            {id:'ls-risk', label:'Risk % per Trade',    type:'number', ph:'1', step:'0.1'},
+            {id:'ls-pips', label:'Stop Loss (Pips)',     type:'number', ph:'50'},
+            {id:'ls-type', label:'Instrument',           type:'select', opts:['Forex (xxx/USD)','Forex (xxx/JPY)','Gold (XAU/USD)']}
         ],
         fn(v) {
-            const bal=+v['ls-bal'], risk=+v['ls-risk'], pips=+v['ls-pips'];
-            if(!bal||!risk||!pips) return null;
-            const lots=risk/(pips*10), pct=(risk/bal)*100;
+            const bal=+v['ls-bal'], riskPct=+v['ls-risk']/100, pips=+v['ls-pips'];
+            const type = v['ls-type'] || '';
+            if(!bal||!riskPct||!pips||bal<=0||pips<=0) return null;
+            const riskUSD = bal * riskPct;
+            let pipVal;
+            if(type.includes('JPY'))  pipVal = 6.67;  // approx for USD/JPY ~150
+            else if(type.includes('Gold')) pipVal = 1.00;
+            else                           pipVal = 10.00;
+            const lots      = riskUSD / (pips * pipVal);
+            const miniLots  = lots * 10;
+            const microLots = lots * 100;
+            const units     = lots * 100000;
             return [
-                {v:lots.toFixed(3), l:'Lot Size'},
-                {v:pct.toFixed(2)+'%', l:'Risk %'},
-                {v:'$'+risk.toFixed(2), l:'Risk $'},
-                {v:pips+'p', l:'SL Pips'}
+                {v: lots.toFixed(3),             l:'Standard Lots'},
+                {v: miniLots.toFixed(2),          l:'Mini Lots'},
+                {v: microLots.toFixed(1),         l:'Micro Lots'},
+                {v: Math.round(units).toLocaleString(), l:'Units'},
+                {v: '$' + riskUSD.toFixed(2),     l:'Risk Amount'},
+                {v: (riskPct*100).toFixed(2)+'%', l:'Risk %'}
             ];
         }
     },
     rr:{
         title:'Risk:Reward Calculator',
-        desc:'Calculate R:R ratio and break-even win rate.',
+        desc:'Calculate R:R ratio, break-even win rate and potential P&L.',
         fields:[
-            {id:'rr-en', label:'Entry Price',   type:'number', ph:'1.0850', step:'any'},
-            {id:'rr-sl', label:'Stop Loss',     type:'number', ph:'1.0800', step:'any'},
-            {id:'rr-tp', label:'Take Profit',   type:'number', ph:'1.0950', step:'any'}
+            {id:'rr-en',  label:'Entry Price',   type:'number', ph:'1.0850', step:'any'},
+            {id:'rr-sl',  label:'Stop Loss',     type:'number', ph:'1.0800', step:'any'},
+            {id:'rr-tp',  label:'Take Profit',   type:'number', ph:'1.0950', step:'any'},
+            {id:'rr-lot', label:'Lot Size',       type:'number', ph:'0.1',    step:'0.01'},
+            {id:'rr-dir', label:'Direction',      type:'select', opts:['BUY','SELL']}
         ],
         fn(v) {
-            const en=+v['rr-en'], sl=+v['rr-sl'], tp=+v['rr-tp'];
-            if(!en||!sl||!tp) return null;
-            const risk=Math.abs(en-sl), reward=Math.abs(tp-en);
-            const rr=reward/risk, be=(1/(1+rr))*100;
-            const status=rr>=2?'✅ Excellent':rr>=1.5?'✅ Good':rr>=1?'⚠️ Acceptable':'❌ Poor';
+            const en=+v['rr-en'], sl=+v['rr-sl'], tp=+v['rr-tp'], lot=+v['rr-lot']||0.1;
+            const dir = v['rr-dir'] || 'BUY';
+            if(!en||!sl||!tp||en<=0||sl<=0||tp<=0) return null;
+            // Validate direction
+            if(dir==='BUY'  && !(sl < en && tp > en)) return null;
+            if(dir==='SELL' && !(sl > en && tp < en)) return null;
+            const riskDist   = Math.abs(en - sl);
+            const rewardDist = Math.abs(tp - en);
+            if(riskDist === 0) return null;
+            const rr         = rewardDist / riskDist;
+            const be         = (1 / (1 + rr)) * 100;
+            const riskPips   = riskDist / 0.0001;
+            const rewardPips = rewardDist / 0.0001;
+            const riskUSD    = riskPips * 10 * lot;
+            const rewardUSD  = rewardPips * 10 * lot;
+            const status     = rr >= 3 ? '✅ Excellent' : rr >= 2 ? '✅ Good' : rr >= 1 ? '⚠️ Acceptable' : '❌ Poor';
             return [
-                {v:'1 : '+rr.toFixed(2), l:'R:R Ratio'},
-                {v:be.toFixed(1)+'%', l:'Break-Even WR'},
-                {v:status, l:'Assessment'},
-                {v:(rr*100).toFixed(0)+'%', l:'Reward/Risk'}
+                {v: '1 : ' + rr.toFixed(2),         l:'R:R Ratio'},
+                {v: be.toFixed(1) + '%',             l:'Break-Even Win Rate'},
+                {v: status,                           l:'Assessment'},
+                {v: '-$' + riskUSD.toFixed(2),        l:'Potential Loss'},
+                {v: '+$' + rewardUSD.toFixed(2),      l:'Potential Profit'},
+                {v: riskPips.toFixed(0) + ' / ' + rewardPips.toFixed(0) + ' pips', l:'Risk / Reward Pips'}
             ];
         }
     },
     pl:{
         title:'P&L Calculator',
-        desc:'Calculate profit or loss for a Forex trade.',
+        desc:'Calculate profit or loss accurately for Forex trades.',
         fields:[
             {id:'pl-en',  label:'Entry Price', type:'number', ph:'1.0850', step:'any'},
             {id:'pl-ex',  label:'Exit Price',  type:'number', ph:'1.0950', step:'any'},
-            {id:'pl-lot', label:'Lot Size',    type:'number', ph:'0.1', step:'0.01'},
-            {id:'pl-dir', label:'Direction',   type:'select', opts:['BUY','SELL']}
+            {id:'pl-lot', label:'Lot Size',    type:'number', ph:'0.1',    step:'0.01'},
+            {id:'pl-dir', label:'Direction',   type:'select', opts:['BUY','SELL']},
+            {id:'pl-type',label:'Instrument',  type:'select', opts:['Forex (xxx/USD)','Forex (xxx/JPY)','Gold (XAU/USD)']}
         ],
         fn(v) {
             const en=+v['pl-en'], ex=+v['pl-ex'], lot=+v['pl-lot'], dir=v['pl-dir'];
-            if(!en||!ex||!lot) return null;
-            const rawPips=(ex-en)*10000;
-            const pips=dir==='BUY'?rawPips:-rawPips;
-            const profit=pips*10*lot;
+            const type = v['pl-type'] || '';
+            if(!en||!ex||!lot||en<=0||ex<=0||lot<=0) return null;
+            const priceDiff = dir === 'BUY' ? (ex - en) : (en - ex);
+            let pipVal, pips, profit;
+            if(type.includes('JPY')) {
+                pips    = priceDiff / 0.01;
+                pipVal  = (0.01 / en) * 100000;
+                profit  = pips * pipVal * lot;
+            } else if(type.includes('Gold')) {
+                pips    = priceDiff / 0.01;
+                pipVal  = 1.00;
+                profit  = pips * pipVal * lot;
+            } else {
+                pips    = priceDiff / 0.0001;
+                pipVal  = 10;
+                profit  = pips * pipVal * lot;
+            }
+            const result = profit >= 0 ? '✅ Profit' : '❌ Loss';
+            const pctGain = profit / (en * lot * 100000) * 100; // rough % on notional
             return [
-                {v:'$'+profit.toFixed(2), l:'P&L'},
-                {v:pips.toFixed(1)+' pips', l:'Pips'},
-                {v:profit>=0?'✅ Profit':'❌ Loss', l:'Result'},
-                {v:lot+' lots', l:'Size'}
+                {v: (profit >= 0 ? '+' : '') + '$' + profit.toFixed(2), l:'Net P&L'},
+                {v: (pips >= 0 ? '+' : '') + pips.toFixed(1) + ' pips', l:'Pips'},
+                {v: result,                                               l:'Result'},
+                {v: '$' + pipVal.toFixed(4) + '/pip',                    l:'Pip Value (std lot)'},
+                {v: lot + ' lots',                                        l:'Position Size'},
+                {v: (pctGain >= 0 ? '+' : '') + pctGain.toFixed(3) + '%', l:'% on Notional'}
             ];
         }
     },
     compound:{
         title:'Compound Growth Calculator',
-        desc:'How your account grows with consistent monthly returns.',
+        desc:'Project account growth with consistent returns over time.',
         fields:[
-            {id:'cg-bal',    label:'Starting Balance ($)',  type:'number', ph:'1000'},
-            {id:'cg-monthly',label:'Monthly Return (%)',    type:'number', ph:'5', step:'0.1'},
-            {id:'cg-months', label:'Number of Months',      type:'number', ph:'24'}
+            {id:'cg-bal',    label:'Starting Balance ($)',        type:'number', ph:'1000'},
+            {id:'cg-rate',   label:'Return % per Period',          type:'number', ph:'5', step:'0.1'},
+            {id:'cg-periods',label:'Number of Periods (months)',   type:'number', ph:'24'},
+            {id:'cg-contrib',label:'Monthly Contribution ($)',     type:'number', ph:'0'}
         ],
         fn(v) {
-            const start=+v['cg-bal'], m=+v['cg-monthly']/100, months=+v['cg-months'];
-            if(!start||!m||!months) return null;
-            const final=start*Math.pow(1+m,months), gain=final-start;
+            const start=+v['cg-bal'], rate=+v['cg-rate']/100, periods=+v['cg-periods'], contrib=+v['cg-contrib']||0;
+            if(!start||!rate||!periods||start<=0||periods<=0) return null;
+            if(periods > 600) return null; // safety cap
+            // Compound with optional monthly contribution
+            let balance = start;
+            for(let i = 0; i < periods; i++){
+                balance = balance * (1 + rate) + contrib;
+            }
+            const gain       = balance - start - (contrib * periods);
+            const totalIn    = start + (contrib * periods);
+            const growthPct  = ((balance - totalIn) / totalIn) * 100;
+            const doublingPeriods = Math.log(2) / Math.log(1 + rate);
             return [
-                {v:'$'+final.toLocaleString('en-US',{maximumFractionDigits:0}), l:'Final Balance'},
-                {v:'$'+gain.toLocaleString('en-US',{maximumFractionDigits:0}), l:'Total Profit'},
-                {v:(final/start).toFixed(2)+'x', l:'Growth Multiple'},
-                {v:months+' mo', l:'Time Period'}
+                {v: '$' + balance.toLocaleString('en-US', {maximumFractionDigits:2}),    l:'Final Balance'},
+                {v: '$' + gain.toLocaleString('en-US', {maximumFractionDigits:2}),       l:'Total Gain'},
+                {v: '$' + totalIn.toLocaleString('en-US', {maximumFractionDigits:2}),    l:'Total Invested'},
+                {v: growthPct.toFixed(2) + '%',                                           l:'Return on Investment'},
+                {v: (balance/start).toFixed(2) + 'x',                                    l:'Growth Multiple'},
+                {v: doublingPeriods.toFixed(1) + ' periods',                             l:'Doubling Time'}
             ];
         }
     },
     fibonacci:{
-        title:'Fibonacci Calculator',
-        desc:'Retracement levels from swing high and low.',
+        title:'Fibonacci Retracement Calculator',
+        desc:'Calculate standard Fibonacci retracement and extension levels.',
         fields:[
             {id:'fib-hi',  label:'Swing High', type:'number', ph:'1.1000', step:'any'},
             {id:'fib-lo',  label:'Swing Low',  type:'number', ph:'1.0500', step:'any'},
-            {id:'fib-dir', label:'Direction',  type:'select', opts:['Uptrend (Retracement down)','Downtrend (Retracement up)']}
+            {id:'fib-dir', label:'Trend Direction', type:'select', opts:['Uptrend — Retracement pulls DOWN','Downtrend — Retracement pulls UP']}
         ],
         fn(v) {
             const hi=+v['fib-hi'], lo=+v['fib-lo'];
-            if(!hi||!lo||hi<=lo) return null;
-            const d=hi-lo, up=v['fib-dir']?.includes('Uptrend');
-            return [0.236,0.382,0.5,0.618,0.65,0.786].map(l => ({
-                v:(up ? hi-d*l : lo+d*l).toFixed(5), l:(l*100)+'% level'
+            if(!hi||!lo||hi<=lo||lo<=0) return null;
+            const diff = hi - lo;
+            const up   = v['fib-dir']?.includes('Uptrend');
+            // Standard Fibonacci levels: 0%, 23.6%, 38.2%, 50%, 61.8%, 78.6%, 100%
+            const levels = [
+                {pct:0,     label:'0.0% (Swing High)'},
+                {pct:0.236, label:'23.6%'},
+                {pct:0.382, label:'38.2%'},
+                {pct:0.5,   label:'50.0%'},
+                {pct:0.618, label:'61.8% — Golden Ratio'},
+                {pct:0.786, label:'78.6%'},
+                {pct:1.0,   label:'100% (Swing Low)'}
+            ];
+            return levels.map(lv => ({
+                v: (up ? hi - diff * lv.pct : lo + diff * lv.pct).toFixed(5),
+                l: lv.label
             }));
         }
     },
     sl:{
         title:'Stop Loss Calculator',
-        desc:'SL price and TP targets from pips and direction.',
+        desc:'Calculate SL placement, risk amount and recommended position size.',
         fields:[
-            {id:'sl-en',   label:'Entry Price',     type:'number', ph:'1.0850', step:'any'},
-            {id:'sl-pips', label:'SL in Pips',      type:'number', ph:'20'},
-            {id:'sl-dir',  label:'Direction',       type:'select', opts:['BUY','SELL']}
+            {id:'sl-bal',  label:'Account Balance ($)', type:'number', ph:'10000'},
+            {id:'sl-risk', label:'Risk % per Trade',    type:'number', ph:'1', step:'0.1'},
+            {id:'sl-en',   label:'Entry Price',         type:'number', ph:'1.0850', step:'any'},
+            {id:'sl-pips', label:'Stop Loss Distance (Pips)', type:'number', ph:'50'},
+            {id:'sl-dir',  label:'Direction',           type:'select', opts:['BUY','SELL']},
+            {id:'sl-type', label:'Instrument',          type:'select', opts:['Forex (xxx/USD)','Forex (xxx/JPY)','Gold (XAU/USD)']}
         ],
         fn(v) {
-            const en=+v['sl-en'], pips=+v['sl-pips'], dir=v['sl-dir'], p=0.0001;
-            if(!en||!pips) return null;
-            const sl  = dir==='BUY' ? en-pips*p : en+pips*p;
-            const tp2 = dir==='BUY' ? en+pips*2*p : en-pips*2*p;
-            const tp3 = dir==='BUY' ? en+pips*3*p : en-pips*3*p;
+            const bal=+v['sl-bal'], riskPct=+v['sl-risk']/100, en=+v['sl-en'], pips=+v['sl-pips'];
+            const dir=v['sl-dir']||'BUY', type=v['sl-type']||'';
+            if(!bal||!riskPct||!en||!pips||bal<=0||pips<=0||en<=0) return null;
+            // Pip size by instrument
+            let pipSize, pipVal;
+            if(type.includes('JPY'))  { pipSize=0.01;   pipVal=(0.01/en)*100000; }
+            else if(type.includes('Gold')){ pipSize=0.01; pipVal=1.00; }
+            else                          { pipSize=0.0001; pipVal=10.00; }
+            const slMove  = pips * pipSize;
+            const slPrice = dir === 'BUY' ? en - slMove : en + slMove;
+            const tp1     = dir === 'BUY' ? en + slMove : en - slMove;       // 1:1
+            const tp2     = dir === 'BUY' ? en + slMove*2 : en - slMove*2;   // 1:2
+            const tp3     = dir === 'BUY' ? en + slMove*3 : en - slMove*3;   // 1:3
+            const riskUSD = bal * riskPct;
+            const lots    = riskUSD / (pips * pipVal);
             return [
-                {v:sl.toFixed(5), l:'Stop Loss'},
-                {v:tp2.toFixed(5), l:'TP at 1:2'},
-                {v:tp3.toFixed(5), l:'TP at 1:3'},
-                {v:pips+'p', l:'SL Distance'}
+                {v: slPrice.toFixed(5),              l:'Stop Loss Price'},
+                {v: pips + ' pips',                  l:'SL Distance'},
+                {v: '$' + riskUSD.toFixed(2),        l:'Risk Amount'},
+                {v: (riskPct*100).toFixed(2) + '%',  l:'Risk %'},
+                {v: lots.toFixed(3) + ' lots',       l:'Recommended Lot Size'},
+                {v: tp1.toFixed(5) + ' (1:1) / ' + tp2.toFixed(5) + ' (1:2)', l:'TP Targets'}
             ];
         }
     }
