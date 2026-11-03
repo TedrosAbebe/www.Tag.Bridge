@@ -339,17 +339,6 @@
     </div>
 
     <!-- Amharic instruction + market selector -->
-    <div style="background:rgba(99,102,241,.07);border:1px solid rgba(99,102,241,.2);border-radius:14px;padding:16px 20px;margin-bottom:20px;">
-        <p style="color:#a5b4fc;font-size:.85rem;font-weight:600;margin-bottom:12px;">
-            <i class="fas fa-circle-info" style="margin-right:6px;"></i>
-            👇 ከታች ያለውን BUTTON ጠቅ ያድርጉ — ለምሳሌ <strong>ክሪፕቶ</strong> ወይም <strong>ፎሬክስ</strong> ይምረጡ፣ ከዚያ የፈለጉትን ምንዛሬ ጥንድ ወይም ክሪፕቶ ይምረጡ።
-        </p>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <span style="background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.3);color:#818cf8;font-size:.75rem;padding:5px 12px;border-radius:50px;font-weight:700;">₿ ክሪፕቶ — Crypto</span>
-            <span style="background:rgba(6,182,212,.12);border:1px solid rgba(6,182,212,.3);color:#22d3ee;font-size:.75rem;padding:5px 12px;border-radius:50px;font-weight:700;">💱 ፎሬክስ — Forex</span>
-            <span style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);color:#fbbf24;font-size:.75rem;padding:5px 12px;border-radius:50px;font-weight:700;">🥇 ሸቀጣሸቀጦች — Commodities</span>
-        </div>
-    </div>
 
     <div class="tv-market-overview-wrap">
         <div class="tradingview-widget-container" id="tvMarketOverview">
@@ -483,9 +472,42 @@
         <div class="quiz-glow"></div>
         <div class="quiz-ai-avatar"><div class="quiz-ring r1"></div><div class="quiz-ring r2"></div><div class="quiz-face"><span class="quiz-eye"></span><span class="quiz-eye"></span><div class="quiz-mouth"></div><div class="quiz-scan-line"></div></div></div>
         <div class="quiz-brand">TAG BRIDGE</div>
-        <h2 data-am="የትሬዲንግ እውቀት ፈተና" data-en="Trading Quiz">የትሬዲንግ እውቀት ፈተና</h2>
-        <p data-am="መጽሐፉን አንብበዋል? እውቀትዎን ይፈትሹ!" data-en="Test your knowledge!">Read the books? Test your knowledge!</p>
-        <button class="btn-primary" onclick="launchQuiz()"><i class="fas fa-play"></i> <span data-am="ፈተናውን ጀምር" data-en="Start Quiz">ፈተናውን ጀምር</span></button>
+        <h2>የትሬዲንግ እውቀት ፈተና</h2>
+        <p>መጽሐፉን አንብበዋል? ፈተናውን ለመጀመር የ Academy Password ያስገቡ።</p>
+
+        <!-- Password gate -->
+        <div style="margin:16px auto;max-width:360px;text-align:left;">
+            <div style="background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.25);border-radius:14px;padding:18px 20px;">
+                <p style="color:#a5b4fc;font-size:.82rem;font-weight:700;margin-bottom:8px;">
+                    <i class="fas fa-lock"></i> የ Academy Password ያስገቡ
+                </p>
+                <p style="color:#8b949e;font-size:.76rem;margin-bottom:12px;">
+                    መጽሐፉን ሲገዙ የሚሰጥዎትን Password ያስገቡ።
+                </p>
+                <div style="display:flex;gap:8px;margin-bottom:8px;">
+                    <input type="password" id="quizPasswordInput"
+                        placeholder="TB-XXXX-XXXX-XXXX"
+                        style="flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(99,102,241,.3);border-radius:10px;padding:10px 14px;color:#e6edf3;font-size:.88rem;font-family:inherit;"
+                        onkeydown="if(event.key==='Enter')checkQuizPassword()">
+                    <button onclick="checkQuizPassword()"
+                        style="background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-weight:800;cursor:pointer;font-size:.85rem;">
+                        ✓ ግባ
+                    </button>
+                </div>
+                <p id="quizPwError" style="color:#ef4444;font-size:.74rem;margin-bottom:8px;display:none;">
+                    ❌ የይለፍ ቃሉ ትክክል አይደለም። መጽሐፉን ሲገዙ Password ይሰጥዎታል።
+                </p>
+                <p style="color:#8b949e;font-size:.72rem;text-align:center;">
+                    Password የለዎትም? →
+                    <a href="#" onclick="window.open('https://t.me/tagbridge123?text='+encodeURIComponent('ሰላም! የፎሬክስ ትሬዲንግ መማሪያ መጽሃፍ በ 450 ብር ማዘዝ እፈልጋለሁ።'),'_blank','noopener,noreferrer');return false;"
+                       style="color:#6366f1;font-weight:700;text-decoration:none;">መጽሐፉን ይዘዙ →</a>
+                </p>
+            </div>
+        </div>
+
+        <button class="btn-primary" onclick="launchQuiz()" id="quizStartBtn" style="display:none;margin-top:8px;">
+            <i class="fas fa-play"></i> ፈተናውን ጀምር
+        </button>
     </div>
     <div class="quiz-box" id="quizBox" style="display:none;">
         <button class="quiz-close-top" onclick="retryQuiz()">✕ ዝጋ</button>
