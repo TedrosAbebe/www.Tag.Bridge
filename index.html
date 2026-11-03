@@ -103,7 +103,7 @@
 ══════════════════════════════════════════════════════ -->
 <style>
 /* Welcome section */
-.wlc{background:#0d1117;text-align:center;position:relative;overflow:hidden;padding:calc(68px + 36px + 56px) 24px 0;}
+.wlc{background:#0d1117;text-align:center;position:relative;overflow:hidden;padding:calc(68px + 36px + 48px) 20px 0;}
 [data-theme="light"] .wlc{background:#f8fafc;}
 .wlc-glow{position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(99,102,241,.14) 0%,transparent 70%);pointer-events:none;}
 .wlc-inner{position:relative;z-index:1;max-width:700px;margin:0 auto;}
@@ -119,6 +119,14 @@
 .wlc-sc-wa{background:#25D366;color:#fff;box-shadow:0 3px 14px rgba(37,211,102,.3);}
 .wlc-sc-tt{background:rgba(255,255,255,.07);color:#e6edf3;border-color:rgba(255,255,255,.15);}
 [data-theme="light"] .wlc-sc-tt{background:rgba(0,0,0,.05);color:#0f172a;border-color:rgba(0,0,0,.12);}
+/* ── Mobile fixes for welcome ── */
+@media(max-width:600px){
+    .wlc{padding:calc(60px + 36px + 32px) 16px 0;}
+    .wlc-headline{font-size:clamp(1.5rem,8vw,2.2rem);}
+    .wlc-socials-compact{gap:8px;margin-bottom:32px;}
+    .wlc-sc-btn{padding:8px 14px;font-size:.78rem;}
+    .wlc-tag{font-size:.6rem;padding:4px 12px;}
+}
 </style>
 
 <section id="welcome">
@@ -198,7 +206,16 @@
 .pdf-sav-deal{font-weight:800;color:#10b981;}
 .pdf-sav-strike{text-decoration:line-through;color:#484f58;}
 .pdf-sav-price{font-weight:900;color:#10b981;}
-@media(max-width:680px){.pdf-lower-row{grid-template-columns:1fr;}.pdf-topics{grid-template-columns:1fr;}.pdf-order-btn{margin-left:0;width:100%;justify-content:center;}}
+@media(max-width:600px){
+    .pdf-books-section{padding:40px 14px 52px;}
+    .pdf-lower-row{grid-template-columns:1fr;}
+    .pdf-topics{grid-template-columns:1fr;}
+    .pdf-card-footer{flex-direction:column;align-items:flex-start;}
+    .pdf-order-btn{margin-left:0;width:100%;justify-content:center;}
+    .pdf-card-top{flex-direction:column;gap:10px;}
+    .pdf-card-title{font-size:1.1rem;}
+    .pdf-price-num{font-size:1.5rem;}
+}
 </style>
 
 <div class="pdf-books-section" id="books-preview">
@@ -210,7 +227,7 @@
         <div class="pdf-books-grid">
 
             <!-- BOOK 1: FOREX -->
-            <a href="https://t.me/tagbridge123" target="_blank" rel="noopener noreferrer" class="pdf-book-card pdf-book-card--forex" aria-label="Order Forex Book 450 ETB">
+            <a href="https://t.me/tagbridge123?text=%E1%88%B0%E1%88%8B%E1%88%9D%21+%E1%8B%A8%E1%8D%8E%E1%88%AC%E1%8A%AD%E1%88%B5+%E1%89%B5%E1%88%AC%E1%8B%B2%E1%8A%95%E1%8C%8D+%E1%88%98%E1%88%9B%E1%88%AA%E1%8B%AB+%E1%88%98%E1%8C%BD%E1%88%83%E1%8D%8D+%E1%89%A260+450%E1%89%A5%E1%88%AD+%E1%88%9B%E1%8B%98%E1%8B%9D+%E1%8A%A5%E1%8D%88%E1%88%8D%E1%8C%8B%E1%88%88%E1%88%81%E1%89%A3" target="_blank" rel="noopener noreferrer" class="pdf-book-card pdf-book-card--forex" aria-label="Order Forex Book 450 ETB">
                 <div class="pdf-card-top">
                     <div class="pdf-card-icon pdf-card-icon--forex"><i class="fas fa-chart-line"></i></div>
                     <div>
@@ -255,7 +272,7 @@
             <div class="pdf-lower-row">
 
                 <!-- BOOK 2: CRYPTO -->
-                <a href="https://t.me/tagbridge123" target="_blank" rel="noopener noreferrer" class="pdf-book-card pdf-book-card--crypto" aria-label="Order Crypto Book 500 ETB">
+                <a href="https://t.me/tagbridge123?text=%E1%88%B0%E1%88%8B%E1%88%9D%21+%E1%8B%A8%E1%8A%AD%E1%88%AA%E1%8D%95%E1%89%B6+%E1%8A%A8%E1%88%A8%E1%8A%95%E1%88%B2+%E1%89%B5%E1%88%AC%E1%8B%B2%E1%8A%95%E1%8C%8D+%E1%88%98%E1%8C%BD%E1%88%83%E1%8D%8D+%E1%89%A2500%E1%89%A5%E1%88%AD+%E1%88%9B%E1%8B%98%E1%8B%9D+%E1%8A%A5%E1%8D%88%E1%88%8D%E1%8C%8B%E1%88%88%E1%88%81%E1%89%A3" target="_blank" rel="noopener noreferrer" class="pdf-book-card pdf-book-card--crypto" aria-label="Order Crypto Book 500 ETB">
                     <div class="pdf-card-top">
                         <div class="pdf-card-icon pdf-card-icon--crypto"><i class="fab fa-bitcoin"></i></div>
                         <div>
@@ -288,7 +305,7 @@
                 </a>
 
                 <!-- BOOK 3: BUNDLE -->
-                <a href="https://t.me/tagbridge123" target="_blank" rel="noopener noreferrer" class="pdf-book-card pdf-book-card--bundle" aria-label="Order Bundle 700 ETB">
+                <a href="https://t.me/tagbridge123?text=%E1%88%B0%E1%88%8B%E1%88%9D%21+%E1%8D%8E%E1%88%AC%E1%8A%AD%E1%88%B5+%2B+%E1%8A%AD%E1%88%AA%E1%8F%95+%E1%8C%A5%E1%8C%85%E1%88%8D+%E1%89%A2700+%E1%89%A5%E1%88%AD+%E1%88%9B%E1%8B%98%E1%8B%9D+%E1%8A%A5%E1%8D%88%E1%88%8D%E1%8C%8B%E1%88%88%E1%88%81%E1%89%A3" target="_blank" rel="noopener noreferrer" class="pdf-book-card pdf-book-card--bundle" aria-label="Order Bundle 700 ETB">
                     <div class="pdf-card-top">
                         <div class="pdf-card-icon pdf-card-icon--bundle"><i class="fas fa-layer-group"></i></div>
                         <div>
@@ -327,173 +344,6 @@
 </div><!-- /.pdf-books-section -->
 </section><!-- /#welcome -->
 
-<!-- ══════════════════════════════════════════════════════
-     SECTION 2 — FOREX BOOK HERO
-══════════════════════════════════════════════════════ -->
-<style>
-.hfx{min-height:100vh;display:flex;align-items:center;background:#0d1117;padding-top:calc(68px + 36px);position:relative;overflow:hidden;}
-[data-theme="light"] .hfx{background:#f8fafc;}
-.hfx-grid{position:absolute;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(99,102,241,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(99,102,241,.055) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black,transparent);-webkit-mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black,transparent);}
-.hfx-glow-orb{position:absolute;top:-100px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(99,102,241,.14) 0%,transparent 65%);pointer-events:none;z-index:0;animation:hfx-orb 6s ease-in-out infinite;}
-@keyframes hfx-orb{0%,100%{transform:scale(.9);opacity:.6;}50%{transform:scale(1.08);opacity:1;}}
-.hfx-inner{position:relative;z-index:2;max-width:1100px;margin:0 auto;padding:60px 24px;display:grid;grid-template-columns:1fr 420px;gap:56px;align-items:center;width:100%;}
-.hfx-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.3);color:#818cf8;font-size:.72rem;font-weight:800;letter-spacing:1px;padding:6px 16px;border-radius:50px;margin-bottom:22px;text-transform:uppercase;}
-.hfx-badge-dot{width:6px;height:6px;border-radius:50%;background:#10b981;animation:hfx-pulse 1.5s infinite;}
-@keyframes hfx-pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(1.3);}}
-.hfx-title{font-size:clamp(2.2rem,5.5vw,3.8rem);font-weight:900;letter-spacing:-1.5px;line-height:1.08;margin-bottom:18px;}
-.hfx-title-main{display:block;background:linear-gradient(135deg,#818cf8 0%,#6366f1 40%,#06b6d4 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.hfx-title-sub{display:block;font-size:.38em;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#8b949e;-webkit-text-fill-color:#8b949e;margin-top:6px;}
-[data-theme="light"] .hfx-title-sub{color:#475569;-webkit-text-fill-color:#475569;}
-.hfx-desc{font-size:1rem;color:#8b949e;line-height:1.75;margin-bottom:28px;max-width:500px;}
-[data-theme="light"] .hfx-desc{color:#475569;}
-.hfx-benefits{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px;}
-.hfx-benefit{display:flex;align-items:flex-start;gap:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;}
-[data-theme="light"] .hfx-benefit{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.07);}
-.hfx-benefit i{color:#10b981;font-size:.9rem;flex-shrink:0;margin-top:2px;}
-.hfx-benefit strong{display:block;font-size:.82rem;font-weight:700;color:#e6edf3;margin-bottom:2px;}
-[data-theme="light"] .hfx-benefit strong{color:#0f172a;}
-.hfx-benefit p{font-size:.74rem;color:#8b949e;margin:0;line-height:1.4;}
-.hfx-benefit-full{grid-column:1/-1;}
-.hfx-benefit-full i{color:#f59e0b;}
-.hfx-price-link{display:block;text-decoration:none;margin-bottom:18px;}
-.hfx-price-card{display:inline-flex;flex-wrap:wrap;align-items:center;gap:14px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.25);border-radius:16px;padding:16px 22px;transition:all .25s;}
-.hfx-price-link:hover .hfx-price-card{background:rgba(99,102,241,.15);border-color:rgba(99,102,241,.5);}
-.hfx-price-tag{font-size:.68rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#818cf8;background:rgba(99,102,241,.15);padding:3px 10px;border-radius:50px;}
-.hfx-price-num{font-size:2.6rem;font-weight:900;color:#6366f1;letter-spacing:-1.5px;line-height:1;filter:drop-shadow(0 0 14px rgba(99,102,241,.45));}
-.hfx-price-cur{font-size:.78rem;font-weight:600;color:#8b949e;}
-.hfx-price-note{font-size:.75rem;color:#10b981;font-weight:600;}
-.hfx-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px;}
-.hfx-btn-buy{display:inline-flex;align-items:center;gap:10px;padding:15px 32px;border-radius:50px;background:linear-gradient(135deg,#229ED9,#1a7fbf);color:#fff;font-weight:800;font-size:.96rem;text-decoration:none;box-shadow:0 6px 24px rgba(34,158,217,.48);transition:all .25s;position:relative;overflow:hidden;}
-.hfx-btn-buy:hover{transform:translateY(-3px);box-shadow:0 12px 36px rgba(34,158,217,.6);}
-.hfx-btn-pulse{position:absolute;inset:-4px;border-radius:50px;border:2px solid rgba(34,158,217,.5);animation:hfx-btn-pulse 2s ease-in-out infinite;}
-@keyframes hfx-btn-pulse{0%,100%{transform:scale(1);opacity:0;}50%{transform:scale(1.04);opacity:.6;}}
-.hfx-btn-dash{display:inline-flex;align-items:center;gap:8px;padding:15px 24px;border-radius:50px;background:transparent;border:1px solid rgba(255,255,255,.14);color:#e6edf3;font-weight:600;font-size:.9rem;text-decoration:none;transition:all .25s;}
-.hfx-btn-dash:hover{background:rgba(255,255,255,.06);transform:translateY(-2px);}
-[data-theme="light"] .hfx-btn-dash{border-color:rgba(0,0,0,.14);color:#0f172a;}
-.hfx-trust{display:flex;flex-wrap:wrap;gap:14px;}
-.hfx-trust-item{display:flex;align-items:center;gap:6px;font-size:.78rem;color:#8b949e;font-weight:500;}
-/* 3D Book */
-.hfx-book-col{display:flex;flex-direction:column;align-items:center;gap:20px;}
-.hfx-book-link{text-decoration:none;display:block;}
-.hfx-book-scene{position:relative;width:260px;}
-.hfx-book-ambient{position:absolute;top:-30px;left:50%;transform:translateX(-50%);width:200px;height:200px;background:radial-gradient(circle,rgba(99,102,241,.3) 0%,transparent 65%);pointer-events:none;animation:hfx-ambient 3s ease-in-out infinite;}
-@keyframes hfx-ambient{0%,100%{opacity:.5;transform:translateX(-50%) scale(.9);}50%{opacity:1;transform:translateX(-50%) scale(1.1);}}
-.hfx-book3d{width:200px;height:268px;position:relative;z-index:1;margin:0 auto;transform-style:preserve-3d;transform:perspective(900px) rotateY(-22deg) rotateX(4deg);transition:transform .4s ease;}
-.hfx-book-link:hover .hfx-book3d{transform:perspective(900px) rotateY(-12deg) rotateX(2deg) scale(1.05);}
-.hfx-bk-front{position:absolute;inset:0;border-radius:0 8px 8px 0;background:linear-gradient(160deg,#1c2040 0%,#0d1117 100%);border:1px solid rgba(99,102,241,.35);overflow:hidden;display:flex;flex-direction:column;align-items:center;box-shadow:8px 10px 40px rgba(0,0,0,.8),inset 0 0 40px rgba(99,102,241,.07);}
-.hfx-bk-spine{position:absolute;left:-16px;top:0;bottom:0;width:16px;background:linear-gradient(to right,#2d3168,#4f52a0);border-radius:3px 0 0 3px;transform-origin:right;transform:rotateY(90deg);box-shadow:-4px 0 14px rgba(0,0,0,.6);}
-.hfx-bk-shadow{position:absolute;bottom:-24px;left:10px;right:-14px;height:28px;background:rgba(0,0,0,.5);filter:blur(14px);border-radius:50%;z-index:0;}
-.hfx-bk-topband{width:100%;padding:8px;background:rgba(99,102,241,.25);color:#a5a8ff;font-size:.55rem;font-weight:800;text-align:center;letter-spacing:1.5px;text-transform:uppercase;}
-.hfx-bk-logo{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 0 6px;}
-.hfx-bk-logo img{width:32px;height:32px;border-radius:8px;object-fit:cover;}
-.hfx-bk-logo-text{font-size:.55rem;font-weight:800;color:#818cf8;letter-spacing:1px;}
-.hfx-bk-badge{font-size:.5rem;font-weight:800;color:#f59e0b;background:rgba(245,158,11,.15);padding:3px 8px;border-radius:50px;letter-spacing:.5px;}
-.hfx-bk-titles{text-align:center;padding:8px 10px;}
-.hfx-bk-subtam{font-size:.58rem;color:rgba(255,255,255,.45);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;}
-.hfx-bk-main{font-size:1.25rem;font-weight:900;color:#fff;line-height:1.2;letter-spacing:-.2px;}
-.hfx-bk-main span{color:#818cf8;}
-.hfx-bk-tagline{font-size:.47rem;color:rgba(255,255,255,.35);text-align:center;padding:0 8px 4px;}
-.hfx-bk-art{display:flex;align-items:flex-end;gap:5px;padding:8px 14px;height:52px;}
-.hfx-candle{display:flex;flex-direction:column;align-items:center;}
-.hfx-wick{width:1.5px;background:rgba(255,255,255,.4);border-radius:1px;}
-.hfx-body{width:10px;border-radius:2px;}
-.hfx-c-g .hfx-body{background:#10b981;height:22px;}
-.hfx-c-r .hfx-body{background:#ef4444;height:16px;}
-.hfx-c-g .hfx-wick{height:10px;}
-.hfx-c-r .hfx-wick{height:8px;}
-.hfx-bk-artline{flex:1;height:1.5px;background:linear-gradient(90deg,transparent,rgba(99,102,241,.6),transparent);align-self:center;}
-.hfx-bk-footer{width:100%;display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:rgba(99,102,241,.12);margin-top:auto;}
-.hfx-bk-price{font-size:.75rem;font-weight:900;color:#818cf8;}
-.hfx-bk-author{font-size:.48rem;color:rgba(255,255,255,.4);font-weight:600;}
-.hfx-bk-bottomstrip{width:100%;padding:5px 8px;background:rgba(99,102,241,.15);color:rgba(163,165,255,.7);font-size:.44rem;font-weight:700;text-align:center;letter-spacing:1px;text-transform:uppercase;}
-.hfx-book-pill{display:inline-flex;align-items:center;gap:7px;background:rgba(34,158,217,.12);border:1px solid rgba(34,158,217,.3);color:#38bdf8;font-size:.74rem;font-weight:700;padding:7px 16px;border-radius:50px;}
-.hfx-scroll{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;color:#484f58;font-size:.72rem;z-index:2;animation:hfx-bounce 2s ease-in-out infinite;}
-@keyframes hfx-bounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(6px);}}
-@media(max-width:900px){.hfx-inner{grid-template-columns:1fr;gap:36px;text-align:center;padding:40px 20px;}.hfx-book-col{order:-1;}.hfx-benefits{grid-template-columns:1fr;}.hfx-ctas,.hfx-trust{justify-content:center;}.hfx-price-card{justify-content:center;}.hfx-desc{margin:0 auto 28px;}.hfx-badge{margin:0 auto 22px;}}
-@media(max-width:520px){.hfx-btn-buy,.hfx-btn-dash{width:100%;justify-content:center;}.hfx-ctas{flex-direction:column;}.hfx-book3d{width:170px;height:228px;}.hfx-title{font-size:2rem;}}
-</style>
-
-<section id="home" class="hfx">
-    <div class="hfx-grid"></div>
-    <div class="hfx-glow-orb"></div>
-    <div class="hfx-inner">
-        <!-- LEFT -->
-        <div class="hfx-left">
-            <div class="hfx-badge"><span class="hfx-badge-dot"></span>🔥 #1 ምርጥ የፎሬክስ መጽሐፍ በአማርኛ</div>
-            <h1 class="hfx-title">
-                <a href="https://t.me/tagbridge123" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">
-                    <span class="hfx-title-main">የፎሬክስ ትሬዲንግ<br>በአማርኛ</span>
-                </a>
-                <span class="hfx-title-sub">Tag Bridge — Master Edition</span>
-            </h1>
-            <p class="hfx-desc">ከጀማሪ እስከ ፕሮፌሽናል — SMC, Order Blocks, Price Action, Risk Management እና Trading Psychology — ሁሉም አንድ ላይ!</p>
-            <div class="hfx-benefits">
-                <div class="hfx-benefit"><i class="fas fa-check-circle"></i><div><strong>የፎሬክስ መሰረቶች &amp; ገበያ መዋቅር</strong><p>Currency Pairs, Pips, Lots &amp; Sessions</p></div></div>
-                <div class="hfx-benefit"><i class="fas fa-check-circle"></i><div><strong>ቴክኒካል ትንተና &amp; Price Action</strong><p>Candlestick Patterns, S&amp;R</p></div></div>
-                <div class="hfx-benefit"><i class="fas fa-check-circle"></i><div><strong>Smart Money Concepts (SMC)</strong><p>Order Blocks, Liquidity, FVG &amp; ICT</p></div></div>
-                <div class="hfx-benefit"><i class="fas fa-check-circle"></i><div><strong>ፋንዳሜንታል ትንተና &amp; Strategy</strong><p>Risk Management, Trading Plan &amp; Psychology</p></div></div>
-                <div class="hfx-benefit hfx-benefit-full"><i class="fas fa-star"></i><div><strong>ነፃ VIP Academy Password + ፕራክቲካል ትሬዲንግ ተካቷል!</strong><p>መጽሐፉን ሲገዙ ለ 7 ምዕራፎች ልዩ Password አብሮ ይሰጥዎታል።</p></div></div>
-            </div>
-            <a href="https://t.me/tagbridge123" target="_blank" rel="noopener noreferrer" class="hfx-price-link">
-                <div class="hfx-price-card">
-                    <span class="hfx-price-tag">ልዩ ዋጋ</span>
-                    <span class="hfx-price-num">450</span>
-                    <span class="hfx-price-cur">ETB / ብር</span>
-                    <span class="hfx-price-note">⚡ ወዲያው PDF ያግኙ!</span>
-                </div>
-            </a>
-            <div class="hfx-ctas">
-                <a href="https://t.me/tagbridge123" target="_blank" rel="noopener noreferrer" class="hfx-btn-buy">
-                    <div class="hfx-btn-pulse"></div>
-                    <i class="fab fa-telegram"></i><span>አሁኑኑ ይዘዙ — 450 ብር</span><i class="fas fa-arrow-right"></i>
-                </a>
-                <a href="#books-preview" class="hfx-btn-dash"><i class="fas fa-book-open"></i><span>ሁሉም መጽሃፍቶች</span></a>
-            </div>
-            <div class="hfx-trust">
-                <span class="hfx-trust-item"><i class="fas fa-star" style="color:#f59e0b"></i>4.9/5 (1,200+ አንባቢዎች)</span>
-                <span class="hfx-trust-item"><i class="fas fa-bolt" style="color:#10b981"></i>ፈጣን PDF አቅርቦት</span>
-                <span class="hfx-trust-item"><i class="fas fa-lock" style="color:#6366f1"></i>VIP Academy ተካቷል</span>
-            </div>
-        </div>
-        <!-- RIGHT: 3D Book -->
-        <div class="hfx-book-col">
-            <a href="https://t.me/tagbridge123" target="_blank" rel="noopener noreferrer" class="hfx-book-link">
-                <div class="hfx-book-scene">
-                    <div class="hfx-book-ambient"></div>
-                    <div class="hfx-book3d">
-                        <div class="hfx-bk-spine"></div>
-                        <div class="hfx-bk-front">
-                            <div class="hfx-bk-topband">ሙያዊ የትሬዲንግ መጽሃፍ</div>
-                            <div class="hfx-bk-logo">
-                                <img src="/logo.png.png" alt="Tag Bridge" onerror="this.style.display='none'">
-                                <span class="hfx-bk-logo-text">TAG BRIDGE</span>
-                            </div>
-                            <span class="hfx-bk-badge">⭐ OFFICIAL BEST SELLER</span>
-                            <div class="hfx-bk-titles">
-                                <div class="hfx-bk-subtam">Professional Forex Guide</div>
-                                <div class="hfx-bk-main">የፎሬክስ ትሬዲንግ<br><span>በአማርኛ</span></div>
-                            </div>
-                            <div class="hfx-bk-tagline">SMC · Price Action · Risk · Psychology</div>
-                            <div class="hfx-bk-art">
-                                <div class="hfx-candle hfx-c-g"><div class="hfx-wick"></div><div class="hfx-body"></div></div>
-                                <div class="hfx-candle hfx-c-r"><div class="hfx-wick"></div><div class="hfx-body"></div></div>
-                                <div class="hfx-candle hfx-c-g"><div class="hfx-wick"></div><div class="hfx-body" style="height:28px;"></div></div>
-                                <div class="hfx-candle hfx-c-g"><div class="hfx-wick"></div><div class="hfx-body" style="height:18px;"></div></div>
-                                <div class="hfx-candle hfx-c-r"><div class="hfx-wick"></div><div class="hfx-body" style="height:12px;"></div></div>
-                                <div class="hfx-bk-artline"></div>
-                            </div>
-                            <div class="hfx-bk-footer"><span class="hfx-bk-price">450 ብር</span><span class="hfx-bk-author">@tagbridge123</span></div>
-                            <div class="hfx-bk-bottomstrip">FOREX TRADING IN AMHARIC</div>
-                        </div>
-                        <div class="hfx-bk-shadow"></div>
-                    </div>
-                </div>
-            </a>
-            <div class="hfx-book-pill"><i class="fab fa-telegram"></i><span>ጠቅ ያድርጉ — ቴሌግራም ላይ ይዘዙ ↗</span></div>
-        </div>
-    </div>
-    <div class="hfx-scroll"><span>ወደ ታች ይሸብልሉ</span><i class="fas fa-chevron-down"></i></div>
-</section>
 
 <!-- ══════ SECTION 3 — MARKET DASHBOARD ══════ -->
 <section id="dashboard" class="section dashboard-section">
