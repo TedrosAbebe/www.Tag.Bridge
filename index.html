@@ -95,7 +95,8 @@
 @keyframes wlc-pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(1.4);}}
 /* TAG BRIDGE LOGO COLORS: purple #6366f1 → teal #06b6d4 */
 .wlc-headline{font-size:clamp(1.6rem,8vw,3.2rem);font-weight:900;letter-spacing:-1px;line-height:1.15;margin-bottom:24px;}
-.wlc-headline .wlc-am{display:block;background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 40%,#06b6d4 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.wlc-headline .wlc-am{display:block;background:linear-gradient(135deg,#ffffff 0%,#a8c8ff 35%,#38ef7d 65%,#ffd200 85%,#ffffff 100%);background-size:300% 300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:wlc-grad 5s ease infinite;}
+@keyframes wlc-grad{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
 .wlc-socials{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
 .wlc-sc-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border-radius:50px;font-size:.84rem;font-weight:700;text-decoration:none;transition:all .2s;border:1px solid transparent;}
 .wlc-sc-tg{background:#229ED9;color:#fff;}
@@ -147,10 +148,10 @@
 .bk-topics li i{color:#10b981;font-size:.66rem;flex-shrink:0;margin-top:2px;}
 .bk-topics li.more{color:#6366f1;font-style:italic;font-weight:600;grid-column:1/-1;}
 /* Footer */
-.bk-footer{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.bk-footer{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;flex-direction:column;}
 .bk-price{display:flex;align-items:baseline;gap:5px;}
-.bk-pnum{font-size:1.8rem;font-weight:900;letter-spacing:-1px;line-height:1;}
-.bk-pf{color:#6366f1;}
+.bk-pnum{font-size:2.4rem;font-weight:900;letter-spacing:-1px;line-height:1;}
+.bk-pf{color:#10b981;}
 .bk-pc{color:#f59e0b;}
 .bk-pb{color:#10b981;}
 .bk-pcur{font-size:.74rem;font-weight:700;color:#8b949e;}
@@ -173,15 +174,22 @@
     .wlc{padding:calc(60px + 36px + 28px) 14px 0;}
     .wlc-headline{font-size:clamp(1.4rem,9vw,2rem);}
     .wlc-socials{gap:8px;margin-bottom:28px;}
-    .wlc-sc-btn{padding:8px 14px;font-size:.78rem;}
-    .pdf-sec{padding:36px 14px 48px;}
-    /* Keep 2-col topics on medium phones, 1-col only tiny */
+    .wlc-sc-btn{padding:8px 14px;font-size:.76rem;}
+    .pdf-sec{padding:28px 12px 40px;}
+    /* 2 columns on ALL phones */
+    .bk-topics{grid-template-columns:1fr 1fr;gap:3px 10px;}
+    .bk-topics li{font-size:.72rem;}
     .bk-row2{grid-template-columns:1fr;}
     .bk-footer{flex-direction:column;align-items:flex-start;}
     .bk-btn{margin-left:0;width:100%;justify-content:center;}
-    .bk-pnum{font-size:1.5rem;}
+    .bk-pnum{font-size:1.4rem;}
+    .bk{padding:16px 14px;}
+    .bk-top{gap:10px;margin-bottom:10px;}
+    .bk-icon{width:40px;height:40px;font-size:1.1rem;}
+    .bk-title{font-size:.95rem;}
+    .pdf-grid{gap:14px;}
 }
-@media(max-width:380px){
+@media(max-width:340px){
     .bk-topics{grid-template-columns:1fr;}
 }
 </style>
@@ -190,10 +198,10 @@
 <div class="wlc">
     <div class="wlc-glow"></div>
     <div class="wlc-inner">
-        <div class="wlc-tag"><span class="wlc-dot"></span>TAG BRIDGE — Professional Trading Education</div>
         <h1 class="wlc-headline"><span class="wlc-am">እንኳን ወደ ታግ ብሪጅ<br>በደህና መጡ!</span></h1>
+        <p style="color:#8b949e;font-size:.9rem;margin:-10px 0 20px;letter-spacing:.2px;">በማህበራዊ ሚዲያወቻችን ይከተሉን</p>
         <div class="wlc-socials">
-            <a href="https://t.me/tagbridge" target="_blank" rel="noopener noreferrer" class="wlc-sc-btn wlc-sc-tg"><i class="fab fa-telegram"></i><span>Telegram</span></a>
+            <a href="https://t.me/tagbridge" target="_blank" rel="noopener noreferrer" class="wlc-sc-btn wlc-sc-tg"><i class="fab fa-telegram"></i><span style="font-size:.78rem;font-weight:600;">የቴሌግራም ቻናላችን ይቀላቀሉ</span></a>
             <a href="https://whatsapp.com/channel/0029VbC9h9Z4o7qIBVOmFE1j" target="_blank" rel="noopener noreferrer" class="wlc-sc-btn wlc-sc-wa"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></a>
             <a href="https://www.tiktok.com/@tagbridge" target="_blank" rel="noopener noreferrer" class="wlc-sc-btn wlc-sc-tt"><i class="fab fa-tiktok"></i><span>TikTok</span></a>
         </div>
@@ -245,9 +253,9 @@
                 <li><i class="fas fa-check-circle"></i>ፎሬክስ እና ክሪፕቶ ትሬዲንግ</li>
                 <li class="more"><i class="fas fa-plus-circle" style="color:#6366f1;"></i>በትሬዲንግ ገንዘብ ማግኛ እና ሌሎችም...</li>
             </ul>
-            <div class="bk-footer">
-                <div class="bk-price"><span class="bk-pnum bk-pf">450</span><span class="bk-pcur">ETB</span></div>
-                <div class="bk-btn bk-btn-f"><i class="fab fa-telegram"></i> አሁኑኑ ይዘዙ — 450 ብር <i class="fas fa-arrow-right"></i></div>
+            <div class="bk-footer" style="justify-content:center;">
+                <div class="bk-price" style="justify-content:center;"><span class="bk-pnum bk-pf">450</span><span class="bk-pcur">ETB</span></div>
+                <div class="bk-btn bk-btn-f" style="margin:0 auto;"><i class="fab fa-telegram"></i> አሁኑኑ ይዘዙ</div>
             </div>
         </a>
 
@@ -281,9 +289,9 @@
                     <li><i class="fas fa-check-circle"></i>ሪስክ ማኔጅመንት</li>
                     <li><i class="fas fa-check-circle"></i>የትሬዲንግ ስነ-ልቦና</li>
                 </ul>
-                <div class="bk-footer">
+                <div class="bk-footer" style="justify-content:center;">
                     <div class="bk-price"><span class="bk-pnum bk-pc">500</span><span class="bk-pcur">ETB</span></div>
-                    <div class="bk-btn bk-btn-c"><i class="fab fa-telegram"></i> ይዘዙ — 500 ብር</div>
+                    <div class="bk-btn bk-btn-c" style="margin:0 auto;"><i class="fab fa-telegram"></i> አሁኑኑ ይዘዙ</div>
                 </div>
             </a>
 
@@ -310,9 +318,9 @@
                     <li><i class="fas fa-check-circle"></i>ነፃ VIP Academy Password ⭐</li>
                     <li><i class="fas fa-check-circle"></i>ቀጥታ Telegram ድጋፍ</li>
                 </ul>
-                <div class="bk-footer">
+                <div class="bk-footer" style="justify-content:center;">
                     <div class="bk-price"><span class="bk-pold">950</span><span class="bk-pnum bk-pb">700</span><span class="bk-pcur">ETB</span><span class="bk-psave">250 ቁጠባ!</span></div>
-                    <div class="bk-btn bk-btn-b"><i class="fab fa-telegram"></i> ጥቅሉን ይዘዙ — 700 ብር</div>
+                    <div class="bk-btn bk-btn-b" style="margin:0 auto;"><i class="fab fa-telegram"></i> አሁኑኑ ይዘዙ</div>
                 </div>
             </a>
         </div><!-- /.bk-row2 -->
