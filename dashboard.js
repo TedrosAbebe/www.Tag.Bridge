@@ -316,30 +316,33 @@ function loadTVChart(symbol) {
 }
 
 function loadTVMarketOverview() {
-    const container = document.getElementById('tvMarketOverview');
-    if (!container) return;
-    const isDark = currentTheme === 'dark';
-    const s = document.createElement('script');
-    s.src = 'https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js';
-    s.async = true;
-    s.textContent = JSON.stringify({
-        colorTheme: isDark ? 'dark' : 'light', dateRange:'12M', showChart:true,
-        locale:'en', isTransparent:true, showSymbolLogo:true, width:'100%', height:420,
-        tabs:[
-            { title:'Crypto', symbols:[
-                {s:'BINANCE:BTCUSDT',d:'Bitcoin'},{s:'BINANCE:ETHUSDT',d:'Ethereum'},
-                {s:'BINANCE:BNBUSDT',d:'BNB'},{s:'BINANCE:SOLUSDT',d:'Solana'},{s:'BINANCE:XRPUSDT',d:'XRP'}
-            ], originalTitle:'Cryptocurrencies' },
-            { title:'Forex', symbols:[
-                {s:'FX:EURUSD'},{s:'FX:GBPUSD'},{s:'FX:USDJPY'},{s:'FX:USDCHF'},{s:'FX:AUDUSD'}
-            ], originalTitle:'Forex' },
-            { title:'Commodities', symbols:[
-                {s:'TVC:GOLD',d:'Gold'},{s:'TVC:SILVER',d:'Silver'},{s:'NYMEX:CL1!',d:'Crude Oil'}
-            ], originalTitle:'Commodities' }
-        ]
+    // Load into both containers (top inline + main dashboard section)
+    ['tvMarketOverviewTop', 'tvMarketOverview'].forEach(function(containerId) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        const isDark = currentTheme === 'dark';
+        const s = document.createElement('script');
+        s.src = 'https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js';
+        s.async = true;
+        s.textContent = JSON.stringify({
+            colorTheme: isDark ? 'dark' : 'light', dateRange:'12M', showChart:true,
+            locale:'en', isTransparent:true, showSymbolLogo:true, width:'100%', height:420,
+            tabs:[
+                { title:'Crypto', symbols:[
+                    {s:'BINANCE:BTCUSDT',d:'Bitcoin'},{s:'BINANCE:ETHUSDT',d:'Ethereum'},
+                    {s:'BINANCE:BNBUSDT',d:'BNB'},{s:'BINANCE:SOLUSDT',d:'Solana'},{s:'BINANCE:XRPUSDT',d:'XRP'}
+                ], originalTitle:'Cryptocurrencies' },
+                { title:'Forex', symbols:[
+                    {s:'FX:EURUSD'},{s:'FX:GBPUSD'},{s:'FX:USDJPY'},{s:'FX:USDCHF'},{s:'FX:AUDUSD'}
+                ], originalTitle:'Forex' },
+                { title:'Commodities', symbols:[
+                    {s:'TVC:GOLD',d:'Gold'},{s:'TVC:SILVER',d:'Silver'},{s:'NYMEX:CL1!',d:'Crude Oil'}
+                ], originalTitle:'Commodities' }
+            ]
+        });
+        container.innerHTML = '<div class="tradingview-widget-container__widget"></div>';
+        container.appendChild(s);
     });
-    container.innerHTML = '<div class="tradingview-widget-container__widget"></div>';
-    container.appendChild(s);
 }
 
 function loadTVEconomicCalendar() {
