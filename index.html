@@ -441,14 +441,43 @@
                 <h3><i class="fas fa-calendar-check"></i> <span data-am="ቀጥታ የኢኮኖሚ ካላንደር" data-en="Live Economic Calendar">ቀጥታ የኢኮኖሚ ካላንደር</span></h3>
                 <span class="panel-badge red">High Impact</span>
             </div>
-            <div class="tv-calendar-container" id="tvCalendarContainer"></div>
+            <!-- TradingView Economic Calendar Widget -->
+            <div class="tradingview-widget-container" style="min-height:400px;">
+                <div class="tradingview-widget-container__widget"></div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
+                {
+                    "colorTheme": "dark",
+                    "isTransparent": true,
+                    "width": "100%",
+                    "height": 400,
+                    "locale": "en",
+                    "importanceFilter": "0,1",
+                    "countryFilter": "us,eu,gb,jp,au,ca,ch,cn"
+                }
+                </script>
+            </div>
         </div>
         <div class="dash-panel news-panel">
             <div class="dash-panel-header">
                 <h3><i class="fas fa-rss"></i> <span data-am="አዳዲስ የገበያ ዜናዎች" data-en="Market News">አዳዲስ የገበያ ዜናዎች</span></h3>
                 <span class="panel-badge blue">Forex &amp; Crypto</span>
             </div>
-            <div class="tv-news-container" id="tvNewsContainer"></div>
+            <!-- TradingView News Timeline Widget -->
+            <div class="tradingview-widget-container" style="min-height:400px;">
+                <div class="tradingview-widget-container__widget"></div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
+                {
+                    "feedMode": "market",
+                    "market": "forex",
+                    "isTransparent": true,
+                    "displayMode": "regular",
+                    "width": "100%",
+                    "height": 400,
+                    "colorTheme": "dark",
+                    "locale": "en"
+                }
+                </script>
+            </div>
         </div>
     </div>
 </div>
