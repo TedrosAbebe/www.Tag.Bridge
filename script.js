@@ -51,7 +51,76 @@ window.toggleMarketOverview = function(btn) {
     window.togglePanel('tvOverviewPanel', btn);
 };
 
-// ── QUIZ CODE (self-contained IIFE — preserved from original) ──
+// ── QUIZ PASSWORD CHECK ──────────────────────────────────────
+window.checkQuizPassword = function() {
+    var input = document.getElementById('quizPasswordInput');
+    var errEl = document.getElementById('quizPwError');
+    var startBtn = document.getElementById('quizStartBtn');
+    if (!input) return;
+    var val = input.value.trim().toUpperCase();
+    // Validate against /academy backend (same PBKDF2 system)
+    // For the quiz we do a lightweight client check via /api/academy-verify
+    // If not available, fallback: any non-empty password starting with TB- passes
+    if (!val) {
+        if (errEl) { errEl.style.display = 'block'; errEl.textContent = '❌ Password ያስገቡ።'; }
+        return;
+    }
+    // Try server verification first
+    fetch('/api/academy-verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: val })
+    }).then(function(r) { return r.json(); })
+    .then(function(data) {
+        if (data.valid) {
+            unlockQuiz();
+        } else {
+            // Fallback: check local pattern TB-XXXX-XXXX-XXXX (basic format check)
+            if (/^TB-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(val)) {
+                // Try academy-login endpoint
+                fetch('/api/academy-login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password: input.value.trim() })
+                }).then(function(r2) { return r2.json(); })
+                .then(function(d2) {
+                    if (d2.token) { unlockQuiz(); }
+                    else { showQuizPwError(); }
+                }).catch(function() { showQuizPwError(); });
+            } else {
+                showQuizPwError();
+            }
+        }
+    }).catch(function() {
+        // If API unreachable, check format only
+        if (/^TB-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(val)) {
+            unlockQuiz();
+        } else {
+            showQuizPwError();
+        }
+    });
+};
+
+function unlockQuiz() {
+    var gate = document.getElementById('quizPasswordInput');
+    var errEl = document.getElementById('quizPwError');
+    var startBtn = document.getElementById('quizStartBtn');
+    var gateBox = gate ? gate.closest('div[style]') : null;
+    if (gateBox && gateBox.parentElement) gateBox.parentElement.style.display = 'none';
+    if (errEl) errEl.style.display = 'none';
+    if (startBtn) {
+        startBtn.style.display = 'inline-flex';
+        startBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+}
+
+function showQuizPwError() {
+    var errEl = document.getElementById('quizPwError');
+    if (errEl) {
+        errEl.style.display = 'block';
+        errEl.textContent = '❌ የይለፍ ቃሉ ትክክል አይደለም። መጽሐፉን ሲገዙ Password ይሰጥዎታል።';
+    }
+}
 (function() {
     'use strict';
 
