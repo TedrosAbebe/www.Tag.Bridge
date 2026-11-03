@@ -202,8 +202,8 @@
         <p style="color:#8b949e;font-size:.9rem;margin:-10px 0 20px;letter-spacing:.2px;">በማህበራዊ ሚዲያወቻችን ይከተሉን</p>
         <div class="wlc-socials">
             <a href="https://t.me/tagbridge" target="_blank" rel="noopener noreferrer" class="wlc-sc-btn wlc-sc-tg"><i class="fab fa-telegram"></i><span style="font-size:.78rem;font-weight:600;line-height:1.3;text-align:left;">የቴሌግራም ቻናላችን<br>ይቀላቀሉ</span></a>
-            <a href="https://whatsapp.com/channel/0029VbC9h9Z4o7qIBVOmFE1j" target="_blank" rel="noopener noreferrer" class="wlc-sc-btn wlc-sc-wa"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></a>
-            <a href="https://www.tiktok.com/@tagbridge" target="_blank" rel="noopener noreferrer" class="wlc-sc-btn wlc-sc-tt"><i class="fab fa-tiktok"></i><span>TikTok</span></a>
+            <a href="https://whatsapp.com/channel/0029VbC9h9Z4o7qIBVOmFE1j" target="_blank" rel="noopener noreferrer" class="wlc-sc-btn wlc-sc-wa" style="padding:10px 18px;"><i class="fab fa-whatsapp" style="font-size:1.3rem;"></i></a>
+            <a href="https://www.tiktok.com/@tagbridge" target="_blank" rel="noopener noreferrer" class="wlc-sc-btn wlc-sc-tt" style="padding:10px 18px;"><i class="fab fa-tiktok" style="font-size:1.3rem;"></i></a>
         </div>
     </div>
 </div>
@@ -333,10 +333,24 @@
 <section id="dashboard" class="section dashboard-section">
 <div class="container">
     <div class="section-header">
-        <div class="section-tag-pill"><i class="fas fa-globe"></i> REAL-TIME MARKET DATA</div>
-        <h2 class="section-title"><span class="live-dot"></span> <span data-am="አጠቃላይ የዓለም ገበያዎች" data-en="Global Market Overview">አጠቃላይ የዓለም ገበያዎች</span></h2>
-        <p class="section-sub">Live market overview by TradingView</p>
+        <div class="section-tag-pill"><i class="fas fa-globe"></i> የቀጥታ ገበያ ዳሽቦርድ</div>
+        <h2 class="section-title"><span class="live-dot"></span> አጠቃላይ የዓለም ገበያዎች</h2>
+        <p class="section-sub">የፈለጉትን ዘርፍ ይምረጡ — ክሪፕቶ፣ ፎሬክስ ወይም ሸቀጣሸቀጦች</p>
     </div>
+
+    <!-- Amharic instruction + market selector -->
+    <div style="background:rgba(99,102,241,.07);border:1px solid rgba(99,102,241,.2);border-radius:14px;padding:16px 20px;margin-bottom:20px;">
+        <p style="color:#a5b4fc;font-size:.85rem;font-weight:600;margin-bottom:12px;">
+            <i class="fas fa-circle-info" style="margin-right:6px;"></i>
+            👇 ከታች ያለውን ዘርፍ ጠቅ ያድርጉ — ለምሳሌ <strong>ክሪፕቶ</strong> ወይም <strong>ፎሬክስ</strong> ይምረጡ፣ ከዚያ የፈለጉትን ምንዛሬ ጥንድ ወይም ሳንቲም ጠቅ ያድርጉ።
+        </p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <span style="background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.3);color:#818cf8;font-size:.75rem;padding:5px 12px;border-radius:50px;font-weight:700;">₿ ክሪፕቶ — Crypto</span>
+            <span style="background:rgba(6,182,212,.12);border:1px solid rgba(6,182,212,.3);color:#22d3ee;font-size:.75rem;padding:5px 12px;border-radius:50px;font-weight:700;">💱 ፎሬክስ — Forex</span>
+            <span style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);color:#fbbf24;font-size:.75rem;padding:5px 12px;border-radius:50px;font-weight:700;">🥇 ሸቀጣሸቀጦች — Commodities</span>
+        </div>
+    </div>
+
     <div class="tv-market-overview-wrap">
         <div class="tradingview-widget-container" id="tvMarketOverview">
             <div class="tradingview-widget-container__widget"></div>
@@ -349,9 +363,17 @@
 <section id="charts" class="section charts-section">
 <div class="container">
     <div class="section-header">
-        <div class="section-tag-pill"><i class="fas fa-chart-line"></i> LIVE CHARTS</div>
+        <div class="section-tag-pill"><i class="fas fa-chart-line"></i> የቀጥታ ቻርቶች</div>
         <h2 class="section-title"><i class="fas fa-chart-candlestick"></i> <span data-am="ቀጥታ የትሬዲንግ ቻርቶች" data-en="Live Trading Charts">ቀጥታ የትሬዲንግ ቻርቶች</span></h2>
-        <p class="section-sub">Professional candlestick charts by TradingView</p>
+        <p class="section-sub">ከዚህ ታች ያለውን ምንዛሬ ወይም ሳንቲም ጠቅ ያድርጉ — ቻርቱ ወዲያው ይለወጣል</p>
+    </div>
+
+    <!-- Amharic chart instruction -->
+    <div style="background:rgba(6,182,212,.07);border:1px solid rgba(6,182,212,.2);border-radius:14px;padding:14px 18px;margin-bottom:16px;">
+        <p style="color:#67e8f9;font-size:.83rem;font-weight:600;margin:0;">
+            <i class="fas fa-hand-pointer" style="margin-right:6px;"></i>
+            👇 ከዚህ ታች ያለውን ቁልፍ ጠቅ ያድርጉ — EUR/USD (ዩሮ)፣ GOLD (ወርቅ)፣ BTC (ቢትኮይን) ወይም ሌሎቹን ይምረጡ። ቻርቱ ወዲያው ይታያሉ።
+        </p>
     </div>
     <div class="chart-controls">
         <div class="chart-tabs" id="chartTabs">
