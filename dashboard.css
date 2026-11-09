@@ -3340,32 +3340,53 @@ canvas.bt-canvas-full { width: 100%; display: block; }
 /* ── Fullscreen chart close button ── */
 #chartFsCloseBtn {
     position: fixed;
-    top: 18px;
-    right: 18px;
-    z-index: 3000;
+    top: 14px;
+    right: 14px;
+    z-index: 2147483647; /* max possible z-index — beats iframes on mobile */
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 22px;
+    padding: 12px 22px;
     background: linear-gradient(135deg, #6366f1, #8b5cf6);
     color: #fff;
-    border: none;
+    border: 2px solid rgba(255,255,255,.3);
     border-radius: 50px;
-    font-size: .9rem;
+    font-size: .95rem;
     font-weight: 800;
     cursor: pointer;
-    box-shadow: 0 4px 24px rgba(99,102,241,.55), 0 0 0 3px rgba(255,255,255,.15);
+    box-shadow: 0 4px 24px rgba(99,102,241,.6), 0 0 0 3px rgba(255,255,255,.15);
     transition: transform .15s, box-shadow .15s;
     letter-spacing: .3px;
     animation: fs-btn-pop .25s cubic-bezier(.34,1.56,.64,1);
+    /* Force above iframe on iOS/Android */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    pointer-events: auto;
+    touch-action: manipulation;
+    /* Prevent iframe from swallowing tap events */
+    isolation: isolate;
 }
 #chartFsCloseBtn:hover {
-    transform: scale(1.05);
+    transform: translateZ(0) scale(1.05);
     box-shadow: 0 6px 32px rgba(99,102,241,.7), 0 0 0 3px rgba(255,255,255,.25);
 }
-#chartFsCloseBtn:active { transform: scale(.97); }
+#chartFsCloseBtn:active {
+    transform: translateZ(0) scale(.97);
+}
 
 @keyframes fs-btn-pop {
-    from { opacity: 0; transform: scale(.7) translateY(-10px); }
-    to   { opacity: 1; transform: scale(1) translateY(0); }
+    from { opacity: 0; transform: translateZ(0) scale(.7) translateY(-10px); }
+    to   { opacity: 1; transform: translateZ(0) scale(1)  translateY(0); }
+}
+
+/* Mobile: make button even bigger and easier to tap */
+@media (max-width: 768px) {
+    #chartFsCloseBtn {
+        top: 10px;
+        right: 10px;
+        padding: 14px 24px;
+        font-size: 1rem;
+        border-radius: 50px;
+        box-shadow: 0 6px 28px rgba(99,102,241,.7);
+    }
 }
