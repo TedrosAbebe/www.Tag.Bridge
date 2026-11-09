@@ -1,4 +1,4 @@
-/**
+﻿/**
  * TAG BRIDGE — Trading Ecosystem Dashboard
  * dashboard.js v2.0
  * Uses: CoinGecko (free), Alternative.me (Fear & Greed), TradingView (free widgets)
@@ -3258,3 +3258,5 @@ function initDemo() {
         demoUpdateFormPrice();
     });
 }
+// v2.1
+
