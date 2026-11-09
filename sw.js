@@ -1,7 +1,5 @@
-// Tag Bridge Service Worker v11
-// Network-first strategy with selective cache fallback
-
-const CACHE_NAME = 'tagbridge-v11';
+// Tag Bridge Service Worker v12
+const CACHE_NAME = 'tagbridge-v12';
 const OFFLINE_URL = '/offline.html';
 
 const PRECACHE = [
