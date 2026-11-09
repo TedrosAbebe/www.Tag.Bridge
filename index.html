@@ -455,116 +455,157 @@
     <div class="section-header">
         <div class="section-tag-pill"><i class="fas fa-graduation-cap"></i> PAPER TRADING</div>
         <h2 class="section-title"><i class="fas fa-wallet"></i> Demo Trading Account</h2>
-        <p class="section-sub">Practice buying &amp; selling risk-free — trades auto-log to your Journal</p>
+        <p class="section-sub">Practice with virtual money — real-time prices, auto-logs to Journal</p>
     </div>
 
-    <!-- Account balance bar -->
-    <div class="demo-account-bar">
-        <div class="demo-bal-card">
-            <div class="demo-bal-icon">💰</div>
-            <div>
-                <div class="demo-bal-label">Balance</div>
-                <div class="demo-bal-val" id="demoBalance">$10,000.00</div>
+    <!-- ── Account Summary Bar ── -->
+    <div class="dma-bar">
+        <!-- Balance (editable) -->
+        <div class="dma-card dma-card--balance">
+            <div class="dma-card-top">
+                <span class="dma-card-icon">💰</span>
+                <span class="dma-card-lbl">Balance</span>
+                <button class="dma-edit-btn" onclick="demoEditBalance()" title="Edit balance">
+                    <i class="fas fa-pen"></i>
+                </button>
+            </div>
+            <div class="dma-card-val" id="demoBalance">$10,000.00</div>
+            <!-- Inline edit form (hidden by default) -->
+            <div class="dma-edit-form" id="demoBalEditForm" style="display:none;">
+                <input type="number" id="demoBalInput" placeholder="Enter new balance" min="100" step="100">
+                <button class="dma-save-btn" onclick="demoSaveBalance()"><i class="fas fa-check"></i></button>
+                <button class="dma-cancel-btn" onclick="demoCancelEditBalance()"><i class="fas fa-times"></i></button>
             </div>
         </div>
-        <div class="demo-bal-card">
-            <div class="demo-bal-icon">📈</div>
-            <div>
-                <div class="demo-bal-label">Open P&amp;L</div>
-                <div class="demo-bal-val" id="demoOpenPL">$0.00</div>
+        <!-- Open P&L -->
+        <div class="dma-card">
+            <div class="dma-card-top">
+                <span class="dma-card-icon">📊</span>
+                <span class="dma-card-lbl">Open P&amp;L</span>
             </div>
+            <div class="dma-card-val" id="demoOpenPL">$0.00</div>
         </div>
-        <div class="demo-bal-card">
-            <div class="demo-bal-icon">🏆</div>
-            <div>
-                <div class="demo-bal-label">Total P&amp;L</div>
-                <div class="demo-bal-val" id="demoTotalPL">$0.00</div>
+        <!-- Total P&L -->
+        <div class="dma-card">
+            <div class="dma-card-top">
+                <span class="dma-card-icon">🏆</span>
+                <span class="dma-card-lbl">Total P&amp;L</span>
             </div>
+            <div class="dma-card-val" id="demoTotalPL">$0.00</div>
         </div>
-        <div class="demo-bal-card">
-            <div class="demo-bal-icon">📊</div>
-            <div>
-                <div class="demo-bal-label">Total Trades</div>
-                <div class="demo-bal-val" id="demoTradeCount">0</div>
+        <!-- Trades -->
+        <div class="dma-card">
+            <div class="dma-card-top">
+                <span class="dma-card-icon">🔄</span>
+                <span class="dma-card-lbl">Trades</span>
             </div>
+            <div class="dma-card-val" id="demoTradeCount">0</div>
         </div>
-        <button class="demo-reset-btn" onclick="demoReset()" title="Reset demo account">
-            <i class="fas fa-rotate-left"></i> Reset
+        <!-- Reset -->
+        <button class="dma-reset-btn" onclick="demoReset()">
+            <i class="fas fa-rotate-left"></i><span>Reset</span>
         </button>
     </div>
 
-    <!-- Trade entry panel -->
-    <div class="demo-panel">
-        <div class="demo-trade-form">
-            <h3 class="demo-form-title"><i class="fas fa-plus-circle"></i> Place Trade</h3>
-            <!-- Forex / Crypto category tabs -->
-            <div class="demo-cat-tabs">
-                <button class="demo-cat-btn active" data-cat="forex" onclick="demoCatSwitch(this)"><i class="fas fa-dollar-sign"></i> Forex</button>
-                <button class="demo-cat-btn" data-cat="crypto" onclick="demoCatSwitch(this)"><i class="fab fa-bitcoin"></i> Crypto</button>
+    <!-- ── Main Trading Panel ── -->
+    <div class="dma-main">
+
+        <!-- LEFT: Place Trade -->
+        <div class="dma-box">
+            <div class="dma-box-header">
+                <i class="fas fa-chart-line"></i> Place Trade
+                <span class="dma-live-badge"><span class="dma-live-dot"></span> LIVE</span>
             </div>
-            <div class="demo-form-grid">
-                <div class="demo-field">
-                    <label>Pair</label>
-                    <select id="demoPair">
-                        <!-- populated by demoCatSwitch() on load -->
+
+            <!-- Market / Category tabs -->
+            <div class="dma-mkt-tabs">
+                <button class="dma-mkt-btn active" data-cat="forex"  onclick="demoCatSwitch(this)"><i class="fas fa-dollar-sign"></i> Forex</button>
+                <button class="dma-mkt-btn"         data-cat="crypto" onclick="demoCatSwitch(this)"><i class="fab fa-bitcoin"></i> Crypto</button>
+            </div>
+
+            <!-- Pair selector -->
+            <div class="dma-pair-row">
+                <div class="dma-pair-select-wrap">
+                    <i class="fas fa-coins dma-pair-icon" id="demoPairIcon"></i>
+                    <select id="demoPair" class="dma-pair-select" onchange="demoUpdateFormPrice()">
+                        <!-- populated by demoCatSwitch -->
                     </select>
+                    <i class="fas fa-chevron-down dma-pair-chevron"></i>
                 </div>
-                <div class="demo-field">
-                    <label>Direction</label>
-                    <div class="demo-dir-toggle">
-                        <button class="demo-dir-btn buy active" id="demoDirBuy" onclick="demoSetDir('BUY')">▲ BUY</button>
-                        <button class="demo-dir-btn sell" id="demoDirSell" onclick="demoSetDir('SELL')">▼ SELL</button>
-                    </div>
+                <div class="dma-price-tag">
+                    <span class="dma-price-lbl">Live</span>
+                    <span class="dma-price-val" id="demoLivePrice">…</span>
                 </div>
-                <div class="demo-field">
+            </div>
+
+            <!-- BUY / SELL -->
+            <div class="dma-dir-row">
+                <button class="dma-dir-btn dma-buy active" id="demoDirBuy"  onclick="demoSetDir('BUY')">
+                    <i class="fas fa-arrow-trend-up"></i> BUY
+                </button>
+                <button class="dma-dir-btn dma-sell"      id="demoDirSell" onclick="demoSetDir('SELL')">
+                    <i class="fas fa-arrow-trend-down"></i> SELL
+                </button>
+            </div>
+
+            <!-- Trade fields -->
+            <div class="dma-fields">
+                <div class="dma-field">
                     <label>Lot Size</label>
                     <input type="number" id="demoLot" value="0.1" min="0.01" max="10" step="0.01">
                 </div>
-                <div class="demo-field">
-                    <label>Entry Price</label>
-                    <input type="number" id="demoEntry" placeholder="Market price" step="any">
+                <div class="dma-field">
+                    <label>Entry <small>(blank = market)</small></label>
+                    <input type="number" id="demoEntry" placeholder="Market" step="any">
                 </div>
-                <div class="demo-field">
+                <div class="dma-field">
                     <label>Stop Loss</label>
                     <input type="number" id="demoSL" placeholder="Optional" step="any">
                 </div>
-                <div class="demo-field">
+                <div class="dma-field">
                     <label>Take Profit</label>
                     <input type="number" id="demoTP" placeholder="Optional" step="any">
                 </div>
             </div>
-            <div class="demo-form-footer">
-                <div class="demo-market-price">
-                    Live: <span id="demoLivePrice">Loading...</span>
-                </div>
-                <button class="demo-place-btn" onclick="demoPlaceTrade()">
-                    <i class="fas fa-paper-plane"></i> Place Trade
-                </button>
-            </div>
+
+            <button class="dma-place-btn" onclick="demoPlaceTrade()">
+                <i class="fas fa-paper-plane"></i> Place Trade
+            </button>
         </div>
 
-        <!-- Open positions -->
-        <div class="demo-positions">
-            <h3 class="demo-form-title"><i class="fas fa-list-check"></i> Open Positions <span id="demoOpenCount" class="demo-count-badge">0</span></h3>
-            <div class="demo-pos-list" id="demoPosTable">
-                <div class="demo-empty"><i class="fas fa-chart-line"></i><br>No open trades — place your first trade!</div>
+        <!-- RIGHT: Open Positions -->
+        <div class="dma-box">
+            <div class="dma-box-header">
+                <i class="fas fa-list-check"></i> Open Positions
+                <span class="demo-count-badge" id="demoOpenCount">0</span>
+            </div>
+            <div class="dma-pos-list" id="demoPosTable">
+                <div class="dma-empty">
+                    <i class="fas fa-chart-candlestick"></i>
+                    <p>No open trades</p>
+                    <small>Place your first trade →</small>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Closed trades -->
-    <div class="demo-history-wrap" id="demoHistoryWrap" style="display:none;">
-        <h3 class="demo-form-title" style="margin-bottom:10px;"><i class="fas fa-clock-rotate-left"></i> Closed Trades <small style="font-size:.72rem;color:#8b949e;">(also in Journal ↓)</small></h3>
-        <div class="demo-table-scroll">
-            <table class="bt-table" id="demoHistoryTable">
+    <!-- ── Closed Trade History ── -->
+    <div class="dma-box dma-history-box" id="demoHistoryWrap" style="display:none;">
+        <div class="dma-box-header">
+            <i class="fas fa-clock-rotate-left"></i> Closed Trades
+            <small style="font-weight:500;color:#8b949e;margin-left:6px;">auto-logged to Journal</small>
+        </div>
+        <div class="dma-table-scroll">
+            <table class="bt-table">
                 <thead><tr>
-                    <th>#</th><th>Pair</th><th>Dir</th><th>Entry</th><th>Exit</th>
-                    <th>Lots</th><th>P&amp;L</th><th>Result</th><th>Date</th>
+                    <th>#</th><th>Pair</th><th>Dir</th><th>Entry</th>
+                    <th>Exit</th><th>Lots</th><th>P&amp;L</th><th>Result</th><th>Date</th>
                 </tr></thead>
                 <tbody id="demoHistoryBody"></tbody>
             </table>
         </div>
     </div>
+
 </div>
 </section>
 
