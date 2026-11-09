@@ -433,17 +433,17 @@ function toggleChartFullscreen() {
     const i = document.querySelector('.chart-fs-btn i');
     if (i) i.className = isNowFS ? 'fas fa-compress' : 'fas fa-expand';
 
-    // Add / remove the close overlay button
     const existingClose = document.getElementById('chartFsCloseBtn');
     if (isNowFS) {
         if (!existingClose) {
             const closeBtn = document.createElement('button');
             closeBtn.id = 'chartFsCloseBtn';
             closeBtn.innerHTML = '<i class="fas fa-compress"></i> Minimize';
+            closeBtn.setAttribute('aria-label', 'Exit fullscreen');
             closeBtn.onclick = toggleChartFullscreen;
-            el.appendChild(closeBtn);
+            // Append to BODY so iframe cannot block it on mobile
+            document.body.appendChild(closeBtn);
         }
-        // Close on Escape key
         document.addEventListener('keydown', _chartFsEscHandler);
     } else {
         if (existingClose) existingClose.remove();
