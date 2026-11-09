@@ -2820,44 +2820,74 @@ function demoSetDir(dir) {
     document.getElementById('demoDirSell').classList.toggle('active', dir === 'SELL');
 }
 
-// ── Pair definitions per category ──
+// ── Pair definitions — ONLY pairs with confirmed real-time prices ──
 const DEMO_PAIR_OPTS = {
     forex: [
-        { v:'XAUUSD',  pip:'0.01',   pv:'1',   label:'XAU/USD — Gold'    },
-        { v:'EURUSD',  pip:'0.0001', pv:'10',  label:'EUR/USD'            },
-        { v:'GBPUSD',  pip:'0.0001', pv:'10',  label:'GBP/USD'            },
-        { v:'USDJPY',  pip:'0.01',   pv:'6.7', label:'USD/JPY'            },
-        { v:'AUDUSD',  pip:'0.0001', pv:'10',  label:'AUD/USD'            },
-        { v:'USDCHF',  pip:'0.0001', pv:'10',  label:'USD/CHF'            },
-        { v:'USDCAD',  pip:'0.0001', pv:'10',  label:'USD/CAD'            },
-        { v:'NZDUSD',  pip:'0.0001', pv:'10',  label:'NZD/USD'            },
-        { v:'XAGUSD',  pip:'0.001',  pv:'5',   label:'XAG/USD — Silver'   },
+        { v:'XAUUSD',  pip:'0.01',   pv:'1',   label:'XAU/USD — Gold'   },
+        { v:'EURUSD',  pip:'0.0001', pv:'10',  label:'EUR/USD'           },
+        { v:'GBPUSD',  pip:'0.0001', pv:'10',  label:'GBP/USD'           },
+        { v:'USDJPY',  pip:'0.01',   pv:'6.7', label:'USD/JPY'           },
+        { v:'AUDUSD',  pip:'0.0001', pv:'10',  label:'AUD/USD'           },
+        { v:'USDCHF',  pip:'0.0001', pv:'10',  label:'USD/CHF'           },
+        { v:'USDCAD',  pip:'0.0001', pv:'10',  label:'USD/CAD'           },
+        { v:'NZDUSD',  pip:'0.0001', pv:'10',  label:'NZD/USD'           },
     ],
     crypto: [
-        { v:'BTCUSDT',  pip:'1',      pv:'1', label:'BTC/USDT — Bitcoin'  },
-        { v:'ETHUSDT',  pip:'0.1',    pv:'1', label:'ETH/USDT — Ethereum' },
-        { v:'SOLUSDT',  pip:'0.01',   pv:'1', label:'SOL/USDT — Solana'   },
-        { v:'BNBUSDT',  pip:'0.1',    pv:'1', label:'BNB/USDT'            },
-        { v:'XRPUSDT',  pip:'0.0001', pv:'1', label:'XRP/USDT'            },
-        { v:'ADAUSDT',  pip:'0.0001', pv:'1', label:'ADA/USDT'            },
-        { v:'DOGEUSDT', pip:'0.00001',pv:'1', label:'DOGE/USDT'           },
-        { v:'LTCUSDT',  pip:'0.01',   pv:'1', label:'LTC/USDT'            },
+        { v:'BTCUSDT',  pip:'1',      pv:'1',  label:'BTC/USDT'          },
+        { v:'ETHUSDT',  pip:'0.1',    pv:'1',  label:'ETH/USDT'          },
+        { v:'SOLUSDT',  pip:'0.01',   pv:'1',  label:'SOL/USDT'          },
+        { v:'BNBUSDT',  pip:'0.1',    pv:'1',  label:'BNB/USDT'          },
+        { v:'XRPUSDT',  pip:'0.0001', pv:'1',  label:'XRP/USDT'          },
+        { v:'ADAUSDT',  pip:'0.0001', pv:'1',  label:'ADA/USDT'          },
+        { v:'DOGEUSDT', pip:'0.00001',pv:'1',  label:'DOGE/USDT'         },
+        { v:'LTCUSDT',  pip:'0.01',   pv:'1',  label:'LTC/USDT'          },
     ]
 };
-
 function demoCatSwitch(btn) {
-    document.querySelectorAll('.demo-cat-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.dma-mkt-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     const cat  = btn.dataset.cat;
     const sel  = document.getElementById('demoPair');
+    const icon = document.getElementById('demoPairIcon');
     if (!sel) return;
     sel.innerHTML = DEMO_PAIR_OPTS[cat].map(p =>
         `<option value="${p.v}" data-pip="${p.pip}" data-pv="${p.pv}" data-type="${cat}">${p.label}</option>`
     ).join('');
-    document.getElementById('demoEntry').value = '';
-    document.getElementById('demoSL').value    = '';
-    document.getElementById('demoTP').value    = '';
+    if (icon) icon.className = cat === 'crypto'
+        ? 'fab fa-bitcoin dma-pair-icon'
+        : 'fas fa-dollar-sign dma-pair-icon';
+    if (document.getElementById('demoEntry'))  document.getElementById('demoEntry').value = '';
+    if (document.getElementById('demoSL'))     document.getElementById('demoSL').value    = '';
+    if (document.getElementById('demoTP'))     document.getElementById('demoTP').value    = '';
     demoUpdateFormPrice();
+}
+
+// ── Editable balance ──
+function demoEditBalance() {
+    const state = demoLoad();
+    const form  = document.getElementById('demoBalEditForm');
+    const input = document.getElementById('demoBalInput');
+    if (!form || !input) return;
+    input.value = state.balance.toFixed(2);
+    form.style.display = 'flex';
+    input.focus(); input.select();
+}
+function demoSaveBalance() {
+    const input = document.getElementById('demoBalInput');
+    const val   = parseFloat(input?.value);
+    if (!val || val < 100) { demoShowToast('Minimum balance is $100'); return; }
+    const state     = demoLoad();
+    const oldBal    = state.balance;
+    state.balance   = +val.toFixed(2);
+    state.totalPL   = +(state.totalPL + (val - oldBal)).toFixed(2);
+    demoSave(state);
+    document.getElementById('demoBalEditForm').style.display = 'none';
+    demoRenderAll();
+    demoShowToast(`Balance updated to $${val.toFixed(2)} ✅`);
+}
+function demoCancelEditBalance() {
+    const form = document.getElementById('demoBalEditForm');
+    if (form) form.style.display = 'none';
 }
 
 // ── Show live price in form ──
@@ -2870,11 +2900,13 @@ function demoUpdateFormPrice() {
     if (p) {
         const decimals = p > 500 ? 2 : p > 10 ? 3 : 5;
         priceEl.textContent = p.toFixed(decimals);
-        priceEl.style.color = '#10b981';
+        priceEl.classList.remove('loading');
+        priceEl.classList.add('live');
         if (entryEl && !entryEl.value) entryEl.placeholder = p.toFixed(decimals);
     } else {
-        priceEl.textContent = 'Loading...';
-        priceEl.style.color = '#f59e0b';
+        priceEl.textContent = '…';
+        priceEl.classList.add('loading');
+        priceEl.classList.remove('live');
     }
 }
 
@@ -3008,14 +3040,97 @@ function demoLogToJournal(closed) {
 
 // ── Price formatter ──
 function fmtDemoPrice(p) {
-    if (!p) return '--';
-    if (p > 500)  return p.toFixed(2);   // Gold, BTC, ETH
-    if (p > 10)   return p.toFixed(3);   // USD/JPY
-    return p.toFixed(5);                  // EUR/USD etc
+    if (!p && p !== 0) return '--';
+    if (p > 500)  return p.toFixed(2);
+    if (p > 10)   return p.toFixed(3);
+    return p.toFixed(5);
 }
 
 // ── Render everything ──
 function demoRenderAll() {
+    const state = demoLoad();
+
+    // Balance + stats
+    const balEl   = document.getElementById('demoBalance');
+    const openEl  = document.getElementById('demoOpenPL');
+    const totalEl = document.getElementById('demoTotalPL');
+    const cntEl   = document.getElementById('demoTradeCount');
+
+    if (balEl)   balEl.textContent   = '$' + state.balance.toLocaleString('en-US', { minimumFractionDigits:2, maximumFractionDigits:2 });
+    if (totalEl) {
+        totalEl.textContent = (state.totalPL >= 0 ? '+$' : '-$') + Math.abs(state.totalPL).toFixed(2);
+        totalEl.className   = 'dma-card-val ' + (state.totalPL >= 0 ? 'up' : 'down');
+    }
+    if (cntEl) cntEl.textContent = state.tradeCount;
+
+    // Open positions
+    const posTable  = document.getElementById('demoPosTable');
+    const openCount = document.getElementById('demoOpenCount');
+    if (openCount) openCount.textContent = state.positions.length;
+
+    if (!state.positions.length) {
+        if (posTable) posTable.innerHTML = `
+            <div class="dma-empty">
+                <i class="fas fa-chart-candlestick"></i>
+                <p>No open trades</p>
+                <small>Place your first trade →</small>
+            </div>`;
+        if (openEl) { openEl.textContent = '$0.00'; openEl.className = 'dma-card-val'; }
+    } else {
+        let totalOpen = 0;
+        const rows = state.positions.map(pos => {
+            const price = demoGetPrice(pos.sym) || pos.entry;
+            const pnl   = demoCalcPnL(pos, price);
+            totalOpen  += pnl;
+            const up    = pnl >= 0;
+            const since = new Date(pos.openTime).toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+            return `<div class="dma-pos-card">
+                <div class="dma-pos-top">
+                    <span class="dma-pos-sym">${pos.sym}</span>
+                    <span class="dma-pos-dir ${pos.dir === 'BUY' ? 'buy' : 'sell'}">
+                        <i class="fas fa-arrow-trend-${pos.dir === 'BUY' ? 'up' : 'down'}"></i> ${pos.dir}
+                    </span>
+                    <span class="dma-pos-pnl ${up ? 'up' : 'down'}">${up ? '+' : ''}$${pnl.toFixed(2)}</span>
+                </div>
+                <div class="dma-pos-meta">
+                    <span>${pos.lot} lots @ ${fmtDemoPrice(pos.entry)}</span>
+                    <span class="dma-pos-now">Now: ${fmtDemoPrice(price)}</span>
+                    ${pos.sl ? `<span class="dma-pos-sl">SL ${fmtDemoPrice(pos.sl)}</span>` : ''}
+                    ${pos.tp ? `<span class="dma-pos-tp">TP ${fmtDemoPrice(pos.tp)}</span>` : ''}
+                    <span class="dma-pos-time">${since}</span>
+                </div>
+                <button class="dma-close-btn" onclick="demoClosePosition('${pos.id}')">
+                    <i class="fas fa-times"></i> Close
+                </button>
+            </div>`;
+        }).join('');
+        if (posTable) posTable.innerHTML = rows;
+
+        if (openEl) {
+            openEl.textContent = (totalOpen >= 0 ? '+$' : '-$') + Math.abs(totalOpen).toFixed(2);
+            openEl.className   = 'dma-card-val ' + (totalOpen >= 0 ? 'up' : 'down');
+        }
+    }
+
+    // History
+    const histWrap = document.getElementById('demoHistoryWrap');
+    const histBody = document.getElementById('demoHistoryBody');
+    if (state.history.length && histWrap) {
+        histWrap.style.display = '';
+        if (histBody) histBody.innerHTML = state.history.slice(0, 50).map((t, i) => `
+            <tr>
+                <td>${i + 1}</td>
+                <td><b>${t.sym}</b></td>
+                <td class="${t.dir === 'BUY' ? 'dir-buy' : 'dir-sell'}">${t.dir}</td>
+                <td>${fmtDemoPrice(t.entry)}</td>
+                <td>${fmtDemoPrice(t.exit)}</td>
+                <td>${t.lot}</td>
+                <td class="${t.pnl >= 0 ? 'win' : 'loss'}">${t.pnl >= 0 ? '+$' : '-$'}${Math.abs(t.pnl).toFixed(2)}</td>
+                <td class="${t.result === 'WIN' ? 'win' : 'loss'}">${t.result === 'WIN' ? '✅' : '❌'}</td>
+                <td>${new Date(t.openTime).toLocaleDateString()}</td>
+            </tr>`).join('');
+    }
+}
     const state = demoLoad();
 
     // Balance bar
@@ -3114,7 +3229,7 @@ function demoShowToast(msg) {
 // ── Init demo account ──
 function initDemo() {
     // Populate Forex pairs by default
-    const forexBtn = document.querySelector('.demo-cat-btn[data-cat="forex"]');
+    const forexBtn = document.querySelector('.dma-mkt-btn[data-cat="forex"]');
     if (forexBtn) demoCatSwitch(forexBtn);
 
     demoRenderAll();
@@ -3138,7 +3253,8 @@ function initDemo() {
     // Pair change → refresh price immediately
     const pairSel = document.getElementById('demoPair');
     if (pairSel) pairSel.addEventListener('change', () => {
-        document.getElementById('demoEntry').value = '';
+        const e = document.getElementById('demoEntry');
+        if (e) e.value = '';
         demoUpdateFormPrice();
     });
 }
