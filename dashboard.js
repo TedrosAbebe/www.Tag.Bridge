@@ -287,11 +287,42 @@ function switchChart(btn) {
     loadTVChart(sym);
 }
 
+// Chart-local theme: starts as 'light' (white background by default)
+let chartTheme = localStorage.getItem('tb-chart-theme') || 'light';
+
+function toggleChartTheme() {
+    chartTheme = chartTheme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('tb-chart-theme', chartTheme);
+
+    const btn   = document.getElementById('chartThemeToggle');
+    const icon  = btn ? btn.querySelector('.ctt-icon') : null;
+    const label = document.getElementById('chartThemeLabel');
+    const container = document.getElementById('chartContainer');
+
+    if (chartTheme === 'light') {
+        if (btn)   btn.classList.add('ctt-light');
+        if (btn)   btn.title = 'Switch to dark chart';
+        if (icon)  icon.textContent = '🌙';
+        if (label) label.textContent = 'Dark';
+        if (container) container.style.background = '#ffffff';
+    } else {
+        if (btn)   btn.classList.remove('ctt-light');
+        if (btn)   btn.title = 'Switch to white chart';
+        if (icon)  icon.textContent = '☀️';
+        if (label) label.textContent = 'White';
+        if (container) container.style.background = '';
+    }
+
+    // Reload the active chart with new theme
+    const activeTab = document.querySelector('.chart-tab.active');
+    if (activeTab) loadTVChart(activeTab.dataset.sym);
+}
+
 function loadTVChart(symbol) {
     const container = document.getElementById('tvChartContainer');
     if (!container) return;
     container.innerHTML = '';
-    const isDark = currentTheme === 'dark';
+    const isChartLight = chartTheme === 'light';
     const fullSym = symbol.includes(':') ? symbol :
         (['EURUSD','GBPUSD','USDJPY','XAUUSD','AUDUSD'].includes(symbol) ? 'FX:'+symbol : 'BINANCE:'+symbol);
     const wrap = document.createElement('div');
@@ -303,12 +334,12 @@ function loadTVChart(symbol) {
     s.async = true;
     s.textContent = JSON.stringify({
         autosize: true, symbol: fullSym, interval: 'D',
-        timezone: 'Africa/Nairobi', theme: isDark ? 'dark' : 'light',
+        timezone: 'Africa/Nairobi', theme: isChartLight ? 'light' : 'dark',
         style: '1', locale: 'en',
-        toolbar_bg: isDark ? '#1c2333' : '#f1f5f9',
+        toolbar_bg: isChartLight ? '#ffffff' : '#1c2333',
         enable_publishing: false, withdateranges: true, range: '3M',
         hide_side_toolbar: false, allow_symbol_change: true, save_image: false,
-        studies: ['STD;RSI','STD;MACD'], show_popup_button: true,
+        show_popup_button: true,
         popup_width: '1000', popup_height: '650'
     });
     wrap.appendChild(s);
@@ -398,9 +429,30 @@ function loadTVMarketNews() {
 function toggleChartFullscreen() {
     const el = document.getElementById('chartContainer');
     if (!el) return;
-    el.classList.toggle('fullscreen');
+    const isNowFS = el.classList.toggle('fullscreen');
     const i = document.querySelector('.chart-fs-btn i');
-    if (i) i.className = el.classList.contains('fullscreen') ? 'fas fa-compress' : 'fas fa-expand';
+    if (i) i.className = isNowFS ? 'fas fa-compress' : 'fas fa-expand';
+
+    // Add / remove the close overlay button
+    const existingClose = document.getElementById('chartFsCloseBtn');
+    if (isNowFS) {
+        if (!existingClose) {
+            const closeBtn = document.createElement('button');
+            closeBtn.id = 'chartFsCloseBtn';
+            closeBtn.innerHTML = '<i class="fas fa-compress"></i> Minimize';
+            closeBtn.onclick = toggleChartFullscreen;
+            el.appendChild(closeBtn);
+        }
+        // Close on Escape key
+        document.addEventListener('keydown', _chartFsEscHandler);
+    } else {
+        if (existingClose) existingClose.remove();
+        document.removeEventListener('keydown', _chartFsEscHandler);
+    }
+}
+
+function _chartFsEscHandler(e) {
+    if (e.key === 'Escape') toggleChartFullscreen();
 }
 
 // ══════════════════════════════════════════════
@@ -1452,6 +1504,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Charts: load default EUR/USD
     loadTVChart('EURUSD');
+    // Apply saved chart theme state
+    if (chartTheme === 'light') {
+        const btn   = document.getElementById('chartThemeToggle');
+        const label = document.getElementById('chartThemeLabel');
+        const cont  = document.getElementById('chartContainer');
+        if (btn)   btn.classList.add('ctt-light');
+        if (label) label.textContent = 'Dark';
+        if (cont)  cont.style.background = '#ffffff';
+    }
     loadTVMarketOverview();
 
     // Load Economic Calendar & Market News
@@ -1467,6 +1528,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Calculators: load default
     renderCalc('possize');
+
+    // Backtesting: init strategy params
+    btUpdateStrategyFields();
 
     // Journal
     renderJournal();
@@ -1494,3 +1558,1073 @@ document.addEventListener('DOMContentLoaded', () => {
 
     console.log('🚀 Tag Bridge Trading Ecosystem v2.0 Upgraded & Initialized');
 });
+
+
+// ══════════════════════════════════════════════
+//  BACKTESTING ENGINE
+//  Strategies: MA Cross, RSI, Breakout, MACD
+//  Features: Equity curve, price chart with signals,
+//            monthly P&L bar chart, trade log, CSV export
+// ══════════════════════════════════════════════
+
+const BT_STRATEGY_PARAMS = {
+    ma_cross: [
+        { id: 'bt-fast-ma', label: 'Fast EMA Period', val: 9,  min: 2,  max: 50  },
+        { id: 'bt-slow-ma', label: 'Slow EMA Period', val: 21, min: 5,  max: 200 }
+    ],
+    rsi: [
+        { id: 'bt-rsi-period',    label: 'RSI Period',         val: 14, min: 2,  max: 50  },
+        { id: 'bt-rsi-oversold',  label: 'Oversold Level',     val: 30, min: 10, max: 45  },
+        { id: 'bt-rsi-overbought',label: 'Overbought Level',   val: 70, min: 55, max: 90  }
+    ],
+    breakout: [
+        { id: 'bt-bk-period',  label: 'Lookback Periods', val: 20, min: 5, max: 100 }
+    ],
+    macd: [
+        { id: 'bt-macd-fast',   label: 'Fast EMA',   val: 12, min: 2,  max: 50  },
+        { id: 'bt-macd-slow',   label: 'Slow EMA',   val: 26, min: 5,  max: 200 },
+        { id: 'bt-macd-signal', label: 'Signal Line',val: 9,  min: 2,  max: 50  }
+    ]
+};
+
+function btUpdateStrategyFields() {
+    const strategy = document.getElementById('bt-strategy').value;
+    const params   = BT_STRATEGY_PARAMS[strategy] || [];
+    const container = document.getElementById('btStrategyParams');
+    container.innerHTML = params.map(p => `
+        <div class="bt-field">
+            <label>${p.label}</label>
+            <input type="number" id="${p.id}" value="${p.val}" min="${p.min}" max="${p.max}" step="1">
+        </div>
+    `).join('');
+    container.style.display = params.length ? 'grid' : 'none';
+}
+
+// ── OHLC Generator (seeded pseudo-random walk) ──
+function btGenerateOHLC(instrument, bars) {
+    const seeds = { EURUSD:1.0850, GBPUSD:1.2650, XAUUSD:1950, BTCUSD:42000, USDJPY:148.5 };
+    const volatility = { EURUSD:.0020, GBPUSD:.0028, XAUUSD:8, BTCUSD:400, USDJPY:.25 };
+    let price  = seeds[instrument] || 1.0850;
+    const vol  = volatility[instrument] || .002;
+    const data = [];
+    // simple seeded LCG for reproducibility
+    let seed = 12345 + bars;
+    function rng() { seed = (seed * 1664525 + 1013904223) & 0xffffffff; return (seed >>> 0) / 0xffffffff; }
+    const trend = (rng() > 0.5 ? 1 : -1) * 0.0001 * vol;
+    for (let i = 0; i < bars; i++) {
+        const move   = (rng() - 0.499) * vol * 2;
+        const open   = price;
+        price       += move + trend;
+        const hi     = Math.max(open, price) + rng() * vol * 0.5;
+        const lo     = Math.min(open, price) - rng() * vol * 0.5;
+        const close  = price;
+        const date   = new Date(Date.now() - (bars - i) * 4 * 3600 * 1000); // 4H bars
+        data.push({ date, open, high: hi, low: lo, close, i });
+    }
+    return data;
+}
+
+// ── Indicator Helpers ──
+function calcEMA(prices, period) {
+    const k = 2 / (period + 1);
+    const ema = [];
+    let prev = null;
+    for (let i = 0; i < prices.length; i++) {
+        if (i < period - 1) { ema.push(null); continue; }
+        if (prev === null) {
+            prev = prices.slice(0, period).reduce((a, b) => a + b, 0) / period;
+            ema.push(prev); continue;
+        }
+        prev = prices[i] * k + prev * (1 - k);
+        ema.push(prev);
+    }
+    return ema;
+}
+
+function calcRSI(prices, period) {
+    const rsi = [];
+    for (let i = 0; i < prices.length; i++) {
+        if (i < period) { rsi.push(null); continue; }
+        let gains = 0, losses = 0;
+        for (let j = i - period + 1; j <= i; j++) {
+            const d = prices[j] - prices[j - 1];
+            if (d > 0) gains += d; else losses -= d;
+        }
+        const rs = gains / (losses || 0.0001);
+        rsi.push(100 - 100 / (1 + rs));
+    }
+    return rsi;
+}
+
+function calcMACD(prices, fast, slow, signal) {
+    const fastEMA   = calcEMA(prices, fast);
+    const slowEMA   = calcEMA(prices, slow);
+    const macdLine  = prices.map((_, i) =>
+        fastEMA[i] !== null && slowEMA[i] !== null ? fastEMA[i] - slowEMA[i] : null);
+    const filled    = macdLine.filter(v => v !== null);
+    const signalRaw = calcEMA(filled, signal);
+    const signalLine = [];
+    let fi = 0;
+    for (let i = 0; i < macdLine.length; i++) {
+        if (macdLine[i] === null) { signalLine.push(null); continue; }
+        signalLine.push(signalRaw[fi++] ?? null);
+    }
+    return { macdLine, signalLine };
+}
+
+// ── Signal Generators ──
+function btSignalMACross(data, fastP, slowP) {
+    const closes = data.map(d => d.close);
+    const fast   = calcEMA(closes, fastP);
+    const slow   = calcEMA(closes, slowP);
+    const signals = [];
+    for (let i = 1; i < data.length; i++) {
+        if (fast[i] === null || slow[i] === null || fast[i-1] === null || slow[i-1] === null) {
+            signals.push(0); continue;
+        }
+        if (fast[i-1] <= slow[i-1] && fast[i] > slow[i]) { signals.push(1);  continue; }
+        if (fast[i-1] >= slow[i-1] && fast[i] < slow[i]) { signals.push(-1); continue; }
+        signals.push(0);
+    }
+    signals.unshift(0);
+    return signals;
+}
+
+function btSignalRSI(data, period, oversold, overbought) {
+    const closes  = data.map(d => d.close);
+    const rsi     = calcRSI(closes, period);
+    const signals = [];
+    for (let i = 1; i < data.length; i++) {
+        if (rsi[i] === null || rsi[i-1] === null) { signals.push(0); continue; }
+        if (rsi[i-1] <= oversold  && rsi[i] > oversold)  { signals.push(1);  continue; }
+        if (rsi[i-1] >= overbought && rsi[i] < overbought) { signals.push(-1); continue; }
+        signals.push(0);
+    }
+    signals.unshift(0);
+    return signals;
+}
+
+function btSignalBreakout(data, lookback) {
+    const signals = [];
+    for (let i = 0; i < data.length; i++) {
+        if (i < lookback) { signals.push(0); continue; }
+        const window = data.slice(i - lookback, i);
+        const hh = Math.max(...window.map(d => d.high));
+        const ll = Math.min(...window.map(d => d.low));
+        if (data[i].close > hh) { signals.push(1); }
+        else if (data[i].close < ll) { signals.push(-1); }
+        else signals.push(0);
+    }
+    return signals;
+}
+
+function btSignalMACD(data, fast, slow, signal) {
+    const closes  = data.map(d => d.close);
+    const { macdLine, signalLine } = calcMACD(closes, fast, slow, signal);
+    const signals = [];
+    for (let i = 1; i < data.length; i++) {
+        if (macdLine[i] === null || signalLine[i] === null || macdLine[i-1] === null || signalLine[i-1] === null) {
+            signals.push(0); continue;
+        }
+        if (macdLine[i-1] <= signalLine[i-1] && macdLine[i] > signalLine[i]) { signals.push(1); continue; }
+        if (macdLine[i-1] >= signalLine[i-1] && macdLine[i] < signalLine[i]) { signals.push(-1); continue; }
+        signals.push(0);
+    }
+    signals.unshift(0);
+    return signals;
+}
+
+// ── Trade Simulator ──
+function btSimulate(data, signals, balance, riskPct, slPips, tpPips, instrument) {
+    const pipSize  = instrument === 'USDJPY' ? 0.01 : instrument === 'XAUUSD' ? 0.01 : instrument === 'BTCUSD' ? 1 : 0.0001;
+    const pipValue = instrument === 'USDJPY' ? (0.01 / data[0].close) * 100000 : instrument === 'XAUUSD' ? 1 : instrument === 'BTCUSD' ? 1 : 10;
+    const trades   = [];
+    const equity   = [{ date: data[0].date, balance }];
+    let inTrade    = false;
+    let entry      = null;
+
+    for (let i = 1; i < data.length; i++) {
+        const bar = data[i];
+
+        if (inTrade && entry) {
+            const sl = entry.direction === 'BUY'
+                ? entry.price - slPips * pipSize
+                : entry.price + slPips * pipSize;
+            const tp = entry.direction === 'BUY'
+                ? entry.price + tpPips * pipSize
+                : entry.price - tpPips * pipSize;
+
+            let exitPrice = null, exitType = null;
+            if (entry.direction === 'BUY') {
+                if (bar.low  <= sl) { exitPrice = sl; exitType = 'SL'; }
+                if (bar.high >= tp) { exitPrice = tp; exitType = 'TP'; }
+            } else {
+                if (bar.high >= sl) { exitPrice = sl; exitType = 'SL'; }
+                if (bar.low  <= tp) { exitPrice = tp; exitType = 'TP'; }
+            }
+
+            if (exitPrice !== null) {
+                const priceDiff = entry.direction === 'BUY' ? exitPrice - entry.price : entry.price - exitPrice;
+                const pips      = priceDiff / pipSize;
+                const pnl       = pips * pipValue * entry.lots;
+                balance        += pnl;
+
+                trades.push({
+                    n:         trades.length + 1,
+                    entryDate: entry.date,
+                    direction: entry.direction,
+                    entry:     entry.price,
+                    exit:      exitPrice,
+                    sl, tp,
+                    pips:      +pips.toFixed(1),
+                    pnl:       +pnl.toFixed(2),
+                    balance:   +balance.toFixed(2),
+                    result:    exitType === 'TP' ? 'WIN' : 'LOSS',
+                    entryBar:  entry.bar,
+                    exitBar:   i
+                });
+                equity.push({ date: bar.date, balance: +balance.toFixed(2) });
+                inTrade = false;
+                entry   = null;
+            }
+        }
+
+        if (!inTrade && signals[i] !== 0) {
+            const riskUSD = balance * (riskPct / 100);
+            const lots    = +(riskUSD / (slPips * pipValue)).toFixed(2) || 0.01;
+            inTrade       = true;
+            entry         = {
+                direction: signals[i] === 1 ? 'BUY' : 'SELL',
+                price:     bar.close,
+                date:      bar.date,
+                lots,
+                bar:       i
+            };
+        }
+
+        if (i % 10 === 0) equity.push({ date: bar.date, balance: +balance.toFixed(2) });
+    }
+
+    return { trades, equity };
+}
+
+// ── Statistics Calculator ──
+function btCalcStats(trades, startBalance, equity) {
+    if (!trades.length) return null;
+    const wins   = trades.filter(t => t.result === 'WIN');
+    const losses = trades.filter(t => t.result === 'LOSS');
+    const totalPnl   = trades.reduce((s, t) => s + t.pnl, 0);
+    const winRate    = (wins.length / trades.length) * 100;
+    const avgWin     = wins.length   ? wins.reduce((s, t) => s + t.pnl, 0)   / wins.length   : 0;
+    const avgLoss    = losses.length ? losses.reduce((s, t) => s + t.pnl, 0) / losses.length : 0;
+    const profitFactor = losses.length ? Math.abs(wins.reduce((s,t)=>s+t.pnl,0)) / Math.abs(losses.reduce((s,t)=>s+t.pnl,0)) : Infinity;
+
+    // Max Drawdown
+    let peak = startBalance, maxDD = 0;
+    equity.forEach(e => {
+        if (e.balance > peak) peak = e.balance;
+        const dd = ((peak - e.balance) / peak) * 100;
+        if (dd > maxDD) maxDD = dd;
+    });
+
+    // Sharpe (simplified)
+    const returns = equity.map((e, i) => i === 0 ? 0 : (e.balance - equity[i-1].balance) / equity[i-1].balance);
+    const meanR   = returns.reduce((a, b) => a + b, 0) / returns.length;
+    const stdR    = Math.sqrt(returns.map(r => (r - meanR) ** 2).reduce((a, b) => a + b, 0) / returns.length);
+    const sharpe  = stdR > 0 ? ((meanR / stdR) * Math.sqrt(252)).toFixed(2) : 'N/A';
+
+    // Consecutive wins/losses
+    let maxWinStreak = 0, maxLossStreak = 0, streak = 0, prevResult = null;
+    trades.forEach(t => {
+        if (t.result === prevResult) { streak++; } else { streak = 1; }
+        prevResult = t.result;
+        if (t.result === 'WIN'  && streak > maxWinStreak)  maxWinStreak  = streak;
+        if (t.result === 'LOSS' && streak > maxLossStreak) maxLossStreak = streak;
+    });
+
+    return {
+        total: trades.length, wins: wins.length, losses: losses.length,
+        winRate: +winRate.toFixed(1),
+        totalPnl: +totalPnl.toFixed(2),
+        finalBalance: +(startBalance + totalPnl).toFixed(2),
+        returnPct: +((totalPnl / startBalance) * 100).toFixed(2),
+        avgWin: +avgWin.toFixed(2), avgLoss: +avgLoss.toFixed(2),
+        profitFactor: isFinite(profitFactor) ? +profitFactor.toFixed(2) : '∞',
+        maxDD: +maxDD.toFixed(2), sharpe,
+        maxWinStreak, maxLossStreak
+    };
+}
+
+// ── Monthly P&L aggregation ──
+function btMonthlyPnL(trades) {
+    const map = {};
+    trades.forEach(t => {
+        const d   = new Date(t.entryDate);
+        const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+        map[key]  = (map[key] || 0) + t.pnl;
+    });
+    return Object.entries(map).sort(([a],[b]) => a.localeCompare(b)).map(([k,v]) => ({ month: k, pnl: +v.toFixed(2) }));
+}
+
+// ══════════════════════════════════════════════
+//  SPLIT CHART ENGINE
+// ══════════════════════════════════════════════
+
+const BTC = {           // chart state
+    data:       [],     // full OHLC array
+    trades:     [],
+    equity:     [],
+    startBal:   10000,
+    viewStart:  0,      // first visible bar index
+    viewBars:   80,     // how many bars to show
+    pricePH:    380,    // price pane height (px) — updated by splitter
+    equityPH:   140,
+    candleMode: true,   // true = candles, false = line
+    replayBar:  -1,     // current replay position (-1 = off)
+    replayTimer: null,
+    crossX:     -1,
+    crossY:     -1,
+    isDragging: false,
+    dragStartX: 0,
+    dragStartView: 0
+};
+
+const PAD = { t: 14, r: 60, b: 28, l: 10 };
+
+// ── coordinate helpers ──
+function btPriceRange(start, end) {
+    const slice = BTC.data.slice(start, end);
+    if (!slice.length) return { min: 0, max: 1 };
+    const min = Math.min(...slice.map(d => d.low))  * 0.9985;
+    const max = Math.max(...slice.map(d => d.high)) * 1.0015;
+    return { min, max };
+}
+
+function btToX(canvas, barIdx) {
+    const W    = canvas.width;
+    const cW   = W - PAD.l - PAD.r;
+    const relI = barIdx - BTC.viewStart;
+    return PAD.l + (relI + 0.5) * (cW / BTC.viewBars);
+}
+
+function btToY(canvas, price, min, max) {
+    const H  = canvas.height;
+    const cH = H - PAD.t - PAD.b;
+    return PAD.t + (1 - (price - min) / (max - min)) * cH;
+}
+
+function btBarWidth(canvas) {
+    const cW = canvas.width - PAD.l - PAD.r;
+    return Math.max(1.5, cW / BTC.viewBars);
+}
+
+// ── draw grid + price axis ──
+function btDrawGrid(ctx, W, H, min, max, gridLines = 5) {
+    const C = btColors();
+    ctx.strokeStyle = C.grid;
+    ctx.lineWidth   = 1;
+    for (let g = 0; g <= gridLines; g++) {
+        const y   = PAD.t + ((H - PAD.t - PAD.b) * g / gridLines);
+        const val = max - (max - min) * (g / gridLines);
+        ctx.beginPath(); ctx.moveTo(PAD.l, y); ctx.lineTo(W - PAD.r, y); ctx.stroke();
+        ctx.fillStyle  = C.axisText;
+        ctx.font       = '9px Inter';
+        ctx.textAlign  = 'left';
+        ctx.fillText(val.toFixed(val > 100 ? 1 : 5), W - PAD.r + 4, y + 3);
+    }
+}
+
+// ── draw time axis labels ──
+function btDrawTimeAxis(ctx, canvas) {
+    const W    = canvas.width;
+    const H    = canvas.height;
+    const C    = btColors();
+    const step = Math.max(1, Math.floor(BTC.viewBars / 6));
+    ctx.fillStyle = C.timeText;
+    ctx.font      = '9px Inter';
+    ctx.textAlign = 'center';
+    for (let i = 0; i < BTC.viewBars; i += step) {
+        const idx = BTC.viewStart + i;
+        if (idx >= BTC.data.length) break;
+        const d = new Date(BTC.data[idx].date);
+        const label = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        const x = btToX(canvas, idx);
+        ctx.fillText(label, x, H - 4);
+    }
+}
+
+// ── draw candles ──
+function btDrawCandles(ctx, canvas, min, max) {
+    const bW  = btBarWidth(canvas);
+    const end = Math.min(BTC.viewStart + BTC.viewBars, BTC.data.length);
+    const limit = BTC.replayBar >= 0 ? Math.min(BTC.replayBar + 1, end) : end;
+
+    for (let i = BTC.viewStart; i < limit; i++) {
+        const d  = BTC.data[i];
+        const x  = btToX(canvas, i);
+        const oY = btToY(canvas, d.open,  min, max);
+        const cY = btToY(canvas, d.close, min, max);
+        const hY = btToY(canvas, d.high,  min, max);
+        const lY = btToY(canvas, d.low,   min, max);
+        const up = d.close >= d.open;
+        const col = up ? '#10b981' : '#ef4444';
+
+        if (BTC.candleMode) {
+            // Wick
+            ctx.strokeStyle = col; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(x, hY); ctx.lineTo(x, lY); ctx.stroke();
+            // Body
+            const bodyH = Math.max(1, Math.abs(cY - oY));
+            const bodyY = Math.min(oY, cY);
+            ctx.fillStyle   = up ? col : col;
+            ctx.strokeStyle = col;
+            ctx.lineWidth   = 1;
+            if (bW > 4) {
+                ctx.fillRect(x - bW * 0.4, bodyY, bW * 0.8, bodyH);
+            } else {
+                ctx.fillRect(x - 0.5, bodyY, 1, bodyH);
+            }
+        } else {
+            // Line mode — draw segment to next
+            if (i > BTC.viewStart) {
+                const prev  = BTC.data[i - 1];
+                const prevX = btToX(canvas, i - 1);
+                const prevY = btToY(canvas, prev.close, min, max);
+                ctx.beginPath(); ctx.moveTo(prevX, prevY); ctx.lineTo(x, cY);
+                ctx.strokeStyle = btColors().priceLine; ctx.lineWidth = 1.5; ctx.stroke();
+            }
+        }
+    }
+}
+
+// ── draw SL/TP & trade markers ──
+function btDrawTradeOverlays(ctx, canvas, min, max) {
+    const C   = btColors();
+    const bW  = btBarWidth(canvas);
+    const end = Math.min(BTC.viewStart + BTC.viewBars, BTC.data.length);
+    const limit = BTC.replayBar >= 0 ? BTC.replayBar + 1 : end;
+
+    BTC.trades.forEach(t => {
+        if (t.entryBar > limit || t.exitBar < BTC.viewStart) return;
+
+        const ex  = btToX(canvas, t.entryBar);
+        const ey  = btToY(canvas, t.entry, min, max);
+        const xx  = btToX(canvas, t.exitBar);
+        const xy  = btToY(canvas, t.exit,  min, max);
+        const slY = btToY(canvas, t.sl,    min, max);
+        const tpY = btToY(canvas, t.tp,    min, max);
+        const win = t.result === 'WIN';
+        const buy = t.direction === 'BUY';
+
+        // SL dashed line (red)
+        ctx.setLineDash([3, 3]);
+        ctx.strokeStyle = C.slLine; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(ex, slY); ctx.lineTo(xx, slY); ctx.stroke();
+        // TP dashed line (green)
+        ctx.strokeStyle = C.tpLine;
+        ctx.beginPath(); ctx.moveTo(ex, tpY); ctx.lineTo(xx, tpY); ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Connector between entry & exit
+        ctx.beginPath(); ctx.moveTo(ex, ey); ctx.lineTo(xx, xy);
+        ctx.strokeStyle = win ? 'rgba(16,185,129,.5)' : 'rgba(239,68,68,.5)';
+        ctx.lineWidth   = 1.5; ctx.stroke();
+
+        // Entry marker (triangle)
+        ctx.fillStyle = buy ? '#10b981' : '#ef4444';
+        ctx.beginPath();
+        if (buy) {
+            ctx.moveTo(ex, ey - 6); ctx.lineTo(ex - 5, ey + 2); ctx.lineTo(ex + 5, ey + 2);
+        } else {
+            ctx.moveTo(ex, ey + 6); ctx.lineTo(ex - 5, ey - 2); ctx.lineTo(ex + 5, ey - 2);
+        }
+        ctx.closePath(); ctx.fill();
+
+        // Exit marker (circle)
+        ctx.beginPath(); ctx.arc(xx, xy, 4.5, 0, Math.PI * 2);
+        ctx.fillStyle   = win ? '#10b981' : '#ef4444';
+        ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5;
+        ctx.fill(); ctx.stroke();
+
+        // Labels visible when zoomed in
+        if (bW > 4) {
+            ctx.font      = '9px Inter'; ctx.textAlign = 'center';
+            ctx.fillStyle = buy ? '#10b981' : '#ef4444';
+            ctx.fillText(buy ? '▲ BUY' : '▼ SELL', ex, ey + (buy ? 14 : -8));
+        }
+    });
+}
+
+// ── draw crosshair ──
+function btDrawCrosshair(ctx, W, H, x, y) {
+    if (x < 0) return;
+    const C = btColors();
+    ctx.setLineDash([4, 4]);
+    ctx.strokeStyle = C.crosshair; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(x, PAD.t); ctx.lineTo(x, H - PAD.b); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(PAD.l, y); ctx.lineTo(W - PAD.r, y); ctx.stroke();
+    ctx.setLineDash([]);
+}
+
+// ── MAIN price pane draw ──
+function btRenderPrice() {
+    const canvas = document.getElementById('btPriceCanvas');
+    if (!canvas || !BTC.data.length) return;
+    const ctx = canvas.getContext('2d');
+    const C   = btColors();
+
+    // Resize to DOM size
+    const rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width  = rect.width  || 800;
+    canvas.height = rect.height || BTC.pricePH;
+    const W = canvas.width, H = canvas.height;
+
+    // Fill background
+    ctx.fillStyle = C.bg || (document.getElementById('btSplitWrap')?.classList.contains('bt-chart-light') ? '#ffffff' : '#161b22');
+    ctx.fillRect(0, 0, W, H);
+
+    const end        = Math.min(BTC.viewStart + BTC.viewBars, BTC.data.length);
+    const { min, max } = btPriceRange(BTC.viewStart, end);
+
+    btDrawGrid(ctx, W, H, min, max, 6);
+    btDrawTimeAxis(ctx, canvas);
+    btDrawCandles(ctx, canvas, min, max);
+    btDrawTradeOverlays(ctx, canvas, min, max);
+    btDrawCrosshair(ctx, W, H, BTC.crossX, BTC.crossY);
+
+    // Replay progress bar
+    if (BTC.replayBar >= 0) {
+        const pct = (BTC.replayBar - BTC.viewStart) / BTC.viewBars;
+        ctx.fillStyle = C.replayBar;
+        ctx.fillRect(PAD.l, H - PAD.b + 2, (W - PAD.l - PAD.r) * Math.max(0, Math.min(1, pct)), 2);
+    }
+}
+
+// ── equity pane draw ──
+function btRenderEquity() {
+    const canvas = document.getElementById('btEquityCanvas');
+    if (!canvas || !BTC.equity.length) return;
+    const ctx  = canvas.getContext('2d');
+    const C    = btColors();
+    const rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width  = rect.width  || 800;
+    canvas.height = rect.height || BTC.equityPH;
+    const W = canvas.width, H = canvas.height;
+    const EP = { t: 8, r: 60, b: 4, l: 10 };
+
+    // Background
+    ctx.fillStyle = C.bg || (document.getElementById('btSplitWrap')?.classList.contains('bt-chart-light') ? '#f8fafc' : '#161b22');
+    ctx.fillRect(0, 0, W, H);
+
+    const limit = BTC.replayBar >= 0 ? BTC.replayBar + 1 : BTC.data.length;
+    const vals  = BTC.equity.filter((e, i) => i < limit).map(e => e.balance);
+    if (vals.length < 2) return;
+
+    const minV = Math.min(...vals) * 0.999;
+    const maxV = Math.max(...vals) * 1.001;
+    const rng  = maxV - minV || 1;
+    const cW   = W - EP.l - EP.r;
+    const cH   = H - EP.t - EP.b;
+    const toX  = i => EP.l + (i / (vals.length - 1)) * cW;
+    const toY  = v => EP.t + (1 - (v - minV) / rng) * cH;
+    const isUp = vals[vals.length - 1] >= BTC.startBal;
+    const col  = isUp ? C.equityUp : C.equityDown;
+
+    // Fill
+    const grad = ctx.createLinearGradient(0, EP.t, 0, H - EP.b);
+    grad.addColorStop(0, isUp ? C.equityFillUp : C.equityFillDown);
+    grad.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.beginPath(); ctx.moveTo(toX(0), toY(vals[0]));
+    vals.slice(1).forEach((v, i) => ctx.lineTo(toX(i+1), toY(v)));
+    ctx.lineTo(toX(vals.length-1), H - EP.b);
+    ctx.lineTo(toX(0), H - EP.b);
+    ctx.closePath(); ctx.fillStyle = grad; ctx.fill();
+
+    // Line
+    ctx.beginPath(); ctx.moveTo(toX(0), toY(vals[0]));
+    vals.slice(1).forEach((v, i) => ctx.lineTo(toX(i+1), toY(v)));
+    ctx.strokeStyle = col; ctx.lineWidth = 1.5; ctx.stroke();
+
+    // Baseline
+    const baseY = toY(BTC.startBal);
+    if (baseY > EP.t && baseY < H - EP.b) {
+        ctx.setLineDash([3, 3]);
+        ctx.strokeStyle = C.baseline; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(EP.l, baseY); ctx.lineTo(W - EP.r, baseY); ctx.stroke();
+        ctx.setLineDash([]);
+    }
+
+    // Current balance label
+    const lastVal = vals[vals.length - 1];
+    ctx.fillStyle  = col;
+    ctx.font       = '10px Inter'; ctx.textAlign = 'left';
+    ctx.fillText('$' + lastVal.toFixed(0), W - EP.r + 4, toY(lastVal) + 3);
+}
+
+function btRenderBoth() {
+    btRenderPrice();
+    btRenderEquity();
+}
+
+// ── Splitter drag ──
+function btInitSplitter() {
+    const splitter  = document.getElementById('btSplitter');
+    const pricePane = document.getElementById('btPricePane');
+    const eqPane    = document.getElementById('btEquityPane');
+    if (!splitter || !pricePane || !eqPane) return;
+
+    let startY = 0, startPH = 0, startEH = 0;
+
+    splitter.addEventListener('mousedown', e => {
+        startY  = e.clientY;
+        startPH = pricePane.getBoundingClientRect().height;
+        startEH = eqPane.getBoundingClientRect().height;
+        splitter.classList.add('dragging');
+        e.preventDefault();
+    });
+
+    window.addEventListener('mousemove', e => {
+        if (!splitter.classList.contains('dragging')) return;
+        const dy  = e.clientY - startY;
+        const newP = Math.max(120, Math.min(600, startPH + dy));
+        const newE = Math.max(60,  Math.min(300, startEH - dy));
+        pricePane.style.height = newP + 'px';
+        eqPane.style.height    = newE + 'px';
+        BTC.pricePH = newP; BTC.equityPH = newE;
+        btRenderBoth();
+    });
+
+    window.addEventListener('mouseup', () => {
+        splitter.classList.remove('dragging');
+    });
+
+    // Touch support
+    splitter.addEventListener('touchstart', e => {
+        startY  = e.touches[0].clientY;
+        startPH = pricePane.getBoundingClientRect().height;
+        startEH = eqPane.getBoundingClientRect().height;
+        splitter.classList.add('dragging');
+    }, { passive: true });
+    window.addEventListener('touchmove', e => {
+        if (!splitter.classList.contains('dragging')) return;
+        const dy  = e.touches[0].clientY - startY;
+        const newP = Math.max(120, Math.min(600, startPH + dy));
+        const newE = Math.max(60,  Math.min(300, startEH - dy));
+        pricePane.style.height = newP + 'px';
+        eqPane.style.height    = newE + 'px';
+        BTC.pricePH = newP; BTC.equityPH = newE;
+        btRenderBoth();
+    }, { passive: true });
+    window.addEventListener('touchend', () => splitter.classList.remove('dragging'));
+}
+
+// ── Mouse interactions on price canvas ──
+function btInitMouseEvents() {
+    const canvas = document.getElementById('btPriceCanvas');
+    if (!canvas) return;
+
+    // Crosshair + tooltip
+    canvas.addEventListener('mousemove', e => {
+        const rect  = canvas.getBoundingClientRect();
+        const mx    = (e.clientX - rect.left) * (canvas.width / rect.width);
+        const my    = (e.clientY - rect.top)  * (canvas.height / rect.height);
+        BTC.crossX  = mx;
+        BTC.crossY  = my;
+
+        // Find hovered bar
+        const cW   = canvas.width - PAD.l - PAD.r;
+        const bIdx = BTC.viewStart + Math.floor((mx - PAD.l) / (cW / BTC.viewBars));
+        if (bIdx >= 0 && bIdx < BTC.data.length) {
+            const d   = BTC.data[bIdx];
+            const end = Math.min(BTC.viewStart + BTC.viewBars, BTC.data.length);
+            const { min, max } = btPriceRange(BTC.viewStart, end);
+            const price = max - ((my - PAD.t) / (canvas.height - PAD.t - PAD.b)) * (max - min);
+            const dt = new Date(d.date).toLocaleDateString('en-US', { month:'short', day:'numeric' });
+            const chg = (((d.close - d.open) / d.open) * 100).toFixed(2);
+            const up  = d.close >= d.open;
+            const el  = document.getElementById('btCrosshairInfo');
+            if (el) el.innerHTML =
+                `<span style="color:#8b949e">${dt}</span> &nbsp;` +
+                `O:<b style="color:${up?'#10b981':'#ef4444'}">${d.open.toFixed(5)}</b> &nbsp;` +
+                `H:<b style="color:#10b981">${d.high.toFixed(5)}</b> &nbsp;` +
+                `L:<b style="color:#ef4444">${d.low.toFixed(5)}</b> &nbsp;` +
+                `C:<b style="color:${up?'#10b981':'#ef4444'}">${d.close.toFixed(5)}</b> &nbsp;` +
+                `<b style="color:${up?'#10b981':'#ef4444'}">${up?'+':''}${chg}%</b>`;
+        }
+        btRenderPrice();
+    });
+
+    canvas.addEventListener('mouseleave', () => {
+        BTC.crossX = -1; BTC.crossY = -1;
+        const el = document.getElementById('btCrosshairInfo');
+        if (el) el.innerHTML = '';
+        btRenderPrice();
+    });
+
+    // Pan by drag
+    canvas.addEventListener('mousedown', e => {
+        BTC.isDragging    = true;
+        BTC.dragStartX    = e.clientX;
+        BTC.dragStartView = BTC.viewStart;
+        canvas.style.cursor = 'grabbing';
+    });
+    window.addEventListener('mouseup', () => {
+        BTC.isDragging = false;
+        if (canvas) canvas.style.cursor = 'crosshair';
+    });
+    window.addEventListener('mousemove', e => {
+        if (!BTC.isDragging) return;
+        const rect   = canvas.getBoundingClientRect();
+        const cW     = rect.width - PAD.l - PAD.r;
+        const pxPerBar = cW / BTC.viewBars;
+        const delta  = Math.round((BTC.dragStartX - e.clientX) / pxPerBar);
+        BTC.viewStart = Math.max(0, Math.min(BTC.data.length - BTC.viewBars, BTC.dragStartView + delta));
+        btRenderBoth();
+    });
+
+    // Zoom with wheel
+    canvas.addEventListener('wheel', e => {
+        e.preventDefault();
+        btZoom(e.deltaY > 0 ? 1.25 : 0.8);
+    }, { passive: false });
+}
+
+// ── Zoom ──
+function btZoom(factor) {
+    const newBars = Math.round(BTC.viewBars * factor);
+    BTC.viewBars  = Math.max(20, Math.min(BTC.data.length, newBars));
+    // Keep center bar
+    BTC.viewStart = Math.max(0, Math.min(BTC.data.length - BTC.viewBars, BTC.viewStart));
+    btRenderBoth();
+}
+
+// ── Fit to screen ──
+function btFitScreen() {
+    BTC.viewStart = 0;
+    BTC.viewBars  = BTC.data.length;
+    btRenderBoth();
+}
+
+// ── Chart color palette (reads chart-local theme) ──
+function btColors() {
+    const isLight = document.getElementById('btSplitWrap')?.classList.contains('bt-chart-light');
+    return {
+        bg:          isLight ? '#ffffff'                    : 'transparent',
+        grid:        isLight ? 'rgba(0,0,0,.07)'           : 'rgba(255,255,255,.04)',
+        axisText:    isLight ? 'rgba(71,85,105,.85)'       : 'rgba(139,148,158,.65)',
+        timeText:    isLight ? 'rgba(71,85,105,.7)'        : 'rgba(139,148,158,.6)',
+        crosshair:   isLight ? 'rgba(0,0,0,.2)'            : 'rgba(255,255,255,.25)',
+        priceLine:   isLight ? '#6366f1'                   : '#6366f1',
+        baseline:    isLight ? 'rgba(0,0,0,.15)'           : 'rgba(255,255,255,.18)',
+        slLine:      isLight ? 'rgba(220,38,38,.35)'       : 'rgba(239,68,68,.4)',
+        tpLine:      isLight ? 'rgba(5,150,105,.35)'       : 'rgba(16,185,129,.4)',
+        candleUp:    '#10b981',
+        candleDown:  '#ef4444',
+        equityUp:    '#10b981',
+        equityDown:  '#ef4444',
+        equityFillUp:   isLight ? 'rgba(16,185,129,.15)'  : 'rgba(16,185,129,.25)',
+        equityFillDown: isLight ? 'rgba(239,68,68,.15)'   : 'rgba(239,68,68,.25)',
+        replayBar:   '#6366f1',
+    };
+}
+
+// ── Toggle chart-local theme ──
+function btToggleChartTheme() {
+    const wrap  = document.getElementById('btSplitWrap');
+    const icon  = document.getElementById('btChartThemeIcon');
+    const label = document.getElementById('btChartThemeLabel');
+    const btn   = document.getElementById('btChartThemeBtn');
+    if (!wrap) return;
+    const isNowLight = wrap.classList.toggle('bt-chart-light');
+    if (isNowLight) {
+        icon.className  = 'fas fa-moon';
+        label.textContent = 'Dark';
+        btn.title = 'Switch to dark chart';
+    } else {
+        icon.className  = 'fas fa-sun';
+        label.textContent = 'Light';
+        btn.title = 'Switch to light chart';
+    }
+    btRenderBoth();
+}
+
+// ── Toggle candle/line mode ──
+function btToggleCandleMode() {
+    BTC.candleMode = !BTC.candleMode;
+    const icon = document.getElementById('btCandleModeIcon');
+    if (icon) icon.className = BTC.candleMode ? 'fas fa-chart-bar' : 'fas fa-chart-line';
+    btRenderPrice();
+}
+
+// ── Replay ──
+function btToggleReplay() {
+    if (BTC.replayBar >= 0) { btStopReplay(); return; }
+    BTC.replayBar = Math.min(50, BTC.data.length - 1); // start at bar 50
+    BTC.viewStart = 0;
+    BTC.viewBars  = Math.min(80, BTC.data.length);
+    const btn = document.getElementById('btReplayBtn');
+    const stepBtn = document.getElementById('btReplayStepBtn');
+    const stopBtn = document.getElementById('btReplayStopBtn');
+    if (btn)  { btn.classList.add('active'); btn.innerHTML = '<i class="fas fa-play-circle"></i> Replaying'; }
+    if (stepBtn) stepBtn.style.display = 'inline-flex';
+    if (stopBtn) stopBtn.style.display = 'inline-flex';
+    btRenderBoth();
+}
+
+function btReplayStep() {
+    if (BTC.replayBar < 0) return;
+    BTC.replayBar = Math.min(BTC.data.length - 1, BTC.replayBar + 1);
+    // Auto-scroll view to follow replay
+    const margin = Math.floor(BTC.viewBars * 0.2);
+    if (BTC.replayBar >= BTC.viewStart + BTC.viewBars - margin) {
+        BTC.viewStart = Math.max(0, BTC.replayBar - BTC.viewBars + margin + 1);
+    }
+    btRenderBoth();
+}
+
+function btStopReplay() {
+    BTC.replayBar = -1;
+    clearInterval(BTC.replayTimer);
+    BTC.replayTimer = null;
+    const btn = document.getElementById('btReplayBtn');
+    const stepBtn = document.getElementById('btReplayStepBtn');
+    const stopBtn = document.getElementById('btReplayStopBtn');
+    if (btn)  { btn.classList.remove('active'); btn.innerHTML = '<i class="fas fa-play-circle"></i> Replay'; }
+    if (stepBtn) stepBtn.style.display = 'none';
+    if (stopBtn) stopBtn.style.display = 'none';
+    btRenderBoth();
+}
+
+// ── Initialize split chart after backtest runs ──
+function btInitSplitChart(instrument, timeframe) {
+    // Update toolbar label
+    const lbl = document.getElementById('btChartLabel');
+    if (lbl) lbl.textContent = instrument + ' · ' + timeframe;
+
+    // Stop any existing replay
+    btStopReplay();
+
+    btInitSplitter();
+    btInitMouseEvents();
+
+    // Zoom to last 80 bars by default (most recent data)
+    BTC.viewBars  = Math.min(80, BTC.data.length);
+    BTC.viewStart = Math.max(0, BTC.data.length - BTC.viewBars);
+
+    btRenderBoth();
+}
+
+// ── Window resize: re-render ──
+window.addEventListener('resize', () => {
+    clearTimeout(window._btResizeTimer);
+    window._btResizeTimer = setTimeout(() => {
+        if (document.getElementById('btResults')?.style.display !== 'none') {
+            btRenderBoth();
+        }
+    }, 150);
+});
+
+// ── Legacy wrapper stubs (called from runBacktest) ──
+function btDrawEquity(canvas, equity, startBalance) {
+    // Handled by btRenderEquity() — this stub is intentionally empty
+}
+function btDrawPriceChart(canvas, data, trades) {
+    // Handled by btRenderPrice() — this stub is intentionally empty
+}
+
+// ── btDrawMonthly  (kept — Monthly P&L bar chart) ──
+function btDrawMonthly(canvas, monthly) {
+    const ctx = canvas.getContext('2d');
+    canvas.width  = canvas.offsetWidth  || canvas.parentElement.clientWidth || 600;
+    canvas.height = canvas.offsetHeight || 130;
+    const W = canvas.width, H = canvas.height;
+    const PAD = { t: 10, r: 10, b: 40, l: 60 };
+    const cW  = W - PAD.l - PAD.r;
+    const cH  = H - PAD.t - PAD.b;
+    ctx.clearRect(0, 0, W, H);
+    if (!monthly.length) return;
+    const vals = monthly.map(m => m.pnl);
+    const maxA = Math.max(...vals.map(Math.abs)) || 1;
+    const zero = PAD.t + cH / 2;
+    const bW   = Math.max(4, cW / monthly.length - 4);
+
+    // Zero line
+    ctx.strokeStyle = 'rgba(255,255,255,.15)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(PAD.l, zero); ctx.lineTo(W - PAD.r, zero); ctx.stroke();
+
+    monthly.forEach((m, i) => {
+        const x   = PAD.l + i * (cW / monthly.length) + (cW / monthly.length - bW) / 2;
+        const h   = (Math.abs(m.pnl) / maxA) * (cH / 2);
+        const isUp = m.pnl >= 0;
+        ctx.fillStyle = isUp ? 'rgba(16,185,129,.8)' : 'rgba(239,68,68,.8)';
+        ctx.beginPath();
+        if (isUp) { ctx.roundRect(x, zero - h, bW, h, [3,3,0,0]); }
+        else       { ctx.roundRect(x, zero,     bW, h, [0,0,3,3]); }
+        ctx.fill();
+        // Label
+        ctx.fillStyle = 'rgba(139,148,158,.8)'; ctx.font = '8px Inter'; ctx.textAlign = 'center';
+        ctx.fillText(m.month.slice(5), x + bW / 2, H - PAD.b + 12);
+    });
+
+    // Y labels
+    ctx.fillStyle = 'rgba(139,148,158,.7)'; ctx.font = '9px Inter'; ctx.textAlign = 'right';
+    ctx.fillText('+$'+maxA.toFixed(0), PAD.l - 4, PAD.t + 10);
+    ctx.fillText('-$'+maxA.toFixed(0), PAD.l - 4, H - PAD.b - 4);
+}
+
+// ── Render Stats Cards ──
+function btRenderStats(stats, startBalance) {
+    const cards = [
+        { icon:'💰', val: '$'+stats.totalPnl.toFixed(2), lbl:'Net P&L', cls: stats.totalPnl >= 0 ? 'up' : 'down' },
+        { icon:'📈', val: stats.winRate+'%',              lbl:'Win Rate',      cls: stats.winRate >= 50 ? 'up' : 'down' },
+        { icon:'📊', val: stats.total,                    lbl:'Total Trades',  cls: '' },
+        { icon:'🎯', val: stats.profitFactor,             lbl:'Profit Factor', cls: parseFloat(stats.profitFactor) >= 1 ? 'up' : 'down' },
+        { icon:'📉', val: stats.maxDD+'%',                lbl:'Max Drawdown',  cls: stats.maxDD > 20 ? 'down' : 'up' },
+        { icon:'⚡', val: stats.returnPct+'%',            lbl:'Total Return',  cls: stats.returnPct >= 0 ? 'up' : 'down' },
+        { icon:'🏆', val: '$'+stats.finalBalance.toFixed(2), lbl:'Final Balance', cls: stats.finalBalance >= startBalance ? 'up' : 'down' },
+        { icon:'📐', val: stats.sharpe,                   lbl:'Sharpe Ratio',  cls: parseFloat(stats.sharpe) >= 1 ? 'up' : '' },
+        { icon:'🔥', val: stats.maxWinStreak+' in a row', lbl:'Best Streak',   cls: 'up' },
+        { icon:'🧩', val: stats.wins+' / '+stats.losses,  lbl:'Wins / Losses', cls: '' }
+    ];
+    document.getElementById('btStatsRow').innerHTML = cards.map(c => `
+        <div class="bt-stat-card">
+            <div class="bt-stat-icon">${c.icon}</div>
+            <div class="bt-stat-val ${c.cls}">${c.val}</div>
+            <div class="bt-stat-lbl">${c.lbl}</div>
+        </div>`).join('');
+}
+
+// ── Render Trade Table ──
+function btRenderTable(trades) {
+    const fmt = n => new Date(n).toLocaleDateString('en-US', { month:'short', day:'numeric' });
+    document.getElementById('btTradeTableBody').innerHTML = trades.slice(0, 200).map(t => `
+        <tr>
+            <td>${t.n}</td>
+            <td>${fmt(t.entryDate)}</td>
+            <td class="dir-${t.direction.toLowerCase()}">${t.direction}</td>
+            <td>${t.entry.toFixed(5)}</td>
+            <td>${t.exit.toFixed(5)}</td>
+            <td>${t.sl.toFixed(5)}</td>
+            <td>${t.tp.toFixed(5)}</td>
+            <td class="${t.pips >= 0 ? 'win':'loss'}">${t.pips > 0 ? '+' : ''}${t.pips}</td>
+            <td class="${t.pnl >= 0 ? 'win':'loss'}">${t.pnl >= 0 ? '+$' : '-$'}${Math.abs(t.pnl).toFixed(2)}</td>
+            <td>$${t.balance.toFixed(2)}</td>
+            <td class="${t.result === 'WIN' ? 'win':'loss'}">${t.result === 'WIN' ? '✅ WIN' : '❌ LOSS'}</td>
+        </tr>`).join('') || '<tr><td colspan="11" style="text-align:center;color:#8b949e;padding:20px;">No trades generated with current settings.</td></tr>';
+}
+
+// ── Main Run Function ──
+let _btLastTrades = [];
+
+function runBacktest() {
+    const btn = document.querySelector('.bt-run-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<div class="bt-spinner"></div> Running...';
+
+    setTimeout(() => {
+        try {
+            const instrument = document.getElementById('bt-instrument').value;
+            const strategy   = document.getElementById('bt-strategy').value;
+            const bars       = Math.min(1000, Math.max(100, +document.getElementById('bt-bars').value || 300));
+            const balance    = Math.max(100, +document.getElementById('bt-balance').value || 10000);
+            const riskPct    = Math.min(10, Math.max(0.1, +document.getElementById('bt-risk').value || 1));
+            const slPips     = Math.max(1, +document.getElementById('bt-sl').value || 20);
+            const tpPips     = Math.max(1, +document.getElementById('bt-tp').value || 40);
+
+            const data     = btGenerateOHLC(instrument, bars);
+            let   signals;
+
+            if (strategy === 'ma_cross') {
+                const fast = +document.getElementById('bt-fast-ma').value || 9;
+                const slow = +document.getElementById('bt-slow-ma').value || 21;
+                signals = btSignalMACross(data, fast, slow);
+            } else if (strategy === 'rsi') {
+                const period     = +document.getElementById('bt-rsi-period').value    || 14;
+                const oversold   = +document.getElementById('bt-rsi-oversold').value  || 30;
+                const overbought = +document.getElementById('bt-rsi-overbought').value|| 70;
+                signals = btSignalRSI(data, period, oversold, overbought);
+            } else if (strategy === 'breakout') {
+                const lookback = +document.getElementById('bt-bk-period').value || 20;
+                signals = btSignalBreakout(data, lookback);
+            } else {
+                const fast   = +document.getElementById('bt-macd-fast').value   || 12;
+                const slow   = +document.getElementById('bt-macd-slow').value   || 26;
+                const signal = +document.getElementById('bt-macd-signal').value || 9;
+                signals = btSignalMACD(data, fast, slow, signal);
+            }
+
+            const { trades, equity } = btSimulate(data, signals, balance, riskPct, slPips, tpPips, instrument);
+            _btLastTrades = trades;
+            const stats = btCalcStats(trades, balance, equity);
+
+            if (!stats) {
+                alert('No trades were generated. Try adjusting your strategy parameters or increasing the number of bars.');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-play"></i> Run Backtest';
+                return;
+            }
+
+            const resultsEl = document.getElementById('btResults');
+            resultsEl.style.display = 'block';
+            resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            btRenderStats(stats, balance);
+            btRenderTable(trades);
+
+            const monthly = btMonthlyPnL(trades);
+            const timeframe = document.getElementById('bt-timeframe').value;
+
+            // Populate split chart state
+            BTC.data      = data;
+            BTC.trades    = trades;
+            BTC.equity    = equity;
+            BTC.startBal  = balance;
+            BTC.replayBar = -1;
+
+            // Draw charts after layout is painted
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    btInitSplitChart(instrument, timeframe);
+                    btDrawMonthly(document.getElementById('btMonthlyCanvas'), monthly);
+                });
+            });
+
+        } catch (e) {
+            console.error('Backtest error:', e);
+            alert('An error occurred during backtesting. Please check your inputs and try again.');
+        }
+
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-play"></i> Run Backtest';
+    }, 50); // defer to allow spinner to render
+}
+
+function btReset() {
+    btStopReplay();
+    BTC.data = []; BTC.trades = []; BTC.equity = [];
+    document.getElementById('btResults').style.display = 'none';
+    document.getElementById('btTradeTableBody').innerHTML = '';
+    document.getElementById('btStatsRow').innerHTML = '';
+    _btLastTrades = [];
+}
+
+function btExportCSV() {
+    if (!_btLastTrades.length) return;
+    const header = ['#','Entry Date','Direction','Entry','Exit','SL','TP','Pips','P&L ($)','Balance','Result'];
+    const rows   = _btLastTrades.map(t => [
+        t.n,
+        new Date(t.entryDate).toLocaleDateString(),
+        t.direction,
+        t.entry.toFixed(5), t.exit.toFixed(5), t.sl.toFixed(5), t.tp.toFixed(5),
+        t.pips, t.pnl.toFixed(2), t.balance.toFixed(2), t.result
+    ]);
+    const csv  = [header, ...rows].map(r => r.join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url; a.download = 'tagbridge_backtest.csv';
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
+// (resize handled by btInitSplitChart resize listener above)
