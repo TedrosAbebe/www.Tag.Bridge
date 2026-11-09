@@ -3741,7 +3741,6 @@ canvas.bt-canvas-full { width: 100%; display: block; }
 @media (max-width: 400px) {
     .demo-form-grid { grid-template-columns: 1fr; }
 }
-
 /* ── Demo Forex/Crypto category tabs ── */
 .demo-cat-tabs {
     display: flex;
@@ -3781,4 +3780,164 @@ canvas.bt-canvas-full { width: 100%; display: block; }
 [data-theme="light"] .demo-cat-btn.active {
     background: linear-gradient(135deg,#6366f1,#8b5cf6);
     color: #fff; border-color: transparent;
+}
+
+
+/* ══════════════════════════════════════════════
+   MOBILE OVERHAUL — Professional phone layout
+   ══════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+    /* ── Chart section ── */
+    .charts-section .section-header { margin-bottom: 16px; }
+    .charts-section .section-header h2 { font-size: 1.6rem; }
+    .charts-section .section-sub { font-size: .8rem; }
+
+    /* Category bar — full width pill buttons */
+    .chart-category-bar {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+    }
+    .chart-cat-btn {
+        padding: 9px 4px;
+        font-size: .75rem;
+        border-radius: 10px;
+        gap: 5px;
+        justify-content: center;
+    }
+    .chart-cat-btn i { font-size: .8rem; }
+
+    /* Pair tabs — horizontal scroll, compact */
+    .chart-tabs {
+        gap: 5px;
+        padding-bottom: 6px;
+    }
+    .chart-tab {
+        min-width: 56px;
+        padding: 6px 8px;
+        border-radius: 8px;
+    }
+    .chart-tab i { font-size: .85rem; }
+    .chart-tab .ct-label { font-size: .68rem; }
+    .chart-tab .ct-name  { font-size: .58rem; }
+
+    /* Info bar — compact row */
+    .chart-info-bar {
+        margin-left: 0;
+        gap: 8px;
+        width: 100%;
+        justify-content: space-between;
+    }
+    .chart-pair-label { font-size: .82rem; }
+    .chart-theme-toggle { padding: 0 10px; height: 30px; font-size: .72rem; gap: 5px; }
+    .chart-theme-toggle .ctt-icon { font-size: .85rem; }
+    .chart-fs-btn { width: 30px; height: 30px; }
+
+    /* Chart container taller on mobile for better view */
+    .chart-container { height: 400px; }
+
+    /* ── Demo account ── */
+
+    /* Balance bar — 2x2 grid instead of stacked list */
+    .demo-account-bar {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        padding: 14px;
+        border-radius: 14px;
+    }
+    .demo-bal-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+        background: rgba(255,255,255,.03);
+        border: 1px solid rgba(255,255,255,.06);
+        border-radius: 10px;
+        padding: 10px 12px;
+        min-width: 0;
+    }
+    .demo-bal-icon { font-size: 1.1rem; margin-bottom: 2px; }
+    .demo-bal-label { font-size: .62rem; letter-spacing: .3px; }
+    .demo-bal-val   { font-size: 1rem; }
+    .demo-reset-btn {
+        grid-column: 1 / -1;
+        justify-content: center;
+        margin-left: 0;
+        width: 100%;
+        padding: 9px;
+    }
+
+    /* Demo panel — single column */
+    .demo-panel { grid-template-columns: 1fr; gap: 12px; }
+
+    /* Trade form */
+    .demo-trade-form,
+    .demo-positions { padding: 14px; border-radius: 12px; }
+
+    /* Forex/Crypto tabs */
+    .demo-cat-tabs { gap: 6px; }
+    .demo-cat-btn  { padding: 8px 0; font-size: .78rem; border-radius: 8px; }
+
+    /* Form grid — 2 columns on mobile */
+    .demo-form-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+    .demo-field label { font-size: .65rem; }
+    .demo-field select,
+    .demo-field input  { padding: 8px; font-size: .82rem; }
+
+    /* Place trade footer — stack on very small */
+    .demo-form-footer {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    .demo-market-price { text-align: center; font-size: .82rem; }
+    .demo-place-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 12px;
+        font-size: .9rem;
+    }
+
+    /* Open positions */
+    .demo-pos-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 12px;
+    }
+    .demo-pos-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+    .demo-close-btn {
+        padding: 7px 16px;
+        font-size: .78rem;
+    }
+
+    /* History table — scrollable */
+    .demo-history-wrap { padding: 12px; }
+    .demo-table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .bt-table { font-size: .72rem; }
+    .bt-table th, .bt-table td { padding: 6px 8px; }
+}
+
+@media (max-width: 400px) {
+    /* Extra small phones */
+    .demo-form-grid { grid-template-columns: 1fr; }
+    .chart-category-bar { grid-template-columns: repeat(3, 1fr); gap: 4px; }
+    .chart-cat-btn { font-size: .7rem; padding: 8px 2px; }
+    .demo-bal-val { font-size: .95rem; }
+}
+
+/* Light theme mobile overrides */
+@media (max-width: 768px) {
+    [data-theme="light"] .demo-bal-card {
+        background: #f8fafc;
+        border-color: #e2e8f0;
+    }
 }
