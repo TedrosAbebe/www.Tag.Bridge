@@ -327,37 +327,56 @@ const CHART_PAIRS = {
 
 let currentChartCat = 'forex';
 
+// ── Category icon map ──
+const CHART_CAT_ICONS = {
+    forex:     'fas fa-dollar-sign',
+    crypto:    'fab fa-bitcoin',
+    commodity: 'fas fa-coins'
+};
+
 function switchChartCategory(btn) {
     document.querySelectorAll('.chart-cat-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentChartCat = btn.dataset.cat;
     renderChartPairs(currentChartCat);
-    // Auto-select first pair in category
-    const first = document.querySelector('.chart-tab');
-    if (first) first.click();
+    // Auto-load first pair
+    const sel = document.getElementById('chartPairSelect');
+    if (sel && sel.options.length) {
+        sel.selectedIndex = 0;
+        switchChartFromSelect(sel);
+    }
 }
 
 function renderChartPairs(cat) {
-    const tabs = document.getElementById('chartTabs');
-    if (!tabs) return;
+    const sel  = document.getElementById('chartPairSelect');
+    const icon = document.getElementById('chartDropdownIcon');
+    if (!sel) return;
     const pairs = CHART_PAIRS[cat] || [];
-    tabs.innerHTML = pairs.map((p, i) => `
-        <button class="chart-tab${i === 0 ? ' active' : ''}"
-            data-sym="${p.sym}" data-label="${p.label}"
-            onclick="switchChart(this)">
-            <i class="${p.icon}"></i>
-            <span class="ct-label">${p.label}</span>
-            <span class="ct-name">${p.name}</span>
-        </button>`).join('');
+    sel.innerHTML = pairs.map(p =>
+        `<option value="${p.sym}" data-label="${p.label}">${p.label}</option>`
+    ).join('');
+    // Update icon to match category
+    if (icon) icon.innerHTML = `<i class="${CHART_CAT_ICONS[cat] || 'fas fa-chart-line'}"></i>`;
+}
+
+function switchChartFromSelect(sel) {
+    const opt   = sel.options[sel.selectedIndex];
+    const sym   = sel.value;
+    const label = opt?.dataset.label || opt?.text || sym;
+    const pe    = document.getElementById('chartPairLabel');
+    if (pe) pe.textContent = label;
+    loadTVChart(sym);
 }
 
 function switchChart(btn) {
+    // Legacy — kept for any old calls
     document.querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
-    const sym = btn.dataset.sym, label = btn.dataset.label;
-    const pe  = document.getElementById('chartPairLabel');
-    if (pe) pe.textContent = label;
-    loadTVChart(sym);
+    if (btn) btn.classList.add('active');
+    const sym   = btn?.dataset.sym;
+    const label = btn?.dataset.label;
+    const pe    = document.getElementById('chartPairLabel');
+    if (pe && label) pe.textContent = label;
+    if (sym) loadTVChart(sym);
 }
 
 // Chart-local theme: starts as 'light' (white background by default)
@@ -1579,7 +1598,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Charts: render Forex pairs by default, load Gold
     renderChartPairs('forex');
     // Select Gold (index 0 in forex = XAUUSD) as default
-    loadTVChart('XAUUSD');
+    const chartSel = document.getElementById('chartPairSelect');
+    if (chartSel) { chartSel.selectedIndex = 0; switchChartFromSelect(chartSel); }
+    else loadTVChart('XAUUSD');
     const pe = document.getElementById('chartPairLabel');
     if (pe) pe.textContent = 'XAU/USD';
     // Apply saved chart theme state
