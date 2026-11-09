@@ -49,6 +49,7 @@
             <li><a href="#welcome" class="nav-link nav-link--forex-highlight active" onclick="setActiveNav(this)"><i class="fas fa-book-bookmark"></i> <span data-am="የፎሬክስ መጽሐፍ" data-en="Forex Book">የፎሬክስ መጽሐፍ</span> <span class="nav-badge-hot">450 ብር</span></a></li>
             <li><a href="#dashboard" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-chart-pie"></i> <span data-am="ዳሽቦርድ" data-en="Dashboard">ዳሽቦርድ</span></a></li>
             <li><a href="#charts" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-chart-candlestick"></i> <span data-am="ቻርቶች" data-en="Charts">ቻርቶች</span></a></li>
+            <li><a href="#demo" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-graduation-cap"></i> <span data-am="ዴሞ" data-en="Demo">Demo</span></a></li>
             <li><a href="#backtest" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-flask"></i> <span data-am="ባክቴስት" data-en="Backtest">ባክቴስት</span></a></li>
             <li><a href="#calendar-news" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-calendar-alt"></i> <span data-am="ቀን መቁጠሪያ" data-en="Calendar">ቀን መቁጠሪያ</span></a></li>
             <li><a href="#calculators" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-calculator"></i> <span data-am="ካልኩሌተሮች" data-en="Calculators">ካልኩሌተሮች</span></a></li>
@@ -397,30 +398,31 @@
 <section id="charts" class="section charts-section">
 <div class="container">
     <div class="section-header">
-        <div class="section-tag-pill"><i class="fas fa-chart-line"></i> የቀጥታ ቻርቶች</div>
-        <h2 class="section-title"><i class="fas fa-chart-candlestick"></i> <span data-am="ቀጥታ የትሬዲንግ ቻርቶች" data-en="Live Trading Charts">ቀጥታ የትሬዲንግ ቻርቶች</span></h2>
-        <p class="section-sub">ከዚህ ታች ያለውን ምንዛሬ ወይም ሳንቲም ጠቅ ያድርጉ — ቻርቱ ወዲያው ይለወጣል</p>
+        <div class="section-tag-pill"><i class="fas fa-chart-line"></i> LIVE MARKETS</div>
+        <h2 class="section-title"><i class="fas fa-chart-candlestick"></i> <span class="logo-tag">Tag</span><span class="logo-bridge">Bridge</span> <span class="chart-title-rest">Live Market Chart</span></h2>
+        <p class="section-sub">Select a category · choose a pair · chart updates instantly</p>
     </div>
 
-    <!-- Amharic chart instruction -->
-    <div style="background:rgba(6,182,212,.07);border:1px solid rgba(6,182,212,.2);border-radius:14px;padding:14px 18px;margin-bottom:16px;">
-        <p style="color:#67e8f9;font-size:.83rem;font-weight:600;margin:0;">
-            <i class="fas fa-hand-pointer" style="margin-right:6px;"></i>
-            👇 ከዚህ ታች ያለውን ቁልፍ ጠቅ ያድርጉ — EUR/USD (ዩሮ)፣ GOLD (ወርቅ)፣ BTC (ቢትኮይን) ወይም ሌሎቹን ይምረጡ። ቻርቱ ወዲያው ይታያሉ።
-        </p>
-    </div>
     <div class="chart-controls">
-        <div class="chart-tabs" id="chartTabs">
-            <button class="chart-tab active" data-sym="EURUSD" data-label="EUR/USD" onclick="switchChart(this)"><i class="fas fa-euro-sign"></i> EUR/USD</button>
-            <button class="chart-tab" data-sym="XAUUSD" data-label="XAU/USD" onclick="switchChart(this)"><i class="fas fa-coins"></i> GOLD</button>
-            <button class="chart-tab" data-sym="GBPUSD" data-label="GBP/USD" onclick="switchChart(this)"><i class="fas fa-sterling-sign"></i> GBP/USD</button>
-            <button class="chart-tab" data-sym="USDJPY" data-label="USD/JPY" onclick="switchChart(this)"><i class="fas fa-yen-sign"></i> USD/JPY</button>
-            <button class="chart-tab" data-sym="BTCUSDT" data-label="BTC/USDT" onclick="switchChart(this)"><i class="fab fa-bitcoin"></i> BTC</button>
-            <button class="chart-tab" data-sym="ETHUSDT" data-label="ETH/USDT" onclick="switchChart(this)"><i class="fab fa-ethereum"></i> ETH</button>
-            <button class="chart-tab" data-sym="SOLUSDT" data-label="SOL/USDT" onclick="switchChart(this)"><i class="fas fa-sun"></i> SOL</button>
+
+        <!-- Category tabs -->
+        <div class="chart-category-bar" id="chartCategoryBar">
+            <button class="chart-cat-btn active" data-cat="forex" onclick="switchChartCategory(this)">
+                <i class="fas fa-dollar-sign"></i> Forex
+            </button>
+            <button class="chart-cat-btn" data-cat="crypto" onclick="switchChartCategory(this)">
+                <i class="fab fa-bitcoin"></i> Crypto
+            </button>
+            <button class="chart-cat-btn" data-cat="commodity" onclick="switchChartCategory(this)">
+                <i class="fas fa-coins"></i> Commodities
+            </button>
         </div>
+
+        <!-- Pairs list — populated by JS -->
+        <div class="chart-tabs" id="chartTabs"></div>
+
         <div class="chart-info-bar">
-            <span id="chartPairLabel" class="chart-pair-label">EUR/USD</span>
+            <span id="chartPairLabel" class="chart-pair-label">XAU/USD</span>
             <button class="chart-theme-toggle ctt-light" id="chartThemeToggle" onclick="toggleChartTheme()" title="Switch to dark chart">
                 <span class="ctt-icon">🌙</span>
                 <span class="ctt-label" id="chartThemeLabel">Dark</span>
@@ -428,7 +430,133 @@
             <button class="chart-fs-btn" onclick="toggleChartFullscreen()"><i class="fas fa-expand"></i></button>
         </div>
     </div>
+
     <div class="chart-container" id="chartContainer"><div id="tvChartContainer"></div></div>
+
+    <!-- Replay instruction strip -->
+    <div class="chart-replay-tip">
+        <span class="crt-icon">⏮</span>
+        <span><strong>Bar Replay:</strong> Click the <strong>⏮ replay icon</strong> in the chart toolbar → click any past candle to set start → use <strong>▶ Play</strong> or <strong>⏭ Step</strong> to replay bar by bar for manual backtesting.</span>
+    </div>
+</div>
+</section>
+
+<!-- DEMO TRADING ACCOUNT -->
+<section id="demo" class="section demo-section">
+<div class="container">
+    <div class="section-header">
+        <div class="section-tag-pill"><i class="fas fa-graduation-cap"></i> PAPER TRADING</div>
+        <h2 class="section-title"><i class="fas fa-wallet"></i> Demo Trading Account</h2>
+        <p class="section-sub">Practice buying &amp; selling risk-free — trades auto-log to your Journal</p>
+    </div>
+
+    <!-- Account balance bar -->
+    <div class="demo-account-bar">
+        <div class="demo-bal-card">
+            <div class="demo-bal-icon">💰</div>
+            <div>
+                <div class="demo-bal-label">Balance</div>
+                <div class="demo-bal-val" id="demoBalance">$10,000.00</div>
+            </div>
+        </div>
+        <div class="demo-bal-card">
+            <div class="demo-bal-icon">📈</div>
+            <div>
+                <div class="demo-bal-label">Open P&amp;L</div>
+                <div class="demo-bal-val" id="demoOpenPL">$0.00</div>
+            </div>
+        </div>
+        <div class="demo-bal-card">
+            <div class="demo-bal-icon">🏆</div>
+            <div>
+                <div class="demo-bal-label">Total P&amp;L</div>
+                <div class="demo-bal-val" id="demoTotalPL">$0.00</div>
+            </div>
+        </div>
+        <div class="demo-bal-card">
+            <div class="demo-bal-icon">📊</div>
+            <div>
+                <div class="demo-bal-label">Total Trades</div>
+                <div class="demo-bal-val" id="demoTradeCount">0</div>
+            </div>
+        </div>
+        <button class="demo-reset-btn" onclick="demoReset()" title="Reset demo account">
+            <i class="fas fa-rotate-left"></i> Reset
+        </button>
+    </div>
+
+    <!-- Trade entry panel -->
+    <div class="demo-panel">
+        <div class="demo-trade-form">
+            <h3 class="demo-form-title"><i class="fas fa-plus-circle"></i> Place Trade</h3>
+            <!-- Forex / Crypto category tabs -->
+            <div class="demo-cat-tabs">
+                <button class="demo-cat-btn active" data-cat="forex" onclick="demoCatSwitch(this)"><i class="fas fa-dollar-sign"></i> Forex</button>
+                <button class="demo-cat-btn" data-cat="crypto" onclick="demoCatSwitch(this)"><i class="fab fa-bitcoin"></i> Crypto</button>
+            </div>
+            <div class="demo-form-grid">
+                <div class="demo-field">
+                    <label>Pair</label>
+                    <select id="demoPair">
+                        <!-- populated by demoCatSwitch() on load -->
+                    </select>
+                </div>
+                <div class="demo-field">
+                    <label>Direction</label>
+                    <div class="demo-dir-toggle">
+                        <button class="demo-dir-btn buy active" id="demoDirBuy" onclick="demoSetDir('BUY')">▲ BUY</button>
+                        <button class="demo-dir-btn sell" id="demoDirSell" onclick="demoSetDir('SELL')">▼ SELL</button>
+                    </div>
+                </div>
+                <div class="demo-field">
+                    <label>Lot Size</label>
+                    <input type="number" id="demoLot" value="0.1" min="0.01" max="10" step="0.01">
+                </div>
+                <div class="demo-field">
+                    <label>Entry Price</label>
+                    <input type="number" id="demoEntry" placeholder="Market price" step="any">
+                </div>
+                <div class="demo-field">
+                    <label>Stop Loss</label>
+                    <input type="number" id="demoSL" placeholder="Optional" step="any">
+                </div>
+                <div class="demo-field">
+                    <label>Take Profit</label>
+                    <input type="number" id="demoTP" placeholder="Optional" step="any">
+                </div>
+            </div>
+            <div class="demo-form-footer">
+                <div class="demo-market-price">
+                    Live: <span id="demoLivePrice">Loading...</span>
+                </div>
+                <button class="demo-place-btn" onclick="demoPlaceTrade()">
+                    <i class="fas fa-paper-plane"></i> Place Trade
+                </button>
+            </div>
+        </div>
+
+        <!-- Open positions -->
+        <div class="demo-positions">
+            <h3 class="demo-form-title"><i class="fas fa-list-check"></i> Open Positions <span id="demoOpenCount" class="demo-count-badge">0</span></h3>
+            <div class="demo-pos-list" id="demoPosTable">
+                <div class="demo-empty"><i class="fas fa-chart-line"></i><br>No open trades — place your first trade!</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Closed trades -->
+    <div class="demo-history-wrap" id="demoHistoryWrap" style="display:none;">
+        <h3 class="demo-form-title" style="margin-bottom:10px;"><i class="fas fa-clock-rotate-left"></i> Closed Trades <small style="font-size:.72rem;color:#8b949e;">(also in Journal ↓)</small></h3>
+        <div class="demo-table-scroll">
+            <table class="bt-table" id="demoHistoryTable">
+                <thead><tr>
+                    <th>#</th><th>Pair</th><th>Dir</th><th>Entry</th><th>Exit</th>
+                    <th>Lots</th><th>P&amp;L</th><th>Result</th><th>Date</th>
+                </tr></thead>
+                <tbody id="demoHistoryBody"></tbody>
+            </table>
+        </div>
+    </div>
 </div>
 </section>
 
