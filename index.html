@@ -49,6 +49,7 @@
             <li><a href="#welcome" class="nav-link nav-link--forex-highlight active" onclick="setActiveNav(this)"><i class="fas fa-book-bookmark"></i> <span data-am="የፎሬክስ መጽሐፍ" data-en="Forex Book">የፎሬክስ መጽሐፍ</span> <span class="nav-badge-hot">450 ብር</span></a></li>
             <li><a href="#dashboard" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-chart-pie"></i> <span data-am="ዳሽቦርድ" data-en="Dashboard">ዳሽቦርድ</span></a></li>
             <li><a href="#charts" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-chart-candlestick"></i> <span data-am="ቻርቶች" data-en="Charts">ቻርቶች</span></a></li>
+            <li><a href="#backtest" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-flask"></i> <span data-am="ባክቴስት" data-en="Backtest">ባክቴስት</span></a></li>
             <li><a href="#calendar-news" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-calendar-alt"></i> <span data-am="ቀን መቁጠሪያ" data-en="Calendar">ቀን መቁጠሪያ</span></a></li>
             <li><a href="#calculators" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-calculator"></i> <span data-am="ካልኩሌተሮች" data-en="Calculators">ካልኩሌተሮች</span></a></li>
             <li><a href="#journal" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-book-open"></i> <span data-am="ጆርናል" data-en="Journal">ጆርናል</span></a></li>
@@ -420,10 +421,171 @@
         </div>
         <div class="chart-info-bar">
             <span id="chartPairLabel" class="chart-pair-label">EUR/USD</span>
+            <button class="chart-theme-toggle ctt-light" id="chartThemeToggle" onclick="toggleChartTheme()" title="Switch to dark chart">
+                <span class="ctt-icon">🌙</span>
+                <span class="ctt-label" id="chartThemeLabel">Dark</span>
+            </button>
             <button class="chart-fs-btn" onclick="toggleChartFullscreen()"><i class="fas fa-expand"></i></button>
         </div>
     </div>
     <div class="chart-container" id="chartContainer"><div id="tvChartContainer"></div></div>
+</div>
+</section>
+
+<!-- BACKTESTING -->
+<section id="backtest" class="section backtest-section">
+<div class="container">
+    <div class="section-header">
+        <div class="section-tag-pill"><i class="fas fa-flask"></i> STRATEGY TESTER</div>
+        <h2 class="section-title"><i class="fas fa-chart-line"></i> <span data-am="ስትራቴጂ ባክቴስቲንግ" data-en="Strategy Backtesting">ስትራቴጂ ባክቴስቲንግ</span></h2>
+        <p class="section-sub" data-am="ያለፈ ዋጋ ላይ ስትራቴጂዎን ይሞክሩ" data-en="Test your strategy on historical data">Test strategies on simulated historical data</p>
+    </div>
+
+    <!-- Config Panel -->
+    <div class="bt-config-panel">
+        <div class="bt-config-row">
+            <div class="bt-field">
+                <label><i class="fas fa-chart-candlestick"></i> Instrument</label>
+                <select id="bt-instrument">
+                    <option value="EURUSD">EUR/USD</option>
+                    <option value="GBPUSD">GBP/USD</option>
+                    <option value="XAUUSD">XAU/USD (Gold)</option>
+                    <option value="BTCUSD">BTC/USD</option>
+                    <option value="USDJPY">USD/JPY</option>
+                </select>
+            </div>
+            <div class="bt-field">
+                <label><i class="fas fa-clock"></i> Timeframe</label>
+                <select id="bt-timeframe">
+                    <option value="1H">1 Hour</option>
+                    <option value="4H" selected>4 Hour</option>
+                    <option value="1D">Daily</option>
+                </select>
+            </div>
+            <div class="bt-field">
+                <label><i class="fas fa-brain"></i> Strategy</label>
+                <select id="bt-strategy" onchange="btUpdateStrategyFields()">
+                    <option value="ma_cross">MA Crossover (Fast/Slow EMA)</option>
+                    <option value="rsi">RSI Overbought/Oversold</option>
+                    <option value="breakout">Breakout (Highest High/Lowest Low)</option>
+                    <option value="macd">MACD Signal Line Cross</option>
+                </select>
+            </div>
+            <div class="bt-field">
+                <label><i class="fas fa-calendar"></i> Periods (Bars)</label>
+                <input type="number" id="bt-bars" value="300" min="100" max="1000" step="50">
+            </div>
+        </div>
+
+        <!-- Strategy-specific params -->
+        <div class="bt-strategy-params" id="btStrategyParams">
+            <!-- Populated by JS -->
+        </div>
+
+        <div class="bt-config-row">
+            <div class="bt-field">
+                <label><i class="fas fa-wallet"></i> Starting Balance ($)</label>
+                <input type="number" id="bt-balance" value="10000" min="100" step="100">
+            </div>
+            <div class="bt-field">
+                <label><i class="fas fa-percent"></i> Risk per Trade (%)</label>
+                <input type="number" id="bt-risk" value="1" min="0.1" max="10" step="0.1">
+            </div>
+            <div class="bt-field">
+                <label><i class="fas fa-stop-circle"></i> Stop Loss (pips)</label>
+                <input type="number" id="bt-sl" value="20" min="1" step="1">
+            </div>
+            <div class="bt-field">
+                <label><i class="fas fa-flag-checkered"></i> Take Profit (pips)</label>
+                <input type="number" id="bt-tp" value="40" min="1" step="1">
+            </div>
+        </div>
+
+        <div style="text-align:center;margin-top:14px;">
+            <button class="bt-run-btn" onclick="runBacktest()">
+                <i class="fas fa-play"></i> Run Backtest
+            </button>
+            <button class="bt-reset-btn" onclick="btReset()">
+                <i class="fas fa-redo"></i> Reset
+            </button>
+        </div>
+    </div>
+
+    <!-- Results (hidden until run) -->
+    <div class="bt-results" id="btResults" style="display:none;">
+
+        <!-- Stats Row -->
+        <div class="bt-stats-row" id="btStatsRow"></div>
+
+        <!-- ══ SPLIT CHART PANEL ══ -->
+        <div class="bt-split-wrap" id="btSplitWrap">
+
+            <!-- Toolbar -->
+            <div class="bt-toolbar">
+                <div class="bt-toolbar-left">
+                    <span class="bt-toolbar-label" id="btChartLabel">EUR/USD · 4H</span>
+                    <span class="bt-crosshair-info" id="btCrosshairInfo"></span>
+                </div>
+                <div class="bt-toolbar-right">
+                    <button class="bt-tool-btn" title="Zoom In"     onclick="btZoom(0.7)"  ><i class="fas fa-magnifying-glass-plus"></i></button>
+                    <button class="bt-tool-btn" title="Zoom Out"    onclick="btZoom(1.4)"  ><i class="fas fa-magnifying-glass-minus"></i></button>
+                    <button class="bt-tool-btn" title="Fit Screen"  onclick="btFitScreen()"><i class="fas fa-expand"></i></button>
+                    <div class="bt-tool-sep"></div>
+                    <button class="bt-tool-btn bt-replay-btn" id="btReplayBtn" title="Step Replay" onclick="btToggleReplay()"><i class="fas fa-play-circle"></i> Replay</button>
+                    <button class="bt-tool-btn" id="btReplayStepBtn" title="Next Bar" onclick="btReplayStep()" style="display:none;"><i class="fas fa-step-forward"></i></button>
+                    <button class="bt-tool-btn danger" id="btReplayStopBtn" title="Stop Replay" onclick="btStopReplay()" style="display:none;"><i class="fas fa-stop"></i></button>
+                    <div class="bt-tool-sep"></div>
+                    <button class="bt-tool-btn" title="Show Candles / Line" onclick="btToggleCandleMode()"><i class="fas fa-chart-bar" id="btCandleModeIcon"></i></button>
+                    <div class="bt-tool-sep"></div>
+                    <button class="bt-tool-btn bt-charttheme-btn" id="btChartThemeBtn" title="Toggle chart background" onclick="btToggleChartTheme()">
+                        <i class="fas fa-sun" id="btChartThemeIcon"></i>
+                        <span id="btChartThemeLabel">Light</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Top pane: Price + signals -->
+            <div class="bt-pane bt-pane-price" id="btPricePane">
+                <canvas id="btPriceCanvas"></canvas>
+            </div>
+
+            <!-- Draggable splitter -->
+            <div class="bt-splitter" id="btSplitter" title="Drag to resize">
+                <div class="bt-splitter-grip"></div>
+            </div>
+
+            <!-- Bottom pane: Equity curve -->
+            <div class="bt-pane bt-pane-equity" id="btEquityPane">
+                <div class="bt-pane-label">Equity Curve</div>
+                <canvas id="btEquityCanvas"></canvas>
+            </div>
+
+        </div>
+
+        <!-- Monthly Breakdown -->
+        <div class="bt-chart-card bt-monthly-card">
+            <div class="bt-chart-title"><i class="fas fa-calendar-week"></i> Monthly P&amp;L Breakdown</div>
+            <canvas id="btMonthlyCanvas" height="130"></canvas>
+        </div>
+
+        <!-- Trade Log -->
+        <div class="bt-tradelog-wrap">
+            <div class="bt-chart-title" style="margin-bottom:10px;">
+                <i class="fas fa-list-check"></i> Trade Log
+                <button class="bt-export-btn" onclick="btExportCSV()"><i class="fas fa-file-export"></i> Export CSV</button>
+            </div>
+            <div class="bt-table-scroll">
+                <table class="bt-table" id="btTradeTable">
+                    <thead><tr>
+                        <th>#</th><th>Entry Date</th><th>Dir</th><th>Entry</th>
+                        <th>Exit</th><th>SL</th><th>TP</th><th>Pips</th>
+                        <th>P&amp;L ($)</th><th>Balance</th><th>Result</th>
+                    </tr></thead>
+                    <tbody id="btTradeTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 </section>
 
@@ -642,6 +804,7 @@
             <a href="#welcome">የፎሬክስ መጽሐፍ</a>
             <a href="#dashboard">ዳሽቦርድ</a>
             <a href="#charts">ቻርቶች</a>
+            <a href="#backtest">ባክቴስት</a>
             <a href="#calculators">ካልኩሌተሮች</a>
             <a href="#journal">ጆርናል</a>
             <a href="/academy">አካዳሚ 🔒</a>
