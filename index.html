@@ -405,22 +405,34 @@
 
     <div class="chart-controls">
 
-        <!-- Category tabs -->
-        <div class="chart-category-bar" id="chartCategoryBar">
-            <button class="chart-cat-btn active" data-cat="forex" onclick="switchChartCategory(this)">
-                <i class="fas fa-dollar-sign"></i> Forex
-            </button>
-            <button class="chart-cat-btn" data-cat="crypto" onclick="switchChartCategory(this)">
-                <i class="fab fa-bitcoin"></i> Crypto
-            </button>
-            <button class="chart-cat-btn" data-cat="commodity" onclick="switchChartCategory(this)">
-                <i class="fas fa-coins"></i> Commodities
-            </button>
+        <!-- Category + Pair row — all in one line -->
+        <div class="chart-selector-row">
+            <!-- Category buttons -->
+            <div class="chart-category-bar" id="chartCategoryBar">
+                <button class="chart-cat-btn active" data-cat="forex" onclick="switchChartCategory(this)">
+                    <i class="fas fa-dollar-sign"></i> <span>Forex</span>
+                </button>
+                <button class="chart-cat-btn" data-cat="crypto" onclick="switchChartCategory(this)">
+                    <i class="fab fa-bitcoin"></i> <span>Crypto</span>
+                </button>
+                <button class="chart-cat-btn" data-cat="commodity" onclick="switchChartCategory(this)">
+                    <i class="fas fa-coins"></i> <span>Commodity</span>
+                </button>
+            </div>
+
+            <!-- Pair dropdown -->
+            <div class="chart-pair-dropdown-wrap">
+                <div class="chart-pair-dropdown-icon" id="chartDropdownIcon">
+                    <i class="fas fa-coins"></i>
+                </div>
+                <select class="chart-pair-select" id="chartPairSelect" onchange="switchChartFromSelect(this)">
+                    <!-- populated by JS -->
+                </select>
+                <i class="fas fa-chevron-down chart-pair-chevron"></i>
+            </div>
         </div>
 
-        <!-- Pairs list — populated by JS -->
-        <div class="chart-tabs" id="chartTabs"></div>
-
+        <!-- Info bar -->
         <div class="chart-info-bar">
             <span id="chartPairLabel" class="chart-pair-label">XAU/USD</span>
             <button class="chart-theme-toggle ctt-light" id="chartThemeToggle" onclick="toggleChartTheme()" title="Switch to dark chart">
