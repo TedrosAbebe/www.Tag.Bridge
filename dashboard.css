@@ -79,7 +79,7 @@
 /* ===== RESET ===== */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
-html { scroll-behavior: smooth; font-size: 16px; }
+html { scroll-behavior: smooth; font-size: 16px; overflow-x: hidden; }
 
 body {
     font-family: 'Inter', 'Space Grotesk', system-ui, sans-serif;
@@ -87,6 +87,7 @@ body {
     color: var(--text-primary);
     line-height: 1.6;
     overflow-x: hidden;
+    max-width: 100vw;
     transition: background 0.3s ease, color 0.3s ease;
 }
 
@@ -542,22 +543,32 @@ body {
 }
 .chart-theme-toggle.ctt-light .ctt-icon { filter: none; }
 /* chart-container white background transition */
-.chart-container { transition: background .3s ease; }
-
 .chart-container {
-    border-radius: var(--radius-lg); overflow: hidden;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
     border: 1px solid var(--border-color);
     height: 600px;
     background: #ffffff;
     position: relative;
     transition: background .3s ease;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 .chart-container.fullscreen {
     position: fixed; inset: 0; z-index: 2000;
     border-radius: 0; border: none; height: 100vh;
 }
-
-#tvChartContainer { width: 100%; height: 100%; }
+#tvChartContainer {
+    width: 100%;
+    height: 100%;
+    min-height: 580px;
+}
+#tvChartContainer > div,
+#tvChartContainer iframe {
+    width: 100% !important;
+    height: 100% !important;
+}
 
 /* ===== CALCULATORS ===== */
 .calc-section { background: var(--bg-surface); }
@@ -4403,4 +4414,134 @@ canvas.bt-canvas-full { width: 100%; display: block; }
 @media (max-width: 400px) {
     .dma-bar { grid-template-columns: 1fr 1fr; }
     .dma-fields { grid-template-columns: 1fr; }
+}
+
+/* ══════════════════════════════════════════════
+   GLOBAL MOBILE FIX — prevent horizontal scroll
+   ══════════════════════════════════════════════ */
+* { box-sizing: border-box; }
+img, iframe, canvas, video { max-width: 100%; }
+
+@media (max-width: 768px) {
+    /* ── Prevent any element from causing horizontal scroll ── */
+    .container,
+    .section,
+    .nav-container,
+    .chart-controls,
+    .chart-selector-row,
+    .dma-bar,
+    .dma-main,
+    .dma-box,
+    .bt-config-panel,
+    .calc-container,
+    .journal-stats-row,
+    .dashboard-row,
+    .footer-top {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    /* ── Demo account — stack everything single column ── */
+    .dma-bar {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        padding: 0;
+        background: transparent;
+        border: none;
+        margin-bottom: 14px;
+    }
+    /* 2x2 grid for the 4 stat cards */
+    .dma-bar > .dma-card {
+        display: inline-flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 14px;
+        border-radius: 12px;
+        margin-bottom: 8px;
+        width: 100%;
+    }
+    .dma-bar > .dma-card > .dma-card-top {
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 0;
+        gap: 8px;
+    }
+    .dma-card-val { font-size: 1.1rem; margin-left: auto; }
+    .dma-reset-btn {
+        width: 100%;
+        padding: 10px;
+        border-radius: 10px;
+        justify-content: center;
+        margin-bottom: 8px;
+    }
+
+    /* ── Demo main panel ── */
+    .dma-main { grid-template-columns: 1fr; gap: 12px; }
+
+    /* ── Place trade box ── */
+    .dma-box { padding: 14px; border-radius: 12px; gap: 10px; }
+    .dma-mkt-tabs { gap: 6px; }
+    .dma-mkt-btn { font-size: .78rem; padding: 9px 0; }
+
+    /* ── Pair row ── */
+    .dma-pair-row { flex-direction: row; gap: 8px; flex-wrap: nowrap; }
+    .dma-pair-select-wrap { flex: 1; min-width: 0; }
+    .dma-pair-select { font-size: .82rem; padding: 10px 26px 10px 8px; }
+    .dma-price-tag { min-width: 68px; padding: 5px 8px; }
+    .dma-price-val { font-size: .8rem; }
+
+    /* ── BUY/SELL ── */
+    .dma-dir-row { gap: 8px; }
+    .dma-dir-btn { padding: 11px 0; font-size: .85rem; }
+
+    /* ── Fields ── */
+    .dma-fields { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .dma-field label { font-size: .65rem; }
+    .dma-field input { padding: 9px 8px; font-size: .82rem; }
+
+    /* ── Place button ── */
+    .dma-place-btn { padding: 12px; font-size: .9rem; }
+
+    /* ── Chart section ── */
+    .chart-selector-row {
+        flex-direction: column;
+        gap: 8px;
+    }
+    .chart-selector-row .chart-category-bar {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+        width: 100%;
+    }
+    .chart-selector-row .chart-cat-btn {
+        justify-content: center;
+        padding: 9px 4px;
+        font-size: .76rem;
+    }
+    .chart-pair-dropdown-wrap { width: 100%; }
+    .chart-container { height: 380px; border-radius: 10px; }
+    #tvChartContainer { min-height: 360px; }
+
+    /* ── Info bar ── */
+    .chart-info-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        margin-left: 0;
+    }
+    .chart-pair-label { font-size: .82rem; flex: 1; }
+    .chart-theme-toggle { padding: 0 10px; height: 32px; font-size: .72rem; }
+    .chart-fs-btn { width: 32px; height: 32px; flex-shrink: 0; }
+
+    /* ── General layout ── */
+    .section { padding: 40px 0; }
+    .container { padding: 0 14px; }
+}
+
+@media (max-width: 400px) {
+    .dma-fields { grid-template-columns: 1fr; }
+    .container { padding: 0 10px; }
 }
