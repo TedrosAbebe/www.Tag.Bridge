@@ -287,6 +287,79 @@ function switchChart(btn) {
     loadTVChart(sym);
 }
 
+// ── Chart category / pairs data ──
+const CHART_PAIRS = {
+    forex: [
+        { sym: 'XAUUSD',  label: 'XAU/USD',  icon: 'fas fa-coins',          name: 'Gold' },
+        { sym: 'EURUSD',  label: 'EUR/USD',   icon: 'fas fa-euro-sign',      name: 'Euro' },
+        { sym: 'GBPUSD',  label: 'GBP/USD',   icon: 'fas fa-sterling-sign',  name: 'Pound' },
+        { sym: 'USDJPY',  label: 'USD/JPY',   icon: 'fas fa-yen-sign',       name: 'Yen' },
+        { sym: 'AUDUSD',  label: 'AUD/USD',   icon: 'fas fa-dollar-sign',    name: 'Aussie' },
+        { sym: 'USDCHF',  label: 'USD/CHF',   icon: 'fas fa-franc-sign',     name: 'Swissie' },
+        { sym: 'USDCAD',  label: 'USD/CAD',   icon: 'fas fa-dollar-sign',    name: 'Loonie' },
+        { sym: 'NZDUSD',  label: 'NZD/USD',   icon: 'fas fa-dollar-sign',    name: 'Kiwi' },
+        { sym: 'EURGBP',  label: 'EUR/GBP',   icon: 'fas fa-euro-sign',      name: 'EG' },
+        { sym: 'EURJPY',  label: 'EUR/JPY',   icon: 'fas fa-yen-sign',       name: 'EJ' },
+    ],
+    crypto: [
+        { sym: 'BTCUSDT',  label: 'BTC/USDT',  icon: 'fab fa-bitcoin',        name: 'Bitcoin' },
+        { sym: 'ETHUSDT',  label: 'ETH/USDT',  icon: 'fab fa-ethereum',       name: 'Ethereum' },
+        { sym: 'SOLUSDT',  label: 'SOL/USDT',  icon: 'fas fa-sun',            name: 'Solana' },
+        { sym: 'BNBUSDT',  label: 'BNB/USDT',  icon: 'fas fa-certificate',    name: 'BNB' },
+        { sym: 'XRPUSDT',  label: 'XRP/USDT',  icon: 'fas fa-water',          name: 'XRP' },
+        { sym: 'ADAUSDT',  label: 'ADA/USDT',  icon: 'fas fa-circle',         name: 'Cardano' },
+        { sym: 'DOGEUSDT', label: 'DOGE/USDT', icon: 'fas fa-dog',            name: 'Doge' },
+        { sym: 'AVAXUSDT', label: 'AVAX/USDT', icon: 'fas fa-mountain',       name: 'Avalanche' },
+        { sym: 'DOTUSDT',  label: 'DOT/USDT',  icon: 'fas fa-circle-dot',     name: 'Polkadot' },
+        { sym: 'LTCUSDT',  label: 'LTC/USDT',  icon: 'fas fa-coins',          name: 'Litecoin' },
+    ],
+    commodity: [
+        { sym: 'XAUUSD',  label: 'XAU/USD',   icon: 'fas fa-coins',          name: 'Gold' },
+        { sym: 'XAGUSD',  label: 'XAG/USD',   icon: 'fas fa-circle',         name: 'Silver' },
+        { sym: 'USOIL',   label: 'WTI Oil',   icon: 'fas fa-oil-well',       name: 'WTI Crude' },
+        { sym: 'UKOIL',   label: 'Brent Oil', icon: 'fas fa-droplet',        name: 'Brent' },
+        { sym: 'XPTUSD',  label: 'XPT/USD',   icon: 'fas fa-gem',            name: 'Platinum' },
+        { sym: 'NATGAS',  label: 'Nat Gas',   icon: 'fas fa-fire',           name: 'Nat Gas' },
+        { sym: 'CORN',    label: 'Corn',      icon: 'fas fa-seedling',       name: 'Corn' },
+        { sym: 'WHEAT',   label: 'Wheat',     icon: 'fas fa-wheat-awn',      name: 'Wheat' },
+    ]
+};
+
+let currentChartCat = 'forex';
+
+function switchChartCategory(btn) {
+    document.querySelectorAll('.chart-cat-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentChartCat = btn.dataset.cat;
+    renderChartPairs(currentChartCat);
+    // Auto-select first pair in category
+    const first = document.querySelector('.chart-tab');
+    if (first) first.click();
+}
+
+function renderChartPairs(cat) {
+    const tabs = document.getElementById('chartTabs');
+    if (!tabs) return;
+    const pairs = CHART_PAIRS[cat] || [];
+    tabs.innerHTML = pairs.map((p, i) => `
+        <button class="chart-tab${i === 0 ? ' active' : ''}"
+            data-sym="${p.sym}" data-label="${p.label}"
+            onclick="switchChart(this)">
+            <i class="${p.icon}"></i>
+            <span class="ct-label">${p.label}</span>
+            <span class="ct-name">${p.name}</span>
+        </button>`).join('');
+}
+
+function switchChart(btn) {
+    document.querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    const sym = btn.dataset.sym, label = btn.dataset.label;
+    const pe  = document.getElementById('chartPairLabel');
+    if (pe) pe.textContent = label;
+    loadTVChart(sym);
+}
+
 // Chart-local theme: starts as 'light' (white background by default)
 let chartTheme = localStorage.getItem('tb-chart-theme') || 'light';
 
@@ -339,7 +412,8 @@ function loadTVChart(symbol) {
         toolbar_bg: isChartLight ? '#ffffff' : '#1c2333',
         enable_publishing: false, withdateranges: true, range: '3M',
         hide_side_toolbar: false, allow_symbol_change: true, save_image: false,
-        show_popup_button: true,
+        show_popup_button: false,
+        enable_replay: true,
         popup_width: '1000', popup_height: '650'
     });
     wrap.appendChild(s);
@@ -1502,8 +1576,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Particles
     initParticles();
 
-    // Charts: load default EUR/USD
-    loadTVChart('EURUSD');
+    // Charts: render Forex pairs by default, load Gold
+    renderChartPairs('forex');
+    // Select Gold (index 0 in forex = XAUUSD) as default
+    loadTVChart('XAUUSD');
+    const pe = document.getElementById('chartPairLabel');
+    if (pe) pe.textContent = 'XAU/USD';
     // Apply saved chart theme state
     if (chartTheme === 'light') {
         const btn   = document.getElementById('chartThemeToggle');
@@ -1534,6 +1612,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Journal
     renderJournal();
+
+    // Demo account
+    initDemo();
 
     // Market data (staggered to avoid rate-limiting)
     refreshMarketData();
@@ -2628,3 +2709,415 @@ function btExportCSV() {
 }
 
 // (resize handled by btInitSplitChart resize listener above)
+
+
+// ══════════════════════════════════════════════
+//  DEMO TRADING ACCOUNT (localStorage, no DB)
+// ══════════════════════════════════════════════
+
+const DEMO_KEY   = 'tb-demo-v1';
+const DEMO_START = 10000;
+
+// ── State ──
+function demoLoad() {
+    try { return JSON.parse(localStorage.getItem(DEMO_KEY)) || demoDefault(); }
+    catch(e) { return demoDefault(); }
+}
+function demoDefault() {
+    return { balance: DEMO_START, positions: [], history: [], totalPL: 0, tradeCount: 0 };
+}
+function demoSave(state) {
+    try { localStorage.setItem(DEMO_KEY, JSON.stringify(state)); } catch(e) {}
+}
+
+let demoDirection = 'BUY';
+
+// ── Unified real-time price cache ──
+const DEMO_PRICES = {};
+
+// ── Best strategy: Binance for crypto + EUR + GBP + Gold (PAXG)
+//                  Frankfurter.dev for JPY, CHF, CAD, AUD, NZD
+async function demoFetchAllPrices() {
+    // 1. Binance — crypto + forex pairs it supports + PAXG for Gold
+    const binanceSyms = [
+        'BTCUSDT','ETHUSDT','SOLUSDT','BNBUSDT',
+        'XRPUSDT','ADAUSDT','DOGEUSDT','LTCUSDT',
+        'EURUSDT','GBPUSDT','PAXGUSDT'
+    ];
+    try {
+        const url  = `https://api.binance.com/api/v3/ticker/price?symbols=${JSON.stringify(binanceSyms)}`;
+        const r    = await fetch(url, { signal: AbortSignal.timeout(8000) });
+        if (r.ok) {
+            const data = await r.json();
+            data.forEach(d => {
+                const price = parseFloat(d.price);
+                const sym   = d.symbol;
+                if (sym === 'EURUSDT')  DEMO_PRICES['EURUSD']  = price;
+                else if (sym === 'GBPUSDT')  DEMO_PRICES['GBPUSD']  = price;
+                else if (sym === 'PAXGUSDT') DEMO_PRICES['XAUUSD']  = price; // PAX Gold ≈ XAU/USD
+                else DEMO_PRICES[sym] = price; // crypto as-is
+            });
+        }
+    } catch(e) {}
+
+    // 2. Frankfurter.dev — USD/JPY, USD/CHF, USD/CAD, AUD/USD, NZD/USD
+    try {
+        const url = 'https://api.frankfurter.dev/v1/latest?from=USD&to=JPY,CHF,CAD,AUD,NZD';
+        const r   = await fetch(url, { signal: AbortSignal.timeout(8000) });
+        if (r.ok) {
+            const d = await r.json();
+            const rates = d.rates || {};
+            if (rates.JPY) DEMO_PRICES['USDJPY'] = +rates.JPY.toFixed(3);
+            if (rates.CHF) DEMO_PRICES['USDCHF'] = +rates.CHF.toFixed(5);
+            if (rates.CAD) DEMO_PRICES['USDCAD'] = +rates.CAD.toFixed(5);
+            if (rates.AUD) DEMO_PRICES['AUDUSD'] = +(1 / rates.AUD).toFixed(5);
+            if (rates.NZD) DEMO_PRICES['NZDUSD'] = +(1 / rates.NZD).toFixed(5);
+        }
+    } catch(e) {}
+
+    // 3. Silver — fawazahmed0 CDN (only one not on Binance)
+    try {
+        const url = 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/xag.json';
+        const r   = await fetch(url, { signal: AbortSignal.timeout(8000) });
+        if (r.ok) {
+            const d = await r.json();
+            if (d.xag?.usd) DEMO_PRICES['XAGUSD'] = +d.xag.usd.toFixed(3);
+        }
+    } catch(e) {}
+}
+
+async function demoFetchCryptoPrices() { await demoFetchAllPrices(); }
+async function demoFetchForexPrices()  {}
+
+function demoGetPrice(sym) {
+    return DEMO_PRICES[sym] || null;
+}
+
+function demoSetDir(dir) {
+    demoDirection = dir;
+    document.getElementById('demoDirBuy') .classList.toggle('active', dir === 'BUY');
+    document.getElementById('demoDirSell').classList.toggle('active', dir === 'SELL');
+}
+
+// ── Pair definitions per category ──
+const DEMO_PAIR_OPTS = {
+    forex: [
+        { v:'XAUUSD',  pip:'0.01',   pv:'1',   label:'XAU/USD — Gold'    },
+        { v:'EURUSD',  pip:'0.0001', pv:'10',  label:'EUR/USD'            },
+        { v:'GBPUSD',  pip:'0.0001', pv:'10',  label:'GBP/USD'            },
+        { v:'USDJPY',  pip:'0.01',   pv:'6.7', label:'USD/JPY'            },
+        { v:'AUDUSD',  pip:'0.0001', pv:'10',  label:'AUD/USD'            },
+        { v:'USDCHF',  pip:'0.0001', pv:'10',  label:'USD/CHF'            },
+        { v:'USDCAD',  pip:'0.0001', pv:'10',  label:'USD/CAD'            },
+        { v:'NZDUSD',  pip:'0.0001', pv:'10',  label:'NZD/USD'            },
+        { v:'XAGUSD',  pip:'0.001',  pv:'5',   label:'XAG/USD — Silver'   },
+    ],
+    crypto: [
+        { v:'BTCUSDT',  pip:'1',      pv:'1', label:'BTC/USDT — Bitcoin'  },
+        { v:'ETHUSDT',  pip:'0.1',    pv:'1', label:'ETH/USDT — Ethereum' },
+        { v:'SOLUSDT',  pip:'0.01',   pv:'1', label:'SOL/USDT — Solana'   },
+        { v:'BNBUSDT',  pip:'0.1',    pv:'1', label:'BNB/USDT'            },
+        { v:'XRPUSDT',  pip:'0.0001', pv:'1', label:'XRP/USDT'            },
+        { v:'ADAUSDT',  pip:'0.0001', pv:'1', label:'ADA/USDT'            },
+        { v:'DOGEUSDT', pip:'0.00001',pv:'1', label:'DOGE/USDT'           },
+        { v:'LTCUSDT',  pip:'0.01',   pv:'1', label:'LTC/USDT'            },
+    ]
+};
+
+function demoCatSwitch(btn) {
+    document.querySelectorAll('.demo-cat-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const cat  = btn.dataset.cat;
+    const sel  = document.getElementById('demoPair');
+    if (!sel) return;
+    sel.innerHTML = DEMO_PAIR_OPTS[cat].map(p =>
+        `<option value="${p.v}" data-pip="${p.pip}" data-pv="${p.pv}" data-type="${cat}">${p.label}</option>`
+    ).join('');
+    document.getElementById('demoEntry').value = '';
+    document.getElementById('demoSL').value    = '';
+    document.getElementById('demoTP').value    = '';
+    demoUpdateFormPrice();
+}
+
+// ── Show live price in form ──
+function demoUpdateFormPrice() {
+    const sym     = document.getElementById('demoPair')?.value;
+    const priceEl = document.getElementById('demoLivePrice');
+    const entryEl = document.getElementById('demoEntry');
+    if (!sym || !priceEl) return;
+    const p = demoGetPrice(sym);
+    if (p) {
+        const decimals = p > 500 ? 2 : p > 10 ? 3 : 5;
+        priceEl.textContent = p.toFixed(decimals);
+        priceEl.style.color = '#10b981';
+        if (entryEl && !entryEl.value) entryEl.placeholder = p.toFixed(decimals);
+    } else {
+        priceEl.textContent = 'Loading...';
+        priceEl.style.color = '#f59e0b';
+    }
+}
+
+// ── Place trade ──
+function demoPlaceTrade() {
+    const state  = demoLoad();
+    const sym    = document.getElementById('demoPair').value;
+    const dir    = demoDirection;
+    const lot    = parseFloat(document.getElementById('demoLot').value) || 0.1;
+    const slVal  = parseFloat(document.getElementById('demoSL').value)  || null;
+    const tpVal  = parseFloat(document.getElementById('demoTP').value)  || null;
+    const price  = demoGetPrice(sym);
+
+    if (!price) { alert('Price not available yet — wait a moment and try again.'); return; }
+
+    const entryInput = parseFloat(document.getElementById('demoEntry').value);
+    const entry = entryInput || price;
+
+    const pos = {
+        id:        Date.now().toString(),
+        sym, dir, lot, entry,
+        sl:        slVal,
+        tp:        tpVal,
+        openTime:  new Date().toISOString(),
+        openPrice: price
+    };
+
+    state.positions.push(pos);
+    state.tradeCount++;
+    demoSave(state);
+    demoRenderAll();
+
+    // Clear form
+    document.getElementById('demoEntry').value = '';
+    document.getElementById('demoSL').value    = '';
+    document.getElementById('demoTP').value    = '';
+
+    demoShowToast(`${dir} ${sym} @ ${entry.toFixed(entry > 100 ? 2 : 5)} opened ✅`);
+}
+
+// ── Close a position ──
+function demoClosePosition(id) {
+    const state = demoLoad();
+    const idx   = state.positions.findIndex(p => p.id === id);
+    if (idx < 0) return;
+    const pos   = state.positions[idx];
+    const exitPrice = demoGetPrice(pos.sym) || pos.entry;
+    const pnl   = demoCalcPnL(pos, exitPrice);
+
+    // Remove from open
+    state.positions.splice(idx, 1);
+
+    // Add to history
+    const closed = {
+        ...pos, exit: exitPrice,
+        pnl: +pnl.toFixed(2),
+        closeTime: new Date().toISOString(),
+        result: pnl >= 0 ? 'WIN' : 'LOSS'
+    };
+    state.history.unshift(closed);
+    state.balance  = +(state.balance + pnl).toFixed(2);
+    state.totalPL  = +(state.totalPL  + pnl).toFixed(2);
+    demoSave(state);
+
+    // Auto-log to Journal
+    demoLogToJournal(closed);
+
+    demoRenderAll();
+    demoShowToast(`${pos.dir} ${pos.sym} closed: ${pnl >= 0 ? '+' : ''}$${pnl.toFixed(2)} ${pnl >= 0 ? '✅' : '❌'}`);
+}
+
+// ── P&L calculation ──
+function demoCalcPnL(pos, currentPrice) {
+    const opt    = document.querySelector(`#demoPair option[value="${pos.sym}"]`);
+    const pipSz  = parseFloat(opt?.dataset.pip)  || 0.0001;
+    const pipVal = parseFloat(opt?.dataset.pv)   || 10;
+    const type   = opt?.dataset.type || 'forex';
+
+    let pnl;
+    if (type === 'crypto') {
+        const diff = pos.dir === 'BUY' ? currentPrice - pos.entry : pos.entry - currentPrice;
+        pnl = diff * pos.lot;
+    } else {
+        const diff  = pos.dir === 'BUY' ? currentPrice - pos.entry : pos.entry - currentPrice;
+        const pips  = diff / pipSz;
+        pnl = pips * pipVal * pos.lot;
+    }
+    return pnl;
+}
+
+// ── Auto-close on SL/TP hit ──
+function demoCheckSLTP() {
+    const state = demoLoad();
+    let changed = false;
+    state.positions.forEach(pos => {
+        const price = demoGetPrice(pos.sym);
+        if (!price) return;
+        let hit = false;
+        if (pos.sl && pos.dir === 'BUY'  && price <= pos.sl) hit = true;
+        if (pos.sl && pos.dir === 'SELL' && price >= pos.sl) hit = true;
+        if (pos.tp && pos.dir === 'BUY'  && price >= pos.tp) hit = true;
+        if (pos.tp && pos.dir === 'SELL' && price <= pos.tp) hit = true;
+        if (hit) { demoClosePosition(pos.id); changed = true; }
+    });
+}
+
+// ── Log closed trade to Journal ──
+function demoLogToJournal(closed) {
+    const trades = jLoad();
+    const d      = new Date(closed.openTime);
+    trades.push({
+        id:         'demo-' + closed.id,
+        date:       d.toISOString().split('T')[0],
+        instrument: closed.sym.includes('USDT') ? 'Crypto' : 'Forex',
+        pair:       closed.sym,
+        dir:        closed.dir,
+        entry:      closed.entry,
+        exit:       closed.exit,
+        sl:         closed.sl || 0,
+        tp:         closed.tp || 0,
+        size:       closed.lot,
+        pl:         closed.pnl,
+        rr:         '1:2',
+        strategy:   'Demo Account',
+        screenshot: '',
+        notes:      `Auto-logged from Demo Account. Closed at ${new Date(closed.closeTime).toLocaleTimeString()}`
+    });
+    jSave(trades);
+    renderJournal();
+}
+
+// ── Price formatter ──
+function fmtDemoPrice(p) {
+    if (!p) return '--';
+    if (p > 500)  return p.toFixed(2);   // Gold, BTC, ETH
+    if (p > 10)   return p.toFixed(3);   // USD/JPY
+    return p.toFixed(5);                  // EUR/USD etc
+}
+
+// ── Render everything ──
+function demoRenderAll() {
+    const state = demoLoad();
+
+    // Balance bar
+    const totalPLEl = document.getElementById('demoTotalPL');
+    const balEl     = document.getElementById('demoBalance');
+    const countEl   = document.getElementById('demoTradeCount');
+    if (balEl)     balEl.textContent     = '$' + state.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    if (totalPLEl) {
+        totalPLEl.textContent = (state.totalPL >= 0 ? '+$' : '-$') + Math.abs(state.totalPL).toFixed(2);
+        totalPLEl.className   = 'demo-bal-val ' + (state.totalPL >= 0 ? 'up' : 'down');
+    }
+    if (countEl) countEl.textContent = state.tradeCount;
+
+    // Open positions
+    const posTable  = document.getElementById('demoPosTable');
+    const openCount = document.getElementById('demoOpenCount');
+    if (openCount) openCount.textContent = state.positions.length;
+
+    if (!state.positions.length) {
+        if (posTable) posTable.innerHTML = '<div class="demo-empty"><i class="fas fa-chart-line"></i><br>No open trades — place your first trade!</div>';
+        const openPLEl = document.getElementById('demoOpenPL');
+        if (openPLEl) { openPLEl.textContent = '$0.00'; openPLEl.className = 'demo-bal-val'; }
+    } else {
+        let totalOpen = 0;
+        const rows = state.positions.map(pos => {
+            const price = demoGetPrice(pos.sym) || pos.entry;
+            const pnl   = demoCalcPnL(pos, price);
+            totalOpen  += pnl;
+            const up    = pnl >= 0;
+            return `<div class="demo-pos-row">
+                <div class="demo-pos-info">
+                    <span class="demo-pos-pair">${pos.sym}</span>
+                    <span class="demo-pos-dir ${pos.dir.toLowerCase()}">${pos.dir === 'BUY' ? '▲' : '▼'} ${pos.dir}</span>
+                    <span class="demo-pos-detail">${pos.lot} lots @ ${fmtDemoPrice(pos.entry)}</span>
+                    ${pos.sl ? `<span class="demo-pos-sl">SL ${fmtDemoPrice(pos.sl)}</span>` : ''}
+                    ${pos.tp ? `<span class="demo-pos-tp">TP ${fmtDemoPrice(pos.tp)}</span>` : ''}
+                </div>
+                <div class="demo-pos-right">
+                    <span class="demo-pos-pnl ${up ? 'up' : 'down'}">${up ? '+' : ''}$${pnl.toFixed(2)}</span>
+                    <span class="demo-pos-price">@ ${fmtDemoPrice(price)}</span>
+                    <button class="demo-close-btn" onclick="demoClosePosition('${pos.id}')">✕ Close</button>
+                </div>
+            </div>`;
+        }).join('');
+        if (posTable) posTable.innerHTML = rows;
+
+        const openPLEl = document.getElementById('demoOpenPL');
+        if (openPLEl) {
+            openPLEl.textContent = (totalOpen >= 0 ? '+$' : '-$') + Math.abs(totalOpen).toFixed(2);
+            openPLEl.className   = 'demo-bal-val ' + (totalOpen >= 0 ? 'up' : 'down');
+        }
+    }
+
+    // History
+    const histWrap = document.getElementById('demoHistoryWrap');
+    const histBody = document.getElementById('demoHistoryBody');
+    if (state.history.length && histWrap) {
+        histWrap.style.display = '';
+        if (histBody) histBody.innerHTML = state.history.slice(0, 50).map((t, i) => `
+            <tr>
+                <td>${i + 1}</td>
+                <td><b>${t.sym}</b></td>
+                <td class="${t.dir === 'BUY' ? 'dir-buy' : 'dir-sell'}">${t.dir}</td>
+                <td>${fmtDemoPrice(t.entry)}</td>
+                <td>${fmtDemoPrice(t.exit)}</td>
+                <td>${t.lot}</td>
+                <td class="${t.pnl >= 0 ? 'win' : 'loss'}">${t.pnl >= 0 ? '+$' : '-$'}${Math.abs(t.pnl).toFixed(2)}</td>
+                <td class="${t.result === 'WIN' ? 'win' : 'loss'}">${t.result === 'WIN' ? '✅' : '❌'}</td>
+                <td>${new Date(t.openTime).toLocaleDateString()}</td>
+            </tr>`).join('');
+    }
+}
+
+// ── Reset demo account ──
+function demoReset() {
+    if (!confirm('Reset demo account to $10,000? All open trades and history will be cleared.')) return;
+    demoSave(demoDefault());
+    demoRenderAll();
+    demoShowToast('Demo account reset to $10,000 ✅');
+}
+
+// ── Toast notification ──
+function demoShowToast(msg) {
+    let toast = document.getElementById('demoToast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'demoToast';
+        document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ── Init demo account ──
+function initDemo() {
+    // Populate Forex pairs by default
+    const forexBtn = document.querySelector('.demo-cat-btn[data-cat="forex"]');
+    if (forexBtn) demoCatSwitch(forexBtn);
+
+    demoRenderAll();
+
+    // Fetch all prices immediately
+    demoFetchAllPrices().then(() => {
+        demoUpdateFormPrice();
+        demoRenderAll();
+    });
+
+    // Refresh every 15s
+    setInterval(async () => {
+        await demoFetchAllPrices();
+        demoCheckSLTP();
+        demoRenderAll();
+    }, 15000);
+
+    // Update form live price every 3s
+    setInterval(demoUpdateFormPrice, 3000);
+
+    // Pair change → refresh price immediately
+    const pairSel = document.getElementById('demoPair');
+    if (pairSel) pairSel.addEventListener('change', () => {
+        document.getElementById('demoEntry').value = '';
+        demoUpdateFormPrice();
+    });
+}
