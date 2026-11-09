@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="am" data-theme="dark">
 <head>
 <meta charset="UTF-8">
@@ -46,15 +46,14 @@
     </a>
     <div class="nav-links-wrap" id="navLinksWrap">
         <ul class="nav-links" id="navLinks">
-            <li><a href="#welcome" class="nav-link nav-link--forex-highlight active" onclick="setActiveNav(this)"><i class="fas fa-book-bookmark"></i> <span data-am="የፎሬክስ መጽሐፍ" data-en="Forex Book">የፎሬክስ መጽሐፍ</span> <span class="nav-badge-hot">450 ብር</span></a></li>
-            <li><a href="#dashboard" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-chart-pie"></i> <span data-am="ዳሽቦርድ" data-en="Dashboard">ዳሽቦርድ</span></a></li>
-            <li><a href="#charts" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-chart-candlestick"></i> <span data-am="ቻርቶች" data-en="Charts">ቻርቶች</span></a></li>
+            <li><a href="#charts" class="nav-link active" onclick="setActiveNav(this)"><i class="fas fa-chart-candlestick"></i> <span data-am="ቻርቶች" data-en="Charts">Charts</span></a></li>
             <li><a href="#demo" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-graduation-cap"></i> <span data-am="ዴሞ" data-en="Demo">Demo</span></a></li>
-            <li><a href="#backtest" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-flask"></i> <span data-am="ባክቴስት" data-en="Backtest">ባክቴስት</span></a></li>
-            <li><a href="#calendar-news" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-calendar-alt"></i> <span data-am="ቀን መቁጠሪያ" data-en="Calendar">ቀን መቁጠሪያ</span></a></li>
-            <li><a href="#calculators" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-calculator"></i> <span data-am="ካልኩሌተሮች" data-en="Calculators">ካልኩሌተሮች</span></a></li>
-            <li><a href="#journal" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-book-open"></i> <span data-am="ጆርናል" data-en="Journal">ጆርናል</span></a></li>
-            <li><a href="#contact" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-envelope"></i> <span data-am="አግኙን" data-en="Contact">አግኙን</span></a></li>
+            <li><a href="#welcome" class="nav-link nav-link--forex-highlight" onclick="setActiveNav(this)"><i class="fas fa-book-bookmark"></i> <span data-am="መጽሐፍ" data-en="Books">Books</span> <span class="nav-badge-hot">450 ብር</span></a></li>
+            <li><a href="#journal" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-book-open"></i> <span data-am="ጆርናል" data-en="Journal">Journal</span></a></li>
+            <li><a href="#backtest" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-flask"></i> <span data-am="ባክቴስት" data-en="Backtest">Backtest</span></a></li>
+            <li><a href="#calculators" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-calculator"></i> <span data-am="ካልኩሌተሮች" data-en="Calcs">Calcs</span></a></li>
+            <li><a href="#calendar-news" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-calendar-alt"></i> <span data-am="ቀን" data-en="Calendar">Calendar</span></a></li>
+            <li><a href="#contact" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-envelope"></i> <span data-am="አግኙን" data-en="Contact">Contact</span></a></li>
             <li><a href="/academy" class="nav-link nav-link--academy-lock"><i class="fas fa-graduation-cap"></i> Academy 🔒</a></li>
         </ul>
     </div>
@@ -210,190 +209,6 @@
     </div>
 </div>
 
-<!-- REAL-TIME MARKET DASHBOARD — after social links, before books -->
-<div style="background:#0a0f1a;padding:28px 20px 24px;border-bottom:1px solid rgba(255,255,255,.06);">
-    <div style="max-width:1060px;margin:0 auto;">
-        <div style="text-align:center;margin-bottom:16px;">
-            <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.25);color:#818cf8;font-size:.68rem;font-weight:800;letter-spacing:1.5px;padding:5px 16px;border-radius:50px;text-transform:uppercase;">
-                <span style="width:6px;height:6px;border-radius:50%;background:#10b981;display:inline-block;animation:wlc-pulse 1.5s infinite;"></span>
-                የቀጥታ ገበያ ዳሽቦርድ — Real-Time Market
-            </div>
-            <p style="color:#8b949e;font-size:.78rem;margin:8px 0 0;">👇 Crypto፣ Forex ወይም Commodities ይምረጡ</p>
-        </div>
-        <!-- TradingView Market Overview Widget — self-contained -->
-        <div class="tradingview-widget-container" style="border-radius:16px;overflow:hidden;min-height:430px;">
-            <div class="tradingview-widget-container__widget"></div>
-            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
-            {
-                "colorTheme": "dark",
-                "dateRange": "12M",
-                "showChart": true,
-                "locale": "en",
-                "isTransparent": true,
-                "showSymbolLogo": true,
-                "showFloatingTooltip": false,
-                "width": "100%",
-                "height": 450,
-                "tabs": [
-                    {
-                        "title": "Crypto",
-                        "symbols": [
-                            {"s": "BINANCE:BTCUSDT", "d": "Bitcoin"},
-                            {"s": "BINANCE:ETHUSDT", "d": "Ethereum"},
-                            {"s": "BINANCE:BNBUSDT", "d": "BNB"},
-                            {"s": "BINANCE:SOLUSDT", "d": "Solana"},
-                            {"s": "BINANCE:XRPUSDT", "d": "XRP"}
-                        ],
-                        "originalTitle": "Cryptocurrencies"
-                    },
-                    {
-                        "title": "Forex",
-                        "symbols": [
-                            {"s": "FX:EURUSD"},
-                            {"s": "FX:GBPUSD"},
-                            {"s": "FX:USDJPY"},
-                            {"s": "FX:USDCHF"},
-                            {"s": "FX:AUDUSD"}
-                        ],
-                        "originalTitle": "Forex"
-                    },
-                    {
-                        "title": "Commodities",
-                        "symbols": [
-                            {"s": "TVC:GOLD", "d": "Gold"},
-                            {"s": "TVC:SILVER", "d": "Silver"},
-                            {"s": "NYMEX:CL1!", "d": "Crude Oil"}
-                        ],
-                        "originalTitle": "Commodities"
-                    }
-                ]
-            }
-            </script>
-        </div>
-    </div>
-</div>
-
-<!-- BOOKS -->
-<div class="pdf-sec" id="books-preview">
-<div class="pdf-inner">
-    <div class="pdf-hdr">
-        <div class="pdf-pill"><i class="fas fa-book-open"></i> PDF E-BOOKS</div>
-        <h2 class="pdf-htitle">የትሬዲንግ መፅሀፎች</h2>
-    </div>
-    <div class="pdf-grid">
-
-        <!-- BOOK 1: FOREX -->
-        <a href="#" onclick="window.open('https://t.me/tagbridge123?text='+encodeURIComponent('ሰላም! የፎሬክስ ትሬዲንግ መማሪያ መጽሃፍ በ 450 ብር ማዘዝ እፈልጋለሁ።'),'_blank','noopener,noreferrer');return false;" class="bk bk-forex">
-            <div class="bk-top">
-                <div class="bk-icon bk-icon-f"><i class="fas fa-chart-line"></i></div>
-                <div>
-                    <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:5px;">
-                        <span class="bk-badge bk-be">PDF E-BOOK</span>
-                    </div>
-                    <div class="bk-title">የፎሬክስ ትሬዲንግ በአማርኛ</div>
-                    <div class="bk-en">Forex Trading in Amharic</div>
-                </div>
-            </div>
-            <ul class="bk-topics">
-                <li><i class="fas fa-check-circle"></i>የፎሬክስ መሰረቶች</li>
-                <li><i class="fas fa-check-circle"></i>የፎሬክስ ገበያ መዋቅር</li>
-                <li><i class="fas fa-check-circle"></i>የምንዛሬ ጥንዶች</li>
-                <li><i class="fas fa-check-circle"></i>የትሬዲንግ ሰዓታት</li>
-                <li><i class="fas fa-check-circle"></i>የፎሬክስ አካውንት አጠቃቀም</li>
-                <li><i class="fas fa-check-circle"></i>ትሬዲንግ ፕላትፎርም (MT4/MT5)</li>
-                <li><i class="fas fa-check-circle"></i>የፎሬክስ ትሬዲንግ አይነቶች</li>
-                <li><i class="fas fa-check-circle"></i>የቴክኒካል ትንተና</li>
-                <li><i class="fas fa-check-circle"></i>ቴክኒካል ኢንዲኬተርስ</li>
-                <li><i class="fas fa-check-circle"></i>የፕራይስ አክሽን</li>
-                <li><i class="fas fa-check-circle"></i>የካንድልስቲክ ፓተርኖች</li>
-                <li><i class="fas fa-check-circle"></i>ስማርት መኒ ኮንሰፕት (SMC)</li>
-                <li><i class="fas fa-check-circle"></i>ፋንዳሜንታል ትንተና</li>
-                <li><i class="fas fa-check-circle"></i>የፎሬክስ ትሬዲንግ ስትራቴጂ</li>
-                <li><i class="fas fa-check-circle"></i>የሪስክ ማኔጅመንት</li>
-                <li><i class="fas fa-check-circle"></i>የትሬዲንግ ስነ-ልቦና</li>
-                <li><i class="fas fa-check-circle"></i>የትሬዲንግ ፕላን</li>
-                <li><i class="fas fa-check-circle"></i>መለማመጃ አካውንት</li>
-                <li><i class="fas fa-check-circle"></i>ፕራክቲካል ትሬዲንግ</li>
-                <li><i class="fas fa-check-circle"></i>ፎሬክስ እና ክሪፕቶ ትሬዲንግ</li>
-                <li class="more"><i class="fas fa-plus-circle" style="color:#6366f1;"></i>በትሬዲንግ ገንዘብ ማግኛ እና ሌሎችም...</li>
-            </ul>
-            <div class="bk-footer" style="justify-content:center;">
-                <div class="bk-price" style="justify-content:center;"><span class="bk-pnum bk-pf">450</span><span class="bk-pcur">ETB</span></div>
-                <div class="bk-btn bk-btn-f" style="margin:0 auto;"><i class="fab fa-telegram"></i> አሁኑኑ ይዘዙ</div>
-            </div>
-        </a>
-
-        <!-- ROW 2: CRYPTO + BUNDLE -->
-        <div class="bk-row2">
-
-            <!-- BOOK 2: CRYPTO -->
-            <a href="#" onclick="window.open('https://t.me/tagbridge123?text='+encodeURIComponent('ሰላም! የክሪፕቶ ከረንሲ ትሬዲንግ መጽሃፍ በ 500 ብር ማዘዝ እፈልጋለሁ።'),'_blank','noopener,noreferrer');return false;" class="bk bk-crypto">
-                <div class="bk-top">
-                    <div class="bk-icon bk-icon-c"><i class="fab fa-bitcoin"></i></div>
-                    <div>
-                        <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:5px;">
-                            <span class="bk-badge bk-bc">₿ CRYPTO</span>
-                            <span class="bk-badge bk-be">PDF E-BOOK</span>
-                        </div>
-                        <div class="bk-title">የክሪፕቶ ትሬዲንግ በአማርኛ</div>
-                        <div class="bk-en">Crypto Trading in Amharic</div>
-                    </div>
-                </div>
-                <ul class="bk-topics">
-                    <li><i class="fas fa-check-circle"></i>የክሪፕቶ ከረንሲ ምንነት</li>
-                    <li><i class="fas fa-check-circle"></i>የክሪፕቶ ከረንሲ አይነቶች</li>
-                    <li><i class="fas fa-check-circle"></i>የብሎክቼይን ምንነት</li>
-                    <li><i class="fas fa-check-circle"></i>ስፖት ማርጅን ትሬዲንግ</li>
-                    <li><i class="fas fa-check-circle"></i>ፊውቸር ትሬዲንግ</li>
-                    <li><i class="fas fa-check-circle"></i>አርቢትሬጅ ትሬዲንግ</li>
-                    <li><i class="fas fa-check-circle"></i>ኮፒ ትሬዲንግ</li>
-                    <li><i class="fas fa-check-circle"></i>የክ/ትሬዲንግ ስትራቴጂዎች</li>
-                    <li><i class="fas fa-check-circle"></i>የትንተና አይነቶች</li>
-                    <li><i class="fas fa-check-circle"></i>የባይናንስ አካውንት</li>
-                    <li><i class="fas fa-check-circle"></i>ሪስክ ማኔጅመንት</li>
-                    <li><i class="fas fa-check-circle"></i>የትሬዲንግ ስነ-ልቦና</li>
-                </ul>
-                <div class="bk-footer" style="justify-content:center;">
-                    <div class="bk-price"><span class="bk-pnum bk-pc">500</span><span class="bk-pcur">ETB</span></div>
-                    <div class="bk-btn bk-btn-c" style="margin:0 auto;"><i class="fab fa-telegram"></i> አሁኑኑ ይዘዙ</div>
-                </div>
-            </a>
-
-            <!-- BOOK 3: BUNDLE -->
-            <a href="#" onclick="window.open('https://t.me/tagbridge123?text='+encodeURIComponent('ሰላም! ፎሬክስ + ክሪፕቶ ጥቅል በ 700 ብር ማዘዝ እፈልጋለሁ።'),'_blank','noopener,noreferrer');return false;" class="bk bk-bundle">
-                <div class="bk-top">
-                    <div class="bk-icon bk-icon-b"><i class="fas fa-layer-group"></i></div>
-                    <div>
-                        <div style="margin-bottom:5px;"><span class="bk-badge bk-bb">🎁 BUNDLE DEAL</span></div>
-                        <div class="bk-title">ፎሬክስ + ክሪፕቶ ጥቅል</div>
-                        <div class="bk-en">Forex + Crypto Bundle</div>
-                    </div>
-                </div>
-                <div class="bk-savings">
-                    <div class="bk-srow"><span>የፎሬክስ መፅሀፍ</span><span>450 ETB</span></div>
-                    <div class="bk-srow"><span>የክሪፕቶ መፅሀፍ</span><span>500 ETB</span></div>
-                    <div class="bk-sdiv"></div>
-                    <div class="bk-srow"><span>ሁለቱ ብቻቸውን</span><span class="bk-sstrike">950 ETB</span></div>
-                    <div class="bk-srow bk-sdeal"><span>🎁 የጥቅሉ ዋጋ</span><span class="bk-sprice">700 ETB</span></div>
-                </div>
-                <ul class="bk-topics">
-                    <li><i class="fas fa-check-circle"></i>ሁለቱም ሙሉ PDF መፅሀፎች</li>
-                    <li><i class="fas fa-check-circle"></i>250 ETB ቁጠባ!</li>
-                    <li><i class="fas fa-check-circle"></i>ነፃ VIP Academy Password ⭐</li>
-                    <li><i class="fas fa-check-circle"></i>ቀጥታ Telegram ድጋፍ</li>
-                </ul>
-                <div class="bk-footer" style="justify-content:center;">
-                    <div class="bk-price"><span class="bk-pold">950</span><span class="bk-pnum bk-pb">700</span><span class="bk-pcur">ETB</span><span class="bk-psave">250 ቁጠባ!</span></div>
-                    <div class="bk-btn bk-btn-b" style="margin:0 auto;"><i class="fab fa-telegram"></i> አሁኑኑ ይዘዙ</div>
-                </div>
-            </a>
-        </div><!-- /.bk-row2 -->
-
-    </div><!-- /.pdf-grid -->
-</div><!-- /.pdf-inner -->
-</div><!-- /.pdf-sec -->
-</section><!-- /#welcome -->
-
 <!-- CHARTS -->
 <section id="charts" class="section charts-section">
 <div class="container">
@@ -443,7 +258,15 @@
         </div>
     </div>
 
-    <div class="chart-container" id="chartContainer"><div id="tvChartContainer"></div></div>
+    <div class="chart-container" id="chartContainer">
+        <!-- Educational disclaimer overlay — shown at top of chart -->
+        <div id="chartDisclaimer" style="position:absolute;top:0;left:0;right:0;z-index:10;background:linear-gradient(135deg,rgba(99,102,241,.92),rgba(139,92,246,.92));color:#fff;text-align:center;padding:10px 20px;font-size:.82rem;font-weight:700;letter-spacing:.3px;display:flex;align-items:center;justify-content:center;gap:10px;backdrop-filter:blur(4px);">
+            <i class="fas fa-graduation-cap" style="font-size:1rem;opacity:.9;"></i>
+            <span>Welcome to <strong>TAG Bridge</strong> — All content is for <strong>educational purposes only</strong></span>
+            <button onclick="document.getElementById('chartDisclaimer').style.display='none'" style="background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:50px;padding:3px 10px;font-size:.72rem;font-weight:700;cursor:pointer;margin-left:6px;">✕</button>
+        </div>
+        <div id="tvChartContainer"></div>
+    </div>
 </div>
 </section>
 </div>
@@ -606,6 +429,159 @@
         </div>
     </div>
 
+</div>
+</section>
+
+<!-- BOOKS -->
+<div class="pdf-sec" id="books-preview">
+<div class="pdf-inner">
+    <div class="pdf-hdr">
+        <div class="pdf-pill"><i class="fas fa-book-open"></i> PDF E-BOOKS</div>
+        <h2 class="pdf-htitle">የትሬዲንግ መፅሀፎች</h2>
+    </div>
+    <div class="pdf-grid">
+
+        <!-- BOOK 1: FOREX -->
+        <a href="#" onclick="window.open('https://t.me/tagbridge123?text='+encodeURIComponent('ሰላም! የፎሬክስ ትሬዲንግ መማሪያ መጽሃፍ በ 450 ብር ማዘዝ እፈልጋለሁ።'),'_blank','noopener,noreferrer');return false;" class="bk bk-forex">
+            <div class="bk-top">
+                <div class="bk-icon bk-icon-f"><i class="fas fa-chart-line"></i></div>
+                <div>
+                    <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:5px;">
+                        <span class="bk-badge bk-be">PDF E-BOOK</span>
+                    </div>
+                    <div class="bk-title">የፎሬክስ ትሬዲንግ በአማርኛ</div>
+                    <div class="bk-en">Forex Trading in Amharic</div>
+                </div>
+            </div>
+            <ul class="bk-topics">
+                <li><i class="fas fa-check-circle"></i>የፎሬክስ መሰረቶች</li>
+                <li><i class="fas fa-check-circle"></i>የፎሬክስ ገበያ መዋቅር</li>
+                <li><i class="fas fa-check-circle"></i>የምንዛሬ ጥንዶች</li>
+                <li><i class="fas fa-check-circle"></i>የትሬዲንግ ሰዓታት</li>
+                <li><i class="fas fa-check-circle"></i>የፎሬክስ አካውንት አጠቃቀም</li>
+                <li><i class="fas fa-check-circle"></i>ትሬዲንግ ፕላትፎርም (MT4/MT5)</li>
+                <li><i class="fas fa-check-circle"></i>የፎሬክስ ትሬዲንግ አይነቶች</li>
+                <li><i class="fas fa-check-circle"></i>የቴክኒካል ትንተና</li>
+                <li><i class="fas fa-check-circle"></i>ቴክኒካል ኢንዲኬተርስ</li>
+                <li><i class="fas fa-check-circle"></i>የፕራይስ አክሽን</li>
+                <li><i class="fas fa-check-circle"></i>የካንድልስቲክ ፓተርኖች</li>
+                <li><i class="fas fa-check-circle"></i>ስማርት መኒ ኮንሰፕት (SMC)</li>
+                <li><i class="fas fa-check-circle"></i>ፋንዳሜንታል ትንተና</li>
+                <li><i class="fas fa-check-circle"></i>የፎሬክስ ትሬዲንግ ስትራቴጂ</li>
+                <li><i class="fas fa-check-circle"></i>የሪስክ ማኔጅመንት</li>
+                <li><i class="fas fa-check-circle"></i>የትሬዲንግ ስነ-ልቦና</li>
+                <li><i class="fas fa-check-circle"></i>የትሬዲንግ ፕላን</li>
+                <li><i class="fas fa-check-circle"></i>መለማመጃ አካውንት</li>
+                <li><i class="fas fa-check-circle"></i>ፕራክቲካል ትሬዲንግ</li>
+                <li><i class="fas fa-check-circle"></i>ፎሬክስ እና ክሪፕቶ ትሬዲንግ</li>
+                <li class="more"><i class="fas fa-plus-circle" style="color:#6366f1;"></i>በትሬዲንግ ገንዘብ ማግኛ እና ሌሎችም...</li>
+            </ul>
+            <div class="bk-footer" style="justify-content:center;">
+                <div class="bk-price" style="justify-content:center;"><span class="bk-pnum bk-pf">450</span><span class="bk-pcur">ETB</span></div>
+                <div class="bk-btn bk-btn-f" style="margin:0 auto;"><i class="fab fa-telegram"></i> አሁኑኑ ይዘዙ</div>
+            </div>
+        </a>
+
+        <!-- ROW 2: CRYPTO + BUNDLE -->
+        <div class="bk-row2">
+
+            <!-- BOOK 2: CRYPTO -->
+            <a href="#" onclick="window.open('https://t.me/tagbridge123?text='+encodeURIComponent('ሰላም! የክሪፕቶ ከረንሲ ትሬዲንግ መጽሃፍ በ 500 ብር ማዘዝ እፈልጋለሁ።'),'_blank','noopener,noreferrer');return false;" class="bk bk-crypto">
+                <div class="bk-top">
+                    <div class="bk-icon bk-icon-c"><i class="fab fa-bitcoin"></i></div>
+                    <div>
+                        <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:5px;">
+                            <span class="bk-badge bk-bc">₿ CRYPTO</span>
+                            <span class="bk-badge bk-be">PDF E-BOOK</span>
+                        </div>
+                        <div class="bk-title">የክሪፕቶ ትሬዲንግ በአማርኛ</div>
+                        <div class="bk-en">Crypto Trading in Amharic</div>
+                    </div>
+                </div>
+                <ul class="bk-topics">
+                    <li><i class="fas fa-check-circle"></i>የክሪፕቶ ከረንሲ ምንነት</li>
+                    <li><i class="fas fa-check-circle"></i>የክሪፕቶ ከረንሲ አይነቶች</li>
+                    <li><i class="fas fa-check-circle"></i>የብሎክቼይን ምንነት</li>
+                    <li><i class="fas fa-check-circle"></i>ስፖት ማርጅን ትሬዲንግ</li>
+                    <li><i class="fas fa-check-circle"></i>ፊውቸር ትሬዲንግ</li>
+                    <li><i class="fas fa-check-circle"></i>አርቢትሬጅ ትሬዲንግ</li>
+                    <li><i class="fas fa-check-circle"></i>ኮፒ ትሬዲንግ</li>
+                    <li><i class="fas fa-check-circle"></i>የክ/ትሬዲንግ ስትራቴጂዎች</li>
+                    <li><i class="fas fa-check-circle"></i>የትንተና አይነቶች</li>
+                    <li><i class="fas fa-check-circle"></i>የባይናንስ አካውንት</li>
+                    <li><i class="fas fa-check-circle"></i>ሪስክ ማኔጅመንት</li>
+                    <li><i class="fas fa-check-circle"></i>የትሬዲንግ ስነ-ልቦና</li>
+                </ul>
+                <div class="bk-footer" style="justify-content:center;">
+                    <div class="bk-price"><span class="bk-pnum bk-pc">500</span><span class="bk-pcur">ETB</span></div>
+                    <div class="bk-btn bk-btn-c" style="margin:0 auto;"><i class="fab fa-telegram"></i> አሁኑኑ ይዘዙ</div>
+                </div>
+            </a>
+
+            <!-- BOOK 3: BUNDLE -->
+            <a href="#" onclick="window.open('https://t.me/tagbridge123?text='+encodeURIComponent('ሰላም! ፎሬክስ + ክሪፕቶ ጥቅል በ 700 ብር ማዘዝ እፈልጋለሁ።'),'_blank','noopener,noreferrer');return false;" class="bk bk-bundle">
+                <div class="bk-top">
+                    <div class="bk-icon bk-icon-b"><i class="fas fa-layer-group"></i></div>
+                    <div>
+                        <div style="margin-bottom:5px;"><span class="bk-badge bk-bb">🎁 BUNDLE DEAL</span></div>
+                        <div class="bk-title">ፎሬክስ + ክሪፕቶ ጥቅል</div>
+                        <div class="bk-en">Forex + Crypto Bundle</div>
+                    </div>
+                </div>
+                <div class="bk-savings">
+                    <div class="bk-srow"><span>የፎሬክስ መፅሀፍ</span><span>450 ETB</span></div>
+                    <div class="bk-srow"><span>የክሪፕቶ መፅሀፍ</span><span>500 ETB</span></div>
+                    <div class="bk-sdiv"></div>
+                    <div class="bk-srow"><span>ሁለቱ ብቻቸውን</span><span class="bk-sstrike">950 ETB</span></div>
+                    <div class="bk-srow bk-sdeal"><span>🎁 የጥቅሉ ዋጋ</span><span class="bk-sprice">700 ETB</span></div>
+                </div>
+                <ul class="bk-topics">
+                    <li><i class="fas fa-check-circle"></i>ሁለቱም ሙሉ PDF መፅሀፎች</li>
+                    <li><i class="fas fa-check-circle"></i>250 ETB ቁጠባ!</li>
+                    <li><i class="fas fa-check-circle"></i>ነፃ VIP Academy Password ⭐</li>
+                    <li><i class="fas fa-check-circle"></i>ቀጥታ Telegram ድጋፍ</li>
+                </ul>
+                <div class="bk-footer" style="justify-content:center;">
+                    <div class="bk-price"><span class="bk-pold">950</span><span class="bk-pnum bk-pb">700</span><span class="bk-pcur">ETB</span><span class="bk-psave">250 ቁጠባ!</span></div>
+                    <div class="bk-btn bk-btn-b" style="margin:0 auto;"><i class="fab fa-telegram"></i> አሁኑኑ ይዘዙ</div>
+                </div>
+            </a>
+        </div><!-- /.bk-row2 -->
+
+    </div><!-- /.pdf-grid -->
+</div><!-- /.pdf-inner -->
+</div><!-- /.pdf-sec -->
+</section><!-- /#welcome -->
+
+<!-- JOURNAL -->
+<section id="journal" class="section journal-section">
+<div class="container">
+    <div class="section-header">
+        <div class="section-tag-pill"><i class="fas fa-book-open"></i> PERFORMANCE TRACKER</div>
+        <h2 class="section-title"><i class="fas fa-book-open"></i> <span data-am="ትሬዲንግ ጆርናል" data-en="Trading Journal">ትሬዲንግ ጆርናል</span></h2>
+        <p class="section-sub" data-am="ትሬዶቻቸውን ይመዝግቡ፣ አፈጻጸሙን ይከታተሉ" data-en="Log trades, track performance">Log trades, track performance &amp; improve</p>
+    </div>
+    <div class="journal-stats-row" id="journalStats">
+        <div class="jstat-card"><div class="jstat-icon win"><i class="fas fa-trophy"></i></div><div class="jstat-data"><div class="jstat-val" id="js-winrate">0%</div><div class="jstat-lbl">Win Rate</div></div></div>
+        <div class="jstat-card"><div class="jstat-icon profit"><i class="fas fa-arrow-trend-up"></i></div><div class="jstat-data"><div class="jstat-val" id="js-totalpl">$0.00</div><div class="jstat-lbl">Net P&amp;L</div></div></div>
+        <div class="jstat-card"><div class="jstat-icon trades"><i class="fas fa-list-check"></i></div><div class="jstat-data"><div class="jstat-val" id="js-totaltrades">0</div><div class="jstat-lbl">Total Trades</div></div></div>
+        <div class="jstat-card"><div class="jstat-icon rr"><i class="fas fa-balance-scale"></i></div><div class="jstat-data"><div class="jstat-val" id="js-avgrr">0.00</div><div class="jstat-lbl">Avg R:R</div></div></div>
+    </div>
+    <div class="journal-win-bar-wrap"><div class="journal-win-bar-fill" id="journalWinBar" style="width:50%;"></div></div>
+    <div class="journal-actions">
+        <button class="btn-primary" onclick="openTradeModal()"><i class="fas fa-plus"></i> <span data-am="አዲስ ትሬድ መዝግብ" data-en="Add Trade">አዲስ ትሬድ መዝግብ</span></button>
+        <button class="btn-outline" onclick="exportJournal()"><i class="fas fa-file-export"></i> Export CSV</button>
+        <label class="btn-outline btn-import-label"><i class="fas fa-file-import"></i> Import CSV<input type="file" id="importCsvInput" accept=".csv" onchange="importJournal(event)" style="display:none;"></label>
+        <button class="btn-outline danger" onclick="clearJournal()"><i class="fas fa-trash"></i> <span data-am="ሁሉን አጥፋ" data-en="Clear All">ሁሉን አጥፋ</span></button>
+    </div>
+    <div class="trade-table-wrap">
+        <table class="trade-table" id="tradeTable">
+            <thead><tr><th>Date</th><th>Instrument</th><th>Dir</th><th>Entry</th><th>Exit</th><th>SL</th><th>TP</th><th>Lots</th><th>P&amp;L ($)</th><th>R:R</th><th>Strategy</th><th>Chart</th><th>Actions</th></tr></thead>
+            <tbody id="tradeTableBody">
+                <tr class="empty-row"><td colspan="13"><i class="fas fa-journal-whills"></i><br><span data-am="ምንም የተመዘገበ ትሬድ የለም!" data-en="No trades logged yet!">No trades logged yet — start adding!</span></td></tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 </section>
 
@@ -822,6 +798,7 @@
 </div>
 </section>
 
+
 <!-- CALCULATORS -->
 <section id="calculators" class="section calc-section">
 <div class="container">
@@ -845,39 +822,6 @@
 </div>
 </section>
 
-<!-- JOURNAL -->
-<section id="journal" class="section journal-section">
-<div class="container">
-    <div class="section-header">
-        <div class="section-tag-pill"><i class="fas fa-book-open"></i> PERFORMANCE TRACKER</div>
-        <h2 class="section-title"><i class="fas fa-book-open"></i> <span data-am="ትሬዲንግ ጆርናል" data-en="Trading Journal">ትሬዲንግ ጆርናል</span></h2>
-        <p class="section-sub" data-am="ትሬዶቻቸውን ይመዝግቡ፣ አፈጻጸሙን ይከታተሉ" data-en="Log trades, track performance">Log trades, track performance &amp; improve</p>
-    </div>
-    <div class="journal-stats-row" id="journalStats">
-        <div class="jstat-card"><div class="jstat-icon win"><i class="fas fa-trophy"></i></div><div class="jstat-data"><div class="jstat-val" id="js-winrate">0%</div><div class="jstat-lbl">Win Rate</div></div></div>
-        <div class="jstat-card"><div class="jstat-icon profit"><i class="fas fa-arrow-trend-up"></i></div><div class="jstat-data"><div class="jstat-val" id="js-totalpl">$0.00</div><div class="jstat-lbl">Net P&amp;L</div></div></div>
-        <div class="jstat-card"><div class="jstat-icon trades"><i class="fas fa-list-check"></i></div><div class="jstat-data"><div class="jstat-val" id="js-totaltrades">0</div><div class="jstat-lbl">Total Trades</div></div></div>
-        <div class="jstat-card"><div class="jstat-icon rr"><i class="fas fa-balance-scale"></i></div><div class="jstat-data"><div class="jstat-val" id="js-avgrr">0.00</div><div class="jstat-lbl">Avg R:R</div></div></div>
-    </div>
-    <div class="journal-win-bar-wrap"><div class="journal-win-bar-fill" id="journalWinBar" style="width:50%;"></div></div>
-    <div class="journal-actions">
-        <button class="btn-primary" onclick="openTradeModal()"><i class="fas fa-plus"></i> <span data-am="አዲስ ትሬድ መዝግብ" data-en="Add Trade">አዲስ ትሬድ መዝግብ</span></button>
-        <button class="btn-outline" onclick="exportJournal()"><i class="fas fa-file-export"></i> Export CSV</button>
-        <label class="btn-outline btn-import-label"><i class="fas fa-file-import"></i> Import CSV<input type="file" id="importCsvInput" accept=".csv" onchange="importJournal(event)" style="display:none;"></label>
-        <button class="btn-outline danger" onclick="clearJournal()"><i class="fas fa-trash"></i> <span data-am="ሁሉን አጥፋ" data-en="Clear All">ሁሉን አጥፋ</span></button>
-    </div>
-    <div class="trade-table-wrap">
-        <table class="trade-table" id="tradeTable">
-            <thead><tr><th>Date</th><th>Instrument</th><th>Dir</th><th>Entry</th><th>Exit</th><th>SL</th><th>TP</th><th>Lots</th><th>P&amp;L ($)</th><th>R:R</th><th>Strategy</th><th>Chart</th><th>Actions</th></tr></thead>
-            <tbody id="tradeTableBody">
-                <tr class="empty-row"><td colspan="13"><i class="fas fa-journal-whills"></i><br><span data-am="ምንም የተመዘገበ ትሬድ የለም!" data-en="No trades logged yet!">No trades logged yet — start adding!</span></td></tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-</section>
-
-<!-- QUIZ -->
 <section id="quiz" class="section quiz-section">
 <div class="container">
     <div class="quiz-landing" id="quizLanding">
@@ -978,13 +922,13 @@
         </div>
         <div class="footer-links">
             <h4>Quick Links</h4>
-            <a href="#welcome">የፎሬክስ መጽሐፍ</a>
-            <a href="#dashboard">ዳሽቦርድ</a>
-            <a href="#charts">ቻርቶች</a>
-            <a href="#backtest">ባክቴስት</a>
-            <a href="#calculators">ካልኩሌተሮች</a>
-            <a href="#journal">ጆርናል</a>
-            <a href="/academy">አካዳሚ 🔒</a>
+            <a href="#charts">Charts</a>
+            <a href="#demo">Demo Trading</a>
+            <a href="#welcome">Books</a>
+            <a href="#journal">Journal</a>
+            <a href="#backtest">Backtest</a>
+            <a href="#calculators">Calculators</a>
+            <a href="/academy">Academy 🔒</a>
         </div>
         <div class="footer-social">
             <h4>Follow Us</h4>
