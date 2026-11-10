@@ -383,6 +383,9 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 
         <!-- STEP 2: Password (after market selection) -->
         <div id="step2" style="display:none;">
+            <button onclick="document.getElementById('step2').style.display='none';document.getElementById('step1').style.display='block';" style="background:none;border:none;color:#8b949e;cursor:pointer;font-size:.8rem;margin-bottom:14px;display:flex;align-items:center;gap:5px;padding:0;">
+                <i class="fas fa-arrow-left"></i> ወደ ኋላ ተመለስ
+            </button>
             <p id="marketSelectedMsg" style="font-size:.88rem;margin-bottom:14px;color:var(--green);font-weight:700;text-align:center;"></p>
             <p class="gate-sub" style="font-size:.84rem;line-height:1.7;margin-bottom:18px;">
                 እባክዎ ትምህርቱን ከመጀመራችን በፊት የTrading መጽሐፍ ሲገዙ
