@@ -87,9 +87,9 @@
 ════════════════════════════════════════ -->
 <style>
 /* — Welcome — */
-.wlc{background:#0d1117;text-align:center;position:relative;overflow-x:hidden;overflow-y:visible;padding:calc(68px + 36px + 44px) 20px 16px;}
-[data-theme="light"] .wlc{background:#f8fafc;}
-.wlc-glow{position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(99,102,241,.14) 0%,transparent 70%);pointer-events:none;}
+.wlc{background:linear-gradient(160deg,#1a3a6b 0%,#1e4d8c 40%,#2563a8 70%,#1a3a6b 100%);text-align:center;position:relative;overflow-x:hidden;overflow-y:visible;padding:calc(68px + 36px + 44px) 20px 16px;}
+[data-theme="light"] .wlc{background:linear-gradient(160deg,#1e4d8c 0%,#2563a8 50%,#1e4d8c 100%);}
+.wlc-glow{position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(255,255,255,.12) 0%,transparent 70%);pointer-events:none;}
 .wlc-inner{position:relative;z-index:1;max-width:680px;margin:0 auto;}
 .wlc-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.28);color:#818cf8;font-size:.68rem;font-weight:800;letter-spacing:1.5px;padding:5px 16px;border-radius:50px;margin-bottom:18px;text-transform:uppercase;}
 .wlc-dot{width:6px;height:6px;border-radius:50%;background:#10b981;animation:wlc-pulse 1.5s infinite;}
@@ -200,7 +200,7 @@
     <div class="wlc-glow"></div>
     <div class="wlc-inner">
         <h1 class="wlc-headline"><span class="wlc-am">እንኳን ወደ ታግ ብሪጅ በደህና መጡ!</span></h1>
-        <p style="color:#8b949e;font-size:.9rem;margin:-10px 0 20px;letter-spacing:.2px;">በማህበራዊ ሚዲያወቻችን ይከተሉን</p>
+        <p style="color:rgba(255,255,255,.75);font-size:.9rem;margin:-10px 0 20px;letter-spacing:.2px;">በማህበራዊ ሚዲያወቻችን ይከተሉን</p>
         <div class="wlc-socials">
             <a href="https://t.me/tagbridge" target="_blank" rel="noopener noreferrer" class="wlc-sc-btn wlc-sc-tg"><i class="fab fa-telegram"></i><span style="font-size:.78rem;font-weight:600;line-height:1.3;text-align:left;">የቴሌግራም ቻናላችን<br>ይቀላቀሉ</span></a>
             <a href="https://whatsapp.com/channel/0029VbC9h9Z4o7qIBVOmFE1j" target="_blank" rel="noopener noreferrer" class="wlc-sc-btn wlc-sc-wa"><i class="fab fa-whatsapp" style="font-size:1.1rem;"></i><span style="font-size:.78rem;font-weight:600;line-height:1.3;text-align:left;">WhatsApp<br>ቻናል</span></a>
@@ -1024,6 +1024,13 @@
 <script src="/script.js" defer></script>
 <script src="/dashboard.js" defer></script>
 <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+// Scroll to chart on first load
+window.addEventListener('load', function() {
+    var el = document.getElementById('charts');
+    if (el) { setTimeout(function(){ el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 400); }
+});
+</script>
 <script>
 window.OneSignalDeferred=window.OneSignalDeferred||[];
 OneSignalDeferred.push(async function(OneSignal){
