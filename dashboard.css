@@ -4718,6 +4718,11 @@ img, iframe, canvas, video, table { max-width: 100% !important; }
     .section-header { margin-bottom: 14px !important; }
     .section-title { font-size: 1.3rem !important; }
     .section-sub { font-size: .76rem !important; margin-bottom: 0 !important; }
+    /* Demo section even tighter */
+    .demo-section { padding-top: 10px !important; padding-bottom: 16px !important; }
+    .demo-section .section-header { margin-bottom: 8px !important; }
+    .demo-section .section-title { font-size: 1.1rem !important; }
+    .demo-section .section-sub { font-size: .68rem !important; }
 
     /* Navbar */
     .nav-container { padding: 0 12px !important; gap: 8px !important; }
@@ -4741,36 +4746,48 @@ img, iframe, canvas, video, table { max-width: 100% !important; }
     .chart-container { height: 450px !important; }
     #tvChartContainer { min-height: 430px !important; }
 
-    /* Demo account — 2x2 grid for stat cards */
-    .dma-bar { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 8px !important; background: none !important; border: none !important; padding: 0 !important; margin-bottom: 12px !important; }
-    .dma-bar > .dma-card { display: flex !important; flex-direction: column !important; align-items: flex-start !important; gap: 4px !important; padding: 10px 12px !important; min-width: 0 !important; width: 100% !important; border-radius: 12px !important; }
-    .dma-card-top { flex-direction: row !important; align-items: center !important; margin-bottom: 0 !important; flex: none !important; gap: 6px !important; width: 100% !important; }
-    .dma-card-val { font-size: .95rem !important; margin-left: 0 !important; }
-    .dma-reset-btn { grid-column: 1 / -1 !important; width: 100% !important; justify-content: center !important; padding: 10px !important; border-radius: 10px !important; margin: 0 !important; }
+    /* Demo account — compact single row balance bar like trading apps */
+    .dma-bar { display: flex !important; flex-direction: row !important; flex-wrap: wrap !important; gap: 4px !important; background: var(--bg-secondary, #161b22) !important; border: 1px solid rgba(255,255,255,.07) !important; border-radius: 10px !important; padding: 8px !important; margin-bottom: 8px !important; align-items: center !important; }
+    .dma-bar > .dma-card { display: flex !important; flex-direction: column !important; align-items: flex-start !important; gap: 1px !important; padding: 4px 8px !important; min-width: 0 !important; width: calc(50% - 4px) !important; border-radius: 6px !important; border: none !important; background: transparent !important; margin-bottom: 0 !important; }
+    .dma-card-top { flex-direction: row !important; align-items: center !important; margin-bottom: 0 !important; flex: none !important; gap: 4px !important; width: 100% !important; }
+    .dma-card-icon { font-size: .7rem !important; }
+    .dma-card-lbl { font-size: .55rem !important; letter-spacing: .3px !important; }
+    .dma-card-val { font-size: .82rem !important; font-weight: 800 !important; margin-left: 0 !important; }
+    .dma-edit-btn { width: 16px !important; height: 16px !important; font-size: .5rem !important; }
+    .dma-reset-btn { width: auto !important; padding: 4px 10px !important; border-radius: 6px !important; margin: 0 0 0 auto !important; font-size: .7rem !important; align-self: center !important; height: 28px !important; }
+    .dma-reset-btn span { display: none !important; }
 
-    .dma-main { grid-template-columns: 1fr !important; gap: 10px !important; }
-    .dma-box { padding: 10px !important; border-radius: 10px !important; gap: 7px !important; }
-    .dma-box-header { font-size: .68rem !important; padding-bottom: 6px !important; }
-    .dma-fields { grid-template-columns: 1fr 1fr !important; gap: 6px !important; }
-    .dma-field label { font-size: .6rem !important; }
-    .dma-field input { padding: 7px 8px !important; font-size: .78rem !important; }
-    .dma-sltp-fields { grid-template-columns: 1fr 1fr !important; gap: 6px !important; }
-    .dma-sltp-toggle { padding: 6px 0 !important; font-size: .72rem !important; }
-    .dma-place-btn { width: 100% !important; justify-content: center !important; padding: 10px !important; }
+    .dma-main { grid-template-columns: 1fr !important; gap: 8px !important; }
+    .dma-box { padding: 8px !important; border-radius: 10px !important; gap: 6px !important; }
+    .dma-box-header { font-size: .65rem !important; padding-bottom: 4px !important; margin-bottom: 2px !important; }
+    .dma-fields { grid-template-columns: 1fr 1fr !important; gap: 5px !important; }
+    .dma-field { gap: 3px !important; }
+    .dma-field label { font-size: .58rem !important; }
+    .dma-field input { padding: 6px 7px !important; font-size: .76rem !important; border-radius: 6px !important; }
+    .dma-sltp-fields { grid-template-columns: 1fr 1fr !important; gap: 5px !important; }
+    .dma-sltp-toggle { padding: 5px 0 !important; font-size: .68rem !important; border-radius: 7px !important; }
+    .dma-place-btn { width: 100% !important; justify-content: center !important; padding: 8px !important; font-size: .82rem !important; }
     /* BUY/SELL compact */
-    .dma-dir-btn { padding: 9px 0 !important; font-size: .82rem !important; border-radius: 8px !important; }
+    .dma-dir-btn { padding: 7px 0 !important; font-size: .78rem !important; border-radius: 7px !important; }
     /* Forex/Crypto tabs compact */
-    .dma-mkt-tabs { gap: 5px !important; }
-    .dma-mkt-btn { padding: 6px 0 !important; font-size: .72rem !important; border-radius: 8px !important; }
+    .dma-mkt-tabs { gap: 4px !important; }
+    .dma-mkt-btn { padding: 5px 0 !important; font-size: .7rem !important; border-radius: 7px !important; }
     /* Pair row compact */
-    .dma-pair-row { gap: 6px !important; }
-    .dma-pair-select { font-size: .78rem !important; padding: 8px 24px 8px 8px !important; }
-    .dma-price-tag { min-width: 56px !important; padding: 4px 6px !important; }
-    .dma-price-val { font-size: .72rem !important; }
-    .dma-price-lbl { font-size: .58rem !important; }
-    /* Balance bar compact */
-    .dma-card-val { font-size: .88rem !important; }
-    .dma-card-lbl { font-size: .6rem !important; }
+    .dma-pair-row { gap: 5px !important; }
+    .dma-pair-select-wrap { border-radius: 8px !important; }
+    .dma-pair-select { font-size: .76rem !important; padding: 7px 24px 7px 6px !important; }
+    .dma-pair-icon { font-size: .75rem !important; width: 28px !important; padding: 0 7px !important; }
+    .dma-price-tag { min-width: 52px !important; padding: 3px 5px !important; border-radius: 6px !important; }
+    .dma-price-val { font-size: .68rem !important; }
+    .dma-price-lbl { font-size: .54rem !important; }
+    /* Positions list compact */
+    .dma-pos-list { max-height: 160px !important; }
+    .dma-pos-card { padding: 8px 10px !important; border-radius: 8px !important; gap: 4px !important; margin-bottom: 6px !important; }
+    .dma-pos-top { gap: 5px !important; }
+    .dma-pos-sym { font-size: .78rem !important; }
+    .dma-pos-pnl { font-size: .78rem !important; }
+    .dma-pos-meta { font-size: .62rem !important; gap: 4px !important; }
+    .dma-close-btn { padding: 4px 10px !important; font-size: .68rem !important; border-radius: 5px !important; }
     .chart-welcome { max-width: 90% !important; }
     .chart-welcome-text { font-size: 1.25rem !important; }
     .chart-welcome-form input { width: 160px !important; }
