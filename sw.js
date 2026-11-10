@@ -1,4 +1,4 @@
-// Tag Bridge Service Worker v14
+﻿// Tag Bridge Service Worker v15
 const CACHE_NAME = 'tagbridge-v14';
 const OFFLINE_URL = '/offline.html';
 
@@ -58,3 +58,5 @@ self.addEventListener('fetch', event => {
 self.addEventListener('message', event => {
     if (event.data?.type === 'SKIP_WAITING') self.skipWaiting();
 });
+
+
