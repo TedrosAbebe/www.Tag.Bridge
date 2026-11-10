@@ -139,8 +139,28 @@ body {
 .logo-icon img { width: 100%; height: 100%; object-fit: cover; }
 
 .logo-text { font-size: 1.2rem; font-weight: 800; letter-spacing: -0.5px; }
-.logo-tag { color: var(--brand-primary); }
-.logo-bridge { color: var(--text-primary); }
+.logo-tag {
+    background: linear-gradient(135deg, #ffffff 0%, #a8c8ff 40%, #38ef7d 70%, #ffd200 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: logo-grad 5s ease infinite;
+}
+.logo-bridge {
+    background: linear-gradient(135deg, #a8c8ff 0%, #38ef7d 50%, #ffd200 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: logo-grad 5s ease infinite;
+    animation-delay: .5s;
+}
+@keyframes logo-grad {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
 
 .nav-links-wrap { flex: 1; display: flex; justify-content: center; }
 
@@ -443,7 +463,7 @@ body {
 .collapse-btn.collapsed i { transform: rotate(-90deg); }
 
 /* ===== CHARTS ===== */
-.charts-section { background: var(--bg-surface); }
+.charts-section { background: var(--bg-surface); padding-bottom: 0 !important; padding-top: 20px !important; }
 
 .chart-controls {
     display: flex; align-items: center; gap: 16px;
@@ -547,7 +567,7 @@ body {
     border-radius: var(--radius-lg);
     overflow: hidden;
     border: 1px solid var(--border-color);
-    height: 600px;
+    height: 650px;
     background: #ffffff;
     position: relative;
     transition: background .3s ease;
@@ -562,7 +582,7 @@ body {
 #tvChartContainer {
     width: 100%;
     height: 100%;
-    min-height: 580px;
+    min-height: 630px;
 }
 #tvChartContainer > div,
 #tvChartContainer iframe {
@@ -3551,7 +3571,7 @@ canvas.bt-canvas-full { width: 100%; display: block; }
    DEMO TRADING ACCOUNT
    ══════════════════════════════════════════════ */
 
-.demo-section { background: var(--bg-primary, #0d1117); }
+.demo-section { background: var(--bg-primary, #0d1117); padding-top: 20px !important; }
 
 /* Account balance bar */
 .demo-account-bar {
@@ -3847,7 +3867,7 @@ canvas.bt-canvas-full { width: 100%; display: block; }
     .chart-fs-btn { width: 30px; height: 30px; }
 
     /* Chart container taller on mobile for better view */
-    .chart-container { height: 400px; }
+    .chart-container { height: 450px; }
 
     /* ── Demo account ── */
 
@@ -4094,7 +4114,7 @@ canvas.bt-canvas-full { width: 100%; display: block; }
    DMA — DEMO TRADING ACCOUNT (full redesign)
    ══════════════════════════════════════════════ */
 
-.demo-section { background: var(--bg-primary, #0d1117); }
+.demo-section { background: var(--bg-primary, #0d1117); padding-top: 20px !important; }
 
 /* ── Account summary bar ── */
 .dma-bar {
@@ -4262,19 +4282,21 @@ canvas.bt-canvas-full { width: 100%; display: block; }
 .dma-price-val.loading { color: #f59e0b; }
 .dma-price-val.live    { color: #10b981; }
 
-/* BUY / SELL */
+/* BUY / SELL — primary action buttons */
 .dma-dir-row { display: flex; gap: 8px; }
 .dma-dir-btn {
     flex: 1; display: flex; align-items: center; justify-content: center;
-    gap: 7px; padding: 12px 0;
+    gap: 7px; padding: 14px 0;
     border-radius: 10px; border: 1.5px solid rgba(255,255,255,.08);
     background: rgba(255,255,255,.03);
-    font-size: .9rem; font-weight: 800; cursor: pointer; transition: all .15s;
-    color: #8b949e;
+    font-size: .95rem; font-weight: 900; cursor: pointer; transition: all .15s;
+    color: #8b949e; letter-spacing: .3px;
 }
-.dma-dir-btn.active.dma-buy  { background: rgba(16,185,129,.15); border-color: #10b981; color: #10b981; box-shadow: 0 2px 12px rgba(16,185,129,.2); }
-.dma-dir-btn.active.dma-sell { background: rgba(239,68,68,.15);  border-color: #ef4444; color: #ef4444; box-shadow: 0 2px 12px rgba(239,68,68,.2); }
-.dma-dir-btn:not(.active):hover { opacity: .8; }
+.dma-dir-btn.dma-buy  { border-color: rgba(16,185,129,.3);  color: #10b981; background: rgba(16,185,129,.06); }
+.dma-dir-btn.dma-sell { border-color: rgba(239,68,68,.3);   color: #ef4444; background: rgba(239,68,68,.06); }
+.dma-dir-btn.active.dma-buy  { background: rgba(16,185,129,.18); border-color: #10b981; color: #10b981; box-shadow: 0 3px 16px rgba(16,185,129,.25); }
+.dma-dir-btn.active.dma-sell { background: rgba(239,68,68,.18);  border-color: #ef4444; color: #ef4444; box-shadow: 0 3px 16px rgba(239,68,68,.25); }
+.dma-dir-btn:hover { opacity: .85; transform: translateY(-1px); }
 
 /* Fields */
 .dma-fields {
@@ -4521,8 +4543,8 @@ img, iframe, canvas, video { max-width: 100%; }
         font-size: .76rem;
     }
     .chart-pair-dropdown-wrap { width: 100%; }
-    .chart-container { height: 380px; border-radius: 10px; }
-    #tvChartContainer { min-height: 360px; }
+    .chart-container { height: 450px; border-radius: 10px; }
+    #tvChartContainer { min-height: 430px; }
 
     /* ── Info bar ── */
     .chart-info-bar {
@@ -4547,6 +4569,139 @@ img, iframe, canvas, video { max-width: 100%; }
 }
 
 /* ══════════════════════════════════════════════
+   DRAGGABLE WELCOME TEXT — on TradingView chart
+   ══════════════════════════════════════════════ */
+.chart-welcome {
+    position: absolute;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+    max-width: 80%;
+}
+.chart-welcome:active { cursor: grabbing; }
+.chart-welcome-text {
+    font-size: 1.6rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #ffffff 0%, #a8c8ff 35%, #38ef7d 65%, #ffd200 85%, #ffffff 100%);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: cw-shimmer 5s ease infinite;
+    text-shadow: none;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+    pointer-events: none;
+    letter-spacing: .2px;
+    line-height: 1.3;
+    filter: drop-shadow(0 1px 6px rgba(168,200,255,.3));
+}
+@keyframes cw-shimmer {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+[data-theme="light"] .chart-welcome-text {
+    background: linear-gradient(135deg, #6366f1 0%, #818cf8 40%, #06b6d4 70%, #6366f1 100%);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 1px 4px rgba(99,102,241,.25));
+}
+.chart-welcome-edit {
+    flex-shrink: 0;
+    width: 24px; height: 24px;
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 50%;
+    background: rgba(0,0,0,.4);
+    color: rgba(255,255,255,.8);
+    font-size: .62rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    opacity: .7; transition: opacity .2s, background .2s;
+    pointer-events: auto;
+    backdrop-filter: blur(4px);
+}
+.chart-welcome:hover .chart-welcome-edit { opacity: 1; }
+.chart-welcome-edit:hover { background: rgba(99,102,241,.5); border-color: #818cf8; }
+
+/* Welcome text edit form */
+.chart-welcome-form {
+    position: absolute;
+    z-index: 6;
+    top: 8px; left: 12px;
+    display: flex; gap: 5px;
+    align-items: center;
+    background: rgba(13,17,23,.92);
+    border: 1px solid rgba(99,102,241,.3);
+    border-radius: 10px;
+    padding: 6px 8px;
+}
+[data-theme="light"] .chart-welcome-form {
+    background: rgba(255,255,255,.92);
+    border-color: rgba(99,102,241,.25);
+}
+.chart-welcome-form input {
+    background: transparent; border: none; outline: none;
+    color: #e6edf3; font-size: .78rem; font-family: inherit;
+    width: 260px;
+}
+[data-theme="light"] .chart-welcome-form input { color: #0f172a; }
+.chart-welcome-save, .chart-welcome-cancel {
+    border: none; border-radius: 6px; cursor: pointer;
+    width: 26px; height: 26px; font-size: .72rem;
+    display: flex; align-items: center; justify-content: center;
+}
+.chart-welcome-save { background: rgba(16,185,129,.15); color: #10b981; }
+.chart-welcome-save:hover { background: rgba(16,185,129,.3); }
+.chart-welcome-cancel { background: rgba(239,68,68,.15); color: #ef4444; }
+.chart-welcome-cancel:hover { background: rgba(239,68,68,.3); }
+
+/* ══════════════════════════════════════════════
+   SL/TP TOGGLE — compact expandable
+   ══════════════════════════════════════════════ */
+.dma-sltp-wrap { margin-top: 4px; }
+.dma-sltp-toggle {
+    width: 100%;
+    display: flex; align-items: center; justify-content: center;
+    gap: 7px; padding: 8px 0;
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 10px;
+    color: #8b949e; font-size: .78rem; font-weight: 700;
+    cursor: pointer; transition: all .15s;
+}
+.dma-sltp-toggle:hover { background: rgba(255,255,255,.06); border-color: rgba(99,102,241,.2); }
+.dma-sltp-toggle.active { background: rgba(99,102,241,.08); border-color: rgba(99,102,241,.3); color: #818cf8; }
+.dma-sltp-chevron { font-size: .65rem; transition: transform .2s; }
+.dma-sltp-toggle.active .dma-sltp-chevron { transform: rotate(180deg); }
+.dma-sltp-fields {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    padding-top: 8px;
+}
+
+/* ══════════════════════════════════════════════
+   COMPACT DEMO SECTION — reduce vertical space
+   ══════════════════════════════════════════════ */
+.dma-section .section-header { margin-bottom: 14px; }
+.dma-section .section-title { font-size: 1.3rem; }
+.dma-section .section-sub { font-size: .78rem; margin-bottom: 0; }
+.dma-bar { margin-bottom: 12px !important; }
+.dma-box { padding: 12px !important; gap: 10px; }
+.dma-box-header { font-size: .72rem; margin-bottom: 4px; }
+.dma-mkt-tabs { gap: 5px; }
+.dma-mkt-btn { padding: 7px 0; font-size: .76rem; }
+.dma-dir-btn { padding: 9px 0; font-size: .85rem; }
+.dma-place-btn { padding: 10px 0; font-size: .88rem; }
+.dma-pos-list { max-height: 240px; }
+
+/* ══════════════════════════════════════════════
    DEFINITIVE MOBILE FIX v2 — single source of truth
    Overrides all previous conflicting mobile rules
    ══════════════════════════════════════════════ */
@@ -4559,8 +4714,10 @@ img, iframe, canvas, video, table { max-width: 100% !important; }
 /* ── ≤768px ── */
 @media (max-width: 768px) {
     .container { padding-left: 12px !important; padding-right: 12px !important; max-width: 100% !important; }
-    .section { padding: 36px 0 !important; }
-    .section-header { margin-bottom: 20px !important; }
+    .section { padding: 24px 0 !important; }
+    .section-header { margin-bottom: 14px !important; }
+    .section-title { font-size: 1.3rem !important; }
+    .section-sub { font-size: .76rem !important; margin-bottom: 0 !important; }
 
     /* Navbar */
     .nav-container { padding: 0 12px !important; gap: 8px !important; }
@@ -4572,20 +4729,33 @@ img, iframe, canvas, video, table { max-width: 100% !important; }
     .chart-selector-row .chart-cat-btn { justify-content: center !important; padding: 9px 4px !important; font-size: .75rem !important; }
     .chart-pair-dropdown-wrap { width: 100% !important; }
     .chart-info-bar { width: 100% !important; margin-left: 0 !important; gap: 6px !important; flex-wrap: wrap !important; }
-    .chart-container { height: 380px !important; }
-    #tvChartContainer { min-height: 360px !important; }
+    .chart-container { height: 450px !important; }
+    #tvChartContainer { min-height: 430px !important; }
 
-    /* Demo account */
-    .dma-bar { display: flex !important; flex-direction: column !important; gap: 8px !important; background: none !important; border: none !important; padding: 0 !important; margin-bottom: 14px !important; }
-    .dma-bar > .dma-card { display: flex !important; flex-direction: row !important; align-items: center !important; gap: 10px !important; padding: 12px 14px !important; min-width: 0 !important; width: 100% !important; border-radius: 12px !important; }
-    .dma-card-top { flex-direction: row !important; align-items: center !important; margin-bottom: 0 !important; flex: 1 !important; gap: 8px !important; }
-    .dma-card-val { font-size: 1rem !important; margin-left: auto !important; }
-    .dma-reset-btn { width: 100% !important; justify-content: center !important; padding: 10px !important; border-radius: 10px !important; margin: 0 !important; }
+    /* Demo account — 2x2 grid for stat cards */
+    .dma-bar { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 8px !important; background: none !important; border: none !important; padding: 0 !important; margin-bottom: 12px !important; }
+    .dma-bar > .dma-card { display: flex !important; flex-direction: column !important; align-items: flex-start !important; gap: 4px !important; padding: 10px 12px !important; min-width: 0 !important; width: 100% !important; border-radius: 12px !important; }
+    .dma-card-top { flex-direction: row !important; align-items: center !important; margin-bottom: 0 !important; flex: none !important; gap: 6px !important; width: 100% !important; }
+    .dma-card-val { font-size: .95rem !important; margin-left: 0 !important; }
+    .dma-reset-btn { grid-column: 1 / -1 !important; width: 100% !important; justify-content: center !important; padding: 10px !important; border-radius: 10px !important; margin: 0 !important; }
 
-    .dma-main { grid-template-columns: 1fr !important; gap: 12px !important; }
-    .dma-box { padding: 14px !important; border-radius: 12px !important; }
+    .dma-main { grid-template-columns: 1fr !important; gap: 10px !important; }
+    .dma-box { padding: 12px !important; border-radius: 12px !important; }
     .dma-fields { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
-    .dma-place-btn { width: 100% !important; justify-content: center !important; padding: 12px !important; }
+    .dma-sltp-fields { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+    .dma-place-btn { width: 100% !important; justify-content: center !important; padding: 10px !important; }
+    .dma-dir-btn { padding: 14px 0 !important; font-size: .95rem !important; }
+    .dma-mkt-btn { padding: 9px 0 !important; font-size: .82rem !important; }
+    .chart-welcome { max-width: 90% !important; }
+    .chart-welcome-text { font-size: 1.25rem !important; }
+    .chart-welcome-form input { width: 160px !important; }
+    /* Journal actions — wrap nicely */
+    .journal-actions { flex-direction: column !important; gap: 7px !important; }
+    .journal-actions .btn-primary,
+    .journal-actions .btn-outline { width: 100% !important; justify-content: center !important; }
+    /* Calc tabs — horizontal scroll strip */
+    .calc-tabs { flex-wrap: nowrap !important; overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; justify-content: flex-start !important; padding-bottom: 6px !important; gap: 6px !important; }
+    .calc-tab { flex-shrink: 0 !important; white-space: nowrap !important; }
 
     /* Backtesting */
     .bt-config-row { grid-template-columns: 1fr 1fr !important; }
@@ -4614,7 +4784,7 @@ img, iframe, canvas, video, table { max-width: 100% !important; }
     .dma-fields { grid-template-columns: 1fr !important; }
     .bt-config-row { grid-template-columns: 1fr !important; }
     .bt-stats-row { grid-template-columns: 1fr 1fr !important; }
-    .chart-container { height: 320px !important; }
+    .chart-container { height: 450px !important; }
     .container { padding-left: 8px !important; padding-right: 8px !important; }
     .journal-stats-row { grid-template-columns: 1fr 1fr !important; }
 }

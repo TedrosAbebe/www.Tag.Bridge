@@ -48,7 +48,7 @@
         <ul class="nav-links" id="navLinks">
             <li><a href="#charts" class="nav-link active" onclick="setActiveNav(this)"><i class="fas fa-chart-candlestick"></i> <span data-am="ቻርቶች" data-en="Charts">Charts</span></a></li>
             <li><a href="#demo" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-graduation-cap"></i> <span data-am="ዴሞ" data-en="Demo">Demo</span></a></li>
-            <li><a href="#welcome" class="nav-link nav-link--forex-highlight" onclick="setActiveNav(this)"><i class="fas fa-book-bookmark"></i> <span data-am="መጽሐፍ" data-en="Books">Books</span> <span class="nav-badge-hot">450 ብር</span></a></li>
+            <li><a href="#welcome" class="nav-link nav-link--forex-highlight" onclick="setActiveNav(this)"><i class="fas fa-book-bookmark"></i> <span data-am="መጽሐፍ" data-en="Books">Books</span></a></li>
             <li><a href="#journal" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-book-open"></i> <span data-am="ጆርናል" data-en="Journal">Journal</span></a></li>
             <li><a href="#backtest" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-flask"></i> <span data-am="ባክቴስት" data-en="Backtest">Backtest</span></a></li>
             <li><a href="#calculators" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-calculator"></i> <span data-am="ካልኩሌተሮች" data-en="Calcs">Calcs</span></a></li>
@@ -87,7 +87,7 @@
 ════════════════════════════════════════ -->
 <style>
 /* — Welcome — */
-.wlc{background:#0d1117;text-align:center;position:relative;overflow:hidden;padding:calc(68px + 36px + 44px) 20px 0;}
+.wlc{background:#0d1117;text-align:center;position:relative;overflow-x:hidden;overflow-y:visible;padding:calc(68px + 36px + 44px) 20px 16px;}
 [data-theme="light"] .wlc{background:#f8fafc;}
 .wlc-glow{position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(99,102,241,.14) 0%,transparent 70%);pointer-events:none;}
 .wlc-inner{position:relative;z-index:1;max-width:680px;margin:0 auto;}
@@ -95,10 +95,10 @@
 .wlc-dot{width:6px;height:6px;border-radius:50%;background:#10b981;animation:wlc-pulse 1.5s infinite;}
 @keyframes wlc-pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(1.4);}}
 /* TAG BRIDGE LOGO COLORS: purple #6366f1 → teal #06b6d4 */
-.wlc-headline{font-size:clamp(1.6rem,8vw,3.2rem);font-weight:900;letter-spacing:-1px;line-height:1.15;margin-bottom:24px;}
+.wlc-headline{font-size:clamp(1.1rem,3.8vw,2.6rem);font-weight:900;letter-spacing:-.5px;line-height:1.2;margin-bottom:16px;white-space:nowrap;overflow:visible;}
 .wlc-headline .wlc-am{display:block;background:linear-gradient(135deg,#ffffff 0%,#a8c8ff 35%,#38ef7d 65%,#ffd200 85%,#ffffff 100%);background-size:300% 300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:wlc-grad 5s ease infinite;}
 @keyframes wlc-grad{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
-.wlc-socials{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+.wlc-socials{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;}
 .wlc-sc-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border-radius:50px;font-size:.84rem;font-weight:700;text-decoration:none;transition:all .2s;border:1px solid transparent;}
 .wlc-sc-tg{background:#229ED9;color:#fff;}
 .wlc-sc-wa{background:#25D366;color:#fff;}
@@ -172,11 +172,11 @@
 
 /* ── MOBILE ── */
 @media(max-width:640px){
-    .wlc{padding:calc(60px + 36px + 28px) 14px 0;}
-    .wlc-headline{font-size:clamp(1.4rem,9vw,2rem);}
-    .wlc-socials{gap:8px;margin-bottom:28px;}
-    .wlc-sc-btn{padding:8px 14px;font-size:.76rem;}
-    .pdf-sec{padding:28px 12px 40px;}
+    .wlc{padding:calc(60px + 36px + 10px) 10px 0;}
+    .wlc-headline{font-size:clamp(1.3rem,7.5vw,2rem);white-space:normal;letter-spacing:0;margin-bottom:12px;}
+    .wlc-socials{gap:6px;margin-bottom:14px;}
+    .wlc-sc-btn{padding:7px 12px;font-size:.74rem;}
+    .pdf-sec{padding:16px 10px 22px;}
     /* 2 columns on ALL phones */
     .bk-topics{grid-template-columns:1fr 1fr;gap:3px 10px;}
     .bk-topics li{font-size:.72rem;}
@@ -199,12 +199,12 @@
 <div class="wlc">
     <div class="wlc-glow"></div>
     <div class="wlc-inner">
-        <h1 class="wlc-headline"><span class="wlc-am">እንኳን ወደ ታግ ብሪጅ<br>በደህና መጡ!</span></h1>
+        <h1 class="wlc-headline"><span class="wlc-am">እንኳን ወደ ታግ ብሪጅ በደህና መጡ!</span></h1>
         <p style="color:#8b949e;font-size:.9rem;margin:-10px 0 20px;letter-spacing:.2px;">በማህበራዊ ሚዲያወቻችን ይከተሉን</p>
         <div class="wlc-socials">
             <a href="https://t.me/tagbridge" target="_blank" rel="noopener noreferrer" class="wlc-sc-btn wlc-sc-tg"><i class="fab fa-telegram"></i><span style="font-size:.78rem;font-weight:600;line-height:1.3;text-align:left;">የቴሌግራም ቻናላችን<br>ይቀላቀሉ</span></a>
-            <a href="https://whatsapp.com/channel/0029VbC9h9Z4o7qIBVOmFE1j" target="_blank" rel="noopener noreferrer" class="wlc-sc-btn wlc-sc-wa" style="padding:10px 18px;"><i class="fab fa-whatsapp" style="font-size:1.3rem;"></i></a>
-            <a href="https://www.tiktok.com/@tagbridge" target="_blank" rel="noopener noreferrer" class="wlc-sc-btn wlc-sc-tt" style="padding:10px 18px;"><i class="fab fa-tiktok" style="font-size:1.3rem;"></i></a>
+            <a href="https://whatsapp.com/channel/0029VbC9h9Z4o7qIBVOmFE1j" target="_blank" rel="noopener noreferrer" class="wlc-sc-btn wlc-sc-wa"><i class="fab fa-whatsapp" style="font-size:1.1rem;"></i><span style="font-size:.78rem;font-weight:600;line-height:1.3;text-align:left;">WhatsApp<br>ቻናል</span></a>
+            <a href="https://www.tiktok.com/@tagbridge" target="_blank" rel="noopener noreferrer" class="wlc-sc-btn wlc-sc-tt"><i class="fab fa-tiktok" style="font-size:1.1rem;"></i><span style="font-size:.78rem;font-weight:600;line-height:1.3;text-align:left;">TikTok<br>ይከተሉን</span></a>
         </div>
     </div>
 </div>
@@ -214,7 +214,7 @@
 <!-- CHARTS -->
 <section id="charts" class="section charts-section">
 <div class="container">
-    <div class="section-header">
+    <div class="section-header" style="margin-bottom:12px;">
         <div class="section-tag-pill"><i class="fas fa-chart-line"></i> LIVE MARKETS</div>
         <h2 class="section-title"><span class="logo-tag">Tag</span><span class="logo-bridge">Bridge</span> <span class="chart-title-rest">Live Chart</span></h2>
         <p class="section-sub">Select a category · choose a pair · chart updates instantly</p>
@@ -261,11 +261,16 @@
     </div>
 
     <div class="chart-container" id="chartContainer">
-        <!-- Educational disclaimer overlay — shown at top of chart -->
-        <div id="chartDisclaimer" style="position:absolute;top:0;left:0;right:0;z-index:10;background:linear-gradient(135deg,rgba(99,102,241,.92),rgba(139,92,246,.92));color:#fff;text-align:center;padding:10px 20px;font-size:.82rem;font-weight:700;letter-spacing:.3px;display:flex;align-items:center;justify-content:center;gap:10px;backdrop-filter:blur(4px);pointer-events:none;">
-            <i class="fas fa-graduation-cap" style="font-size:1rem;opacity:.9;"></i>
-            <span>Welcome to <strong>TAG Bridge</strong> — All content is for <strong>educational purposes only</strong></span>
-            <button onclick="document.getElementById('chartDisclaimer').style.display='none'" style="background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:50px;padding:3px 10px;font-size:.72rem;font-weight:700;cursor:pointer;margin-left:6px;pointer-events:auto;">✕</button>
+        <!-- Draggable editable welcome text -->
+        <div id="chartWelcome" class="chart-welcome" style="top:20px;left:50%;transform:translateX(-50%);">
+            <span id="chartWelcomeText" class="chart-welcome-text">እንኳን ወደ ታግ ብሪጅ በደህና መጡ!</span>
+            <button class="chart-welcome-edit" onclick="chartWelcomeEdit()" title="Edit welcome text"><i class="fas fa-pen"></i></button>
+        </div>
+        <!-- Welcome text edit form (hidden) -->
+        <div id="chartWelcomeForm" class="chart-welcome-form" style="display:none;">
+            <input type="text" id="chartWelcomeInput" placeholder="Your name (e.g. Tag Bridge)" maxlength="40">
+            <button class="chart-welcome-save" onclick="chartWelcomeSave()"><i class="fas fa-check"></i></button>
+            <button class="chart-welcome-cancel" onclick="chartWelcomeCancel()"><i class="fas fa-times"></i></button>
         </div>
         <div id="tvChartContainer"></div>
     </div>
@@ -275,8 +280,7 @@
 <!-- DEMO TRADING ACCOUNT -->
 <section id="demo" class="section demo-section">
 <div class="container">
-    <div class="section-header">
-        <div class="section-tag-pill"><i class="fas fa-graduation-cap"></i> PAPER TRADING</div>
+    <div class="section-header" style="margin-bottom:10px;">
         <h2 class="section-title"><i class="fas fa-wallet"></i> Demo Trading Account</h2>
         <p class="section-sub">Practice with virtual money — real-time prices, auto-logs to Journal</p>
     </div>
@@ -361,12 +365,12 @@
                 </div>
             </div>
 
-            <!-- BUY / SELL -->
+            <!-- BUY / SELL — tap to confirm & execute -->
             <div class="dma-dir-row">
-                <button class="dma-dir-btn dma-buy active" id="demoDirBuy"  onclick="demoSetDir('BUY')">
+                <button class="dma-dir-btn dma-buy active" id="demoDirBuy" onclick="demoConfirmTrade('BUY')">
                     <i class="fas fa-arrow-trend-up"></i> BUY
                 </button>
-                <button class="dma-dir-btn dma-sell"      id="demoDirSell" onclick="demoSetDir('SELL')">
+                <button class="dma-dir-btn dma-sell" id="demoDirSell" onclick="demoConfirmTrade('SELL')">
                     <i class="fas fa-arrow-trend-down"></i> SELL
                 </button>
             </div>
@@ -381,19 +385,27 @@
                     <label>Entry <small>(blank = market)</small></label>
                     <input type="number" id="demoEntry" placeholder="Market" step="any">
                 </div>
-                <div class="dma-field">
-                    <label>Stop Loss</label>
-                    <input type="number" id="demoSL" placeholder="Optional" step="any">
-                </div>
-                <div class="dma-field">
-                    <label>Take Profit</label>
-                    <input type="number" id="demoTP" placeholder="Optional" step="any">
+            </div>
+
+            <!-- SL/TP toggle + expandable fields -->
+            <div class="dma-sltp-wrap">
+                <button class="dma-sltp-toggle" id="demoSlTpToggle" onclick="demoToggleSlTp()">
+                    <i class="fas fa-shield-halved"></i> SL / TP
+                    <i class="fas fa-chevron-down dma-sltp-chevron" id="demoSlTpChevron"></i>
+                </button>
+                <div class="dma-sltp-fields" id="demoSlTpFields" style="display:none;">
+                    <div class="dma-field">
+                        <label>Stop Loss</label>
+                        <input type="number" id="demoSL" placeholder="Optional" step="any">
+                    </div>
+                    <div class="dma-field">
+                        <label>Take Profit</label>
+                        <input type="number" id="demoTP" placeholder="Optional" step="any">
+                    </div>
                 </div>
             </div>
 
-            <button class="dma-place-btn" onclick="demoPlaceTrade()">
-                <i class="fas fa-paper-plane"></i> Place Trade
-            </button>
+            <button class="dma-place-btn" style="display:none;" id="demoPlaceHidden" onclick="demoPlaceTrade()"></button>
         </div>
 
         <!-- RIGHT: Open Positions -->

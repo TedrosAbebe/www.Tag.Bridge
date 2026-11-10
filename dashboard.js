@@ -420,7 +420,7 @@ function loadTVChart(symbol) {
     const wrap = document.createElement('div');
     wrap.className = 'tradingview-widget-container';
     wrap.style.cssText = 'height:100%;width:100%;';
-    wrap.innerHTML = '<div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%;"></div>';
+    wrap.innerHTML = '<div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>';
     const s = document.createElement('script');
     s.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
     s.async = true;
@@ -1603,6 +1603,8 @@ document.addEventListener('DOMContentLoaded', () => {
     else loadTVChart('XAUUSD');
     const pe = document.getElementById('chartPairLabel');
     if (pe) pe.textContent = 'XAU/USD';
+    // Init draggable welcome text
+    chartWelcomeInit();
     // Apply saved chart theme state
     if (chartTheme === 'light') {
         const btn   = document.getElementById('chartThemeToggle');
@@ -2818,6 +2820,171 @@ function demoSetDir(dir) {
     demoDirection = dir;
     document.getElementById('demoDirBuy') .classList.toggle('active', dir === 'BUY');
     document.getElementById('demoDirSell').classList.toggle('active', dir === 'SELL');
+}
+
+function demoConfirmTrade(dir) {
+    // Highlight selected direction
+    demoDirection = dir;
+    document.getElementById('demoDirBuy') .classList.toggle('active', dir === 'BUY');
+    document.getElementById('demoDirSell').classList.toggle('active', dir === 'SELL');
+
+    const sym   = document.getElementById('demoPair')?.value || '';
+    const lot   = parseFloat(document.getElementById('demoLot')?.value) || 0.1;
+    const price = demoGetPrice(sym);
+    const entry = parseFloat(document.getElementById('demoEntry')?.value) || price;
+    const dirLabel = dir === 'BUY' ? '🟢 BUY' : '🔴 SELL';
+    const priceStr = entry ? entry.toFixed(entry > 100 ? 2 : 5) : 'market price';
+
+    const msg = `${dirLabel} ${sym}\nLot: ${lot}  @  ${priceStr}\n\nAre you sure?`;
+    if (!confirm(msg)) return;
+    demoPlaceTrade();
+}
+function demoToggleSlTp() {
+    const fields = document.getElementById('demoSlTpFields');
+    const toggle = document.getElementById('demoSlTpToggle');
+    const chev    = document.getElementById('demoSlTpChevron');
+    if (!fields || !toggle) return;
+    const isHidden = fields.style.display === 'none';
+    fields.style.display = isHidden ? 'grid' : 'none';
+    toggle.classList.toggle('active', isHidden);
+}
+
+// ── Chart Welcome Text — draggable, editable, localStorage ──
+const CW_KEY = 'tb-chart-welcome';
+function chartWelcomeLoad() {
+    try { return JSON.parse(localStorage.getItem(CW_KEY)) || {}; } catch(e) { return {}; }
+}
+function chartWelcomeStore(obj) {
+    try { localStorage.setItem(CW_KEY, JSON.stringify(obj)); } catch(e) {}
+}
+function chartWelcomeInit() {
+    const saved = chartWelcomeLoad();
+    const el    = document.getElementById('chartWelcome');
+    const text  = document.getElementById('chartWelcomeText');
+    if (!el || !text) return;
+
+    // Restore saved full message
+    if (saved.msg) {
+        text.textContent = saved.msg;
+    }
+
+    // Restore position (only if user has previously dragged)
+    if (saved.x != null && saved.y != null) {
+        el.style.left      = saved.x + 'px';
+        el.style.top       = saved.y + 'px';
+        el.style.transform = 'none';
+    }
+
+    // Hide edit button when user moves into chart area (iframe zone)
+    const container = document.getElementById('tvChartContainer');
+    const editBtn   = el.querySelector('.chart-welcome-edit');
+    if (container && editBtn) {
+        container.addEventListener('mouseenter', () => { editBtn.style.opacity = '0'; editBtn.style.pointerEvents = 'none'; });
+        container.addEventListener('mouseleave', () => { editBtn.style.opacity = '';  editBtn.style.pointerEvents = ''; });
+        container.addEventListener('touchstart', () => {
+            editBtn.style.opacity = '0';
+            editBtn.style.pointerEvents = 'none';
+            setTimeout(() => { editBtn.style.opacity = ''; editBtn.style.pointerEvents = ''; }, 2500);
+        }, { passive: true });
+    }
+
+    // Drag (mouse + touch)
+    let dragging = false, startX = 0, startY = 0, origX = 0, origY = 0;
+
+    function dragStart(clientX, clientY) {
+        dragging = true;
+        startX = clientX;
+        startY = clientY;
+        // Clear CSS centering transform before measuring position
+        if (el.style.transform && el.style.transform !== 'none') {
+            const rect = el.getBoundingClientRect();
+            const parent = el.parentElement.getBoundingClientRect();
+            el.style.transform = 'none';
+            el.style.left = (rect.left - parent.left) + 'px';
+            el.style.top  = (rect.top  - parent.top)  + 'px';
+        }
+        const rect = el.getBoundingClientRect();
+        const parent = el.parentElement.getBoundingClientRect();
+        origX = rect.left - parent.left;
+        origY = rect.top - parent.top;
+        el.style.transition = 'none';
+    }
+    function dragMove(clientX, clientY) {
+        if (!dragging) return;
+        const parent = el.parentElement.getBoundingClientRect();
+        let newX = origX + (clientX - startX);
+        let newY = origY + (clientY - startY);
+        newX = Math.max(4, Math.min(newX, parent.width - el.offsetWidth - 4));
+        newY = Math.max(4, Math.min(newY, parent.height - el.offsetHeight - 4));
+        el.style.left = newX + 'px';
+        el.style.top  = newY + 'px';
+    }
+    function dragEnd() {
+        if (!dragging) return;
+        dragging = false;
+        el.style.transition = '';
+        const saved = chartWelcomeLoad();
+        saved.x = parseInt(el.style.left) || 0;
+        saved.y = parseInt(el.style.top)  || 0;
+        chartWelcomeStore(saved);
+    }
+
+    // Mouse
+    el.addEventListener('mousedown', e => {
+        if (e.target.closest('.chart-welcome-edit')) return;
+        dragStart(e.clientX, e.clientY);
+        e.preventDefault();
+    });
+    document.addEventListener('mousemove', e => dragMove(e.clientX, e.clientY));
+    document.addEventListener('mouseup', dragEnd);
+
+    // Touch
+    el.addEventListener('touchstart', e => {
+        if (e.target.closest('.chart-welcome-edit')) return;
+        const t = e.touches[0];
+        dragStart(t.clientX, t.clientY);
+    }, { passive: true });
+    document.addEventListener('touchmove', e => {
+        if (!dragging) return;
+        const t = e.touches[0];
+        dragMove(t.clientX, t.clientY);
+        e.preventDefault();
+    }, { passive: false });
+    document.addEventListener('touchend', dragEnd);
+}
+
+function chartWelcomeEdit() {
+    const form  = document.getElementById('chartWelcomeForm');
+    const input = document.getElementById('chartWelcomeInput');
+    const text  = document.getElementById('chartWelcomeText');
+    if (!form || !input) return;
+    // Pre-fill with the current full text
+    input.value = text ? text.textContent : '';
+    form.style.display = 'flex';
+    input.focus();
+    input.select();
+}
+function chartWelcomeSave() {
+    const input = document.getElementById('chartWelcomeInput');
+    const form  = document.getElementById('chartWelcomeForm');
+    const text  = document.getElementById('chartWelcomeText');
+    if (!input || !form || !text) return;
+    const msg = (input.value || '').trim();
+    const saved = chartWelcomeLoad();
+    if (msg) {
+        saved.msg = msg;
+        text.textContent = msg;
+    } else {
+        // Reset to default if cleared
+        saved.msg = 'እንኳን ወደ ታግ ብሪጅ በደህና መጡ!';
+        text.textContent = saved.msg;
+    }
+    chartWelcomeStore(saved);
+    form.style.display = 'none';
+}
+function chartWelcomeCancel() {
+    const form = document.getElementById('chartWelcomeForm');
+    if (form) form.style.display = 'none';
 }
 
 // ── Pair definitions — ONLY pairs with confirmed real-time prices ──
