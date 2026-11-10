@@ -76,7 +76,29 @@ export default async function handler(req, res) {
 
     const { action, buyer, expiryDays, id } = req.body || {};
 
-    // ── CREATE ────────────────────────────────────────────────
+    // ── CREATE CUSTOM (caller provides plaintext password) ────────
+    if (action === 'createCustom') {
+        const { plainPassword, buyer: buyerName, expiryDays } = req.body || {};
+        if (!plainPassword || typeof plainPassword !== 'string' || plainPassword.length > 100) {
+            return res.status(400).json({ error: 'plainPassword required (max 100 chars)' });
+        }
+        const hash = await hashPassword(plainPassword);
+        const uid  = randomBytes(8).toString('hex');
+        const record = {
+            id:        uid,
+            buyer:     buyerName || 'Custom',
+            hash,
+            active:    true,
+            createdAt: Date.now(),
+            expiresAt: expiryDays ? Date.now() + expiryDays * 86400000 : null,
+            usedAt:    null,
+            usedCount: 0
+        };
+        await kvSet(`academy:pass:${uid}`, record);
+        return res.status(200).json({ success: true, id: uid, buyer: record.buyer });
+    }
+
+    // ── CREATE (random password) ────────────────────────────────
     if (action === 'create') {
         const plainPassword = generatePassword();
         const hash          = await hashPassword(plainPassword);

@@ -893,33 +893,32 @@ body {
 .contact-section { background: var(--bg-surface); }
 
 .contact-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 16px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
 }
 
 .contact-card {
     background: var(--bg-card); border: 1px solid var(--border-color);
-    border-radius: var(--radius-xl); padding: 28px;
+    border-radius: 14px; padding: 16px 12px;
     text-align: center; transition: var(--transition);
-    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
 }
-.contact-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.contact-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
 
-.contact-card i { font-size: 2.2rem; }
+.contact-card i { font-size: 1.5rem; }
 .contact-card.telegram i { color: #0088cc; }
 .contact-card.bot i { color: var(--brand-primary); }
 .contact-card.whatsapp i { color: #25d366; }
-.contact-card.youtube i { color: #ff0000; }
-.contact-card.tiktok i { color: #000; }
+.contact-card.tiktok i { color: #fff; }
 [data-theme="light"] .contact-card.tiktok i { color: #000; }
-[data-theme="dark"] .contact-card.tiktok i { color: #fff; }
 
-.contact-card h3 { font-size: 0.95rem; font-weight: 700; }
-.contact-card p { font-size: 0.82rem; color: var(--text-secondary); }
+.contact-card h3 { font-size: 0.78rem; font-weight: 700; margin: 0; }
+.contact-card p  { font-size: 0.7rem; color: var(--text-secondary); margin: 0; }
 .contact-btn {
-    padding: 8px 18px; border-radius: var(--radius-full);
+    padding: 5px 12px; border-radius: var(--radius-full);
     background: var(--bg-elevated); border: 1px solid var(--border-color);
-    color: var(--text-primary); text-decoration: none; font-size: 0.82rem; font-weight: 600;
+    color: var(--text-primary); text-decoration: none; font-size: 0.72rem; font-weight: 600;
     transition: var(--transition); margin-top: 4px;
 }
 .contact-btn:hover { background: var(--brand-primary); color: white; border-color: var(--brand-primary); }
@@ -1115,7 +1114,8 @@ body {
     .market-cards-grid { grid-template-columns: repeat(2, 1fr); }
     .dashboard-row { grid-template-columns: 1fr; }
     .products-grid { grid-template-columns: 1fr; }
-    .contact-grid { grid-template-columns: 1fr 1fr; }
+    .contact-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; }
+    .contact-card { padding: 12px 8px !important; }
 
     .hero-title { font-size: 2.4rem; }
     .hero-stats { gap: 0; }
@@ -1131,7 +1131,10 @@ body {
 
 @media (max-width: 480px) {
     .market-cards-grid { grid-template-columns: 1fr 1fr; }
-    .contact-grid { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr 1fr 1fr !important; gap: 6px !important; }
+    .contact-card { padding: 10px 6px !important; }
+    .contact-card h3 { font-size: .68rem !important; }
+    .contact-card p { display: none !important; }
     .chart-tabs { gap: 4px; }
     .chart-tab { padding: 5px 10px; font-size: 0.72rem; }
     .journal-stats-row { grid-template-columns: 1fr 1fr; }
