@@ -301,6 +301,32 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .ch-nav-btn.primary{background:linear-gradient(135deg,var(--primary),var(--secondary));border-color:transparent;color:#fff;box-shadow:0 4px 16px rgba(99,102,241,0.35)}
 .ch-nav-btn.primary:hover{transform:translateY(-1px)}
 
+/* ── MARKET / LEVEL CHOICE BUTTONS ── */
+.market-choice-btn{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:4px;padding:16px 10px;
+    background:var(--bg3);border:1.5px solid var(--border2);
+    border-radius:var(--radius-lg);cursor:pointer;transition:.2s;
+    color:var(--text);font-size:.88rem;
+}
+.market-choice-btn small{display:block;font-size:.7rem;color:var(--text2);font-weight:400;}
+.market-choice-btn:hover,.market-choice-btn.selected{
+    border-color:var(--primary);background:rgba(99,102,241,0.1);color:var(--primary);
+    box-shadow:0 0 0 3px rgba(99,102,241,0.12);
+}
+.level-choice-btn{
+    display:flex;align-items:center;gap:10px;padding:12px 16px;
+    background:var(--bg3);border:1.5px solid var(--border);
+    border-radius:var(--radius);cursor:pointer;transition:.2s;
+    color:var(--text2);font-size:.88rem;font-weight:600;text-align:left;
+    width:100%;
+}
+.level-choice-btn small{color:var(--text3);font-weight:400;margin-left:auto;}
+.level-choice-btn:hover,.level-choice-btn.selected{
+    border-color:var(--primary);background:rgba(99,102,241,0.1);color:var(--primary);
+}
+.level-choice-btn i{color:var(--primary);width:16px;flex-shrink:0;}
+
 /* ── MOBILE ── */
 .ac-menu-btn{display:none;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:7px 10px;cursor:pointer;color:var(--text2)}
 @media(max-width:768px){
@@ -330,48 +356,88 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
             <div class="gate-logo-icon">🎓</div>
             <div class="gate-brand"><span>Tag</span><span>Bridge</span></div>
         </div>
-        <div style="text-align:center">
-            <div class="gate-badge">
-                <span class="gate-badge-dot"></span>
-                EXCLUSIVE ACADEMY
+
+        <!-- STEP 1: Welcome + Category -->
+        <div id="step1">
+            <h2 class="gate-title" style="font-size:1.2rem;line-height:1.5;margin-bottom:12px;">
+                እንኳን ወደ Tag Bridge Academy<br>በደህና መጡ!
+            </h2>
+            <p class="gate-sub" style="font-size:.84rem;line-height:1.7;margin-bottom:20px;">
+                የForex ገበያ፣ የCrypto ገበያ እና Blockchain ቴክኖሎጂን በቀላሉ እና በነፃ ይማሩ።
+                እንዲሁም ጠቃሚ የትምህርት ቪዲዮዎችን ያገኛሉ።<br><br>
+                ለመጀመር ከታች የሚማሩትን የገበያ ዓይነት ይምረጡ።
+            </p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
+                <button class="market-choice-btn" onclick="selectMarket('forex')">
+                    <i class="fas fa-chart-line" style="font-size:1.4rem;margin-bottom:6px;display:block;"></i>
+                    <strong>Forex Market</strong>
+                    <small>ምንዛሬ ትሬዲንግ</small>
+                </button>
+                <button class="market-choice-btn" onclick="selectMarket('crypto')">
+                    <i class="fab fa-bitcoin" style="font-size:1.4rem;margin-bottom:6px;display:block;"></i>
+                    <strong>Crypto Market</strong>
+                    <small>ክሪፕቶ ትሬዲንግ</small>
+                </button>
             </div>
         </div>
-        <h2 class="gate-title">Trading Academy Access</h2>
-        <p class="gate-sub">ይህ ቦታ ለመጽሃፍ ተማሪዎች ብቻ ነው።<br>Access is exclusive to book buyers only.</p>
 
-        <div class="gate-features">
-            <div class="gate-feat"><i class="fas fa-chart-line"></i> Forex Mastery</div>
-            <div class="gate-feat"><i class="fab fa-bitcoin"></i> Crypto Trading</div>
-            <div class="gate-feat"><i class="fas fa-brain"></i> SMC / ICT Concepts</div>
-            <div class="gate-feat"><i class="fas fa-shield-halved"></i> Risk Management</div>
-            <div class="gate-feat"><i class="fas fa-wave-square"></i> Technical Analysis</div>
-            <div class="gate-feat"><i class="fas fa-head-side-brain"></i> Psychology</div>
+        <!-- STEP 2: Knowledge Level -->
+        <div id="step2" style="display:none;">
+            <p id="marketSelectedMsg" class="gate-sub" style="font-size:.88rem;margin-bottom:16px;color:var(--green);font-weight:700;"></p>
+            <h2 class="gate-title" style="font-size:1.1rem;margin-bottom:16px;" id="knowledgeQ">
+                ከዚህ በፊት ስለ Forex Trading ምን ያህል ዕውቀት አለዎት?
+            </h2>
+            <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;">
+                <button class="level-choice-btn" onclick="selectLevel('beginner')">
+                    <i class="fas fa-seedling"></i> ምንም ዕውቀት የለኝም <small>(Beginner)</small>
+                </button>
+                <button class="level-choice-btn" onclick="selectLevel('intermediate')">
+                    <i class="fas fa-chart-simple"></i> ትንሽ ዕውቀት አለኝ <small>(Intermediate)</small>
+                </button>
+                <button class="level-choice-btn" onclick="selectLevel('advanced')">
+                    <i class="fas fa-crown"></i> ጥሩ ዕውቀት አለኝ <small>(Advanced)</small>
+                </button>
+            </div>
         </div>
 
-        <label class="form-lbl" for="pwInput">Access Password — የመዳረሻ ኮድ</label>
-        <div class="gate-input-wrap">
-            <input type="password" id="pwInput" class="gate-input"
-                placeholder="TB-XXXX-XXXX-XXXX"
-                autocomplete="current-password"
-                onkeydown="if(event.key==='Enter')doLogin()">
-            <button class="toggle-pw" onclick="togglePw()" title="Show/hide">
-                <i class="fas fa-eye" id="pwEyeIcon"></i>
+        <!-- STEP 3: Password -->
+        <div id="step3" style="display:none;">
+            <p class="gate-sub" style="font-size:.84rem;line-height:1.7;margin-bottom:20px;">
+                እባክዎ ትምህርቱን ከመጀመራችን በፊት የTrading መጽሐፍ ሲገዙ
+                የተላከልዎትን Password ያስገቡ።
+            </p>
+            <label class="form-lbl" for="pwInput">Academy Password</label>
+            <div class="gate-input-wrap">
+                <input type="password" id="pwInput" class="gate-input"
+                    placeholder="TB-XXXX-XXXX-XXXX"
+                    autocomplete="current-password"
+                    onkeydown="if(event.key==='Enter')doLogin()">
+                <button class="toggle-pw" onclick="togglePw()" title="Show/hide">
+                    <i class="fas fa-eye" id="pwEyeIcon"></i>
+                </button>
+            </div>
+
+            <div class="gate-error" id="gateError">
+                <i class="fas fa-circle-xmark"></i>
+                <span id="gateErrorMsg">ያስገቡት Password ትክክል አይደለም። እባክዎ ትክክለኛውን Password ያስገቡ ወይም የTag Bridge Support ያግኙ።</span>
+            </div>
+
+            <button class="gate-btn" id="loginBtn" onclick="doLogin()">
+                <i class="fas fa-unlock-keyhole"></i>
+                <span id="loginBtnTxt">ወደ Academy ግባ</span>
             </button>
-        </div>
 
-        <div class="gate-error" id="gateError">
-            <i class="fas fa-circle-xmark"></i>
-            <span id="gateErrorMsg">Invalid password.</span>
-        </div>
+            <div style="text-align:center;margin-top:12px;">
+                <a href="https://t.me/tagbridge123" target="_blank" rel="noopener noreferrer"
+                   style="display:inline-flex;align-items:center;gap:7px;background:#229ED9;color:#fff;border-radius:50px;padding:8px 20px;font-size:.8rem;font-weight:700;text-decoration:none;">
+                    <i class="fab fa-telegram"></i> Support — @tagbridge123
+                </a>
+            </div>
 
-        <button class="gate-btn" id="loginBtn" onclick="doLogin()">
-            <i class="fas fa-unlock-keyhole"></i>
-            <span id="loginBtnTxt">Enter Academy</span>
-        </button>
-
-        <div class="gate-footer">
-            <p>Don't have access? <a href="/#products">Purchase a book →</a></p>
-            <p style="margin-top:6px"><a href="/"><i class="fas fa-arrow-left"></i> Back to Tag Bridge</a></p>
+            <div class="gate-footer" style="margin-top:14px;">
+                <p>Password የለዎትም? <a href="https://t.me/tagbridge123" target="_blank">መጽሐፍ ይዘዙ →</a></p>
+                <p style="margin-top:6px"><a href="/"><i class="fas fa-arrow-left"></i> Back to Tag Bridge</a></p>
+            </div>
         </div>
     </div>
 </div>
@@ -433,419 +499,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 // ═══════════════════════════════════════════════════
 //  ACADEMY CONTENT DATA
 // ═══════════════════════════════════════════════════
-const CHAPTERS = [
-    {
-        id:'ch1', icon:'📐', color:'#6366f1',
-        cat:'Chapter 1 — Foundation',
-        title:'Forex Market Fundamentals',
-        desc:'Everything you need to know before placing your first trade. Understand the market structure, participants, and how currencies move.',
-        lessons: 6, duration: '2h 30m',
-        concepts:['Forex is a 24/5 decentralized global market trading ~$7.5T daily','Currency pairs: Base/Quote — EUR/USD means 1 EUR = X USD','Major pairs: EUR/USD, GBP/USD, USD/JPY, USD/CHF, AUD/USD, USD/CAD','Spread = Ask - Bid = broker commission (measured in pips)','Leverage amplifies both profit AND loss — 1:100 means $100 controls $10,000','Margin = collateral held by broker for your open positions'],
-        lessons_data:[
-            {n:'01',t:'What is the Forex Market?',
-             body:`<p>The Foreign Exchange (Forex) market is the world's largest and most liquid financial market. Unlike stock markets, Forex operates 24 hours a day, 5 days a week across four major sessions: Sydney, Tokyo, London, and New York.</p>
-             <p style="margin-top:12px">The total daily trading volume exceeds <strong>$7.5 trillion</strong> — making it impossible for any single entity to manipulate long-term.</p>`,
-             formula:'Daily Volume: $7.5 Trillion\nParticipants: Banks → Institutions → Hedge Funds → Retail',
-             tags:['Beginner','Essential']},
-            {n:'02',t:'Currency Pairs Explained',
-             body:`<p>Every Forex trade involves two currencies. The <strong>base currency</strong> is what you're buying/selling. The <strong>quote currency</strong> is what you pay with.</p>
-             <p style="margin-top:12px">EUR/USD = 1.0850 means: <strong>1 Euro buys 1.0850 US Dollars</strong></p>
-             <p style="margin-top:8px"><strong>Major pairs</strong> — highest liquidity, lowest spreads: EUR/USD, GBP/USD, USD/JPY, USD/CHF, AUD/USD, USD/CAD, NZD/USD</p>`,
-             formula:'EUR/USD: Base = EUR | Quote = USD\nBid: 1.0848 | Ask: 1.0851 | Spread: 3 pips',
-             tags:['Beginner','Pairs']},
-            {n:'03',t:'Pips, Lots & Leverage',
-             body:`<p>A <strong>pip</strong> (Percentage in Point) is the smallest price movement. For most pairs, 1 pip = 0.0001. For JPY pairs, 1 pip = 0.01.</p>
-             <p style="margin-top:10px"><strong>Lot sizes:</strong></p>
-             <ul style="list-style:none;margin-top:6px;display:flex;flex-direction:column;gap:4px">
-             <li>→ Standard lot = 100,000 units (~$10/pip)</li>
-             <li>→ Mini lot = 10,000 units (~$1/pip)</li>
-             <li>→ Micro lot = 1,000 units (~$0.10/pip)</li>
-             </ul>`,
-             formula:'Pip value (Forex USD quote) = 0.0001 × lot size × 100,000\nExample: 0.1 lot → $1 per pip',
-             tags:['Beginner','Math'],tip:'Always trade micro lots when learning. Protect your capital.'},
-            {n:'04',t:'Trading Sessions & Timing',
-             body:`<p>Knowing WHEN to trade is as important as knowing HOW to trade. Volatility peaks during session overlaps.</p>
-             <table style="width:100%;border-collapse:collapse;margin-top:12px;font-size:.82rem">
-             <tr style="background:rgba(99,102,241,0.1)"><th style="padding:8px;text-align:left">Session</th><th style="padding:8px;text-align:left">UTC Time</th><th style="padding:8px;text-align:left">Best Pairs</th></tr>
-             <tr><td style="padding:8px;border-top:1px solid rgba(255,255,255,0.06)">Tokyo</td><td style="padding:8px;border-top:1px solid rgba(255,255,255,0.06)">00:00-09:00</td><td style="padding:8px;border-top:1px solid rgba(255,255,255,0.06)">JPY pairs</td></tr>
-             <tr><td style="padding:8px;border-top:1px solid rgba(255,255,255,0.06)">London</td><td style="padding:8px;border-top:1px solid rgba(255,255,255,0.06)">07:00-16:00</td><td style="padding:8px;border-top:1px solid rgba(255,255,255,0.06)">EUR/GBP/CHF</td></tr>
-             <tr><td style="padding:8px;border-top:1px solid rgba(255,255,255,0.06)">New York</td><td style="padding:8px;border-top:1px solid rgba(255,255,255,0.06)">12:00-21:00</td><td style="padding:8px;border-top:1px solid rgba(255,255,255,0.06)">All majors</td></tr>
-             </table>`,
-             tags:['Beginner','Timing'],warn:'London–NY overlap (12:00–16:00 UTC) = highest volatility. Best for setups.'},
-            {n:'05',t:'How Orders Work',
-             body:`<p>There are two main order types every trader must master:</p>
-             <ul style="list-style:none;margin-top:10px;display:flex;flex-direction:column;gap:8px">
-             <li><strong>Market Order</strong> — executed immediately at current price. Fast but may experience slippage.</li>
-             <li><strong>Limit Order</strong> — set a specific entry price. Only fills if price reaches your level.</li>
-             <li><strong>Stop Loss (SL)</strong> — automatically closes a losing trade to protect capital.</li>
-             <li><strong>Take Profit (TP)</strong> — automatically closes a winning trade at your target.</li>
-             </ul>`,
-             formula:'Trade structure:\nEntry → Set SL below support → Set TP at next resistance → Risk:Reward calculated',
-             tags:['Beginner','Orders']},
-            {n:'06',t:'Choosing a Broker',
-             body:`<p>Your broker is your gateway to the market. Choose carefully.</p>
-             <ul style="list-style:none;margin-top:10px;display:flex;flex-direction:column;gap:6px">
-             <li>→ <strong>Regulation</strong>: FCA (UK), ASIC (Australia), CySEC (Cyprus)</li>
-             <li>→ <strong>Spreads</strong>: Lower is better for scalpers</li>
-             <li>→ <strong>Execution</strong>: ECN/STP better than market maker</li>
-             <li>→ <strong>Min deposit</strong>: Start small ($100-$200)</li>
-             <li>→ <strong>MT4/MT5</strong>: Standard, well-supported platforms</li>
-             </ul>`,
-             tags:['Beginner','Broker'],warn:'Never deposit money you cannot afford to lose. Start with a demo account for at least 3 months.'}
-        ]
-    },
-    {
-        id:'ch2', icon:'📊', color:'#8b5cf6',
-        cat:'Chapter 2 — Technical Analysis',
-        title:'Reading Price & Charts',
-        desc:'Master candlestick patterns, support & resistance, and chart reading — the foundation of every professional trader.',
-        lessons: 7, duration: '3h 00m',
-        concepts:['Candlesticks show Open, High, Low, Close — each tells a story','Support = price floor (buyers defend it), Resistance = price ceiling','Trend = HH+HL (up) or LH+LL (down)','Chart patterns are recurring market psychology','Volume confirms or denies price moves','Multiple timeframe analysis = higher-quality entries'],
-        lessons_data:[
-            {n:'01',t:'Candlestick Anatomy',
-             body:`<p>Every candlestick has 4 data points: <strong>Open, High, Low, Close</strong>. The body shows the range between open and close. The wicks show the extremes.</p>
-             <p style="margin-top:10px"><strong>Bullish (green)</strong>: Close > Open — buyers won that period<br>
-             <strong>Bearish (red)</strong>: Close < Open — sellers won that period</p>
-             <p style="margin-top:10px">Key single-candle patterns: <strong>Doji</strong> (indecision), <strong>Hammer</strong> (bullish reversal), <strong>Shooting Star</strong> (bearish reversal), <strong>Engulfing</strong> (strong reversal), <strong>Marubozu</strong> (pure momentum)</p>`,
-             formula:'Long wick = price was rejected at that level\nLong body = strong momentum in that direction',
-             tags:['Intermediate','Patterns']},
-            {n:'02',t:'Support & Resistance',
-             body:`<p>Support and resistance are the most powerful concepts in all of technical analysis.</p>
-             <p style="margin-top:10px"><strong>Support</strong> = A price level where demand exceeds supply. Price bounces up.<br>
-             <strong>Resistance</strong> = A price level where supply exceeds demand. Price bounces down.</p>
-             <p style="margin-top:10px"><strong>Role Reversal</strong>: Once support is broken, it becomes resistance (and vice versa). This is one of the most reliable principles in trading.</p>`,
-             formula:'Strong S/R characteristics:\n→ Multiple touches (2+ times)\n→ Clean rejection wicks\n→ High volume at the level\n→ Round numbers (1.1000, 1.1500)',
-             tags:['Essential','S&R'],tip:'Draw S/R on the weekly or daily chart first — then drill down to the entry timeframe.'},
-            {n:'03',t:'Trend Analysis',
-             body:`<p>A <strong>trend</strong> is the general direction of price movement. Trading WITH the trend has the highest probability of success.</p>
-             <p style="margin-top:10px"><strong>Uptrend</strong>: Each swing high is higher than the last (HH), and each swing low is higher than the last (HL).<br>
-             <strong>Downtrend</strong>: Each swing high is lower (LH), each swing low is lower (LL).</p>
-             <p style="margin-top:10px">The <strong>200 Moving Average</strong> is the most widely-watched institutional trend indicator. Price above = bullish bias; below = bearish.</p>`,
-             tags:['Essential','Trend'],formula:'Uptrend: HH → HL → HH → HL → HH\nDowntrend: LH → LL → LH → LL → LH'},
-            {n:'04',t:'Chart Patterns',
-             body:`<p>Chart patterns are visual representations of market psychology. They repeat because human emotions (fear & greed) repeat.</p>
-             <ul style="list-style:none;margin-top:10px;display:flex;flex-direction:column;gap:7px">
-             <li><strong>Head & Shoulders</strong> — bearish reversal. Target = neckline distance</li>
-             <li><strong>Double Top/Bottom</strong> — strong reversal. Second touch failure</li>
-             <li><strong>Ascending Triangle</strong> — bullish continuation usually</li>
-             <li><strong>Bull/Bear Flag</strong> — powerful continuation after impulse move</li>
-             <li><strong>Rising/Falling Wedge</strong> — reversal patterns. Wedge breaks opposite direction</li>
-             </ul>`,
-             tags:['Intermediate','Patterns'],warn:'Patterns work best when combined with a key S/R level and market structure.'},
-            {n:'05',t:'RSI & MACD',
-             body:`<p><strong>RSI (Relative Strength Index)</strong> — measures momentum on a 0-100 scale.</p>
-             <ul style="list-style:none;margin-top:8px;display:flex;flex-direction:column;gap:5px">
-             <li>→ Above 70 = Overbought (look for sells)</li>
-             <li>→ Below 30 = Oversold (look for buys)</li>
-             <li>→ <strong>RSI Divergence</strong> = most powerful signal (price makes new high, RSI doesn't)</li>
-             </ul>
-             <p style="margin-top:12px"><strong>MACD</strong> — shows trend momentum and changes.</p>
-             <ul style="list-style:none;margin-top:6px;display:flex;flex-direction:column;gap:5px">
-             <li>→ MACD line crosses above signal = bullish</li>
-             <li>→ MACD line crosses below signal = bearish</li>
-             <li>→ Histogram growing = momentum increasing</li>
-             </ul>`,
-             tags:['Intermediate','Indicators']},
-            {n:'06',t:'Moving Averages',
-             body:`<p>Moving averages smooth out price data to show the trend direction clearly.</p>
-             <ul style="list-style:none;margin-top:10px;display:flex;flex-direction:column;gap:6px">
-             <li><strong>SMA 200</strong> = Long-term trend. The most important MA.</li>
-             <li><strong>EMA 50</strong> = Medium-term momentum. Often acts as dynamic S/R.</li>
-             <li><strong>EMA 20/21</strong> = Short-term momentum for entries.</li>
-             </ul>
-             <p style="margin-top:10px"><strong>Golden Cross</strong>: 50 EMA crosses above 200 SMA = strong buy signal<br>
-             <strong>Death Cross</strong>: 50 EMA crosses below 200 SMA = strong sell signal</p>`,
-             formula:'Golden Cross setup:\n1. Price above 200 SMA\n2. 50 EMA crosses above 200 SMA\n3. Wait for pullback to 50 EMA\n4. Enter on bullish candle confirmation',
-             tags:['Intermediate','MA']},
-            {n:'07',t:'Fibonacci Retracement',
-             body:`<p>Fibonacci levels are horizontal price zones where retracements commonly end and the trend resumes. They work because major institutions use them.</p>
-             <p style="margin-top:10px">Key levels: <strong>0.236, 0.382, 0.5, 0.618, 0.786</strong></p>
-             <p style="margin-top:8px">The <strong>"Golden Pocket"</strong> = 0.618 to 0.65 zone — the highest-probability retracement entry.</p>`,
-             formula:'How to draw:\n1. Identify a strong swing high and swing low\n2. Draw Fibonacci from low to high (uptrend)\n3. Wait for price to retrace to 0.618-0.65\n4. Confirm with OB or FVG at that level\n5. Enter with SL below the swing low',
-             tags:['Intermediate','Fibonacci'],tip:'Golden Pocket + Order Block = one of the highest-probability setups in all of trading.'}
-        ]
-    },
-    {
-        id:'ch3', icon:'🧠', color:'#06b6d4',
-        cat:'Chapter 3 — Smart Money Concepts',
-        title:'SMC & ICT — Trade Like Institutions',
-        desc:'The advanced framework used by professional traders. Learn how banks and institutions actually move price, and how to follow them.',
-        lessons: 6, duration: '3h 30m',
-        concepts:['Institutions move markets — retail traders react to them','Smart Money hunts liquidity before making the real move','Order Blocks are the footprints institutions leave behind','Fair Value Gaps (FVGs) are inefficiencies that MUST be filled','BOS = trend continuation; CHOCH = trend reversal','The Killzone hours (London/NY open) are where the best setups appear'],
-        lessons_data:[
-            {n:'01',t:'Introduction to SMC',
-             body:`<p>Smart Money Concepts (SMC) is a framework developed from ICT (Inner Circle Trader) teachings. The core idea: <strong>banks and institutions move markets</strong> — retail traders are on the opposite side and often get hunted.</p>
-             <p style="margin-top:10px">SMC teaches you to:</p>
-             <ul style="list-style:none;margin-top:6px;display:flex;flex-direction:column;gap:5px">
-             <li>→ Identify WHERE smart money entered</li>
-             <li>→ Understand WHY price moved</li>
-             <li>→ Follow their footprints to enter with confluence</li>
-             </ul>`,
-             tags:['SMC','Essential'],warn:'SMC is a higher-level concept. Master market structure and S/R first.'},
-            {n:'02',t:'Order Blocks (OB)',
-             body:`<p>An Order Block is the last opposing candle before a strong impulsive move. It represents where institutional orders were placed.</p>
-             <p style="margin-top:10px"><strong>Bullish OB</strong> = Last bearish (red) candle before a strong bullish move up.<br>
-             <strong>Bearish OB</strong> = Last bullish (green) candle before a strong bearish move down.</p>
-             <p style="margin-top:10px">Price <strong>returns to mitigate</strong> the OB — this is your entry zone. Place SL just beyond the OB.</p>`,
-             formula:'Bullish OB setup:\n1. Identify strong bullish displacement (impulsive move up)\n2. Find the last red candle before that move\n3. That candle\'s range = your OB\n4. Wait for price to return to OB\n5. Enter long with SL below OB',
-             tags:['SMC','OB','Entry']},
-            {n:'03',t:'Liquidity & Stop Hunts',
-             body:`<p>Liquidity is where stop losses are clustered. Banks NEED liquidity to fill their large orders — so they engineer price to sweep those stops first.</p>
-             <p style="margin-top:10px"><strong>Buy-side liquidity (BSL)</strong>: Above swing highs — short sellers' stop losses<br>
-             <strong>Sell-side liquidity (SSL)</strong>: Below swing lows — long traders' stop losses</p>
-             <p style="margin-top:10px"><strong>The pattern</strong>: Price sweeps liquidity → reverses sharply = "Stop Hunt" or "Liquidity Grab"</p>`,
-             formula:'Bearish setup after BSL sweep:\n1. Price breaks above recent highs (grabs BSL)\n2. Closes back below with a strong bearish candle\n3. Look for bearish OB or FVG at that area\n4. Enter short with SL above the wick',
-             tags:['SMC','Liquidity'],tip:'When you see price spike through a level and quickly reverse — that is a stop hunt. The real move is the opposite direction.'},
-            {n:'04',t:'Fair Value Gaps (FVG)',
-             body:`<p>A Fair Value Gap is a 3-candle pattern where the middle candle moves so fast it leaves an imbalance — a gap between the high of candle 1 and the low of candle 3 (for a bullish FVG).</p>
-             <p style="margin-top:10px"><strong>Why it matters</strong>: Markets are efficient machines. Price TENDS to return to fill these imbalances before continuing.</p>
-             <p style="margin-top:10px"><strong>Bullish FVG</strong>: Low of candle 3 > High of candle 1 (gap above)<br>
-             <strong>Bearish FVG</strong>: High of candle 3 < Low of candle 1 (gap below)</p>`,
-             formula:'FVG + OB = Confluence Zone:\nIf a bullish FVG overlaps with a bullish OB,\nthat zone is extremely high probability for entries.',
-             tags:['SMC','FVG']},
-            {n:'05',t:'BOS & CHOCH',
-             body:`<p><strong>Break of Structure (BOS)</strong>: When price breaks a previous swing high (in an uptrend) or swing low (in a downtrend). This <strong>confirms trend continuation</strong>.</p>
-             <p style="margin-top:10px"><strong>Change of Character (CHOCH)</strong>: The FIRST opposite structure break after a trend. This is the first signal of a potential trend reversal.</p>
-             <p style="margin-top:10px">The SMC entry approach:<br>
-             1. Wait for CHOCH (reversal confirmation)<br>
-             2. Wait for pullback to OB/FVG<br>
-             3. Enter with confirmation candle</p>`,
-             formula:'CHOCH → First BOS in new direction → Pull back to OB → ENTRY',
-             tags:['SMC','Structure']},
-            {n:'06',t:'Killzones & Best Entry Times',
-             body:`<p>ICT Killzones are specific time windows when institutional order flow is highest and the best setups appear:</p>
-             <ul style="list-style:none;margin-top:10px;display:flex;flex-direction:column;gap:8px">
-             <li><strong>London Open Killzone</strong>: 07:00 – 09:00 UTC — Most powerful, especially first hour</li>
-             <li><strong>New York AM Killzone</strong>: 12:00 – 15:00 UTC — High volatility, big moves</li>
-             <li><strong>London Close</strong>: 14:00 – 16:00 UTC — Reversals after NY open</li>
-             </ul>
-             <p style="margin-top:12px">Outside these windows, price often consolidates or chops. Avoid trading during these: Tokyo open (low volume), Friday close, major news without a plan.</p>`,
-             tags:['SMC','Timing'],tip:'Set alerts for 07:00 UTC and 12:00 UTC. These two windows produce the majority of the best setups.'}
-        ]
-    },
-    {
-        id:'ch4', icon:'🛡️', color:'#10b981',
-        cat:'Chapter 4 — Risk Management',
-        title:'Protect Your Capital',
-        desc:'Risk management is not optional — it is the single most important skill in trading. This chapter could save your entire account.',
-        lessons: 5, duration: '2h 00m',
-        concepts:['Never risk more than 1-2% per trade — ever','Position sizing formula: Lots = Risk$ ÷ (SL pips × pip value)','Always aim for Risk:Reward ≥ 1:2','A 50% drawdown requires a 100% gain to recover','Correlation risk: trading similar pairs multiplies your exposure','Journaling your trades reveals your real edge (or lack of one)'],
-        lessons_data:[
-            {n:'01',t:'The 1% Rule — Why It Saves Accounts',
-             body:`<p>The single most important rule in trading: <strong>Never risk more than 1-2% of your account on a single trade.</strong></p>
-             <p style="margin-top:10px">Here's why:</p>
-             <ul style="list-style:none;margin-top:6px;display:flex;flex-direction:column;gap:5px">
-             <li>→ 10 consecutive losses at 1% = 90.4% of capital remaining</li>
-             <li>→ 10 consecutive losses at 10% = 34.9% of capital remaining</li>
-             <li>→ 10 consecutive losses at 25% = 5.6% of capital remaining</li>
-             </ul>
-             <p style="margin-top:10px">Losing streaks of 5-10 trades are NORMAL even for professional traders. The 1% rule ensures you survive them.</p>`,
-             formula:'Account: $1,000 → Max risk per trade: $10 (1%)\nAccount: $5,000 → Max risk per trade: $50 (1%)\nAccount: $10,000 → Max risk per trade: $100-$200 (1-2%)',
-             tags:['Essential','Rule']},
-            {n:'02',t:'Position Sizing — The Formula',
-             body:`<p>Position sizing is how you calculate the correct lot size so that you never exceed your risk percentage, regardless of where you place your stop loss.</p>`,
-             formula:'POSITION SIZE FORMULA:\n\nLot Size = Risk Amount ($) ÷ (SL in pips × Pip Value)\n\nExample:\nAccount: $2,000 | Risk: 1% = $20\nSL: 20 pips | Pip value (standard pair): $10\nLot Size = $20 ÷ (20 × $10) = $20 ÷ $200 = 0.1 lots\n\nNEVER set your lot size and then calculate your SL.\nALWAYS set your SL first, THEN calculate lot size.',
-             tags:['Essential','Math'],tip:'Use the Position Size Calculator on the main Tag Bridge dashboard for instant calculations.'},
-            {n:'03',t:'Risk:Reward Ratio',
-             body:`<p>Risk:Reward (R:R) ratio tells you how much you gain for every dollar you risk. This is what separates profitable traders from losing ones.</p>
-             <p style="margin-top:10px"><strong>Why R:R matters</strong>: With a 1:2 R:R ratio, you only need to win 34% of your trades to break even. At 40% win rate, you're profitable.</p>
-             <table style="width:100%;border-collapse:collapse;margin-top:14px;font-size:.82rem">
-             <tr style="background:rgba(99,102,241,0.1)"><th style="padding:8px;text-align:left">R:R</th><th style="padding:8px;text-align:left">Break-even WR</th><th style="padding:8px;text-align:left">Assessment</th></tr>
-             <tr><td style="padding:8px;border-top:1px solid rgba(255,255,255,0.06)">1:1</td><td>50%</td><td>Acceptable</td></tr>
-             <tr><td style="padding:8px;border-top:1px solid rgba(255,255,255,0.06)">1:2</td><td>34%</td><td>✅ Good</td></tr>
-             <tr><td style="padding:8px;border-top:1px solid rgba(255,255,255,0.06)">1:3</td><td>25%</td><td>✅ Excellent</td></tr>
-             </table>`,
-             tags:['Essential','R:R']},
-            {n:'04',t:'Drawdown & Recovery Math',
-             body:`<p>Understanding drawdown math will change how you think about risk forever.</p>
-             <table style="width:100%;border-collapse:collapse;margin-top:12px;font-size:.82rem">
-             <tr style="background:rgba(239,68,68,0.1)"><th style="padding:8px;text-align:left">Loss</th><th style="padding:8px;text-align:left">Recovery Needed</th></tr>
-             <tr><td style="padding:8px;border-top:1px solid rgba(255,255,255,0.06)">10%</td><td>11%</td></tr>
-             <tr><td style="padding:8px;border-top:1px solid rgba(255,255,255,0.06)">25%</td><td>33%</td></tr>
-             <tr><td style="padding:8px;border-top:1px solid rgba(255,255,255,0.06)">50%</td><td>100%</td></tr>
-             <tr><td style="padding:8px;border-top:1px solid rgba(255,255,255,0.06)">75%</td><td>300%</td></tr>
-             </table>
-             <p style="margin-top:12px">Rule: <strong>Stop trading if you hit 10% monthly drawdown</strong>. Review your trades, find the pattern, fix it, then resume.</p>`,
-             tags:['Risk','Drawdown'],warn:'A 50% drawdown requires a 100% gain just to break even. Protect capital above all else.'},
-            {n:'05',t:'The Trading Journal',
-             body:`<p>The trading journal is the most underused tool in trading. Without tracking your trades, you cannot find your edge — or your weaknesses.</p>
-             <p style="margin-top:10px"><strong>What to record for every trade:</strong></p>
-             <ul style="list-style:none;margin-top:6px;display:flex;flex-direction:column;gap:5px">
-             <li>→ Date & time of entry</li>
-             <li>→ Pair, direction (Buy/Sell)</li>
-             <li>→ Entry, SL, TP prices</li>
-             <li>→ Lot size & risk amount</li>
-             <li>→ Setup type (OB, FVG, S/R, etc.)</li>
-             <li>→ Result (P&L, pips)</li>
-             <li>→ Emotional state + post-trade notes</li>
-             </ul>
-             <p style="margin-top:10px">Use the <strong>Trading Journal</strong> on the Tag Bridge main dashboard — it does the math for you.</p>`,
-             tags:['Essential','Journal'],tip:'Review your journal every Sunday. Look for patterns in your losing trades — they reveal exactly what to fix.'}
-        ]
-    },
-    {
-        id:'ch5', icon:'💰', color:'#f59e0b',
-        cat:'Chapter 5 — Trading Strategies',
-        title:'Complete Trading Strategies',
-        desc:'Three complete, battle-tested strategies you can start using immediately. Each comes with entry rules, SL placement, and TP targets.',
-        lessons: 5, duration: '2h 30m',
-        concepts:['A strategy needs edge + execution + risk management to work','The OB+FVG confluence strategy is the most consistent SMC approach','Fibonacci + OB = Golden Pocket strategy','Trend continuation with pullbacks = highest win-rate approach','Patience is a strategy — not every hour has a valid setup','A setup that doesn\'t meet ALL criteria is not your setup'],
-        lessons_data:[
-            {n:'01',t:'Strategy 1: OB + FVG Confluence',
-             body:`<p>This is the most widely-used SMC strategy. When an Order Block and a Fair Value Gap overlap, you have an extremely high-probability entry zone.</p>`,
-             formula:'STRATEGY RULES:\n\nTIMEFRAME: 1H for direction + 15M for entry\n\nSETUP (Bullish):\n1. Identify uptrend (HH + HL on H1)\n2. Wait for pullback (CHOCH on 15M or lower)\n3. Find Bullish OB in the pullback zone\n4. Confirm FVG overlaps with the OB\n5. Wait for price to enter OB/FVG zone\n6. Enter on 15M confirmation candle\n7. SL: 3-5 pips below the OB\n8. TP: Previous swing high (min 1:2 R:R)\n\nFILTERS:\n→ Only trade London or NY killzone\n→ OB must be from same timeframe as entry\n→ Minimum 1:2 R:R or skip the trade',
-             tags:['Strategy','SMC']},
-            {n:'02',t:'Strategy 2: Golden Pocket Retracement',
-             body:`<p>A purely technical strategy combining Fibonacci retracement with structure. Works on all timeframes and all liquid pairs.</p>`,
-             formula:'STRATEGY RULES:\n\nTIMEFRAME: 4H direction + 1H entry\n\nSETUP:\n1. Identify a strong impulse move (expansion)\n2. Draw Fibonacci from swing low to swing high (uptrend)\n3. Wait for price to retrace to 0.618-0.65 zone\n4. Look for bullish confirmation candle at golden pocket\n5. Optional: Align with 0.618 being a key S/R level\n6. Enter on close of confirmation candle\n7. SL: Below 0.786 Fibonacci level\n8. TP1: 0.382 level, TP2: Previous high\n\nNOTE: Works in reverse for downtrends.',
-             tags:['Strategy','Fibonacci']},
-            {n:'03',t:'Strategy 3: Liquidity Sweep Reversal',
-             body:`<p>This strategy capitalizes on stop hunts — one of the most reliable and profitable patterns in the market.</p>`,
-             formula:'STRATEGY RULES:\n\nTIMEFRAME: 4H structure + 1H + 15M entry\n\nSETUP (Bearish Reversal):\n1. Identify clear resistance / swing high zone\n2. Wait for price to BREAK above the swing high\n   (the stop hunt — breaking short sellers\' stops)\n3. Price must close BACK BELOW the high within 1-3 candles\n4. This closing candle = your entry signal\n5. Look for bearish OB just above the swept level\n6. Enter short at market or on next candle open\n7. SL: 5-10 pips above the wick high\n8. TP: Next liquidity pool below (swing lows)',
-             tags:['Strategy','Liquidity','SMC']},
-            {n:'04',t:'Entry & Exit Mastery',
-             body:`<p>Having a strategy is 50% of trading. Executing it properly is the other 50%.</p>
-             <ul style="list-style:none;margin-top:10px;display:flex;flex-direction:column;gap:8px">
-             <li><strong>Entry:</strong> Only enter when ALL setup criteria are met. One missing element = no trade.</li>
-             <li><strong>SL placement:</strong> Behind structure, not behind an arbitrary number of pips.</li>
-             <li><strong>TP:</strong> At the next liquidity pool (swing high/low). Don't move TP closer after entry.</li>
-             <li><strong>Partial exits:</strong> Close 50% at 1R (risk recovered), let the rest run to full TP.</li>
-             <li><strong>Trailing SL:</strong> After 1R secured, move SL to breakeven.</li>
-             </ul>`,
-             tags:['Execution','Advanced']},
-            {n:'05',t:'Backtesting Your Strategy',
-             body:`<p>Before risking real money on any strategy, you must backtest it. Backtesting means reviewing historical charts to see how your strategy would have performed.</p>
-             <p style="margin-top:10px"><strong>Minimum backtesting standard: 50 trades</strong> on historical data before moving to live trading.</p>
-             <ul style="list-style:none;margin-top:10px;display:flex;flex-direction:column;gap:6px">
-             <li>→ TradingView replay mode (free) — replay bars one at a time</li>
-             <li>→ Record every setup in your journal</li>
-             <li>→ Calculate win rate, avg R:R, max drawdown</li>
-             <li>→ Only go live if win rate > 40% AND avg R:R > 1.5</li>
-             </ul>`,
-             formula:'Minimum forward test before going live:\n→ 50 backtested trades ✓\n→ 2 weeks demo trading ✓\n→ WR > 40% + Avg R:R > 1.5 ✓\n→ THEN go live with minimum position sizes',
-             tags:['Essential','Testing']}
-        ]
-    },
-    {
-        id:'ch6', icon:'📰', color:'#ef4444',
-        cat:'Chapter 6 — Fundamental Analysis',
-        title:'News & Macro Economics',
-        desc:'Technical analysis shows you WHERE to trade. Fundamental analysis tells you WHY price will move. Learn to read the economic calendar like a pro.',
-        lessons: 4, duration: '1h 30m',
-        concepts:['High-impact news creates the biggest market moves','NFP (Non-Farm Payrolls) moves USD pairs 100-300 pips','Interest rate decisions are the #1 driver of currency values','CPI/Inflation data directly impacts central bank policy','Trading BEFORE news = gambling. Trading the reaction = strategy','Fundamental divergence between countries creates long-term trends'],
-        lessons_data:[
-            {n:'01',t:'The Economic Calendar',
-             body:`<p>The economic calendar lists all scheduled economic events and their expected impact on markets. Every serious trader checks it daily.</p>
-             <p style="margin-top:10px"><strong>Impact levels:</strong></p>
-             <ul style="list-style:none;margin-top:6px;display:flex;flex-direction:column;gap:5px">
-             <li>🔴 <strong>High impact</strong>: NFP, FOMC, CPI, GDP — move markets 50-300+ pips</li>
-             <li>🟡 <strong>Medium impact</strong>: Retail sales, PMI, unemployment — move 20-80 pips</li>
-             <li>⚪ <strong>Low impact</strong>: Minor data releases — usually ignorable</li>
-             </ul>
-             <p style="margin-top:10px"><strong>Free calendar</strong>: investing.com/economic-calendar (bookmark this)</p>`,
-             tags:['Fundamental','News']},
-            {n:'02',t:'Key Economic Indicators',
-             body:`<p>These are the data releases that move the market most significantly:</p>
-             <table style="width:100%;border-collapse:collapse;margin-top:12px;font-size:.8rem">
-             <tr style="background:rgba(239,68,68,0.1)"><th style="padding:7px;text-align:left">Indicator</th><th style="padding:7px;text-align:left">Currency</th><th style="padding:7px;text-align:left">Impact</th></tr>
-             <tr><td style="padding:7px;border-top:1px solid rgba(255,255,255,0.06)">NFP</td><td>USD</td><td>Extremely High 🔴</td></tr>
-             <tr><td style="padding:7px;border-top:1px solid rgba(255,255,255,0.06)">FOMC Rate Decision</td><td>USD</td><td>Extremely High 🔴</td></tr>
-             <tr><td style="padding:7px;border-top:1px solid rgba(255,255,255,0.06)">CPI</td><td>All</td><td>High 🔴</td></tr>
-             <tr><td style="padding:7px;border-top:1px solid rgba(255,255,255,0.06)">GDP</td><td>All</td><td>High 🔴</td></tr>
-             <tr><td style="padding:7px;border-top:1px solid rgba(255,255,255,0.06)">Unemployment Rate</td><td>All</td><td>High 🔴</td></tr>
-             <tr><td style="padding:7px;border-top:1px solid rgba(255,255,255,0.06)">PMI</td><td>All</td><td>Medium 🟡</td></tr>
-             </table>`,
-             tags:['Fundamental','Calendar'],warn:'NEVER hold an open trade into a red (high-impact) news event without significant buffer. The spread widens and slippage can hit your SL.'},
-            {n:'03',t:'Interest Rates & Currency Strength',
-             body:`<p>Interest rate decisions are the single most powerful driver of long-term currency trends. When a central bank raises rates, its currency typically strengthens.</p>
-             <p style="margin-top:10px"><strong>Why:</strong> Higher rates attract foreign investment seeking better returns → demand for that currency increases → price rises.</p>
-             <p style="margin-top:10px"><strong>Key central banks to watch:</strong></p>
-             <ul style="list-style:none;margin-top:6px;display:flex;flex-direction:column;gap:5px">
-             <li>→ <strong>Fed</strong> (FOMC) — USD — 8 meetings/year</li>
-             <li>→ <strong>ECB</strong> — EUR — 8 meetings/year</li>
-             <li>→ <strong>BOE</strong> — GBP — 8 meetings/year</li>
-             <li>→ <strong>BOJ</strong> — JPY — 8 meetings/year</li>
-             </ul>`,
-             tags:['Fundamental','Macro']},
-            {n:'04',t:'Trading Around News',
-             body:`<p>Two approaches to news trading:</p>
-             <p style="margin-top:10px"><strong>1. Avoid it</strong>: Close positions 30 min before high-impact news. Re-enter after the initial move settles. This is the safer approach for beginners.</p>
-             <p style="margin-top:10px"><strong>2. Trade the reaction</strong>: Wait for the candle to close AFTER the news. Don't try to predict direction. Trade the confirmed move:</p>
-             <ul style="list-style:none;margin-top:6px;display:flex;flex-direction:column;gap:5px">
-             <li>→ News candle closes strongly in one direction</li>
-             <li>→ Wait for a pullback to the news candle's OB/FVG</li>
-             <li>→ Enter with the trend the news created</li>
-             </ul>`,
-             formula:'Safe approach to news:\n1. Check calendar every morning\n2. Mark all red events on your chart\n3. No new positions 30 min before red news\n4. If in profit → consider closing or tightening SL\n5. Re-enter 15-30 min AFTER the spike settles',
-             tags:['News','Strategy']}
-        ]
-    },
-    {
-        id:'ch7', icon:'🧘', color:'#8b5cf6',
-        cat:'Chapter 7 — Trading Psychology',
-        title:'The Mindset of a Professional Trader',
-        desc:'90% of trading success comes from psychology. Master your mind and the charts become much easier to read.',
-        lessons: 5, duration: '1h 30m',
-        concepts:['Fear causes early exits and missed trades','Greed causes overtrading and ignoring your plan','FOMO is the #1 account killer for beginners','Revenge trading is the fastest way to blow an account','Discipline is a skill — it is trained, not born','Your journal is your psychological mirror — use it'],
-        lessons_data:[
-            {n:'01',t:'The Psychology of Trading',
-             body:`<p>Studies consistently show that <strong>90% of trading success is psychology</strong>. You can have the best strategy in the world and still lose if your mindset is wrong.</p>
-             <p style="margin-top:10px">The two primary emotions that destroy traders:</p>
-             <ul style="list-style:none;margin-top:6px;display:flex;flex-direction:column;gap:5px">
-             <li><strong>Fear</strong> — causes you to exit winners too early, skip valid setups, reduce position sizes after losses</li>
-             <li><strong>Greed</strong> — causes you to hold losers too long, overtrade, increase position sizes after wins</li>
-             </ul>
-             <p style="margin-top:10px">The solution is not to eliminate emotions — it's to <strong>follow your rules regardless of how you feel</strong>.</p>`,
-             tags:['Psychology','Mindset']},
-            {n:'02',t:'FOMO — Fear of Missing Out',
-             body:`<p>FOMO is responsible for more losses than any technical mistake. It pushes traders to chase price after a move has already happened.</p>
-             <p style="margin-top:10px"><strong>FOMO trade characteristics:</strong></p>
-             <ul style="list-style:none;margin-top:6px;display:flex;flex-direction:column;gap:5px">
-             <li>→ Entering after a large move is already underway</li>
-             <li>→ Poor R:R because entry is too late</li>
-             <li>→ No clear SL level (just placed randomly)</li>
-             <li>→ Based on emotion, not your strategy criteria</li>
-             </ul>
-             <p style="margin-top:10px"><strong>The cure</strong>: Write "The market is always there. Another setup is coming." on a sticky note near your screen.</p>`,
-             tags:['Psychology','FOMO'],warn:'If you miss a setup, move on. Never chase. The next setup is just around the corner.'},
-            {n:'03',t:'Revenge Trading',
-             body:`<p>Revenge trading is placing a trade immediately after a loss with the goal of "winning it back" — driven by anger or frustration rather than logic.</p>
-             <p style="margin-top:10px">The revenge trade pattern:</p>
-             <ul style="list-style:none;margin-top:6px;display:flex;flex-direction:column;gap:5px">
-             <li>1. Take a loss → feel angry/frustrated</li>
-             <li>2. Open a new trade immediately to recover</li>
-             <li>3. Bigger position size than normal</li>
-             <li>4. No valid setup — just emotional</li>
-             <li>5. Take a second, larger loss</li>
-             <li>6. Repeat until account is damaged</li>
-             </ul>
-             <p style="margin-top:10px"><strong>The rule</strong>: After a loss, <strong>stop for at least 30 minutes</strong>. Walk away. Review the trade objectively. Then decide if you trade again.</p>`,
-             tags:['Psychology','Discipline']},
-            {n:'04',t:'Building Discipline & Routine',
-             body:`<p>Discipline is not a personality trait you either have or don't. It is a <strong>skill you build with systems and habits</strong>.</p>
-             <p style="margin-top:10px"><strong>The professional trading routine:</strong></p>
-             <ul style="list-style:none;margin-top:6px;display:flex;flex-direction:column;gap:6px">
-             <li>→ <strong>Morning (before market open)</strong>: Check economic calendar, mark key levels, identify potential setups on H4/Daily</li>
-             <li>→ <strong>During session</strong>: Monitor only your watchlist pairs. No random browsing.</li>
-             <li>→ <strong>After session</strong>: Record all trades in journal (win or lose)</li>
-             <li>→ <strong>Weekly Sunday</strong>: Review journal, plan the week, identify patterns</li>
-             </ul>`,
-             formula:'Non-negotiable daily rules:\n✓ Check calendar before trading\n✓ Only trade setups that match strategy\n✓ Set SL BEFORE entering\n✓ Never move SL against you\n✓ Journal every trade same day',
-             tags:['Discipline','Routine']},
-            {n:'05',t:'The Long Game — Building Wealth',
-             body:`<p>Professional trading is a marathon, not a sprint. The traders who succeed long-term think in months and years, not days and weeks.</p>
-             <p style="margin-top:10px"><strong>Realistic expectations:</strong></p>
-             <ul style="list-style:none;margin-top:6px;display:flex;flex-direction:column;gap:5px">
-             <li>→ Year 1: Learn the craft. Expect small losses or break-even. This is your tuition.</li>
-             <li>→ Year 2: Consistent small gains. 2-5% monthly is excellent.</li>
-             <li>→ Year 3+: Scale position sizes as confidence and edge are proven.</li>
-             </ul>
-             <p style="margin-top:10px"><strong>Compound growth reality</strong>: $1,000 at 5% monthly for 3 years = <strong>$5,891</strong>. At 10% monthly = <strong>$34,711</strong>. Consistency > home runs.</p>`,
-             formula:'The path:\nStudy (6mo) → Demo (3mo) → Live micro (6mo) → Scale\n\nCompound 5%/mo on $1,000:\nYear 1: $1,796\nYear 2: $3,225\nYear 3: $5,792',
-             tags:['Mindset','Growth'],tip:'The goal in year 1 is not profit. The goal is to still be in the game at year 2 with lessons learned, not a blown account.'}
-        ]
-    }
-];
+// ═══════════════════════════════════════════════════
+//  ACADEMY CONTENT DATA (Loaded securely via /api/academy-lessons)
+// ═══════════════════════════════════════════════════
+let CHAPTERS = [];
 
 // ═══════════════════════════════════════════════════
 //  STATE
@@ -862,6 +519,37 @@ function saveState() {
 //  AUTH
 // ═══════════════════════════════════════════════════
 let currentTheme = localStorage.getItem('tb-ac-theme') || 'dark';
+
+// ── STEP FLOW ──
+let selectedMarket = 'forex';
+let selectedLevel  = 'beginner';
+
+function selectMarket(market) {
+    selectedMarket = market;
+    document.querySelectorAll('.market-choice-btn').forEach(b => b.classList.remove('selected'));
+    if (event && event.currentTarget) event.currentTarget.classList.add('selected');
+    const q = market === 'forex'
+        ? 'ከዚህ በፊት ስለ Forex Trading ምን ያህል ዕውቀት አለዎት?'
+        : 'ከዚህ በፊት ስለ Crypto Trading ምን ያህል ዕውቀት አለዎት?';
+    document.getElementById('knowledgeQ').textContent = q;
+    document.getElementById('marketSelectedMsg').textContent =
+        market === 'forex' ? '✅ የForex ገበያን ለመማር መርጠዋል።' : '✅ የCrypto ገበያን ለመማር መርጠዋል።';
+    setTimeout(() => {
+        document.getElementById('step1').style.display = 'none';
+        document.getElementById('step2').style.display = 'block';
+    }, 250);
+}
+
+function selectLevel(level) {
+    selectedLevel = level;
+    document.querySelectorAll('.level-choice-btn').forEach(b => b.classList.remove('selected'));
+    if (event && event.currentTarget) event.currentTarget.classList.add('selected');
+    try { localStorage.setItem('tb-ac-level', level); localStorage.setItem('tb-ac-market', selectedMarket); } catch(e) {}
+    setTimeout(() => {
+        document.getElementById('step2').style.display = 'none';
+        document.getElementById('step3').style.display = 'block';
+    }, 250);
+}
 
 function togglePw() {
     const i = document.getElementById('pwInput');
@@ -902,7 +590,8 @@ async function doLogin() {
         // Store token in sessionStorage (cleared when tab closes)
         sessionStorage.setItem('tb-academy-token', data.token);
         sessionStorage.setItem('tb-academy-buyer', data.buyer || 'Student');
-        openAcademy(data.buyer || 'Student');
+        await openAcademy(data.buyer || 'Student');
+        btn.disabled = false; txt.textContent = 'Enter Academy';
     } catch(e) {
         showGateError('Connection error. Please check your internet and try again.');
         btn.disabled = false; txt.textContent = 'Enter Academy';
@@ -919,7 +608,10 @@ async function verifyStoredToken() {
             body: JSON.stringify({ token })
         });
         const data = await res.json();
-        if (data.valid) { openAcademy(data.buyer || sessionStorage.getItem('tb-academy-buyer') || 'Student'); return true; }
+        if (data.valid) {
+            await openAcademy(data.buyer || sessionStorage.getItem('tb-academy-buyer') || 'Student');
+            return true;
+        }
     } catch(e) {}
     return false;
 }
@@ -927,6 +619,7 @@ async function verifyStoredToken() {
 function doLogout() {
     sessionStorage.removeItem('tb-academy-token');
     sessionStorage.removeItem('tb-academy-buyer');
+    CHAPTERS = [];
     document.getElementById('academy').style.display = 'none';
     document.getElementById('gate').style.display = 'flex';
     document.getElementById('pwInput').value = '';
@@ -935,11 +628,37 @@ function doLogout() {
 // ═══════════════════════════════════════════════════
 //  ACADEMY UI
 // ═══════════════════════════════════════════════════
-function openAcademy(buyer) {
+async function openAcademy(buyer) {
     document.getElementById('gate').style.display = 'none';
     document.getElementById('academy').style.display = 'block';
     document.getElementById('buyerName').textContent = buyer;
     applyTheme(currentTheme);
+
+    const token = sessionStorage.getItem('tb-academy-token');
+    if (!CHAPTERS || CHAPTERS.length === 0) {
+        const main = document.getElementById('acMain');
+        if (main) {
+            main.innerHTML = '<div style="text-align:center;padding:80px 20px;color:var(--text2);font-weight:600;"><i class="fas fa-circle-notch fa-spin" style="font-size:2.2rem;color:var(--primary);margin-bottom:14px;display:block;"></i>Loading authorized academy lessons...</div>';
+        }
+        try {
+            const res = await fetch('/api/academy-lessons', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token })
+            });
+            const data = await res.json();
+            if (data.valid && Array.isArray(data.chapters)) {
+                CHAPTERS = data.chapters;
+            } else {
+                doLogout();
+                showGateError(data.error || 'Authorization expired. Please re-enter your access password.');
+                return;
+            }
+        } catch (e) {
+            console.error('Failed to load lessons', e);
+        }
+    }
+
     buildSidebar();
     loadChapter('ch1');
     updateProgress();

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="am" data-theme="dark">
 <head>
 <meta charset="UTF-8">
@@ -834,61 +834,8 @@
 </div>
 </section>
 
-<section id="quiz" class="section quiz-section">
-<div class="container">
-    <div class="quiz-landing" id="quizLanding">
-        <div class="quiz-glow"></div>
-        <div class="quiz-ai-avatar"><div class="quiz-ring r1"></div><div class="quiz-ring r2"></div><div class="quiz-face"><span class="quiz-eye"></span><span class="quiz-eye"></span><div class="quiz-mouth"></div><div class="quiz-scan-line"></div></div></div>
-        <div class="quiz-brand">TAG BRIDGE</div>
-        <h2>የትሬዲንግ እውቀት ፈተና</h2>
-        <p>መጽሐፉን አንብበዋል? ፈተናውን ለመጀመር የ Academy Password ያስገቡ።</p>
-
-        <!-- Password gate -->
-        <div style="margin:16px auto;max-width:360px;text-align:left;">
-            <div style="background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.25);border-radius:14px;padding:18px 20px;">
-                <p style="color:#a5b4fc;font-size:.82rem;font-weight:700;margin-bottom:8px;">
-                    <i class="fas fa-lock"></i> የ Academy Password ያስገቡ
-                </p>
-                <p style="color:#8b949e;font-size:.76rem;margin-bottom:12px;">
-                    መጽሐፉን ሲገዙ የሚሰጥዎትን Password ያስገቡ።
-                </p>
-                <div style="display:flex;gap:8px;margin-bottom:8px;">
-                    <input type="password" id="quizPasswordInput"
-                        placeholder="TB-XXXX-XXXX-XXXX"
-                        style="flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(99,102,241,.3);border-radius:10px;padding:10px 14px;color:#e6edf3;font-size:.88rem;font-family:inherit;"
-                        onkeydown="if(event.key==='Enter')checkQuizPassword()">
-                    <button onclick="checkQuizPassword()"
-                        style="background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-weight:800;cursor:pointer;font-size:.85rem;">
-                        ✓ ግባ
-                    </button>
-                </div>
-                <p id="quizPwError" style="color:#ef4444;font-size:.74rem;margin-bottom:8px;display:none;">
-                    ❌ የይለፍ ቃሉ ትክክል አይደለም። መጽሐፉን ሲገዙ Password ይሰጥዎታል።
-                </p>
-                <p style="color:#8b949e;font-size:.72rem;text-align:center;">
-                    Password የለዎትም? →
-                    <a href="#" onclick="window.open('https://t.me/tagbridge123?text='+encodeURIComponent('ሰላም! የፎሬክስ ትሬዲንግ መማሪያ መጽሃፍ በ 450 ብር ማዘዝ እፈልጋለሁ።'),'_blank','noopener,noreferrer');return false;"
-                       style="color:#6366f1;font-weight:700;text-decoration:none;">መጽሐፉን ይዘዙ →</a>
-                </p>
-            </div>
-        </div>
-
-        <button class="btn-primary" onclick="launchQuiz()" id="quizStartBtn" style="display:none;margin-top:8px;">
-            <i class="fas fa-play"></i> ፈተናውን ጀምር
-        </button>
-    </div>
-    <div class="quiz-box" id="quizBox" style="display:none;">
-        <button class="quiz-close-top" onclick="retryQuiz()">✕ ዝጋ</button>
-        <div class="quiz-header">
-            <div class="quiz-bot-pill"><div class="quiz-bot-dot"></div> TAG BRIDGE AI BOT</div>
-            <div class="quiz-progress"><div class="quiz-progress-fill" id="quizProgressBar"></div></div>
-            <div class="quiz-score"><span class="qs-correct" id="qscCorrect">0</span> | <span class="qs-wrong" id="qscWrong">0</span> | <span id="qscTotal">0</span></div>
-        </div>
-        <div class="quiz-chat" id="quizChat"></div>
-        <div class="quiz-opts" id="quizOptions"></div>
-    </div>
-</div>
-</section>
+<!-- CONTACT -->
+<section id="contact" class="section contact-section">
 
 <!-- CONTACT -->
 <section id="contact" class="section contact-section">
