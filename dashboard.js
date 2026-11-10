@@ -1,4 +1,4 @@
-﻿/**
+/**
  * TAG BRIDGE — Trading Ecosystem Dashboard
  * dashboard.js v2.0
  * Uses: CoinGecko (free), Alternative.me (Fear & Greed), TradingView (free widgets)
@@ -3109,78 +3109,6 @@ function demoRenderAll() {
         if (openEl) {
             openEl.textContent = (totalOpen >= 0 ? '+$' : '-$') + Math.abs(totalOpen).toFixed(2);
             openEl.className   = 'dma-card-val ' + (totalOpen >= 0 ? 'up' : 'down');
-        }
-    }
-
-    // History
-    const histWrap = document.getElementById('demoHistoryWrap');
-    const histBody = document.getElementById('demoHistoryBody');
-    if (state.history.length && histWrap) {
-        histWrap.style.display = '';
-        if (histBody) histBody.innerHTML = state.history.slice(0, 50).map((t, i) => `
-            <tr>
-                <td>${i + 1}</td>
-                <td><b>${t.sym}</b></td>
-                <td class="${t.dir === 'BUY' ? 'dir-buy' : 'dir-sell'}">${t.dir}</td>
-                <td>${fmtDemoPrice(t.entry)}</td>
-                <td>${fmtDemoPrice(t.exit)}</td>
-                <td>${t.lot}</td>
-                <td class="${t.pnl >= 0 ? 'win' : 'loss'}">${t.pnl >= 0 ? '+$' : '-$'}${Math.abs(t.pnl).toFixed(2)}</td>
-                <td class="${t.result === 'WIN' ? 'win' : 'loss'}">${t.result === 'WIN' ? '✅' : '❌'}</td>
-                <td>${new Date(t.openTime).toLocaleDateString()}</td>
-            </tr>`).join('');
-    }
-}
-    const state = demoLoad();
-
-    // Balance bar
-    const totalPLEl = document.getElementById('demoTotalPL');
-    const balEl     = document.getElementById('demoBalance');
-    const countEl   = document.getElementById('demoTradeCount');
-    if (balEl)     balEl.textContent     = '$' + state.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    if (totalPLEl) {
-        totalPLEl.textContent = (state.totalPL >= 0 ? '+$' : '-$') + Math.abs(state.totalPL).toFixed(2);
-        totalPLEl.className   = 'demo-bal-val ' + (state.totalPL >= 0 ? 'up' : 'down');
-    }
-    if (countEl) countEl.textContent = state.tradeCount;
-
-    // Open positions
-    const posTable  = document.getElementById('demoPosTable');
-    const openCount = document.getElementById('demoOpenCount');
-    if (openCount) openCount.textContent = state.positions.length;
-
-    if (!state.positions.length) {
-        if (posTable) posTable.innerHTML = '<div class="demo-empty"><i class="fas fa-chart-line"></i><br>No open trades — place your first trade!</div>';
-        const openPLEl = document.getElementById('demoOpenPL');
-        if (openPLEl) { openPLEl.textContent = '$0.00'; openPLEl.className = 'demo-bal-val'; }
-    } else {
-        let totalOpen = 0;
-        const rows = state.positions.map(pos => {
-            const price = demoGetPrice(pos.sym) || pos.entry;
-            const pnl   = demoCalcPnL(pos, price);
-            totalOpen  += pnl;
-            const up    = pnl >= 0;
-            return `<div class="demo-pos-row">
-                <div class="demo-pos-info">
-                    <span class="demo-pos-pair">${pos.sym}</span>
-                    <span class="demo-pos-dir ${pos.dir.toLowerCase()}">${pos.dir === 'BUY' ? '▲' : '▼'} ${pos.dir}</span>
-                    <span class="demo-pos-detail">${pos.lot} lots @ ${fmtDemoPrice(pos.entry)}</span>
-                    ${pos.sl ? `<span class="demo-pos-sl">SL ${fmtDemoPrice(pos.sl)}</span>` : ''}
-                    ${pos.tp ? `<span class="demo-pos-tp">TP ${fmtDemoPrice(pos.tp)}</span>` : ''}
-                </div>
-                <div class="demo-pos-right">
-                    <span class="demo-pos-pnl ${up ? 'up' : 'down'}">${up ? '+' : ''}$${pnl.toFixed(2)}</span>
-                    <span class="demo-pos-price">@ ${fmtDemoPrice(price)}</span>
-                    <button class="demo-close-btn" onclick="demoClosePosition('${pos.id}')">✕ Close</button>
-                </div>
-            </div>`;
-        }).join('');
-        if (posTable) posTable.innerHTML = rows;
-
-        const openPLEl = document.getElementById('demoOpenPL');
-        if (openPLEl) {
-            openPLEl.textContent = (totalOpen >= 0 ? '+$' : '-$') + Math.abs(totalOpen).toFixed(2);
-            openPLEl.className   = 'demo-bal-val ' + (totalOpen >= 0 ? 'up' : 'down');
         }
     }
 
