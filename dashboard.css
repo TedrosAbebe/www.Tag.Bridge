@@ -1114,7 +1114,7 @@ body {
     .market-cards-grid { grid-template-columns: repeat(2, 1fr); }
     .dashboard-row { grid-template-columns: 1fr; }
     .products-grid { grid-template-columns: 1fr; }
-    .contact-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; }
+    .contact-grid { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
     .contact-card { padding: 12px 8px !important; }
 
     .hero-title { font-size: 2.4rem; }
@@ -1131,7 +1131,7 @@ body {
 
 @media (max-width: 480px) {
     .market-cards-grid { grid-template-columns: 1fr 1fr; }
-    .contact-grid { grid-template-columns: 1fr 1fr 1fr !important; gap: 6px !important; }
+    .contact-grid { grid-template-columns: 1fr 1fr !important; gap: 6px !important; }
     .contact-card { padding: 10px 6px !important; }
     .contact-card h3 { font-size: .68rem !important; }
     .contact-card p { display: none !important; }
