@@ -368,12 +368,12 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
                 ለመጀመር ከታች የሚማሩትን የገበያ ዓይነት ይምረጡ።
             </p>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
-                <button class="market-choice-btn" onclick="selectMarket('forex')">
+                <button class="market-choice-btn" id="mBtn-forex" onclick="selectMarket('forex',this)">
                     <i class="fas fa-chart-line" style="font-size:1.4rem;margin-bottom:6px;display:block;"></i>
                     <strong>Forex Market</strong>
                     <small>ምንዛሬ ትሬዲንግ</small>
                 </button>
-                <button class="market-choice-btn" onclick="selectMarket('crypto')">
+                <button class="market-choice-btn" id="mBtn-crypto" onclick="selectMarket('crypto',this)">
                     <i class="fab fa-bitcoin" style="font-size:1.4rem;margin-bottom:6px;display:block;"></i>
                     <strong>Crypto Market</strong>
                     <small>ክሪፕቶ ትሬዲንግ</small>
@@ -381,28 +381,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
             </div>
         </div>
 
-        <!-- STEP 2: Knowledge Level -->
+        <!-- STEP 2: Password (after market selection) -->
         <div id="step2" style="display:none;">
-            <p id="marketSelectedMsg" class="gate-sub" style="font-size:.88rem;margin-bottom:16px;color:var(--green);font-weight:700;"></p>
-            <h2 class="gate-title" style="font-size:1.1rem;margin-bottom:16px;" id="knowledgeQ">
-                ከዚህ በፊት ስለ Forex Trading ምን ያህል ዕውቀት አለዎት?
-            </h2>
-            <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;">
-                <button class="level-choice-btn" onclick="selectLevel('beginner')">
-                    <i class="fas fa-seedling"></i> ምንም ዕውቀት የለኝም <small>(Beginner)</small>
-                </button>
-                <button class="level-choice-btn" onclick="selectLevel('intermediate')">
-                    <i class="fas fa-chart-simple"></i> ትንሽ ዕውቀት አለኝ <small>(Intermediate)</small>
-                </button>
-                <button class="level-choice-btn" onclick="selectLevel('advanced')">
-                    <i class="fas fa-crown"></i> ጥሩ ዕውቀት አለኝ <small>(Advanced)</small>
-                </button>
-            </div>
-        </div>
-
-        <!-- STEP 3: Password -->
-        <div id="step3" style="display:none;">
-            <p class="gate-sub" style="font-size:.84rem;line-height:1.7;margin-bottom:20px;">
+            <p id="marketSelectedMsg" style="font-size:.88rem;margin-bottom:14px;color:var(--green);font-weight:700;text-align:center;"></p>
+            <p class="gate-sub" style="font-size:.84rem;line-height:1.7;margin-bottom:18px;">
                 እባክዎ ትምህርቱን ከመጀመራችን በፊት የTrading መጽሐፍ ሲገዙ
                 የተላከልዎትን Password ያስገቡ።
             </p>
@@ -416,27 +398,42 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
                     <i class="fas fa-eye" id="pwEyeIcon"></i>
                 </button>
             </div>
-
             <div class="gate-error" id="gateError">
                 <i class="fas fa-circle-xmark"></i>
                 <span id="gateErrorMsg">ያስገቡት Password ትክክል አይደለም። እባክዎ ትክክለኛውን Password ያስገቡ ወይም የTag Bridge Support ያግኙ።</span>
             </div>
-
             <button class="gate-btn" id="loginBtn" onclick="doLogin()">
                 <i class="fas fa-unlock-keyhole"></i>
                 <span id="loginBtnTxt">ወደ Academy ግባ</span>
             </button>
-
             <div style="text-align:center;margin-top:12px;">
                 <a href="https://t.me/tagbridge123" target="_blank" rel="noopener noreferrer"
                    style="display:inline-flex;align-items:center;gap:7px;background:#229ED9;color:#fff;border-radius:50px;padding:8px 20px;font-size:.8rem;font-weight:700;text-decoration:none;">
                     <i class="fab fa-telegram"></i> Support — @tagbridge123
                 </a>
             </div>
-
             <div class="gate-footer" style="margin-top:14px;">
                 <p>Password የለዎትም? <a href="https://t.me/tagbridge123" target="_blank">መጽሐፍ ይዘዙ →</a></p>
                 <p style="margin-top:6px"><a href="/"><i class="fas fa-arrow-left"></i> Back to Tag Bridge</a></p>
+            </div>
+        </div>
+
+        <!-- STEP 3: Knowledge Level (shown AFTER successful login, BEFORE opening lessons) -->
+        <div id="step3" style="display:none;">
+            <p id="marketSelectedMsg2" style="font-size:.88rem;margin-bottom:12px;color:var(--green);font-weight:700;text-align:center;"></p>
+            <h2 class="gate-title" style="font-size:1.1rem;margin-bottom:16px;" id="knowledgeQ">
+                ከዚህ በፊት ስለ Forex Trading ምን ያህል ዕውቀት አለዎት?
+            </h2>
+            <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:4px;">
+                <button class="level-choice-btn" onclick="selectLevel('beginner',this)">
+                    <i class="fas fa-seedling"></i> ምንም ዕውቀት የለኝም <small>(Beginner)</small>
+                </button>
+                <button class="level-choice-btn" onclick="selectLevel('intermediate',this)">
+                    <i class="fas fa-chart-simple"></i> ትንሽ ዕውቀት አለኝ <small>(Intermediate)</small>
+                </button>
+                <button class="level-choice-btn" onclick="selectLevel('advanced',this)">
+                    <i class="fas fa-crown"></i> ጥሩ ዕውቀት አለኝ <small>(Advanced)</small>
+                </button>
             </div>
         </div>
     </div>
