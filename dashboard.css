@@ -5173,38 +5173,35 @@ img, iframe, canvas, video, table { max-width: 100% !important; }
     animation: fadeUp .2s ease;
 }
 
-/* Mobile compact */
+/* Mobile compact — KEEP 2-column layout like desktop */
 @media (max-width: 768px) {
-    .bk-top-row { grid-template-columns: 1fr !important; gap: 12px !important; }
-    .bk-top-row .bk-premium { flex-direction: row !important; padding: 14px !important; gap: 12px !important; }
-    .bk-top-row .bk-premium-left { min-width: 90px !important; flex-shrink: 0; }
-    /* Fill the empty space next to badge — make badges row */
-    .bk-top-row .bk3d-badge-wrap { flex-direction: row !important; flex-wrap: wrap !important; gap: 4px !important; }
-    .bk3d { width: 86px !important; height: 118px !important; }
-    .bk-bundle-inner { grid-template-columns: 1fr !important; gap: 12px !important; }
-    .pdf-sec { padding: 20px 10px 28px !important; }
-    .pdf-hdr  { margin-bottom: 16px !important; }
-    .bk-pp-num { font-size: 1.5rem !important; }
-    .bk-premium-title { font-size: .92rem !important; }
-    .bk-premium-desc  { font-size: .76rem !important; }
-    .bk-premium-footer { flex-wrap: wrap !important; gap: 8px !important; }
-    .bk-premium-buy { padding: 8px 14px !important; font-size: .78rem !important; }
-    .bk-view-btn    { padding: 7px 12px !important; font-size: .74rem !important; }
+    /* Keep 2 columns on mobile — same as desktop */
+    .bk-top-row { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+    .bk-top-row .bk-premium { flex-direction: column !important; padding: 10px !important; gap: 8px !important; }
+    .bk-top-row .bk-premium-left { flex-direction: row !important; align-items: flex-start !important; gap: 6px !important; min-width: 0 !important; width: 100% !important; }
+    .bk3d { width: 60px !important; height: 82px !important; }
+    .bk3d-cover-title { font-size: .5rem !important; }
+    .bk3d-cover-sub { font-size: .44rem !important; }
+    .bk3d-logo { font-size: .5rem !important; }
+    .bk3d-badge-wrap { flex-direction: column !important; align-items: flex-start !important; gap: 3px !important; }
+    .bk3d-badge, .bk3d-ebadge { font-size: .52rem !important; padding: 2px 6px !important; }
+    .bk-premium-title { font-size: .78rem !important; margin-bottom: 2px !important; }
+    .bk-premium-sub   { font-size: .65rem !important; margin-bottom: 4px !important; }
+    .bk-premium-desc  { font-size: .68rem !important; line-height: 1.4 !important; margin-bottom: 6px !important; }
+    .bk-pp-num { font-size: 1.3rem !important; }
+    .bk-pp-cur { font-size: .66rem !important; }
+    .bk-premium-footer { flex-direction: column !important; gap: 6px !important; padding-top: 8px !important; }
+    .bk-premium-footer > div { display: flex !important; gap: 5px !important; width: 100% !important; }
+    .bk-premium-buy { width: 100% !important; justify-content: center !important; padding: 8px 0 !important; font-size: .74rem !important; }
+    .bk-view-btn    { width: 100% !important; justify-content: center !important; padding: 7px 0 !important; font-size: .7rem !important; }
+    /* Bundle full-width below */
+    .bk-bundle-inner { grid-template-columns: 1fr !important; gap: 10px !important; }
+    .pdf-sec { padding: 20px 8px 28px !important; }
+    .pdf-hdr  { margin-bottom: 14px !important; }
+    .bk-bundle-left h3 { font-size: .9rem !important; }
 }
-@media (max-width: 480px) {
-    /* On very small phones: stack card fully vertical */
-    .bk-top-row .bk-premium { flex-direction: column !important; }
-    .bk-top-row .bk-premium-left {
-        flex-direction: row !important;
-        align-items: center !important;
-        gap: 12px !important;
-        min-width: unset !important;
-        width: 100% !important;
-    }
-    /* Show badges inline with book on the right of it */
-    .bk-top-row .bk3d-badge-wrap {
-        flex-direction: column !important;
-        align-items: flex-start !important;
-    }
-    .bk-premium-buy, .bk-view-btn { flex: 1; justify-content: center !important; }
+@media (max-width: 360px) {
+    .bk-top-row { gap: 6px !important; }
+    .bk-premium-title { font-size: .72rem !important; }
+    .bk3d { width: 52px !important; height: 72px !important; }
 }
