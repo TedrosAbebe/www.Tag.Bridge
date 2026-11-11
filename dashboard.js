@@ -2621,6 +2621,91 @@ function btRenderTable(trades) {
 let _btLastTrades = [];
 
 function runBacktest() {
+    // Run immediately — show results first, then lock after 8 seconds
+    btRunActual();
+}
+
+function btLockAfterDelay() {
+    // Show results for 8 seconds, then overlay password gate
+    let secs = 8;
+    const countEl = document.getElementById('btLockCountdown');
+    if (countEl) countEl.textContent = `${secs}s`;
+
+    const timer = setInterval(() => {
+        secs--;
+        if (countEl) countEl.textContent = `${secs}s`;
+        if (secs <= 0) {
+            clearInterval(timer);
+            btShowPasswordGate();
+        }
+    }, 1000);
+}
+
+function btShowPasswordGate() {
+    let overlay = document.getElementById('btPasswordOverlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'btPasswordOverlay';
+        overlay.style.cssText = `
+            position:fixed;inset:0;z-index:9000;
+            background:rgba(0,0,0,.75);backdrop-filter:blur(8px);
+            display:flex;align-items:center;justify-content:center;padding:20px;
+        `;
+        overlay.innerHTML = `
+            <div style="background:var(--bg-secondary,#161b22);border:1px solid rgba(99,102,241,.4);border-radius:20px;padding:32px 28px;max-width:400px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.6);">
+                <div style="font-size:2.5rem;margin-bottom:10px;">🔐</div>
+                <h3 style="font-size:1.1rem;font-weight:800;margin-bottom:8px;color:var(--text-primary,#e6edf3);">Backtest ሙሉ ውጤት ለማየት</h3>
+                <p style="font-size:.84rem;color:#8b949e;line-height:1.6;margin-bottom:20px;">
+                    የTrading መጽሐፍ ሲገዙ የሚሰጥዎትን Password ያስገቡ።<br>
+                    <span style="color:#10b981;font-size:.78rem;">✅ ፈቃድ ካለዎት — ሁሉንም ውጤቶች ያለምንም ገደብ ይጠቀሙ!</span>
+                </p>
+                <div style="position:relative;margin-bottom:12px;">
+                    <input type="password" id="btPwInput" placeholder="Password ያስገቡ"
+                        style="width:100%;background:var(--bg-tertiary,#0d1117);border:1px solid rgba(99,102,241,.3);border-radius:10px;padding:11px 14px;color:var(--text-primary,#e6edf3);font-size:.9rem;font-family:inherit;outline:none;box-sizing:border-box;"
+                        onkeydown="if(event.key==='Enter')btCheckPassword()">
+                </div>
+                <div id="btPwError" style="display:none;color:#ef4444;font-size:.78rem;margin-bottom:10px;">
+                    ❌ Password ትክክል አይደለም። እባክዎ እንደገና ያስገቡ።
+                </div>
+                <button onclick="btCheckPassword()" style="width:100%;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;border-radius:10px;padding:12px;font-weight:800;font-size:.9rem;cursor:pointer;margin-bottom:12px;">
+                    <i class="fas fa-unlock-keyhole"></i> ✓ ያረጋግጡ
+                </button>
+                <a href="https://t.me/tagbridge123" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#229ED9;color:#fff;border-radius:50px;padding:8px 20px;font-size:.8rem;font-weight:700;text-decoration:none;margin-bottom:10px;">
+                    <i class="fab fa-telegram"></i> Password ለማግኘት — መጽሐፍ ይዘዙ
+                </a>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+    }
+    overlay.style.display = 'flex';
+    document.getElementById('btPwError').style.display = 'none';
+    const inp = document.getElementById('btPwInput');
+    if (inp) { inp.value = ''; inp.focus(); }
+}
+
+async function btCheckPassword() {
+    const pw = (document.getElementById('btPwInput')?.value || '').trim();
+    if (!pw) return;
+    try {
+        const res = await fetch('/api/academy-login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password: pw })
+        });
+        const data = await res.json();
+        if (res.ok && data.token) {
+            // Store unlock in session so they don't need to re-enter
+            sessionStorage.setItem('bt-unlocked', '1');
+            document.getElementById('btPasswordOverlay').style.display = 'none';
+        } else {
+            document.getElementById('btPwError').style.display = 'block';
+        }
+    } catch(e) {
+        document.getElementById('btPwError').style.display = 'block';
+    }
+}
+
+function btRunActual() {
     const btn = document.querySelector('.bt-run-btn');
     btn.disabled = true;
     btn.innerHTML = '<div class="bt-spinner"></div> Running...';
@@ -2671,6 +2756,11 @@ function runBacktest() {
             const resultsEl = document.getElementById('btResults');
             resultsEl.style.display = 'block';
             resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            // Lock with password after 8 seconds (unless already unlocked this session)
+            if (!sessionStorage.getItem('bt-unlocked')) {
+                btLockAfterDelay();
+            }
 
             btRenderStats(stats, balance);
             btRenderTable(trades);
@@ -2847,6 +2937,18 @@ function demoToggleSlTp() {
     const isHidden = fields.style.display === 'none';
     fields.style.display = isHidden ? 'grid' : 'none';
     toggle.classList.toggle('active', isHidden);
+}
+
+// ── Book details toggle ──
+function bkToggle(id, btn) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const isOpen = el.style.display !== 'none';
+    el.style.display = isOpen ? 'none' : 'block';
+    btn.classList.toggle('open', !isOpen);
+    btn.innerHTML = isOpen
+        ? '<i class="fas fa-list"></i> ዝርዝር'
+        : '<i class="fas fa-chevron-up"></i> ዝጋ';
 }
 
 // ── Chart Welcome Text — draggable, editable, localStorage ──
