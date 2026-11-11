@@ -658,60 +658,68 @@ const CALCS = {
         title:'Pip Value Calculator',
         desc:'Monetary value of 1 pip based on lot size and instrument.',
         fields:[
-            {id:'pv-type', label:'Instrument',                      type:'select', opts:['Forex (xxx/USD)','Forex (xxx/JPY)','Forex (EUR/USD)','Forex (GBP/USD)','Gold (XAU/USD)','Silver (XAG/USD)']},
+            {id:'pv-type', label:'Instrument',                      type:'select', opts:['Forex (EUR/USD) — $10/pip','Forex (GBP/USD) — $10/pip','Forex (xxx/USD) — $10/pip','Forex (xxx/JPY) — dynamic','Gold (XAU/USD) — $1/pip','Silver (XAG/USD) — $5/pip']},
             {id:'pv-lot',  label:'Lot Size',                        type:'number', ph:'1.0', step:'0.01'},
-            {id:'pv-px',   label:'Current Price (JPY pairs only)',   type:'number', ph:'150.00', step:'any'}
+            {id:'pv-px',   label:'Current Price (JPY pairs — required)', type:'number', ph:'150.00', step:'any'}
         ],
         fn(v) {
-            const lot = +v['pv-lot'] || 1;
-            const px  = +v['pv-px']  || 0;
+            const lot  = +v['pv-lot'] || 1;
+            const px   = +v['pv-px']  || 0;
             const type = v['pv-type'] || '';
             let pipPerStdLot, pipSize, contractSize, note;
 
             if(type.includes('JPY')) {
                 // JPY pairs: pip = 0.01, contract = 100,000 units
-                // Pip value in USD = (pip_size / current_price) × contract_size
-                // Requires current price for conversion from JPY to USD
-                if(!px || px <= 0) return [{v:'⚠️ Please enter Current Price for JPY pairs', l:'Warning'}];
-                pipSize       = 0.01;
-                contractSize  = 100000;
-                pipPerStdLot  = (pipSize / px) * contractSize;
-                note          = 'JPY pair: pip=$' + pipPerStdLot.toFixed(4) + ' @ ' + px;
+                // Pip value USD = (0.01 / current_JPY_price) × 100,000
+                // e.g. USD/JPY @ 150: (0.01/150) × 100,000 = $6.667
+                if(!px || px <= 0) {
+                    return [{v:'⚠️ Please enter Current Price for JPY pairs (e.g. 150.00)', l:'Required Field'}];
+                }
+                pipSize      = 0.01;
+                contractSize = 100000;
+                pipPerStdLot = (pipSize / px) * contractSize;
+                note = 'JPY: (0.01 ÷ ' + px + ') × 100,000 = $' + pipPerStdLot.toFixed(4);
+
             } else if(type.includes('Gold')) {
-                // XAU/USD: contract = 100 oz, pip size = $0.01/oz
-                // Pip value = 100 oz × $0.01 = $1.00 per std lot
-                pipSize       = 0.01;
-                contractSize  = 100;   // 100 ounces
-                pipPerStdLot  = contractSize * pipSize;   // = $1.00
-                note          = 'Gold: 100 oz × $0.01 = $1.00/pip/lot';
+                // XAU/USD: 1 std lot = 100 oz, pip increment = $0.01/oz
+                // Pip value = 100 × $0.01 = $1.00
+                pipSize      = 0.01;
+                contractSize = 100;
+                pipPerStdLot = contractSize * pipSize;   // $1.00
+                note = 'Gold: 100 oz × $0.01 = $1.00/pip/lot';
+
             } else if(type.includes('Silver')) {
-                // XAG/USD: broker-standard contract = 5000 oz, tick = $0.001/oz
-                // Pip value = 5000 oz × $0.001 = $5.00 per std lot
-                pipSize       = 0.001;
-                contractSize  = 5000;  // 5000 ounces
-                pipPerStdLot  = contractSize * pipSize;   // = $5.00
-                note          = 'Silver: 5000 oz × $0.001 = $5.00/pip/lot';
+                // XAG/USD: 1 std lot = 5,000 oz, tick = $0.001/oz
+                // Pip value = 5,000 × $0.001 = $5.00
+                pipSize      = 0.001;
+                contractSize = 5000;
+                pipPerStdLot = contractSize * pipSize;   // $5.00
+                note = 'Silver: 5,000 oz × $0.001 = $5.00/pip/lot';
+
             } else {
-                // Standard Forex xxx/USD: pip = 0.0001, contract = 100,000 units
-                // Pip value = 0.0001 × 100,000 = $10.00 (USD quote — no conversion needed)
-                pipSize       = 0.0001;
-                contractSize  = 100000;
-                pipPerStdLot  = pipSize * contractSize;   // = $10.00
-                note          = 'Forex USD quote: $10.00/pip/lot';
+                // All Forex xxx/USD pairs (EUR/USD, GBP/USD, AUD/USD, etc.)
+                // pip = 0.0001, contract = 100,000 units, USD quote — no conversion needed
+                // Pip value = 0.0001 × 100,000 = $10.00
+                pipSize      = 0.0001;
+                contractSize = 100000;
+                pipPerStdLot = pipSize * contractSize;   // $10.00
+                note = 'Forex USD-quote: 0.0001 × 100,000 = $10.00/pip/lot';
             }
 
-            const pipValue  = pipPerStdLot * lot;             // pip value for chosen lot size
-            const miniPip   = pipPerStdLot * 0.1;             // mini lot (0.1)
-            const microPip  = pipPerStdLot * 0.01;            // micro lot (0.01)
+            // All lot sizes based on entered lot and standard fractions
+            const pipValueYourLot = pipPerStdLot * lot;    // your chosen lot size
+            const pipValueStd     = pipPerStdLot * 1.0;    // 1 standard lot
+            const pipValueMini    = pipPerStdLot * 0.10;   // 0.10 mini lot
+            const pipValueMicro   = pipPerStdLot * 0.01;   // 0.01 micro lot
 
             return [
-                {v: '$' + pipValue.toFixed(4),         l:'Pip Value (your ' + lot + ' lot)'},
-                {v: '$' + pipPerStdLot.toFixed(4),     l:'Pip Value (1 std lot)'},
-                {v: '$' + miniPip.toFixed(4),          l:'Pip Value (0.1 mini lot)'},
-                {v: '$' + microPip.toFixed(5),         l:'Pip Value (0.01 micro lot)'},
-                {v: '$' + (pipValue * 10).toFixed(3),  l:'Value of 10 Pips'},
-                {v: '$' + (pipValue * 50).toFixed(3),  l:'Value of 50 Pips'},
-                {v: note,                              l:'Formula Used'}
+                {v: '$' + pipValueYourLot.toFixed(4), l: 'Pip Value (' + lot + ' lot)'},
+                {v: '$' + pipValueStd.toFixed(4),     l: 'Pip Value (1.00 std lot)'},
+                {v: '$' + pipValueMini.toFixed(4),    l: 'Pip Value (0.10 mini lot)'},
+                {v: '$' + pipValueMicro.toFixed(5),   l: 'Pip Value (0.01 micro lot)'},
+                {v: '$' + (pipValueYourLot * 10).toFixed(3),  l: '10 Pips × ' + lot + ' lot'},
+                {v: '$' + (pipValueYourLot * 50).toFixed(3),  l: '50 Pips × ' + lot + ' lot'},
+                {v: note,                              l: 'Formula'}
             ];
         }
     },
