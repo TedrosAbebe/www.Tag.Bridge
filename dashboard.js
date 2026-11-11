@@ -10,7 +10,7 @@
 //  1. THEME & LANGUAGE
 // ══════════════════════════════════════════════
 
-let currentTheme = localStorage.getItem('tb-theme') || 'dark';
+let currentTheme = localStorage.getItem('tb-theme') || 'light';
 let currentLang  = localStorage.getItem('tb-lang')  || 'am';
 
 function applyTheme(t) {

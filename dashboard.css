@@ -894,7 +894,7 @@ body {
 
 .contact-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
     gap: 10px;
 }
 
@@ -4736,6 +4736,11 @@ img, iframe, canvas, video, table { max-width: 100% !important; }
     .chart-selector-row { padding: 0 12px !important; }
     .chart-info-bar { padding: 0 12px !important; }
     .chart-container { border-radius: 0 !important; border-left: none !important; border-right: none !important; }
+
+    /* Contact — 2 columns on mobile */
+    .contact-grid { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+    .contact-card { padding: 10px 8px !important; }
+    .contact-card p { display: none !important; }
 
     /* Hide draggable welcome text on mobile */
     #chartWelcome, #chartWelcomeForm { display: none !important; }
