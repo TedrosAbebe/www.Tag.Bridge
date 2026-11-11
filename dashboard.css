@@ -4610,7 +4610,7 @@ img, iframe, canvas, video { max-width: 100%; }
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: cw-shimmer 5s ease infinite;
+    animation: cw-dimlight 4s ease-in-out infinite;
     text-shadow: none;
     white-space: normal;
     overflow: visible;
@@ -4618,12 +4618,11 @@ img, iframe, canvas, video { max-width: 100%; }
     pointer-events: none;
     letter-spacing: .2px;
     line-height: 1.3;
-    filter: drop-shadow(0 1px 6px rgba(168,200,255,.3));
 }
-@keyframes cw-shimmer {
-    0%   { background-position: 0% 50%; }
-    50%  { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+@keyframes cw-dimlight {
+    0%   { opacity: 0.15; background-position: 0% 50%;   }
+    50%  { opacity: 1;    background-position: 100% 50%; }
+    100% { opacity: 0.15; background-position: 0% 50%;   }
 }
 [data-theme="light"] .chart-welcome-text {
     background: linear-gradient(135deg, #6366f1 0%, #818cf8 40%, #06b6d4 70%, #6366f1 100%);
@@ -4631,7 +4630,6 @@ img, iframe, canvas, video { max-width: 100%; }
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    filter: drop-shadow(0 1px 4px rgba(99,102,241,.25));
 }
 .chart-welcome-edit {
     flex-shrink: 0;
