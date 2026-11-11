@@ -3146,9 +3146,9 @@ function demoSaveBalance() {
     const val   = parseFloat(input?.value);
     if (!val || val < 100) { demoShowToast('Minimum balance is $100'); return; }
     const state     = demoLoad();
-    const oldBal    = state.balance;
     state.balance   = +val.toFixed(2);
-    state.totalPL   = +(state.totalPL + (val - oldBal)).toFixed(2);
+    // Reset totalPL to 0 when manually setting a new balance
+    state.totalPL   = 0;
     demoSave(state);
     document.getElementById('demoBalEditForm').style.display = 'none';
     demoRenderAll();

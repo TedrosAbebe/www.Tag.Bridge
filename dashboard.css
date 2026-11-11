@@ -4829,7 +4829,16 @@ img, iframe, canvas, video, table { max-width: 100% !important; }
 
     /* Journal / tables */
     .trade-table-wrap { overflow-x: auto !important; }
-    .journal-stats-row { grid-template-columns: 1fr 1fr !important; }
+    .journal-stats-row { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+    .jstat-card { padding: 10px 10px !important; border-radius: 10px !important; gap: 6px !important; }
+    .jstat-icon { width: 28px !important; height: 28px !important; font-size: .75rem !important; border-radius: 8px !important; }
+    .jstat-val { font-size: .95rem !important; }
+    .jstat-lbl { font-size: .62rem !important; }
+    .journal-actions { gap: 6px !important; }
+    .journal-actions .btn-primary,
+    .journal-actions .btn-outline { padding: 7px 10px !important; font-size: .74rem !important; }
+    .journal-section .section-title { font-size: 1.1rem !important; }
+    .journal-section .section-sub  { font-size: .72rem !important; }
 
     /* Calculators */
     .calc-tabs { gap: 5px !important; flex-wrap: wrap !important; }

@@ -215,9 +215,9 @@
 <section id="charts" class="section charts-section">
 <div class="container">
     <div class="section-header" style="margin-bottom:12px;">
-        <div class="section-tag-pill"><i class="fas fa-chart-line"></i> LIVE MARKETS</div>
-        <h2 class="section-title"><span class="logo-tag">Tag</span><span class="logo-bridge">Bridge</span> <span class="chart-title-rest">Live Chart</span></h2>
-        <p class="section-sub">Select a category · choose a pair · chart updates instantly</p>
+        <div class="section-tag-pill"><i class="fas fa-chart-line"></i> <span data-am="የገበያ መረጃ" data-en="LIVE MARKETS">LIVE MARKETS</span></div>
+        <h2 class="section-title"><span class="logo-tag">Tag</span><span class="logo-bridge">Bridge</span> <span class="chart-title-rest" data-am="ቀጥታ ቻርት" data-en="Live Chart">Live Chart</span></h2>
+        <p class="section-sub" data-am="የገበያ ዓይነት ይምረጡ · ጥንድ ይምረጡ · ቻርቱን ይመልከቱ" data-en="Select a category · choose a pair · chart updates instantly">Select a category · choose a pair · chart updates instantly</p>
     </div>
 
     <div class="chart-controls">
@@ -281,8 +281,8 @@
 <section id="demo" class="section demo-section">
 <div class="container">
     <div class="section-header" style="margin-bottom:10px;">
-        <h2 class="section-title"><i class="fas fa-wallet"></i> Demo Trading Account</h2>
-        <p class="section-sub">Practice with virtual money — real-time prices, auto-logs to Journal</p>
+        <h2 class="section-title"><i class="fas fa-wallet"></i> <span data-am="የትሬዲንግ መለማመጃ አካውንት" data-en="Demo Trading Account">Demo Trading Account</span></h2>
+        <p class="section-sub" data-am="በምናባዊ ገንዘብ ይለማመዱ፤ ቀጥታ የገበያ ዋጋዎችን ይጠቀሙ፣ የትሬዲንግ ውጤቶችዎንም ይከታተሉ።" data-en="Practice with virtual money — real-time prices, auto-logs to Journal">Practice with virtual money — real-time prices, auto-logs to Journal</p>
     </div>
 
     <!-- ── Account Summary Bar ── -->
@@ -291,7 +291,7 @@
         <div class="dma-card dma-card--balance">
             <div class="dma-card-top">
                 <span class="dma-card-icon">💰</span>
-                <span class="dma-card-lbl">Balance</span>
+                <span class="dma-card-lbl" data-am="ቀሪ ሂሳብ" data-en="Balance">Balance</span>
                 <button class="dma-edit-btn" onclick="demoEditBalance()" title="Edit balance">
                     <i class="fas fa-pen"></i>
                 </button>
@@ -308,7 +308,7 @@
         <div class="dma-card">
             <div class="dma-card-top">
                 <span class="dma-card-icon">📊</span>
-                <span class="dma-card-lbl">Open P&amp;L</span>
+                <span class="dma-card-lbl" data-am="አሁን ያለ ትርፍ/ኪሳራ" data-en="Open P&amp;L">Open P&amp;L</span>
             </div>
             <div class="dma-card-val" id="demoOpenPL">$0.00</div>
         </div>
@@ -316,7 +316,7 @@
         <div class="dma-card">
             <div class="dma-card-top">
                 <span class="dma-card-icon">🏆</span>
-                <span class="dma-card-lbl">Total P&amp;L</span>
+                <span class="dma-card-lbl" data-am="ጠቅላላ ትርፍ/ኪሳራ" data-en="Total P&amp;L">Total P&amp;L</span>
             </div>
             <div class="dma-card-val" id="demoTotalPL">$0.00</div>
         </div>
@@ -324,7 +324,7 @@
         <div class="dma-card">
             <div class="dma-card-top">
                 <span class="dma-card-icon">🔄</span>
-                <span class="dma-card-lbl">Trades</span>
+                <span class="dma-card-lbl" data-am="የተከናወኑ ትሬዶች" data-en="Trades">Trades</span>
             </div>
             <div class="dma-card-val" id="demoTradeCount">0</div>
         </div>
@@ -450,7 +450,6 @@
     <div class="pdf-hdr">
         <div class="pdf-pill"><i class="fas fa-book-open"></i> PDF E-BOOKS</div>
         <h2 class="pdf-htitle">የትሬዲንግ መፅሀፎች</h2>
-        <p style="color:#8b949e;font-size:.88rem;margin-top:8px;">Professional Forex & Crypto education in Amharic — PDF format, instant delivery via Telegram</p>
     </div>
 
     <!-- ══ BOOKS: 2-col top (Forex + Crypto), Bundle full-width below ══ -->
@@ -470,10 +469,6 @@
                     </div>
                     <div class="bk3d-spine"></div>
                     <div class="bk3d-shadow"></div>
-                </div>
-                <div class="bk3d-badge-wrap">
-                    <span class="bk3d-badge">⭐ BEST SELLER</span>
-                    <span class="bk3d-ebadge">PDF E-BOOK</span>
                 </div>
             </div>
             <div class="bk-premium-right">
@@ -528,10 +523,6 @@
                     </div>
                     <div class="bk3d-spine bk3d-spine-c"></div>
                     <div class="bk3d-shadow"></div>
-                </div>
-                <div class="bk3d-badge-wrap">
-                    <span class="bk3d-ebadge">₿ CRYPTO</span>
-                    <span class="bk3d-ebadge">PDF E-BOOK</span>
                 </div>
             </div>
             <div class="bk-premium-right">
@@ -610,15 +601,15 @@
 <section id="journal" class="section journal-section">
 <div class="container">
     <div class="section-header">
-        <div class="section-tag-pill"><i class="fas fa-book-open"></i> PERFORMANCE TRACKER</div>
-        <h2 class="section-title"><i class="fas fa-book-open"></i> <span data-am="ትሬዲንግ ጆርናል" data-en="Trading Journal">ትሬዲንግ ጆርናል</span></h2>
-        <p class="section-sub" data-am="ትሬዶቻቸውን ይመዝግቡ፣ አፈጻጸሙን ይከታተሉ" data-en="Log trades, track performance">Log trades, track performance &amp; improve</p>
+        <div class="section-tag-pill"><i class="fas fa-book-open"></i> <span data-am="PERFORMANCE TRACKER" data-en="PERFORMANCE TRACKER">PERFORMANCE TRACKER</span></div>
+        <h2 class="section-title"><i class="fas fa-book-open"></i> <span data-am="የትሬዲንግ መዝገብ" data-en="Trading Journal">ትሬዲንግ ጆርናል</span></h2>
+        <p class="section-sub" data-am="የሚያከናውኗቸውን ትሬዶች ይመዝግቡ፣ ውጤታቸውን ይተንትኑ፣ አፈጻጸምዎንም ይከታተሉ።" data-en="Log trades, track performance &amp; improve">Log trades, track performance &amp; improve</p>
     </div>
     <div class="journal-stats-row" id="journalStats">
-        <div class="jstat-card"><div class="jstat-icon win"><i class="fas fa-trophy"></i></div><div class="jstat-data"><div class="jstat-val" id="js-winrate">0%</div><div class="jstat-lbl">Win Rate</div></div></div>
-        <div class="jstat-card"><div class="jstat-icon profit"><i class="fas fa-arrow-trend-up"></i></div><div class="jstat-data"><div class="jstat-val" id="js-totalpl">$0.00</div><div class="jstat-lbl">Net P&amp;L</div></div></div>
-        <div class="jstat-card"><div class="jstat-icon trades"><i class="fas fa-list-check"></i></div><div class="jstat-data"><div class="jstat-val" id="js-totaltrades">0</div><div class="jstat-lbl">Total Trades</div></div></div>
-        <div class="jstat-card"><div class="jstat-icon rr"><i class="fas fa-balance-scale"></i></div><div class="jstat-data"><div class="jstat-val" id="js-avgrr">0.00</div><div class="jstat-lbl">Avg R:R</div></div></div>
+        <div class="jstat-card"><div class="jstat-icon win"><i class="fas fa-trophy"></i></div><div class="jstat-data"><div class="jstat-val" id="js-winrate">0%</div><div class="jstat-lbl" data-am="የትርፍ መቶኛ" data-en="Win Rate">Win Rate</div></div></div>
+        <div class="jstat-card"><div class="jstat-icon profit"><i class="fas fa-arrow-trend-up"></i></div><div class="jstat-data"><div class="jstat-val" id="js-totalpl">$0.00</div><div class="jstat-lbl" data-am="ጠቅላላ የተጣራ ትርፍ/ኪሳራ" data-en="Net P&amp;L">Net P&amp;L</div></div></div>
+        <div class="jstat-card"><div class="jstat-icon trades"><i class="fas fa-list-check"></i></div><div class="jstat-data"><div class="jstat-val" id="js-totaltrades">0</div><div class="jstat-lbl" data-am="ጠቅላላ ትሬዶች" data-en="Total Trades">Total Trades</div></div></div>
+        <div class="jstat-card"><div class="jstat-icon rr"><i class="fas fa-balance-scale"></i></div><div class="jstat-data"><div class="jstat-val" id="js-avgrr">0.00</div><div class="jstat-lbl" data-am="አማካይ R:R ጥምርታ" data-en="Avg R:R">Avg R:R</div></div></div>
     </div>
     <div class="journal-win-bar-wrap"><div class="journal-win-bar-fill" id="journalWinBar" style="width:50%;"></div></div>
     <div class="journal-actions">
@@ -879,8 +870,8 @@
 <section id="academy-preview" class="section">
 <div class="container">
     <div class="section-header">
-        <h2 class="section-title"><i class="fas fa-graduation-cap"></i> Tag Bridge Academy</h2>
-        <p class="section-sub">ፎሬክስ፣ ክሪፕቶ እና SMC — ሙሉ ትምህርት በአማርኛ ለመጽሐፍ ተማሪዎች</p>
+        <h2 class="section-title"><i class="fas fa-graduation-cap"></i> <span data-am="ታግ ብሪጅ አካዳሚ" data-en="Tag Bridge Academy">Tag Bridge Academy</span></h2>
+        <p class="section-sub" data-am="ፎሬክስ፣ ክሪፕቶ እና SMC — ሙሉ ትምህርት በአማርኛ ለመጽሐፍ ተማሪዎች" data-en="Forex, Crypto & SMC — Full education in Amharic for book buyers">ፎሬክስ፣ ክሪፕቶ እና SMC — ሙሉ ትምህርት በአማርኛ ለመጽሐፍ ተማሪዎች</p>
     </div>
 
     <!-- Two-column feature layout -->
