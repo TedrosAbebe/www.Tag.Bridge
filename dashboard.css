@@ -5125,9 +5125,18 @@ img, iframe, canvas, video, table { max-width: 100% !important; }
     gap: 16px;
 }
 .bk-top-row .bk-premium-left {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 10px;
+    flex-shrink: 0;
+    min-width: 0;
+}
+.bk-top-row .bk3d-badge-wrap {
     flex-direction: column;
-    min-width: 100px;
-    gap: 8px;
+    align-items: flex-start;
+    gap: 5px;
+    padding-top: 4px;
 }
 .bk-top-row .bk-premium-right { flex: 1; min-width: 0; }
 
@@ -5168,8 +5177,10 @@ img, iframe, canvas, video, table { max-width: 100% !important; }
 @media (max-width: 768px) {
     .bk-top-row { grid-template-columns: 1fr !important; gap: 12px !important; }
     .bk-top-row .bk-premium { flex-direction: row !important; padding: 14px !important; gap: 12px !important; }
-    .bk-top-row .bk-premium-left { min-width: 80px !important; }
-    .bk3d { width: 80px !important; height: 110px !important; }
+    .bk-top-row .bk-premium-left { min-width: 90px !important; flex-shrink: 0; }
+    /* Fill the empty space next to badge — make badges row */
+    .bk-top-row .bk3d-badge-wrap { flex-direction: row !important; flex-wrap: wrap !important; gap: 4px !important; }
+    .bk3d { width: 86px !important; height: 118px !important; }
     .bk-bundle-inner { grid-template-columns: 1fr !important; gap: 12px !important; }
     .pdf-sec { padding: 20px 10px 28px !important; }
     .pdf-hdr  { margin-bottom: 16px !important; }
@@ -5181,7 +5192,19 @@ img, iframe, canvas, video, table { max-width: 100% !important; }
     .bk-view-btn    { padding: 7px 12px !important; font-size: .74rem !important; }
 }
 @media (max-width: 480px) {
-    .bk-top-row .bk-premium { flex-direction: column !important; align-items: flex-start !important; }
-    .bk-top-row .bk-premium-left { flex-direction: row !important; align-items: center !important; gap: 10px !important; }
+    /* On very small phones: stack card fully vertical */
+    .bk-top-row .bk-premium { flex-direction: column !important; }
+    .bk-top-row .bk-premium-left {
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 12px !important;
+        min-width: unset !important;
+        width: 100% !important;
+    }
+    /* Show badges inline with book on the right of it */
+    .bk-top-row .bk3d-badge-wrap {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
     .bk-premium-buy, .bk-view-btn { flex: 1; justify-content: center !important; }
 }
