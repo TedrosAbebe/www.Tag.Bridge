@@ -658,37 +658,60 @@ const CALCS = {
         title:'Pip Value Calculator',
         desc:'Monetary value of 1 pip based on lot size and instrument.',
         fields:[
-            {id:'pv-type', label:'Instrument',                 type:'select', opts:['Forex (xxx/USD)','Forex (xxx/JPY)','Forex (EUR/USD)','Forex (GBP/USD)','Gold (XAU/USD)','Silver (XAG/USD)']},
-            {id:'pv-lot',  label:'Lot Size',                   type:'number', ph:'1.0', step:'0.01'},
-            {id:'pv-px',   label:'Current Price (required for JPY)', type:'number', ph:'150.00', step:'any'}
+            {id:'pv-type', label:'Instrument',                      type:'select', opts:['Forex (xxx/USD)','Forex (xxx/JPY)','Forex (EUR/USD)','Forex (GBP/USD)','Gold (XAU/USD)','Silver (XAG/USD)']},
+            {id:'pv-lot',  label:'Lot Size',                        type:'number', ph:'1.0', step:'0.01'},
+            {id:'pv-px',   label:'Current Price (JPY pairs only)',   type:'number', ph:'150.00', step:'any'}
         ],
         fn(v) {
-            const lot = +v['pv-lot'] || 1, px = +v['pv-px'] || 150;
+            const lot = +v['pv-lot'] || 1;
+            const px  = +v['pv-px']  || 0;
             const type = v['pv-type'] || '';
-            let pipPerStdLot;
+            let pipPerStdLot, pipSize, contractSize, note;
+
             if(type.includes('JPY')) {
-                // JPY: pip = 0.01, contract 100,000 units, pip value in USD = (0.01/price)*100,000
-                pipPerStdLot = (0.01 / px) * 100000;
+                // JPY pairs: pip = 0.01, contract = 100,000 units
+                // Pip value in USD = (pip_size / current_price) × contract_size
+                // Requires current price for conversion from JPY to USD
+                if(!px || px <= 0) return [{v:'⚠️ Please enter Current Price for JPY pairs', l:'Warning'}];
+                pipSize       = 0.01;
+                contractSize  = 100000;
+                pipPerStdLot  = (pipSize / px) * contractSize;
+                note          = 'JPY pair: pip=$' + pipPerStdLot.toFixed(4) + ' @ ' + px;
             } else if(type.includes('Gold')) {
-                // XAU/USD: 1 lot = 100 oz, 1 pip = $0.01/oz → $1 per pip per lot
-                pipPerStdLot = 1.00;
+                // XAU/USD: contract = 100 oz, pip size = $0.01/oz
+                // Pip value = 100 oz × $0.01 = $1.00 per std lot
+                pipSize       = 0.01;
+                contractSize  = 100;   // 100 ounces
+                pipPerStdLot  = contractSize * pipSize;   // = $1.00
+                note          = 'Gold: 100 oz × $0.01 = $1.00/pip/lot';
             } else if(type.includes('Silver')) {
-                // XAG/USD: 1 lot = 5000 oz, pip = $0.001/oz → $5 per pip per lot
-                pipPerStdLot = 5.00;
+                // XAG/USD: broker-standard contract = 5000 oz, tick = $0.001/oz
+                // Pip value = 5000 oz × $0.001 = $5.00 per std lot
+                pipSize       = 0.001;
+                contractSize  = 5000;  // 5000 ounces
+                pipPerStdLot  = contractSize * pipSize;   // = $5.00
+                note          = 'Silver: 5000 oz × $0.001 = $5.00/pip/lot';
             } else {
-                // Standard xxx/USD: pip = 0.0001, contract 100,000 → $10 per pip per lot
-                pipPerStdLot = 10.00;
+                // Standard Forex xxx/USD: pip = 0.0001, contract = 100,000 units
+                // Pip value = 0.0001 × 100,000 = $10.00 (USD quote — no conversion needed)
+                pipSize       = 0.0001;
+                contractSize  = 100000;
+                pipPerStdLot  = pipSize * contractSize;   // = $10.00
+                note          = 'Forex USD quote: $10.00/pip/lot';
             }
-            const pipValue  = pipPerStdLot * lot;
-            const miniPip   = pipPerStdLot * 0.1 * lot;
-            const microPip  = pipPerStdLot * 0.01 * lot;
+
+            const pipValue  = pipPerStdLot * lot;             // pip value for chosen lot size
+            const miniPip   = pipPerStdLot * 0.1;             // mini lot (0.1)
+            const microPip  = pipPerStdLot * 0.01;            // micro lot (0.01)
+
             return [
-                {v: '$' + pipValue.toFixed(4),  l:'1 Pip (your lot)'},
-                {v: '$' + pipPerStdLot.toFixed(4), l:'1 Pip (1 std lot)'},
-                {v: '$' + miniPip.toFixed(4),   l:'1 Pip (mini lot)'},
-                {v: '$' + microPip.toFixed(4),  l:'1 Pip (micro lot)'},
-                {v: '$' + (pipValue*10).toFixed(3), l:'10 Pips'},
-                {v: '$' + (pipValue*50).toFixed(3), l:'50 Pips'}
+                {v: '$' + pipValue.toFixed(4),         l:'Pip Value (your ' + lot + ' lot)'},
+                {v: '$' + pipPerStdLot.toFixed(4),     l:'Pip Value (1 std lot)'},
+                {v: '$' + miniPip.toFixed(4),          l:'Pip Value (0.1 mini lot)'},
+                {v: '$' + microPip.toFixed(5),         l:'Pip Value (0.01 micro lot)'},
+                {v: '$' + (pipValue * 10).toFixed(3),  l:'Value of 10 Pips'},
+                {v: '$' + (pipValue * 50).toFixed(3),  l:'Value of 50 Pips'},
+                {v: note,                              l:'Formula Used'}
             ];
         }
     },
@@ -706,21 +729,34 @@ const CALCS = {
             const type = v['ls-type'] || '';
             if(!bal||!riskPct||!pips||bal<=0||pips<=0) return null;
             const riskUSD = bal * riskPct;
-            let pipVal;
-            if(type.includes('JPY'))  pipVal = 6.67;  // approx for USD/JPY ~150
-            else if(type.includes('Gold')) pipVal = 1.00;
-            else                           pipVal = 10.00;
+            // Pip value must match the instrument — same logic as SL calculator
+            // Note: for JPY we need current price; using placeholder of 150 if not provided
+            let pipVal, pipNote;
+            if(type.includes('JPY')) {
+                // Dynamic formula — approximate at 150 if no price given
+                // User should cross-check with pip value calculator for exact rate
+                const approxRate = 150;
+                pipVal   = (0.01 / approxRate) * 100000;  // ≈ $6.667 at 150
+                pipNote  = 'JPY approx @ 150 — verify with Pip Calculator';
+            } else if(type.includes('Gold')) {
+                pipVal  = 100 * 0.01;   // $1.00
+                pipNote = 'Gold: $1.00/pip/lot';
+            } else {
+                pipVal  = 10.00;
+                pipNote = 'Forex USD: $10.00/pip/lot';
+            }
             const lots      = riskUSD / (pips * pipVal);
             const miniLots  = lots * 10;
             const microLots = lots * 100;
             const units     = lots * 100000;
             return [
-                {v: lots.toFixed(3),             l:'Standard Lots'},
-                {v: miniLots.toFixed(2),          l:'Mini Lots'},
-                {v: microLots.toFixed(1),         l:'Micro Lots'},
+                {v: lots.toFixed(3),                    l:'Standard Lots'},
+                {v: miniLots.toFixed(2),                l:'Mini Lots'},
+                {v: microLots.toFixed(1),               l:'Micro Lots'},
                 {v: Math.round(units).toLocaleString(), l:'Units'},
-                {v: '$' + riskUSD.toFixed(2),     l:'Risk Amount'},
-                {v: (riskPct*100).toFixed(2)+'%', l:'Risk %'}
+                {v: '$' + riskUSD.toFixed(2),           l:'Risk Amount'},
+                {v: (riskPct*100).toFixed(2)+'%',       l:'Risk %'},
+                {v: pipNote,                            l:'Pip Value Note'}
             ];
         }
     },
@@ -867,36 +903,64 @@ const CALCS = {
         title:'Stop Loss Calculator',
         desc:'Calculate SL placement, risk amount and recommended position size.',
         fields:[
-            {id:'sl-bal',  label:'Account Balance ($)', type:'number', ph:'10000'},
-            {id:'sl-risk', label:'Risk % per Trade',    type:'number', ph:'1', step:'0.1'},
-            {id:'sl-en',   label:'Entry Price',         type:'number', ph:'1.0850', step:'any'},
-            {id:'sl-pips', label:'Stop Loss Distance (Pips)', type:'number', ph:'50'},
-            {id:'sl-dir',  label:'Direction',           type:'select', opts:['BUY','SELL']},
-            {id:'sl-type', label:'Instrument',          type:'select', opts:['Forex (xxx/USD)','Forex (xxx/JPY)','Gold (XAU/USD)']}
+            {id:'sl-bal',  label:'Account Balance ($)',      type:'number', ph:'10000'},
+            {id:'sl-risk', label:'Risk % per Trade',         type:'number', ph:'1', step:'0.1'},
+            {id:'sl-en',   label:'Entry Price',              type:'number', ph:'1.0850', step:'any'},
+            {id:'sl-pips', label:'Stop Loss Distance (Pips)',type:'number', ph:'50'},
+            {id:'sl-dir',  label:'Direction',                type:'select', opts:['BUY','SELL']},
+            {id:'sl-type', label:'Instrument',               type:'select', opts:['Forex (xxx/USD)','Forex (xxx/JPY)','Gold (XAU/USD)']}
         ],
         fn(v) {
             const bal=+v['sl-bal'], riskPct=+v['sl-risk']/100, en=+v['sl-en'], pips=+v['sl-pips'];
             const dir=v['sl-dir']||'BUY', type=v['sl-type']||'';
             if(!bal||!riskPct||!en||!pips||bal<=0||pips<=0||en<=0) return null;
-            // Pip size by instrument
-            let pipSize, pipVal;
-            if(type.includes('JPY'))  { pipSize=0.01;   pipVal=(0.01/en)*100000; }
-            else if(type.includes('Gold')){ pipSize=0.01; pipVal=1.00; }
-            else                          { pipSize=0.0001; pipVal=10.00; }
-            const slMove  = pips * pipSize;
-            const slPrice = dir === 'BUY' ? en - slMove : en + slMove;
-            const tp1     = dir === 'BUY' ? en + slMove : en - slMove;       // 1:1
-            const tp2     = dir === 'BUY' ? en + slMove*2 : en - slMove*2;   // 1:2
-            const tp3     = dir === 'BUY' ? en + slMove*3 : en - slMove*3;   // 1:3
-            const riskUSD = bal * riskPct;
-            const lots    = riskUSD / (pips * pipVal);
+            if(riskPct<=0||riskPct>1) return null;
+
+            // ── Instrument-specific pip size and pip value ──────────────────
+            let pipSize, pipVal, priceDecimals;
+            if(type.includes('JPY')) {
+                // JPY pairs: pip = 0.01, contract = 100,000
+                // Pip value in USD = (0.01 / current_price) × 100,000
+                pipSize       = 0.01;
+                pipVal        = (0.01 / en) * 100000;   // dynamic — uses live entry price
+                priceDecimals = 3;
+            } else if(type.includes('Gold')) {
+                // Gold (XAU/USD): contract = 100 oz, pip = $0.01
+                // Pip value = 100 oz × $0.01 = $1.00 per pip per std lot
+                pipSize       = 0.01;
+                pipVal        = 100 * 0.01;              // = $1.00
+                priceDecimals = 2;
+            } else {
+                // Standard Forex xxx/USD: contract = 100,000, pip = 0.0001
+                // Pip value = 0.0001 × 100,000 = $10.00 (direct USD quote)
+                pipSize       = 0.0001;
+                pipVal        = 10.00;
+                priceDecimals = 5;
+            }
+
+            // ── Core calculations ───────────────────────────────────────────
+            const riskUSD  = bal * riskPct;
+            const slMove   = pips * pipSize;
+            const slPrice  = dir === 'BUY' ? en - slMove : en + slMove;
+            // Position size: lots = riskUSD / (pips × pipVal)
+            const lots     = riskUSD / (pips * pipVal);
+            // Potential loss = lots × pips × pipVal (should equal riskUSD exactly)
+            const potLoss  = lots * pips * pipVal;
+            // TP levels
+            const tp1 = dir === 'BUY' ? en + slMove     : en - slMove;
+            const tp2 = dir === 'BUY' ? en + slMove * 2 : en - slMove * 2;
+            const tp3 = dir === 'BUY' ? en + slMove * 3 : en - slMove * 3;
+
             return [
-                {v: slPrice.toFixed(5),              l:'Stop Loss Price'},
-                {v: pips + ' pips',                  l:'SL Distance'},
-                {v: '$' + riskUSD.toFixed(2),        l:'Risk Amount'},
-                {v: (riskPct*100).toFixed(2) + '%',  l:'Risk %'},
-                {v: lots.toFixed(3) + ' lots',       l:'Recommended Lot Size'},
-                {v: tp1.toFixed(5) + ' (1:1) / ' + tp2.toFixed(5) + ' (1:2)', l:'TP Targets'}
+                {v: slPrice.toFixed(priceDecimals),                                             l:'Stop Loss Price'},
+                {v: pips + ' pips',                                                             l:'SL Distance'},
+                {v: '$' + riskUSD.toFixed(2),                                                   l:'Risk Amount'},
+                {v: lots.toFixed(3) + ' lots',                                                  l:'Recommended Lot Size'},
+                {v: '$' + pipVal.toFixed(4) + ' / std lot',                                     l:'Pip Value'},
+                {v: '-$' + potLoss.toFixed(2),                                                  l:'Potential Loss'},
+                {v: tp1.toFixed(priceDecimals) + '  (1:1)',                                     l:'TP1 Target'},
+                {v: tp2.toFixed(priceDecimals) + '  (1:2)',                                     l:'TP2 Target'},
+                {v: tp3.toFixed(priceDecimals) + '  (1:3)',                                     l:'TP3 Target'}
             ];
         }
     }
