@@ -2,10 +2,16 @@
 // API key must be set as GEMINI_API_KEY environment variable in Vercel dashboard
 
 export default async function handler(req, res) {
-    // CORS
-    res.setHeader('Access-Control-Allow-Origin', 'https://www-tag-bridge.vercel.app');
+    // Dynamic CORS for production, Vercel previews, and local testing
+    const origin = req.headers.origin;
+    if (origin && (origin.endsWith('.vercel.app') || origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1'))) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    } else {
+        res.setHeader('Access-Control-Allow-Origin', process.env.SITE_URL || 'https://www-tag-bridge.vercel.app');
+    }
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Cache-Control', 'no-store');
 
     if (req.method === 'OPTIONS') return res.status(200).end();
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
@@ -17,7 +23,7 @@ export default async function handler(req, res) {
     const API_KEY = process.env.GEMINI_API_KEY;
     if (!API_KEY) return res.status(500).json({ error: 'API key not configured' });
 
-    const MODEL = 'gemini-1.5-flash';
+    const MODEL = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
     const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`;
 
     const body = {
