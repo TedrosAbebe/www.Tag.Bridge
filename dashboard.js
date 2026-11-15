@@ -1630,10 +1630,11 @@ NEVER:
     });
     contents.push({ role: 'user', parts: [{ text }] });
 
+    // System prompt is handled entirely server-side in api/chat.js
     const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text, system: systemPrompt, history: botHistory })
+        body: JSON.stringify({ text, history: botHistory })
     });
 
     if(!res.ok) {

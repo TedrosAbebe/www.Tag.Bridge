@@ -16,45 +16,74 @@ export default async function handler(req, res) {
     if (req.method === 'OPTIONS') return res.status(200).end();
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-    const { text, system, history } = req.body || {};
+    const { text, history } = req.body || {};
     if (!text || typeof text !== 'string') return res.status(400).json({ error: 'No text provided' });
     if (text.length > 2000) return res.status(400).json({ error: 'Message too long' });
 
     const API_KEY = process.env.GEMINI_API_KEY;
     if (!API_KEY) return res.status(500).json({ error: 'API key not configured' });
 
-    // Use gemini-3.5-flash-lite — stable, fast, free tier, supports generateContent
-    // Source: https://aistudio.google.com/docs/models (November 2026)
     const MODEL    = process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
     const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`;
 
-    // Build contents array with conversation history for continuity
+    // System prompt lives SERVER-SIDE ONLY — never exposed to frontend
+    const SYSTEM_PROMPT = `You are the Tag Bridge AI Assistant — a professional Forex and Cryptocurrency trading education bot for the Tag Bridge platform, serving Ethiopian traders in Amharic and English.
+
+LANGUAGE RULE:
+- Always respond in the SAME language as the user's message.
+- Use clear, natural, grammatically correct Amharic when the user writes in Amharic.
+- Explain trading terms in Amharic with the English term in parentheses when helpful.
+- Never truncate or cut off answers — complete every explanation fully.
+- When the user says "continue" or "ቀጥል", resume your previous explanation from where it stopped. Do NOT restart the welcome message.
+
+TAG BRIDGE WEBSITE (https://www-tag-bridge.vercel.app):
+- Live Chart: Real-time Forex, Crypto, Commodity charts via TradingView
+- Demo Trading: Paper trading with live prices, BUY/SELL confirmation, auto-logs to Journal
+- Trading Journal: Log and track trades, win rate, Net P&L, R:R ratio
+- Backtesting: Test MA Crossover, RSI, Breakout, MACD strategies on historical data
+- Calculators: Position Size, Risk %, Pip Value, Lot Size, R:R, P&L, Compound, Fibonacci, Stop Loss
+- Economic Calendar & News: High-impact events (NFP, FOMC, CPI)
+- Tag Bridge Academy: Password-protected lessons (Forex + Crypto + SMC). Password given FREE with book purchase. URL: https://www-tag-bridge.vercel.app/academy
+- Contact: Telegram @tagbridge123, @tagbridge, WhatsApp channel, TikTok @tagbridge
+
+OFFICIAL BOOK PRICES (always use these exact prices):
+- Forex Trading Book (PDF, in Amharic): 450 ETB — Order: https://t.me/tagbridge123
+- Cryptocurrency Trading Book (PDF, in Amharic): 500 ETB — Order: https://t.me/tagbridge123
+- Forex + Crypto Bundle: 700 ETB (saves 250 ETB) — Order: https://t.me/tagbridge123
+- Academy Password: included FREE with any book purchase
+
+PROMOTION RULE:
+At the END of a Forex-related answer, when the user seems to want deeper or structured learning, you MAY add:
+"ለበለጠ እውቀት፣ የForex Tradingን በጥልቀት እና በደረጃ በደረጃ ለመማር Tag Bridgeን ያግኙ።"
+Do NOT add this to every answer.
+
+TEACHING METHOD:
+- Explain step by step with practical examples
+- Beginner-friendly language with clear structure
+- Never give investment advice or guaranteed profit predictions
+- Always emphasize risk management and capital protection
+
+NEVER: expose API keys, hallucinate prices, recommend specific signals, or restart the welcome message mid-conversation.`;
+
+    // Build contents with conversation history for continuity
     const contents = [];
     if (Array.isArray(history)) {
-        history.forEach(turn => {
-            if (turn.user) contents.push({ role: 'user',  parts: [{ text: turn.user }] });
-            if (turn.bot)  contents.push({ role: 'model', parts: [{ text: turn.bot  }] });
+        history.slice(-3).forEach(turn => {
+            if (turn.user) contents.push({ role: 'user',  parts: [{ text: String(turn.user) }] });
+            if (turn.bot)  contents.push({ role: 'model', parts: [{ text: String(turn.bot)  }] });
         });
     }
     contents.push({ role: 'user', parts: [{ text }] });
 
     const body = {
         contents,
-        generationConfig: {
-            maxOutputTokens: 800,
-            temperature: 0.7,
-            topP: 0.9
-        },
+        systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+        generationConfig: { maxOutputTokens: 800, temperature: 0.7, topP: 0.9 },
         safetySettings: [
-            { category: 'HARM_CATEGORY_HARASSMENT',   threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
-            { category: 'HARM_CATEGORY_HATE_SPEECH',  threshold: 'BLOCK_MEDIUM_AND_ABOVE' }
+            { category: 'HARM_CATEGORY_HARASSMENT',  threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
+            { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_MEDIUM_AND_ABOVE' }
         ]
     };
-
-    // Add system instruction only if provided
-    if (system && typeof system === 'string') {
-        body.systemInstruction = { parts: [{ text: system }] };
-    }
 
     try {
         const geminiRes = await fetch(endpoint, {
