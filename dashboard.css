@@ -977,30 +977,28 @@ body {
 .bot-fab-label { font-size: 0.82rem; font-weight: 700; }
 
 .bot-overlay {
-    position: fixed; inset: 0; z-index: 850;
+    position: fixed; inset: 0; z-index: 1040;
     background: rgba(0,0,0,0.5); display: none;
     backdrop-filter: blur(4px);
 }
 .bot-overlay.open { display: block; }
 
 .bot-sidebar {
-    position: fixed; right: -420px; bottom: 0; top: 0; z-index: 860;
-    width: 400px; max-width: 100vw;
+    position: fixed; right: -420px; bottom: 0; top: 0; z-index: 1050;
+    width: 420px; max-width: 100vw;
     background: var(--bg-surface); border-left: 1px solid var(--border-color);
-    display: flex; flex-direction: column;
+    display: flex; flex-direction: column; overflow: hidden;
     transition: right 0.3s cubic-bezier(0.4,0,0.2,1);
-    box-shadow: var(--shadow-lg);
+    box-shadow: -4px 0 32px rgba(0,0,0,.3);
 }
 .bot-sidebar.open { right: 0; }
 
-/* Header — always sticky at top, never hidden */
+/* Header — fixed at top, always visible, never scrolled away */
 .bot-header {
-    padding: 14px 16px; border-bottom: 1px solid var(--border-color);
+    padding: 12px 16px; border-bottom: 2px solid var(--border-color);
     display: flex; align-items: center; justify-content: space-between;
-    flex-shrink: 0; position: sticky; top: 0; z-index: 10;
-    background: var(--bg-surface);
-}
-    background: var(--bg-elevated);
+    flex-shrink: 0; background: var(--bg-surface);
+    min-height: 60px;
 }
 .bot-header-info { display: flex; align-items: center; gap: 12px; }
 .bot-avatar { font-size: 1.8rem; }
@@ -1010,7 +1008,7 @@ body {
 .bot-close { background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 1.1rem; padding: 4px; transition: var(--transition); }
 .bot-close:hover { color: var(--brand-red); }
 
-.bot-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.bot-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; min-height: 0; }
 
 .bot-msg {
     padding: 12px 14px; border-radius: var(--radius-lg); max-width: 85%;
@@ -1126,16 +1124,18 @@ body {
     .bot-fab-label { display: none; }
 }
 
-/* Close button — large, always visible */
+/* Close button — large red, always visible */
 .bot-close {
-    background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.25);
-    color: #ef4444; border-radius: 8px;
-    width: 36px; height: 36px;
+    background: #ef4444;
+    border: none;
+    color: #fff;
+    border-radius: 8px;
+    width: 40px; height: 40px;
     display: flex; align-items: center; justify-content: center;
-    cursor: pointer; font-size: 1rem; transition: all .2s;
-    flex-shrink: 0;
+    cursor: pointer; font-size: 1.1rem; font-weight: 900;
+    transition: all .2s; flex-shrink: 0;
 }
-.bot-close:hover { background: rgba(239,68,68,.25); }
+.bot-close:hover { background: #dc2626; transform: scale(1.05); }
 
     .market-cards-grid { grid-template-columns: repeat(2, 1fr); }
     .dashboard-row { grid-template-columns: 1fr; }
