@@ -1011,11 +1011,12 @@ body {
 .bot-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; min-height: 0; }
 
 .bot-msg {
-    padding: 12px 14px; border-radius: var(--radius-lg); max-width: 85%;
+    padding: 12px 14px; border-radius: var(--radius-lg); max-width: 80%;
     font-size: 0.88rem; line-height: 1.6; animation: fade-in-up 0.3s ease;
+    word-break: break-word;
 }
-.bot-msg.bot { background: var(--bg-elevated); align-self: flex-start; border-bottom-left-radius: 4px; }
-.bot-msg.user { background: var(--brand-primary); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+.bot-msg.bot  { background: var(--bg-elevated); align-self: flex-start; border-bottom-left-radius: 4px; text-align: left; }
+.bot-msg.user { background: var(--brand-primary); color: white; align-self: flex-end; border-bottom-right-radius: 4px; text-align: left; }
 .bot-msg.typing { align-self: flex-start; background: var(--bg-elevated); }
 
 .typing-dots { display: flex; gap: 4px; align-items: center; padding: 4px 0; }
