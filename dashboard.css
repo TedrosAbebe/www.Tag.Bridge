@@ -1037,6 +1037,9 @@ body {
 .bot-input-row {
     padding: 14px 16px; border-top: 1px solid var(--border-color);
     display: flex; gap: 8px;
+    /* Ensure input row is always visible and not covered by FAB */
+    position: relative; z-index: 2;
+    background: var(--bg-surface);
 }
 .bot-input {
     flex: 1; background: var(--bg-elevated); border: 1px solid var(--border-color);
@@ -1108,8 +1111,17 @@ body {
     :root { --nav-height: 60px; --section-pad: 60px; }
 
     .nav-logo .logo-text { display: none; }
+/* Hide FAB when bot sidebar is open */
+.bot-sidebar.open ~ * .bot-fab,
+body:has(.bot-sidebar.open) .bot-fab { display: none !important; }
+
+/* Mobile bot sidebar — full screen, input above system nav */
+@media (max-width: 768px) {
+    .bot-sidebar { width: 100vw !important; right: -100vw; bottom: 0; top: 0; }
+    .bot-sidebar.open { right: 0; }
+    .bot-input-row { padding: 10px 12px !important; padding-bottom: 16px !important; }
     .bot-fab-label { display: none; }
-    .bot-sidebar { width: 100vw; right: -100vw; }
+}
 
     .market-cards-grid { grid-template-columns: repeat(2, 1fr); }
     .dashboard-row { grid-template-columns: 1fr; }
