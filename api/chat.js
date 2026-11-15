@@ -23,45 +23,63 @@ export default async function handler(req, res) {
     const API_KEY = process.env.GEMINI_API_KEY;
     if (!API_KEY) return res.status(500).json({ error: 'API key not configured' });
 
-    const MODEL = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
+    // Use gemini-3.5-flash-lite — stable, fast, free tier, supports generateContent
+    // Source: https://aistudio.google.com/docs/models (November 2026)
+    const MODEL    = process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
     const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`;
 
     const body = {
         contents: [{ role: 'user', parts: [{ text }] }],
-        systemInstruction: system ? { parts: [{ text: system }] } : undefined,
         generationConfig: {
             maxOutputTokens: 800,
             temperature: 0.7,
             topP: 0.9
         },
         safetySettings: [
-            { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
-            { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_MEDIUM_AND_ABOVE' }
+            { category: 'HARM_CATEGORY_HARASSMENT',   threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
+            { category: 'HARM_CATEGORY_HATE_SPEECH',  threshold: 'BLOCK_MEDIUM_AND_ABOVE' }
         ]
     };
+
+    // Add system instruction only if provided (some older models don't support it)
+    if (system && typeof system === 'string') {
+        body.systemInstruction = { parts: [{ text: system }] };
+    }
 
     try {
         const geminiRes = await fetch(endpoint, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body),
-            signal: AbortSignal.timeout(15000)
+            signal: AbortSignal.timeout(20000)
         });
 
         const data = await geminiRes.json();
 
+        // Surface the real Gemini error to the caller instead of hiding it
         if (!geminiRes.ok) {
-            const errMsg = data?.error?.message || 'Gemini API error';
-            const status = geminiRes.status;
-            if (status === 429) return res.status(429).json({ error: 'Rate limit reached. Try again in a moment.' });
-            return res.status(status).json({ error: errMsg });
+            const errMsg = data?.error?.message || `Gemini API error ${geminiRes.status}`;
+            console.error('[chat.js] Gemini error:', geminiRes.status, errMsg);
+            if (geminiRes.status === 429) {
+                return res.status(429).json({ error: 'Rate limit reached. Please try again in a moment.' });
+            }
+            return res.status(geminiRes.status).json({ error: errMsg });
         }
 
-        const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'ምላሽ አልተገኘም።';
+        // Extract reply from Gemini response structure
+        const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (!reply) {
+            console.error('[chat.js] No reply in response:', JSON.stringify(data));
+            return res.status(500).json({ error: 'No response generated. Try rephrasing your question.' });
+        }
+
         return res.status(200).json({ reply });
 
     } catch (err) {
-        console.error('Gemini proxy error:', err.message);
-        return res.status(500).json({ error: 'Service temporarily unavailable.' });
+        console.error('[chat.js] Fetch error:', err.message);
+        if (err.name === 'TimeoutError' || err.message?.includes('timeout')) {
+            return res.status(504).json({ error: 'Request timed out. Please try again.' });
+        }
+        return res.status(500).json({ error: 'Service temporarily unavailable: ' + err.message });
     }
 }
