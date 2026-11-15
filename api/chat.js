@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     if (req.method === 'OPTIONS') return res.status(200).end();
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-    const { text, system } = req.body || {};
+    const { text, system, history } = req.body || {};
     if (!text || typeof text !== 'string') return res.status(400).json({ error: 'No text provided' });
     if (text.length > 2000) return res.status(400).json({ error: 'Message too long' });
 
@@ -28,8 +28,18 @@ export default async function handler(req, res) {
     const MODEL    = process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
     const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`;
 
+    // Build contents array with conversation history for continuity
+    const contents = [];
+    if (Array.isArray(history)) {
+        history.forEach(turn => {
+            if (turn.user) contents.push({ role: 'user',  parts: [{ text: turn.user }] });
+            if (turn.bot)  contents.push({ role: 'model', parts: [{ text: turn.bot  }] });
+        });
+    }
+    contents.push({ role: 'user', parts: [{ text }] });
+
     const body = {
-        contents: [{ role: 'user', parts: [{ text }] }],
+        contents,
         generationConfig: {
             maxOutputTokens: 800,
             temperature: 0.7,
@@ -41,7 +51,7 @@ export default async function handler(req, res) {
         ]
     };
 
-    // Add system instruction only if provided (some older models don't support it)
+    // Add system instruction only if provided
     if (system && typeof system === 'string') {
         body.systemInstruction = { parts: [{ text: system }] };
     }
