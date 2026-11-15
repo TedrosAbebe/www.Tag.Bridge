@@ -1480,10 +1480,13 @@ function updateJournalStats(trades) {
 function toggleBot() {
     const sidebar = document.getElementById('botSidebar');
     const overlay = document.getElementById('botOverlay');
+    const fab     = document.getElementById('botFab');
     if(!sidebar) return;
     const isOpen = sidebar.classList.contains('open');
     sidebar.classList.toggle('open', !isOpen);
     overlay.classList.toggle('open', !isOpen);
+    // Hide FAB when open, show when closed — works on all browsers
+    if(fab) fab.classList.toggle('bot-fab-hidden', !isOpen);
     if(!isOpen && !sidebar.dataset.initialized) {
         sidebar.dataset.initialized = '1';
         initBotGreeting();
@@ -1648,6 +1651,9 @@ NEVER:
 
 function formatBotReply(text) {
     return text
+        // Markdown links: [text](url) → clickable anchor (safe, opens in new tab)
+        .replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g,
+            '<a href="$2" target="_blank" rel="noopener noreferrer" style="color:#6366f1;text-decoration:underline;font-weight:600;">$1</a>')
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
         .replace(/\*(.*?)\*/g, '<em>$1</em>')
         .replace(/\n/g, '<br>')
