@@ -5241,11 +5241,212 @@ img, iframe, canvas, video, table { max-width: 100% !important; }
 }
 
 /* ══════════════════════════════════════════════
-   FOREX MARKET SESSIONS DASHBOARD
+   FOREX MARKET SESSIONS DASHBOARD — Premium
    ══════════════════════════════════════════════ */
 
-.sessions-section { background: var(--bg-primary, #0d1117); }
-[data-theme="light"] .sessions-section { background: #f8fafc; }
+.sessions-section {
+    background: linear-gradient(180deg, #0a0f1a 0%, #0d1117 100%);
+    position: relative; overflow: hidden;
+}
+.sessions-section::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(99,102,241,.07) 0%, transparent 70%);
+}
+[data-theme="light"] .sessions-section {
+    background: linear-gradient(180deg, #f0f4ff 0%, #f8fafc 100%);
+}
+[data-theme="light"] .sessions-section::before {
+    background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(99,102,241,.05) 0%, transparent 70%);
+}
+
+/* ── Clock row ── */
+.sess-clock-row {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; margin-bottom: 28px; flex-wrap: wrap;
+}
+
+.sess-clock-card {
+    background: linear-gradient(135deg, #1a1f35 0%, #161b2e 100%);
+    border: 1px solid rgba(99,102,241,.3);
+    border-radius: 20px; padding: 20px 32px;
+    text-align: center; min-width: 220px;
+    box-shadow: 0 8px 32px rgba(99,102,241,.12), inset 0 1px 0 rgba(255,255,255,.05);
+    position: relative; overflow: hidden;
+}
+.sess-clock-card::before {
+    content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 60%; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(99,102,241,.6), transparent);
+}
+[data-theme="light"] .sess-clock-card {
+    background: linear-gradient(135deg, #fff 0%, #f0f4ff 100%);
+    border-color: rgba(99,102,241,.25);
+    box-shadow: 0 8px 32px rgba(99,102,241,.1);
+}
+.sess-clock-label {
+    font-size: .64rem; font-weight: 800; color: #6366f1;
+    text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px;
+}
+.sess-clock-time {
+    font-size: 2.4rem; font-weight: 900; letter-spacing: 4px;
+    font-family: 'Courier New', monospace;
+    background: linear-gradient(135deg, #a8c8ff 0%, #818cf8 50%, #06b6d4 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 12px rgba(99,102,241,.4));
+}
+.sess-clock-date {
+    font-size: .72rem; color: #8b949e; margin-top: 5px; letter-spacing: .5px;
+}
+
+/* ── Overlap badge ── */
+.sess-overlap-badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: linear-gradient(135deg, rgba(16,185,129,.15), rgba(6,182,212,.12));
+    border: 1px solid rgba(16,185,129,.4);
+    border-radius: 50px; padding: 12px 24px;
+    font-weight: 800; font-size: .85rem; color: #10b981;
+    box-shadow: 0 0 24px rgba(16,185,129,.15);
+    animation: sess-glow 2s ease-in-out infinite;
+}
+.sess-overlap-pulse {
+    width: 10px; height: 10px; border-radius: 50%; background: #10b981;
+    animation: sess-pulse 1s infinite;
+}
+@keyframes sess-pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.3;transform:scale(1.6)} }
+@keyframes sess-glow  { 0%,100%{box-shadow:0 0 16px rgba(16,185,129,.15)} 50%{box-shadow:0 0 32px rgba(16,185,129,.35)} }
+
+/* ── Session grid ── */
+.sess-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 14px; margin-bottom: 20px;
+}
+
+/* ── Session card ── */
+.sess-card {
+    background: linear-gradient(145deg, #161b2e 0%, #111827 100%);
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 18px; padding: 20px 16px;
+    display: flex; flex-direction: column; gap: 12px;
+    transition: all .3s; position: relative; overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,.3);
+}
+[data-theme="light"] .sess-card {
+    background: linear-gradient(145deg, #fff 0%, #f8fafc 100%);
+    border-color: #e2e8f0;
+    box-shadow: 0 4px 20px rgba(0,0,0,.06);
+}
+.sess-card::after {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(99,102,241,.3), transparent);
+    transition: all .3s;
+}
+.sess-card.open::after   { background: linear-gradient(90deg, transparent, rgba(16,185,129,.7), transparent); }
+.sess-card.overlap::after{ background: linear-gradient(90deg, transparent, rgba(245,158,11,.7), transparent); }
+
+.sess-card.open {
+    border-color: rgba(16,185,129,.35);
+    box-shadow: 0 8px 32px rgba(16,185,129,.12), 0 0 0 1px rgba(16,185,129,.1);
+    background: linear-gradient(145deg, #0d1f1a 0%, #111827 100%);
+}
+[data-theme="light"] .sess-card.open {
+    background: linear-gradient(145deg, #f0fdf4 0%, #fff 100%);
+    border-color: rgba(16,185,129,.35);
+}
+.sess-card.overlap {
+    border-color: rgba(245,158,11,.4);
+    box-shadow: 0 8px 32px rgba(245,158,11,.12), 0 0 0 1px rgba(245,158,11,.1);
+    background: linear-gradient(145deg, #1a1500 0%, #111827 100%);
+}
+
+/* Card header */
+.sess-card-header {
+    display: flex; align-items: center; gap: 8px;
+}
+.sess-flag   { font-size: 1.5rem; }
+.sess-name   { font-size: .9rem; font-weight: 800; color: #e6edf3; flex: 1; }
+[data-theme="light"] .sess-name { color: #0f172a; }
+
+/* Badge */
+.sess-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 4px 10px; border-radius: 50px;
+    font-size: .6rem; font-weight: 800; letter-spacing: .8px;
+    white-space: nowrap;
+}
+.sess-badge.open {
+    background: rgba(16,185,129,.15); color: #10b981;
+    border: 1px solid rgba(16,185,129,.3);
+    box-shadow: 0 0 10px rgba(16,185,129,.2);
+}
+.sess-badge.closed {
+    background: rgba(100,116,139,.1); color: #64748b;
+    border: 1px solid rgba(100,116,139,.2);
+}
+.sess-badge-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.sess-badge.open .sess-badge-dot { animation: sess-pulse .8s infinite; }
+
+/* Times */
+.sess-times {
+    font-size: .7rem; color: #64748b; line-height: 1.6;
+}
+.sess-times span {
+    color: #94a3b8; font-weight: 600;
+    font-family: 'Courier New', monospace; letter-spacing: .5px;
+}
+[data-theme="light"] .sess-times span { color: #334155; }
+
+/* Countdown */
+.sess-countdown {
+    font-size: .78rem; font-weight: 700; color: #64748b;
+    font-family: 'Courier New', monospace; letter-spacing: .5px;
+    min-height: 1.2em;
+}
+.sess-countdown.open { color: #10b981; }
+.sess-countdown.soon { color: #f59e0b; }
+
+/* Progress bar */
+.sess-progress-wrap {
+    height: 5px; background: rgba(255,255,255,.06);
+    border-radius: 3px; overflow: hidden;
+}
+[data-theme="light"] .sess-progress-wrap { background: #e2e8f0; }
+.sess-progress-fill {
+    height: 100%; border-radius: 3px;
+    transition: width .8s cubic-bezier(.4,0,.2,1);
+    background: linear-gradient(90deg, #6366f1, #06b6d4);
+    box-shadow: 0 0 8px rgba(99,102,241,.4);
+}
+.sess-card.open   .sess-progress-fill {
+    background: linear-gradient(90deg, #10b981, #06b6d4);
+    box-shadow: 0 0 8px rgba(16,185,129,.4);
+}
+.sess-card.overlap .sess-progress-fill {
+    background: linear-gradient(90deg, #f59e0b, #10b981);
+    box-shadow: 0 0 8px rgba(245,158,11,.4);
+}
+
+/* Info row */
+.sess-info-row { display: flex; justify-content: center; }
+.sess-info-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(99,102,241,.07); border: 1px solid rgba(99,102,241,.18);
+    color: #818cf8; font-size: .74rem; font-weight: 600;
+    padding: 8px 20px; border-radius: 50px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .sess-grid { grid-template-columns: 1fr 1fr !important; }
+}
+@media (max-width: 540px) {
+    .sess-grid { grid-template-columns: 1fr !important; }
+    .sess-clock-row { flex-direction: column; align-items: stretch; }
+    .sess-clock-card { width: 100%; padding: 16px; }
+    .sess-clock-time { font-size: 2rem; letter-spacing: 3px; }
+    .sess-overlap-badge { justify-content: center; text-align: center; }
+}
+
 
 /* Clock row */
 .sess-clock-row {
