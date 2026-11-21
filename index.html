@@ -851,6 +851,39 @@
 </div>
 </section>
 
+<!-- FOREX MARKET SESSIONS -->
+<section id="market-sessions" class="section sessions-section">
+<div class="container">
+    <div class="section-header">
+        <div class="section-tag-pill"><i class="fas fa-clock"></i> MARKET HOURS</div>
+        <h2 class="section-title"><i class="fas fa-globe"></i> <span data-am="የፎሬክስ ሰዓቶች" data-en="Forex Market Sessions">Forex Market Sessions</span></h2>
+        <p class="section-sub" data-am="ቀጥታ የገበያ ሰዓቶች — EAT (UTC+3)" data-en="Live market sessions — EAT (UTC+3)">Live session status • EAT timezone (UTC+3)</p>
+    </div>
+
+    <!-- Live Clock -->
+    <div class="sess-clock-row">
+        <div class="sess-clock-card">
+            <div class="sess-clock-label"><i class="fas fa-clock"></i> Ethiopia Time (EAT)</div>
+            <div class="sess-clock-time" id="sessClockTime">--:--:--</div>
+            <div class="sess-clock-date" id="sessClockDate">---</div>
+        </div>
+        <div class="sess-overlap-badge" id="sessOverlapBadge" style="display:none;">
+            <span class="sess-overlap-pulse"></span>
+            <span id="sessOverlapText">Sessions Overlapping</span>
+        </div>
+    </div>
+
+    <!-- Session Cards -->
+    <div class="sess-grid" id="sessGrid">
+        <!-- populated by JS -->
+    </div>
+
+    <!-- Overlap Info -->
+    <div class="sess-info-row">
+        <div class="sess-info-pill"><i class="fas fa-info-circle"></i> <span data-am="ከፍተኛ ትሬዲንግ ጊዜ — London + New York Overlap (15:00–17:00 EAT)" data-en="Best trading window — London + New York overlap (15:00–17:00 EAT)">Best trading window — London + New York overlap</span></div>
+    </div>
+</div>
+</section>
 
 <!-- CALCULATORS -->
 <section id="calculators" class="section calc-section">

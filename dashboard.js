@@ -1651,9 +1651,12 @@ NEVER:
 
 function formatBotReply(text) {
     return text
-        // Markdown links: [text](url) → clickable anchor (safe, opens in new tab)
-        .replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g,
-            '<a href="$2" target="_blank" rel="noopener noreferrer" style="color:#6366f1;text-decoration:underline;font-weight:600;">$1</a>')
+        // Markdown links: [text](url) → styled clickable anchor
+        .replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, (match, label, url) => {
+            const isExternal = !url.includes('localhost');
+            const target = isExternal ? 'target="_blank" rel="noopener noreferrer"' : '';
+            return `<a href="${url}" ${target} class="bot-link">${label}</a>`;
+        })
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
         .replace(/\*(.*?)\*/g, '<em>$1</em>')
         .replace(/\n/g, '<br>')
@@ -1793,6 +1796,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     console.log('🚀 Tag Bridge Trading Ecosystem v2.0 Upgraded & Initialized');
+
+    // Market Sessions Dashboard
+    initMarketSessions();
 });
 
 
@@ -3589,3 +3595,239 @@ function initDemo() {
 }
 // v2.1
 
+
+// ══════════════════════════════════════════════
+//  FOREX MARKET SESSIONS DASHBOARD
+//  Uses Intl.DateTimeFormat + IANA timezones — DST-aware, no hardcoded offsets
+// ══════════════════════════════════════════════
+
+const SESSIONS_DEF = [
+    {
+        id:       'sydney',
+        name:     'Sydney',
+        flag:     '🇦🇺',
+        tz:       'Australia/Sydney',
+        openHour:  7,  openMin:  0,  // 07:00 Sydney local
+        closeHour: 16, closeMin: 0,  // 16:00 Sydney local
+        color:    '#06b6d4'
+    },
+    {
+        id:       'tokyo',
+        name:     'Tokyo',
+        flag:     '🇯🇵',
+        tz:       'Asia/Tokyo',
+        openHour:  9,  openMin:  0,  // 09:00 Tokyo local
+        closeHour: 18, closeMin: 0,  // 18:00 Tokyo local
+        color:    '#f59e0b'
+    },
+    {
+        id:       'london',
+        name:     'London',
+        flag:     '🇬🇧',
+        tz:       'Europe/London',
+        openHour:  8,  openMin:  0,  // 08:00 London local
+        closeHour: 17, closeMin: 0,  // 17:00 London local
+        color:    '#6366f1'
+    },
+    {
+        id:       'newyork',
+        name:     'New York',
+        flag:     '🇺🇸',
+        tz:       'America/New_York',
+        openHour:  8,  openMin:  0,  // 08:00 New York local
+        closeHour: 17, closeMin: 0,  // 17:00 New York local
+        color:    '#10b981'
+    }
+];
+
+let _sessInterval = null;
+
+// Get the current time components in a given IANA timezone
+function tzTime(tz, now) {
+    const fmt = new Intl.DateTimeFormat('en-US', {
+        timeZone: tz,
+        hour: 'numeric', minute: 'numeric', second: 'numeric',
+        hour12: false, year: 'numeric', month: 'numeric', day: 'numeric'
+    });
+    const parts = fmt.formatToParts(now);
+    const p = {};
+    parts.forEach(({ type, value }) => { p[type] = parseInt(value, 10) || 0; });
+    return p; // { year, month, day, hour, minute, second }
+}
+
+// Convert session open/close in its local timezone to UTC ms
+function sessionUTCRange(session, nowUTC) {
+    // Get today's date in the session's timezone
+    const local = tzTime(session.tz, nowUTC);
+
+    // Build a Date for open and close in session local time today
+    // We use Intl to find the UTC offset by comparing
+    function localToUTC(yr, mo, day, hr, mn) {
+        // Create a string and parse — works across DST boundaries
+        const str = `${yr}-${String(mo).padStart(2,'0')}-${String(day).padStart(2,'0')}T${String(hr).padStart(2,'0')}:${String(mn).padStart(2,'0')}:00`;
+        // Find UTC equivalent by measuring offset at this moment in the timezone
+        const probe = new Date(`${str}Z`);
+        const probeLocal = tzTime(session.tz, probe);
+        const diffMs = (probeLocal.hour * 3600 + probeLocal.minute * 60 + probeLocal.second) * 1000
+                     - (hr * 3600 + mn * 60) * 1000;
+        return new Date(probe.getTime() + diffMs);
+    }
+
+    const open  = localToUTC(local.year, local.month, local.day, session.openHour,  session.openMin);
+    let   close = localToUTC(local.year, local.month, local.day, session.closeHour, session.closeMin);
+
+    // If close <= open (midnight-crossing sessions like Sydney), add 1 day to close
+    if (close <= open) close = new Date(close.getTime() + 86400000);
+
+    // If current time is past close, advance both by 1 day
+    if (nowUTC > close) {
+        return {
+            open:  new Date(open.getTime()  + 86400000),
+            close: new Date(close.getTime() + 86400000)
+        };
+    }
+
+    return { open, close };
+}
+
+function fmtCountdown(ms) {
+    if (ms <= 0) return '0:00:00';
+    const totalSec = Math.floor(ms / 1000);
+    const h = Math.floor(totalSec / 3600);
+    const m = Math.floor((totalSec % 3600) / 60);
+    const s = totalSec % 60;
+    return `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+function fmtLocal(utcMs, tz) {
+    return new Intl.DateTimeFormat('en-GB', {
+        timeZone: tz,
+        hour: '2-digit', minute: '2-digit', hour12: false
+    }).format(new Date(utcMs));
+}
+
+function fmtEAT(utcMs) {
+    return new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'Africa/Addis_Ababa',
+        hour: '2-digit', minute: '2-digit', hour12: false
+    }).format(new Date(utcMs));
+}
+
+function initMarketSessions() {
+    const grid = document.getElementById('sessGrid');
+    if (!grid) return;
+
+    // Build cards
+    grid.innerHTML = SESSIONS_DEF.map(s => `
+        <div class="sess-card" id="sess-${s.id}">
+            <div class="sess-card-header">
+                <span class="sess-flag">${s.flag}</span>
+                <span class="sess-name">${s.name}</span>
+                <span class="sess-badge closed" id="sess-badge-${s.id}">
+                    <span class="sess-badge-dot"></span>
+                    <span id="sess-badge-txt-${s.id}">CLOSED</span>
+                </span>
+            </div>
+            <div class="sess-times">
+                Open: <span id="sess-open-${s.id}">--:--</span> –
+                <span id="sess-close-${s.id}">--:--</span> EAT
+            </div>
+            <div class="sess-countdown" id="sess-cd-${s.id}">--:--:--</div>
+            <div class="sess-progress-wrap">
+                <div class="sess-progress-fill" id="sess-prog-${s.id}" style="width:0%"></div>
+            </div>
+        </div>
+    `).join('');
+
+    // Start tick
+    if (_sessInterval) clearInterval(_sessInterval);
+    _sessIntervalFn();
+    _sessInterval = setInterval(_sessIntervalFn, 1000);
+}
+
+function _sessIntervalFn() {
+    const now    = new Date();
+    const eatTZ  = 'Africa/Addis_Ababa';
+
+    // Update EAT clock
+    const clockEl = document.getElementById('sessClockTime');
+    const dateEl  = document.getElementById('sessClockDate');
+    if (clockEl) {
+        clockEl.textContent = new Intl.DateTimeFormat('en-GB', {
+            timeZone: eatTZ, hour: '2-digit', minute: '2-digit',
+            second: '2-digit', hour12: false
+        }).format(now);
+    }
+    if (dateEl) {
+        dateEl.textContent = new Intl.DateTimeFormat('en-GB', {
+            timeZone: eatTZ, weekday: 'short', day: 'numeric',
+            month: 'short', year: 'numeric'
+        }).format(now);
+    }
+
+    let openCount  = 0;
+    const openNames = [];
+
+    SESSIONS_DEF.forEach(s => {
+        const { open, close } = sessionUTCRange(s, now);
+        const isOpen = now >= open && now < close;
+
+        const card    = document.getElementById(`sess-${s.id}`);
+        const badge   = document.getElementById(`sess-badge-${s.id}`);
+        const badgeTxt= document.getElementById(`sess-badge-txt-${s.id}`);
+        const openEl  = document.getElementById(`sess-open-${s.id}`);
+        const closeEl = document.getElementById(`sess-close-${s.id}`);
+        const cdEl    = document.getElementById(`sess-cd-${s.id}`);
+        const progEl  = document.getElementById(`sess-prog-${s.id}`);
+        if (!card) return;
+
+        // Times in EAT
+        if (openEl)  openEl.textContent  = fmtEAT(open.getTime());
+        if (closeEl) closeEl.textContent = fmtEAT(close.getTime());
+
+        if (isOpen) {
+            openCount++;
+            openNames.push(s.name);
+            const elapsed   = now.getTime() - open.getTime();
+            const duration  = close.getTime() - open.getTime();
+            const remaining = close.getTime() - now.getTime();
+            const pct       = Math.min(100, (elapsed / duration) * 100);
+
+            card.className = 'sess-card open';
+            if (badge)    { badge.className = 'sess-badge open'; }
+            if (badgeTxt) badgeTxt.textContent = 'OPEN';
+            if (cdEl)     { cdEl.textContent = `Closes in ${fmtCountdown(remaining)}`; cdEl.className = 'sess-countdown open'; }
+            if (progEl)   progEl.style.width = pct.toFixed(1) + '%';
+        } else {
+            const toOpen = open.getTime() - now.getTime();
+            card.className = 'sess-card';
+            if (badge)    { badge.className = 'sess-badge closed'; }
+            if (badgeTxt) badgeTxt.textContent = 'CLOSED';
+            if (cdEl) {
+                const soon = toOpen < 3600000; // < 1 hour
+                cdEl.textContent  = `Opens in ${fmtCountdown(toOpen)}`;
+                cdEl.className    = `sess-countdown${soon ? ' soon' : ''}`;
+            }
+            if (progEl) progEl.style.width = '0%';
+        }
+    });
+
+    // Overlap detection
+    const overlapBadge = document.getElementById('sessOverlapBadge');
+    const overlapText  = document.getElementById('sessOverlapText');
+    if (overlapBadge) {
+        if (openCount >= 2) {
+            overlapBadge.style.display = 'inline-flex';
+            if (overlapText) overlapText.textContent = `${openNames.join(' + ')} Overlap — High Volatility!`;
+            // Add overlap class to open cards
+            SESSIONS_DEF.forEach(s => {
+                if (openNames.includes(s.name)) {
+                    const card = document.getElementById(`sess-${s.id}`);
+                    if (card) card.className = 'sess-card open overlap';
+                }
+            });
+        } else {
+            overlapBadge.style.display = 'none';
+        }
+    }
+}
