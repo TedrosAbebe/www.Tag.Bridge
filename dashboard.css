@@ -5375,73 +5375,75 @@ img, iframe, canvas, video, table { max-width: 100% !important; }
     gap: 16px; margin-bottom: 24px;
 }
 
-/* Session card base */
+/* Session card base — always dark navy regardless of page theme */
 .sess-card {
-    background: linear-gradient(160deg, rgba(15,23,42,.95) 0%, rgba(10,15,31,.98) 100%);
-    border: 1.5px solid rgba(255,255,255,.08);
-    border-radius: 20px; padding: 20px 18px;
+    background: linear-gradient(160deg, #0d1829 0%, #0a1020 100%);
+    border: 1.5px solid rgba(37,99,235,.25);
+    border-radius: 20px; padding: 22px 18px;
     display: flex; flex-direction: column; gap: 14px;
     transition: transform .2s, box-shadow .2s, border-color .2s;
     position: relative; overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,.4);
 }
-.sess-card:hover { transform: translateY(-3px); }
-[data-theme="light"] .sess-card {
-    background: linear-gradient(160deg, rgba(15,23,42,.94) 0%, rgba(10,15,31,.97) 100%);
-    border-color: rgba(255,255,255,.1);
+.sess-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(59,130,246,.5);
+    box-shadow: 0 12px 40px rgba(37,99,235,.2);
 }
 
 /* Top accent line */
 .sess-card::before {
-    content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 2px;
-    background: linear-gradient(90deg, transparent, rgba(37,99,235,.5), transparent);
+    content: ''; position: absolute; top: 0; left: 8%; right: 8%; height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(37,99,235,.6), transparent);
     transition: background .3s;
 }
 .sess-card.open::before    { background: linear-gradient(90deg, transparent, #10b981, #34d399, transparent); }
 .sess-card.overlap::before { background: linear-gradient(90deg, transparent, #f59e0b, #fbbf24, transparent); }
-.sess-card.weekend::before { background: linear-gradient(90deg, transparent, rgba(100,116,139,.3), transparent); }
+.sess-card.weekend::before { background: linear-gradient(90deg, transparent, rgba(100,116,139,.2), transparent); }
 
 /* Open state — green glow */
 .sess-card.open {
-    border-color: rgba(16,185,129,.5);
-    box-shadow: 0 8px 36px rgba(16,185,129,.15), 0 0 0 1px rgba(16,185,129,.1);
-    background: linear-gradient(160deg, rgba(6,30,21,.95) 0%, rgba(10,15,31,.98) 100%);
+    background: linear-gradient(160deg, #071a12 0%, #0a1020 100%);
+    border-color: rgba(16,185,129,.55);
+    box-shadow: 0 8px 36px rgba(16,185,129,.18), 0 0 0 1px rgba(16,185,129,.1);
 }
+.sess-card.open:hover { box-shadow: 0 14px 48px rgba(16,185,129,.28); }
 
 /* Overlap state — gold glow */
 .sess-card.overlap {
-    border-color: rgba(245,158,11,.5);
-    box-shadow: 0 8px 36px rgba(245,158,11,.18), 0 0 0 1px rgba(245,158,11,.12);
-    background: linear-gradient(160deg, rgba(28,20,0,.95) 0%, rgba(10,15,31,.98) 100%);
+    background: linear-gradient(160deg, #1a1200 0%, #0a1020 100%);
+    border-color: rgba(245,158,11,.55);
+    box-shadow: 0 8px 36px rgba(245,158,11,.2), 0 0 0 1px rgba(245,158,11,.1);
 }
 
 /* Weekend — dimmed */
-.sess-card.weekend { opacity: .45; filter: grayscale(70%); }
+.sess-card.weekend { opacity: .4; filter: grayscale(80%); }
 
 /* Card header */
 .sess-card-header { display: flex; align-items: center; gap: 10px; }
 .sess-flag {
-    font-size: 1.6rem; line-height: 1; flex-shrink: 0;
+    font-size: 1.7rem; line-height: 1; flex-shrink: 0;
     font-family: "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;
 }
 .sess-name {
-    font-size: .9rem; font-weight: 800; color: #e2e8f0; flex: 1;
+    font-size: .92rem; font-weight: 800; color: #e2e8f0; flex: 1; letter-spacing: -.2px;
 }
 
 /* Open / Closed badge */
 .sess-badge {
     display: inline-flex; align-items: center; gap: 5px;
-    padding: 4px 10px; border-radius: 50px;
+    padding: 4px 11px; border-radius: 50px;
     font-size: .6rem; font-weight: 800; letter-spacing: 1px;
     white-space: nowrap; flex-shrink: 0;
 }
 .sess-badge.open {
-    background: rgba(16,185,129,.15); color: #34d399;
-    border: 1px solid rgba(52,211,153,.4);
-    box-shadow: 0 0 10px rgba(52,211,153,.2);
+    background: rgba(16,185,129,.18); color: #34d399;
+    border: 1px solid rgba(52,211,153,.5);
+    box-shadow: 0 0 12px rgba(52,211,153,.25);
 }
 .sess-badge.closed {
-    background: rgba(239,68,68,.1); color: #f87171;
-    border: 1px solid rgba(248,113,113,.25);
+    background: rgba(239,68,68,.12); color: #f87171;
+    border: 1px solid rgba(248,113,113,.3);
 }
 .sess-badge-dot {
     width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0;
@@ -5449,22 +5451,38 @@ img, iframe, canvas, video, table { max-width: 100% !important; }
 .sess-badge.open .sess-badge-dot { animation: sess-pulse .8s infinite; }
 
 /* Open / Close times */
-.sess-times { font-size: .72rem; color: #64748b; line-height: 1.8; }
-.sess-times span { color: #94a3b8; font-weight: 700; font-family: 'Courier New', monospace; }
+.sess-times { font-size: .73rem; color: #475569; line-height: 1.9; }
+.sess-times span {
+    color: #93c5fd; font-weight: 700;
+    font-family: 'Courier New', monospace; letter-spacing: .5px;
+}
 
 /* Countdown */
-.sess-countdown { font-size: .8rem; font-weight: 700; color: #475569; font-family: 'Courier New', monospace; }
-.sess-countdown.open { color: #34d399; text-shadow: 0 0 10px rgba(52,211,153,.3); }
-.sess-countdown.soon { color: #fbbf24; text-shadow: 0 0 10px rgba(251,191,36,.3); }
+.sess-countdown {
+    font-size: .82rem; font-weight: 700; color: #475569;
+    font-family: 'Courier New', monospace; letter-spacing: .5px;
+}
+.sess-countdown.open { color: #34d399; text-shadow: 0 0 12px rgba(52,211,153,.4); }
+.sess-countdown.soon { color: #fbbf24; text-shadow: 0 0 12px rgba(251,191,36,.4); }
 
 /* Progress bar */
-.sess-progress-wrap { height: 4px; background: rgba(255,255,255,.06); border-radius: 2px; overflow: hidden; }
+.sess-progress-wrap {
+    height: 4px; background: rgba(255,255,255,.06);
+    border-radius: 2px; overflow: hidden;
+}
 .sess-progress-fill {
     height: 100%; border-radius: 2px; transition: width .6s linear;
-    background: linear-gradient(90deg, #2563eb, #3b82f6);
+    background: linear-gradient(90deg, #1d4ed8, #3b82f6);
+    box-shadow: 0 0 8px rgba(59,130,246,.5);
 }
-.sess-card.open    .sess-progress-fill { background: linear-gradient(90deg, #10b981, #34d399); }
-.sess-card.overlap .sess-progress-fill { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+.sess-card.open    .sess-progress-fill {
+    background: linear-gradient(90deg, #059669, #34d399);
+    box-shadow: 0 0 8px rgba(52,211,153,.5);
+}
+.sess-card.overlap .sess-progress-fill {
+    background: linear-gradient(90deg, #d97706, #fbbf24);
+    box-shadow: 0 0 8px rgba(251,191,36,.5);
+}
 
 /* ── Overlap banner — Gold highlight ────────── */
 .sess-overlap-badge {
@@ -5643,192 +5661,199 @@ img, iframe, canvas, video, table { max-width: 100% !important; }
 /* ── Session cards grid ──────────────────────── */
 .sess-grid {
     display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 16px; margin-bottom: 24px;
+    gap: 14px; margin-bottom: 24px;
 }
 
-/* Session card base */
+/* ── Session card ────────────────────────────── */
 .sess-card {
-    background: linear-gradient(160deg, #141c2f 0%, #0d1117 100%);
-    border: 1px solid rgba(255,255,255,.07);
-    border-radius: 20px; padding: 20px 18px;
-    display: flex; flex-direction: column; gap: 14px;
+    background: var(--bg2, #161b22);
+    border: 1.5px solid rgba(255,255,255,.08);
+    border-radius: 16px; padding: 18px 16px;
+    display: flex; flex-direction: column; gap: 12px;
     transition: transform .2s, box-shadow .2s, border-color .2s;
     position: relative; overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,.2);
 }
-.sess-card:hover { transform: translateY(-3px); }
+.sess-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(0,0,0,.3);
+}
+/* Light theme — white card */
 [data-theme="light"] .sess-card {
-    background: #fff; border-color: #e2e8f0;
-    box-shadow: 0 4px 20px rgba(0,0,0,.06);
+    background: #fff;
+    border-color: #e2e8f0;
+    box-shadow: 0 2px 12px rgba(0,0,0,.07);
 }
+[data-theme="light"] .sess-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,.12); }
 
-/* Top accent line */
+/* Top color accent line */
 .sess-card::before {
-    content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 2px;
-    background: linear-gradient(90deg, transparent, rgba(99,102,241,.4), transparent);
-    border-radius: 0 0 2px 2px; transition: background .3s;
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, #2563eb, #3b82f6);
+    opacity: .5; transition: opacity .3s;
 }
-.sess-card.open::before    { background: linear-gradient(90deg, transparent, #10b981, transparent); }
-.sess-card.overlap::before { background: linear-gradient(90deg, transparent, #f59e0b, transparent); }
-.sess-card.weekend::before { background: linear-gradient(90deg, transparent, rgba(100,116,139,.2), transparent); }
+.sess-card:hover::before { opacity: 1; }
+.sess-card.open::before    { background: linear-gradient(90deg, #059669, #34d399); opacity: 1; }
+.sess-card.overlap::before { background: linear-gradient(90deg, #d97706, #fbbf24); opacity: 1; }
+.sess-card.weekend::before { background: #334155; opacity: .3; }
 
-/* Open state */
+/* Open — green border glow */
 .sess-card.open {
-    border-color: rgba(16,185,129,.3);
-    box-shadow: 0 8px 36px rgba(16,185,129,.1), 0 0 0 1px rgba(16,185,129,.08);
-    background: linear-gradient(160deg, #0b1f18 0%, #0d1117 100%);
+    border-color: rgba(16,185,129,.4);
+    box-shadow: 0 4px 24px rgba(16,185,129,.12), 0 0 0 1px rgba(16,185,129,.08);
 }
 [data-theme="light"] .sess-card.open {
-    background: linear-gradient(160deg, #ecfdf5 0%, #fff 100%);
-    border-color: rgba(16,185,129,.35);
-    box-shadow: 0 4px 24px rgba(16,185,129,.1);
+    border-color: rgba(16,185,129,.5);
+    background: linear-gradient(160deg, #f0fdf4 0%, #fff 100%);
+    box-shadow: 0 4px 20px rgba(16,185,129,.12);
 }
 
-/* Overlap state */
+/* Overlap — gold border glow */
 .sess-card.overlap {
-    border-color: rgba(245,158,11,.35);
-    box-shadow: 0 8px 36px rgba(245,158,11,.12), 0 0 0 1px rgba(245,158,11,.08);
-    background: linear-gradient(160deg, #191200 0%, #0d1117 100%);
+    border-color: rgba(245,158,11,.45);
+    box-shadow: 0 4px 24px rgba(245,158,11,.14), 0 0 0 1px rgba(245,158,11,.08);
 }
 [data-theme="light"] .sess-card.overlap {
+    border-color: rgba(245,158,11,.5);
     background: linear-gradient(160deg, #fffbeb 0%, #fff 100%);
-    border-color: rgba(245,158,11,.4);
+    box-shadow: 0 4px 20px rgba(245,158,11,.12);
 }
 
-/* Weekend state */
-.sess-card.weekend { opacity: .5; filter: grayscale(60%); }
+/* Weekend */
+.sess-card.weekend { opacity: .45; filter: grayscale(70%); }
 
 /* Card header */
-.sess-card-header {
-    display: flex; align-items: center; gap: 10px;
-}
+.sess-card-header { display: flex; align-items: center; gap: 8px; }
 .sess-flag {
-    font-size: 1.6rem; line-height: 1; flex-shrink: 0;
-    /* Force emoji rendering for all browsers */
+    font-size: 1.5rem; line-height: 1; flex-shrink: 0;
     font-family: "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;
 }
 .sess-name {
-    font-size: .9rem; font-weight: 800; color: #e6edf3;
-    flex: 1; letter-spacing: -.2px;
+    font-size: .88rem; font-weight: 800; color: #e2e8f0; flex: 1; letter-spacing: -.2px;
 }
 [data-theme="light"] .sess-name { color: #0f172a; }
 
 /* Open / Closed badge */
 .sess-badge {
-    display: inline-flex; align-items: center; gap: 5px;
-    padding: 4px 10px; border-radius: 50px;
-    font-size: .6rem; font-weight: 800; letter-spacing: 1px;
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 9px; border-radius: 50px;
+    font-size: .58rem; font-weight: 800; letter-spacing: .8px;
     white-space: nowrap; flex-shrink: 0;
 }
 .sess-badge.open {
-    background: rgba(16,185,129,.12); color: #10b981;
-    border: 1px solid rgba(16,185,129,.3);
+    background: rgba(16,185,129,.15); color: #10b981;
+    border: 1px solid rgba(16,185,129,.35);
 }
 .sess-badge.closed {
-    background: rgba(239,68,68,.08); color: #ef4444;
-    border: 1px solid rgba(239,68,68,.2);
+    background: rgba(239,68,68,.1); color: #ef4444;
+    border: 1px solid rgba(239,68,68,.25);
 }
-.sess-badge-dot {
-    width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0;
-}
+[data-theme="light"] .sess-badge.closed { background: rgba(239,68,68,.07); }
+.sess-badge-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
 .sess-badge.open .sess-badge-dot { animation: sess-pulse .8s infinite; }
 
-/* Open / Close times */
-.sess-times {
-    font-size: .72rem; color: #64748b; line-height: 1.8;
-}
-.sess-times span {
-    color: #94a3b8; font-weight: 700;
-    font-family: 'Courier New', monospace;
-}
+/* Times */
+.sess-times { font-size: .7rem; color: #64748b; line-height: 1.8; }
+.sess-times span { color: #94a3b8; font-weight: 700; font-family: 'Courier New', monospace; }
 [data-theme="light"] .sess-times { color: #64748b; }
 [data-theme="light"] .sess-times span { color: #334155; }
 
 /* Countdown */
-.sess-countdown {
-    font-size: .8rem; font-weight: 700; color: #475569;
-    font-family: 'Courier New', monospace; letter-spacing: .5px;
-}
+.sess-countdown { font-size: .78rem; font-weight: 700; color: #64748b; font-family: 'Courier New', monospace; }
 .sess-countdown.open { color: #10b981; }
 .sess-countdown.soon { color: #f59e0b; }
 [data-theme="light"] .sess-countdown { color: #94a3b8; }
+[data-theme="light"] .sess-countdown.open { color: #059669; }
 
 /* Progress bar */
-.sess-progress-wrap {
-    height: 4px; background: rgba(255,255,255,.07);
-    border-radius: 2px; overflow: hidden;
-}
+.sess-progress-wrap { height: 3px; background: rgba(255,255,255,.06); border-radius: 2px; overflow: hidden; }
 [data-theme="light"] .sess-progress-wrap { background: #e2e8f0; }
-.sess-progress-fill {
-    height: 100%; border-radius: 2px;
-    transition: width .6s linear;
-    background: linear-gradient(90deg, #6366f1, #06b6d4);
-}
-.sess-card.open    .sess-progress-fill { background: linear-gradient(90deg, #10b981, #06b6d4); }
-.sess-card.overlap .sess-progress-fill { background: linear-gradient(90deg, #f59e0b, #10b981); }
+.sess-progress-fill { height: 100%; border-radius: 2px; transition: width .6s linear; background: linear-gradient(90deg, #2563eb, #3b82f6); }
+.sess-card.open    .sess-progress-fill { background: linear-gradient(90deg, #059669, #10b981); }
+.sess-card.overlap .sess-progress-fill { background: linear-gradient(90deg, #d97706, #f59e0b); }
 
 /* ── Overlap banner ──────────────────────────── */
 .sess-overlap-badge {
-    display: inline-flex; align-items: center; gap: 12px;
-    border-radius: 16px; padding: 14px 28px; margin-bottom: 20px;
-    font-weight: 800; font-size: .85rem;
-    width: 100%; justify-content: center;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    border-radius: 14px; padding: 13px 24px; margin-bottom: 20px;
+    font-weight: 800; font-size: .84rem; width: 100%;
+    background: linear-gradient(135deg, rgba(217,119,6,.15), rgba(245,158,11,.06));
+    border: 1.5px solid rgba(245,158,11,.45); color: #f59e0b;
+    animation: sess-overlap-glow 2.5s ease-in-out infinite;
 }
-/* Major: London + NY */
-.sess-overlap-badge {
-    background: linear-gradient(135deg, rgba(239,68,68,.1), rgba(245,158,11,.08));
-    border: 1px solid rgba(245,158,11,.4);
-    color: #fbbf24;
-    animation: sess-overlap-pulse 2.5s ease-in-out infinite;
-}
-/* Minor */
 .sess-overlap-badge.minor {
-    background: rgba(99,102,241,.08);
-    border-color: rgba(99,102,241,.2);
-    color: #818cf8;
-    animation: none;
+    background: rgba(37,99,235,.08); border-color: rgba(59,130,246,.3);
+    color: #60a5fa; animation: none;
 }
-/* Weekend */
 .sess-overlap-badge.weekend {
-    background: rgba(100,116,139,.06);
-    border-color: rgba(100,116,139,.15);
-    color: #64748b;
-    animation: none;
+    background: rgba(100,116,139,.05); border-color: rgba(100,116,139,.18);
+    color: #64748b; animation: none;
 }
-.sess-overlap-pulse {
-    width: 10px; height: 10px; border-radius: 50%; background: currentColor;
-    animation: sess-pulse 1s infinite; flex-shrink: 0;
-}
+[data-theme="light"] .sess-overlap-badge { background: rgba(245,158,11,.08); }
+[data-theme="light"] .sess-overlap-badge.minor { background: rgba(37,99,235,.06); }
+.sess-overlap-pulse { width: 9px; height: 9px; border-radius: 50%; background: currentColor; animation: sess-pulse 1s infinite; flex-shrink: 0; }
 
 /* ── Info pill ───────────────────────────────── */
 .sess-info-row { display: flex; justify-content: center; margin-top: 4px; }
 .sess-info-pill {
     display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(245,158,11,.07); border: 1px solid rgba(245,158,11,.2);
+    background: rgba(245,158,11,.07); border: 1.5px solid rgba(245,158,11,.25);
     color: #f59e0b; font-size: .74rem; font-weight: 600;
     padding: 9px 22px; border-radius: 50px;
 }
-[data-theme="light"] .sess-info-pill { background: rgba(245,158,11,.08); }
+[data-theme="light"] .sess-info-pill { background: rgba(245,158,11,.08); color: #d97706; border-color: rgba(217,119,6,.35); }
 
 /* ── Keyframes ───────────────────────────────── */
 @keyframes sess-pulse {
-    0%,100% { opacity: 1; transform: scale(1); }
-    50%      { opacity: .3; transform: scale(1.5); }
+    0%,100% { opacity:1; transform:scale(1); }
+    50%      { opacity:.3; transform:scale(1.5); }
 }
-@keyframes sess-overlap-pulse {
-    0%,100% { box-shadow: 0 0 0 0 rgba(245,158,11,.0); }
-    50%     { box-shadow: 0 0 24px 2px rgba(245,158,11,.2); }
+@keyframes sess-overlap-glow {
+    0%,100% { box-shadow: 0 2px 12px rgba(245,158,11,.1); }
+    50%      { box-shadow: 0 4px 28px rgba(245,158,11,.3); }
 }
 
 /* ── Responsive ──────────────────────────────── */
 @media (max-width: 1024px) {
-    .sess-grid { grid-template-columns: repeat(2, 1fr); }
+    .sess-grid { grid-template-columns: repeat(4, 1fr); gap: 10px; }
 }
+
+/* Mobile — 4 cards side by side, compact + horizontal scroll if needed */
 @media (max-width: 768px) {
-    .sess-topbar { grid-template-columns: 1fr; }
-    .sess-clock-time { font-size: 2rem; letter-spacing: 3px; }
+    .sess-topbar { grid-template-columns: 1fr; gap: 10px; }
+    .sess-clock-time    { font-size: 2rem; letter-spacing: 3px; }
     .sess-next-countdown { font-size: 1.7rem; letter-spacing: 3px; }
+
+    /* Keep 4 columns on mobile — compact sizing */
+    .sess-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 4px;
+    }
+    .sess-card {
+        padding: 14px 10px;
+        gap: 10px;
+        min-width: 0;
+        border-radius: 14px;
+    }
+    .sess-flag    { font-size: 1.2rem; }
+    .sess-name    { font-size: .78rem; }
+    .sess-badge   { font-size: .54rem; padding: 2px 7px; }
+    .sess-times   { font-size: .64rem; }
+    .sess-countdown { font-size: .68rem; }
 }
-@media (max-width: 540px) {
-    .sess-grid { grid-template-columns: 1fr; }
-    .sess-overlap-badge { padding: 12px 18px; font-size: .78rem; }
+
+@media (max-width: 480px) {
+    .sess-grid {
+        grid-template-columns: repeat(4, minmax(72px, 1fr));
+        gap: 6px;
+    }
+    .sess-card   { padding: 12px 8px; gap: 8px; border-radius: 12px; }
+    .sess-flag   { font-size: 1.1rem; }
+    .sess-name   { font-size: .72rem; }
+    .sess-times  { font-size: .6rem; line-height: 1.6; }
+    .sess-countdown { font-size: .62rem; }
+    .sess-overlap-badge { padding: 10px 14px; font-size: .74rem; }
 }
