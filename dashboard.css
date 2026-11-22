@@ -5241,20 +5241,292 @@ img, iframe, canvas, video, table { max-width: 100% !important; }
 }
 
 /* ══════════════════════════════════════════════
-   FOREX MARKET SESSIONS — Premium UI v5
+   FOREX MARKET SESSIONS — Tag Bridge Brand v6
    ══════════════════════════════════════════════ */
 
 /* Section background */
 .sessions-section {
-    background: linear-gradient(180deg, #080d18 0%, #0d1117 100%);
+    background: linear-gradient(180deg, #060c1a 0%, #0a0f1f 100%);
     position: relative; overflow: hidden;
 }
 .sessions-section::before {
     content: ''; position: absolute; inset: 0; pointer-events: none;
-    background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(99,102,241,.08) 0%, transparent 65%);
+    background:
+        radial-gradient(ellipse 60% 40% at 20% 50%, rgba(37,99,235,.12) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 35% at 80% 50%, rgba(245,158,11,.08) 0%, transparent 60%);
 }
-[data-theme="light"] .sessions-section { background: linear-gradient(180deg, #eef2ff 0%, #f8fafc 100%); }
-[data-theme="light"] .sessions-section::before { display: none; }
+[data-theme="light"] .sessions-section {
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+}
+[data-theme="light"] .sessions-section::before {
+    background:
+        radial-gradient(ellipse 60% 40% at 20% 50%, rgba(37,99,235,.15) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 35% at 80% 50%, rgba(245,158,11,.1) 0%, transparent 60%);
+}
+
+/* ── Top bar ─────────────────────────────────── */
+.sess-topbar {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1fr;
+    gap: 16px; margin-bottom: 32px;
+}
+
+/* ── Clock card — Electric Blue ─────────────── */
+.sess-clock-card {
+    background: linear-gradient(135deg, rgba(37,99,235,.25) 0%, rgba(30,41,59,.95) 100%);
+    border: 1.5px solid rgba(59,130,246,.6);
+    border-radius: 20px; padding: 22px 28px;
+    text-align: center;
+    box-shadow: 0 8px 40px rgba(37,99,235,.25), inset 0 1px 0 rgba(59,130,246,.2);
+    position: relative; overflow: hidden;
+}
+.sess-clock-card::after {
+    content: ''; position: absolute; top: 0; left: 15%; right: 15%; height: 2px;
+    background: linear-gradient(90deg, transparent, #3b82f6, #60a5fa, transparent);
+}
+[data-theme="light"] .sess-clock-card {
+    background: linear-gradient(135deg, rgba(37,99,235,.2) 0%, rgba(15,23,42,.92) 100%);
+    border-color: rgba(59,130,246,.7);
+    box-shadow: 0 8px 32px rgba(37,99,235,.3);
+}
+
+.sess-clock-label {
+    font-size: .62rem; font-weight: 800; letter-spacing: 2.5px;
+    color: #60a5fa; text-transform: uppercase; margin-bottom: 10px;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.sess-clock-time {
+    font-size: 2.8rem; font-weight: 900; letter-spacing: 6px;
+    font-family: 'Courier New', monospace; line-height: 1;
+    background: linear-gradient(135deg, #93c5fd 0%, #3b82f6 40%, #60a5fa 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    filter: drop-shadow(0 0 20px rgba(59,130,246,.8));
+}
+.sess-clock-date {
+    font-size: .74rem; color: #94a3b8; margin-top: 8px; letter-spacing: .5px;
+}
+
+/* ── Market status card ──────────────────────── */
+.sess-market-status {
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+    background: linear-gradient(135deg, rgba(15,23,42,.98) 0%, rgba(10,15,31,.98) 100%);
+    border: 1.5px solid rgba(255,255,255,.12);
+    border-radius: 20px; padding: 22px 28px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.5);
+}
+[data-theme="light"] .sess-market-status {
+    background: linear-gradient(135deg, rgba(15,23,42,.97) 0%, rgba(10,15,31,.97) 100%);
+    border-color: rgba(255,255,255,.15);
+}
+.sess-status-dot {
+    width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0;
+}
+.sess-status-dot.open {
+    background: #10b981;
+    box-shadow: 0 0 0 4px rgba(16,185,129,.2), 0 0 16px rgba(16,185,129,.6);
+    animation: sess-pulse .9s infinite;
+}
+.sess-status-dot.closed {
+    background: #ef4444;
+    box-shadow: 0 0 0 4px rgba(239,68,68,.2), 0 0 12px rgba(239,68,68,.5);
+}
+.sess-status-text { text-align: left; }
+.sess-status-label {
+    font-size: .6rem; font-weight: 800; letter-spacing: 2.5px;
+    text-transform: uppercase; color: #64748b; margin-bottom: 5px;
+}
+.sess-status-value {
+    font-size: 1.1rem; font-weight: 900; letter-spacing: .5px; color: #f1f5f9;
+}
+.sess-status-value.open   { color: #34d399; text-shadow: 0 0 20px rgba(52,211,153,.5); }
+.sess-status-value.closed { color: #f87171; text-shadow: 0 0 16px rgba(248,113,113,.4); }
+
+/* ── Next open card — Gold ───────────────────── */
+.sess-next-open {
+    background: linear-gradient(135deg, rgba(217,119,6,.2) 0%, rgba(10,15,31,.98) 100%);
+    border: 1.5px solid rgba(245,158,11,.6);
+    border-radius: 20px; padding: 22px 28px;
+    text-align: center;
+    box-shadow: 0 8px 40px rgba(245,158,11,.2), inset 0 1px 0 rgba(245,158,11,.15);
+    position: relative; overflow: hidden;
+}
+.sess-next-open::after {
+    content: ''; position: absolute; top: 0; left: 15%; right: 15%; height: 2px;
+    background: linear-gradient(90deg, transparent, #f59e0b, #fbbf24, transparent);
+}
+[data-theme="light"] .sess-next-open {
+    background: linear-gradient(135deg, rgba(217,119,6,.22) 0%, rgba(15,23,42,.97) 100%);
+    border-color: rgba(245,158,11,.7);
+}
+.sess-next-countdown {
+    font-size: 2.4rem; font-weight: 900; letter-spacing: 5px;
+    font-family: 'Courier New', monospace; line-height: 1;
+    background: linear-gradient(135deg, #fde68a 0%, #f59e0b 50%, #fbbf24 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    filter: drop-shadow(0 0 20px rgba(245,158,11,.8));
+    margin: 10px 0 6px;
+}
+.sess-next-open .sess-clock-label { color: #fbbf24; }
+.sess-next-open .sess-clock-date  { color: #fcd34d; font-weight: 600; }
+
+/* ── Session cards grid ──────────────────────── */
+.sess-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 16px; margin-bottom: 24px;
+}
+
+/* Session card base */
+.sess-card {
+    background: linear-gradient(160deg, rgba(15,23,42,.95) 0%, rgba(10,15,31,.98) 100%);
+    border: 1.5px solid rgba(255,255,255,.08);
+    border-radius: 20px; padding: 20px 18px;
+    display: flex; flex-direction: column; gap: 14px;
+    transition: transform .2s, box-shadow .2s, border-color .2s;
+    position: relative; overflow: hidden;
+}
+.sess-card:hover { transform: translateY(-3px); }
+[data-theme="light"] .sess-card {
+    background: linear-gradient(160deg, rgba(15,23,42,.94) 0%, rgba(10,15,31,.97) 100%);
+    border-color: rgba(255,255,255,.1);
+}
+
+/* Top accent line */
+.sess-card::before {
+    content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(37,99,235,.5), transparent);
+    transition: background .3s;
+}
+.sess-card.open::before    { background: linear-gradient(90deg, transparent, #10b981, #34d399, transparent); }
+.sess-card.overlap::before { background: linear-gradient(90deg, transparent, #f59e0b, #fbbf24, transparent); }
+.sess-card.weekend::before { background: linear-gradient(90deg, transparent, rgba(100,116,139,.3), transparent); }
+
+/* Open state — green glow */
+.sess-card.open {
+    border-color: rgba(16,185,129,.5);
+    box-shadow: 0 8px 36px rgba(16,185,129,.15), 0 0 0 1px rgba(16,185,129,.1);
+    background: linear-gradient(160deg, rgba(6,30,21,.95) 0%, rgba(10,15,31,.98) 100%);
+}
+
+/* Overlap state — gold glow */
+.sess-card.overlap {
+    border-color: rgba(245,158,11,.5);
+    box-shadow: 0 8px 36px rgba(245,158,11,.18), 0 0 0 1px rgba(245,158,11,.12);
+    background: linear-gradient(160deg, rgba(28,20,0,.95) 0%, rgba(10,15,31,.98) 100%);
+}
+
+/* Weekend — dimmed */
+.sess-card.weekend { opacity: .45; filter: grayscale(70%); }
+
+/* Card header */
+.sess-card-header { display: flex; align-items: center; gap: 10px; }
+.sess-flag {
+    font-size: 1.6rem; line-height: 1; flex-shrink: 0;
+    font-family: "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;
+}
+.sess-name {
+    font-size: .9rem; font-weight: 800; color: #e2e8f0; flex: 1;
+}
+
+/* Open / Closed badge */
+.sess-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 4px 10px; border-radius: 50px;
+    font-size: .6rem; font-weight: 800; letter-spacing: 1px;
+    white-space: nowrap; flex-shrink: 0;
+}
+.sess-badge.open {
+    background: rgba(16,185,129,.15); color: #34d399;
+    border: 1px solid rgba(52,211,153,.4);
+    box-shadow: 0 0 10px rgba(52,211,153,.2);
+}
+.sess-badge.closed {
+    background: rgba(239,68,68,.1); color: #f87171;
+    border: 1px solid rgba(248,113,113,.25);
+}
+.sess-badge-dot {
+    width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0;
+}
+.sess-badge.open .sess-badge-dot { animation: sess-pulse .8s infinite; }
+
+/* Open / Close times */
+.sess-times { font-size: .72rem; color: #64748b; line-height: 1.8; }
+.sess-times span { color: #94a3b8; font-weight: 700; font-family: 'Courier New', monospace; }
+
+/* Countdown */
+.sess-countdown { font-size: .8rem; font-weight: 700; color: #475569; font-family: 'Courier New', monospace; }
+.sess-countdown.open { color: #34d399; text-shadow: 0 0 10px rgba(52,211,153,.3); }
+.sess-countdown.soon { color: #fbbf24; text-shadow: 0 0 10px rgba(251,191,36,.3); }
+
+/* Progress bar */
+.sess-progress-wrap { height: 4px; background: rgba(255,255,255,.06); border-radius: 2px; overflow: hidden; }
+.sess-progress-fill {
+    height: 100%; border-radius: 2px; transition: width .6s linear;
+    background: linear-gradient(90deg, #2563eb, #3b82f6);
+}
+.sess-card.open    .sess-progress-fill { background: linear-gradient(90deg, #10b981, #34d399); }
+.sess-card.overlap .sess-progress-fill { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+
+/* ── Overlap banner — Gold highlight ────────── */
+.sess-overlap-badge {
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    border-radius: 16px; padding: 16px 32px; margin-bottom: 20px;
+    font-weight: 800; font-size: .88rem; width: 100%;
+    background: linear-gradient(135deg, rgba(217,119,6,.18), rgba(245,158,11,.08));
+    border: 1.5px solid rgba(245,158,11,.5);
+    color: #fbbf24;
+    box-shadow: 0 4px 24px rgba(245,158,11,.15);
+    animation: sess-overlap-glow 2.5s ease-in-out infinite;
+}
+.sess-overlap-badge.minor {
+    background: rgba(37,99,235,.1);
+    border-color: rgba(59,130,246,.35);
+    color: #93c5fd;
+    box-shadow: none; animation: none;
+}
+.sess-overlap-badge.weekend {
+    background: rgba(100,116,139,.06);
+    border-color: rgba(100,116,139,.2);
+    color: #64748b;
+    box-shadow: none; animation: none;
+}
+.sess-overlap-pulse {
+    width: 10px; height: 10px; border-radius: 50%; background: currentColor;
+    animation: sess-pulse 1s infinite; flex-shrink: 0;
+}
+
+/* ── Info pill — Gold ────────────────────────── */
+.sess-info-row { display: flex; justify-content: center; margin-top: 4px; }
+.sess-info-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(245,158,11,.1); border: 1.5px solid rgba(245,158,11,.35);
+    color: #fbbf24; font-size: .76rem; font-weight: 700;
+    padding: 10px 24px; border-radius: 50px;
+    box-shadow: 0 2px 12px rgba(245,158,11,.12);
+}
+
+/* ── Keyframes ───────────────────────────────── */
+@keyframes sess-pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: .3; transform: scale(1.5); }
+}
+@keyframes sess-overlap-glow {
+    0%,100% { box-shadow: 0 4px 16px rgba(245,158,11,.12); }
+    50%      { box-shadow: 0 4px 32px rgba(245,158,11,.35); }
+}
+
+/* ── Responsive ──────────────────────────────── */
+@media (max-width: 1024px) {
+    .sess-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+    .sess-topbar { grid-template-columns: 1fr; }
+    .sess-clock-time    { font-size: 2.2rem; letter-spacing: 4px; }
+    .sess-next-countdown { font-size: 1.9rem; letter-spacing: 3px; }
+}
+@media (max-width: 540px) {
+    .sess-grid { grid-template-columns: 1fr; }
+    .sess-overlap-badge { padding: 12px 16px; font-size: .78rem; }
+}
 
 /* ── Top bar ─────────────────────────────────── */
 .sess-topbar {
