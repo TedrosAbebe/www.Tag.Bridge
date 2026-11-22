@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 <!DOCTYPE html>
 <html lang="am" data-theme="light">
 <head>
@@ -1149,3 +1150,1156 @@ OneSignalDeferred.push(async function(OneSignal){
 </body>
 </html>
 
+=======
+<!DOCTYPE html>
+<html lang="am" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Performance: DNS prefetch & preconnect -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+<link rel="dns-prefetch" href="https://s3.tradingview.com">
+<link rel="dns-prefetch" href="https://api.binance.com">
+<!-- Preload critical CSS -->
+<link rel="preload" href="/dashboard.css" as="style">
+<link rel="preload" href="/dashboard.js" as="script">
+<meta name="description" content="ታግ ብሪጅ — የፎሬክስ እና ክሪፕቶ ትሬዲንግ በአማርኛ። PDF መጽሐፍ፣ ቻርቶች፣ ካልኩሌተሮች፣ ጆርናል እና AI ረዳት።">
+<meta name="theme-color" content="#2563a8">
+<meta property="og:title" content="ታግ ብሪጅ | Tag Bridge — የፎሬክስ ትሬዲንግ በአማርኛ">
+<meta property="og:description" content="የፎሬክስ ትሬዲንግ መጽሐፍ 450 ብር — ቻርቶች፣ ካልኩሌተሮች እና VIP አካዳሚ።">
+<meta property="og:url" content="https://www-tag-bridge.vercel.app/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://www-tag-bridge.vercel.app/logo.png.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="/logo.png.png">
+<link rel="manifest" href="/manifest.json">
+<title>ታግ ብሪጅ | Tag Bridge — የፎሬክስ ትሬዲንግ በአማርኛ</title>
+<!-- v2.1 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/dashboard.css">
+</head>
+<body>
+
+<!-- PWA BANNER -->
+<div id="updateBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,#f59e0b,#d97706);color:white;padding:14px 20px;z-index:99998;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 -4px 20px rgba(0,0,0,.3);">
+<div style="display:flex;align-items:center;gap:10px;"><span style="font-size:1.4rem;">🔄</span><div><div style="font-weight:800;font-size:.95rem;">New Update Available!</div><div style="font-size:.75rem;opacity:.9;">Tap to get the latest version</div></div></div>
+<button id="updateNowBtn" style="background:white;color:#d97706;border:none;padding:8px 18px;border-radius:50px;font-weight:800;font-size:.85rem;cursor:pointer;">Update Now</button>
+</div>
+
+<!-- TIKTOK BANNER -->
+<div id="browserBanner" style="display:block;background:#ff6600;color:white;text-align:center;padding:10px 16px;font-size:.82rem;font-weight:700;position:fixed;top:0;left:0;right:0;z-index:9999;line-height:1.5;">
+☝️ ለማዘዝ፦ ከላይ <strong>••• → Open in browser</strong> ይጫኑ
+<button onclick="document.getElementById('browserBanner').style.display='none'" style="background:none;border:none;color:white;font-size:1.1rem;margin-left:10px;cursor:pointer;vertical-align:middle;">✕</button>
+</div>
+<script>(function(){var ua=navigator.userAgent||'';if(!/TikTok|BytedanceWebview|musical_ly|Instagram|FBAN|FBAV/i.test(ua))document.getElementById('browserBanner').style.display='none';})();</script>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="mainNav">
+<div class="nav-container">
+    <a href="#welcome" class="nav-logo">
+        <div class="logo-icon"><img src="/logo.png.png" alt="Tag Bridge Logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span style="display:none;align-items:center;justify-content:center;width:100%;height:100%;font-size:1.2rem;font-weight:900;color:#fff;">TB</span></div>
+        <div class="logo-text"><span class="logo-tag">Tag</span><span class="logo-bridge">Bridge</span></div>
+    </a>
+    <div class="nav-links-wrap" id="navLinksWrap">
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#charts" class="nav-link active" onclick="setActiveNav(this)"><i class="fas fa-chart-candlestick"></i> <span data-am="ቻርቶች" data-en="Charts">Charts</span></a></li>
+            <li><a href="#demo" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-graduation-cap"></i> <span data-am="ዴሞ" data-en="Demo">Demo</span></a></li>
+            <li><a href="#welcome" class="nav-link nav-link--forex-highlight" onclick="setActiveNav(this)"><i class="fas fa-book-bookmark"></i> <span data-am="መጽሐፍ" data-en="Books">Books</span></a></li>
+            <li><a href="#journal" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-book-open"></i> <span data-am="ጆርናል" data-en="Journal">Journal</span></a></li>
+            <li><a href="#backtest" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-flask"></i> <span data-am="ባክቴስት" data-en="Backtest">Backtest</span></a></li>
+            <li><a href="#calculators" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-calculator"></i> <span data-am="ካልኩሌተሮች" data-en="Calcs">Calcs</span></a></li>
+            <li><a href="#calendar-news" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-calendar-alt"></i> <span data-am="ቀን" data-en="Calendar">Calendar</span></a></li>
+            <li><a href="#contact" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-envelope"></i> <span data-am="አግኙን" data-en="Contact">Contact</span></a></li>
+            <li><a href="/academy" class="nav-link nav-link--academy-lock"><i class="fas fa-graduation-cap"></i> Academy 🔒</a></li>
+        </ul>
+    </div>
+    <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()"><i class="fas fa-sun" id="themeIcon"></i></button>
+        <div class="lang-toggle-wrap"><button class="lang-btn" id="langBtn" onclick="toggleLang()"><span id="langLabel">አማ</span><i class="fas fa-globe"></i></button></div>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleMobileMenu()"><span></span><span></span><span></span></button>
+    </div>
+</div>
+</nav>
+
+<div id="scrollProgress" class="scroll-progress"></div>
+
+<!-- TICKER -->
+<div class="market-ticker" id="marketTicker">
+<div class="ticker-label"><span class="live-dot"></span> LIVE</div>
+<div class="ticker-track"><div class="ticker-items" id="tickerItems">
+    <span class="tick" id="tick-btc"><i class="fab fa-bitcoin"></i> BTC/USD <b class="tick-price">--</b> <em class="tick-chg">--</em></span><span class="tick-sep">◆</span>
+    <span class="tick" id="tick-eth"><i class="fab fa-ethereum"></i> ETH/USD <b class="tick-price">--</b> <em class="tick-chg">--</em></span><span class="tick-sep">◆</span>
+    <span class="tick" id="tick-bnb"><i class="fas fa-certificate"></i> BNB/USD <b class="tick-price">--</b> <em class="tick-chg">--</em></span><span class="tick-sep">◆</span>
+    <span class="tick" id="tick-sol"><i class="fas fa-sun"></i> SOL/USD <b class="tick-price">--</b> <em class="tick-chg">--</em></span><span class="tick-sep">◆</span>
+    <span class="tick" id="tick-eur"><i class="fas fa-euro-sign"></i> EUR/USD <b class="tick-price">--</b> <em class="tick-chg">--</em></span><span class="tick-sep">◆</span>
+    <span class="tick" id="tick-gold"><i class="fas fa-coins"></i> XAU/USD <b class="tick-price">--</b> <em class="tick-chg">--</em></span><span class="tick-sep">◆</span>
+    <span class="tick" id="tick-xrp"><i class="fas fa-water"></i> XRP/USD <b class="tick-price">--</b> <em class="tick-chg">--</em></span><span class="tick-sep">◆</span>
+    <span class="tick" id="tick-gbp"><i class="fas fa-sterling-sign"></i> GBP/USD <b class="tick-price">--</b> <em class="tick-chg">--</em></span>
+</div></div>
+</div>
+
+<!-- ════════════════════════════════════════
+     WELCOME + BOOKS
+════════════════════════════════════════ -->
+<style>
+/* — Welcome — */
+.wlc{background:linear-gradient(160deg,#1a3a6b 0%,#1e4d8c 40%,#2563a8 70%,#1a3a6b 100%);text-align:center;position:relative;overflow-x:hidden;overflow-y:visible;padding:calc(68px + 36px + 44px) 20px 16px;}
+[data-theme="light"] .wlc{background:linear-gradient(160deg,#1e4d8c 0%,#2563a8 50%,#1e4d8c 100%);}
+.wlc-glow{position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(255,255,255,.12) 0%,transparent 70%);pointer-events:none;}
+.wlc-inner{position:relative;z-index:1;max-width:680px;margin:0 auto;}
+.wlc-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.28);color:#818cf8;font-size:.68rem;font-weight:800;letter-spacing:1.5px;padding:5px 16px;border-radius:50px;margin-bottom:18px;text-transform:uppercase;}
+.wlc-dot{width:6px;height:6px;border-radius:50%;background:#10b981;animation:wlc-pulse 1.5s infinite;}
+@keyframes wlc-pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(1.4);}}
+/* TAG BRIDGE LOGO COLORS: purple #6366f1 → teal #06b6d4 */
+.wlc-headline{font-size:clamp(1.1rem,3.8vw,2.6rem);font-weight:900;letter-spacing:-.5px;line-height:1.2;margin-bottom:16px;white-space:nowrap;overflow:visible;}
+.wlc-headline .wlc-am{display:block;background:linear-gradient(135deg,#ffffff 0%,#a8c8ff 35%,#38ef7d 65%,#ffd200 85%,#ffffff 100%);background-size:300% 300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:wlc-grad 5s ease infinite;}
+@keyframes wlc-grad{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+.wlc-socials{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;}
+.wlc-sc-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border-radius:50px;font-size:.84rem;font-weight:700;text-decoration:none;transition:all .2s;border:1px solid transparent;}
+.wlc-sc-tg{background:#229ED9;color:#fff;}
+.wlc-sc-wa{background:#25D366;color:#fff;}
+.wlc-sc-tt{background:rgba(255,255,255,.08);color:#e6edf3;border-color:rgba(255,255,255,.15);}
+[data-theme="light"] .wlc-sc-tt{background:rgba(0,0,0,.05);color:#0f172a;border-color:rgba(0,0,0,.12);}
+
+/* — Books section — */
+.pdf-sec{background:#0a0f1a;padding:56px 20px 64px;}
+[data-theme="light"] .pdf-sec{background:#f1f5f9;}
+.pdf-inner{max-width:1060px;margin:0 auto;}
+.pdf-hdr{text-align:center;margin-bottom:36px;}
+.pdf-pill{display:inline-flex;align-items:center;gap:7px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.25);color:#818cf8;font-size:.68rem;font-weight:800;letter-spacing:1.5px;padding:5px 16px;border-radius:50px;margin-bottom:12px;text-transform:uppercase;}
+.pdf-htitle{font-size:clamp(1.4rem,4vw,2rem);font-weight:900;color:#e6edf3;letter-spacing:-.5px;}
+[data-theme="light"] .pdf-htitle{color:#0f172a;}
+.pdf-grid{display:flex;flex-direction:column;gap:18px;}
+/* Base card */
+.bk{border-radius:18px;padding:22px 20px;position:relative;overflow:hidden;border:1px solid;text-decoration:none;color:inherit;display:block;transition:transform .25s,box-shadow .25s;cursor:pointer;}
+.bk:hover{transform:translateY(-3px);}
+.bk-forex{background:linear-gradient(135deg,rgba(99,102,241,.1),#0d1117 60%);border-color:rgba(99,102,241,.35);box-shadow:0 4px 20px rgba(99,102,241,.1);}
+.bk-forex:hover{border-color:rgba(99,102,241,.6);box-shadow:0 12px 36px rgba(99,102,241,.2);}
+.bk-crypto{background:linear-gradient(135deg,rgba(245,158,11,.09),#0d1117 60%);border-color:rgba(245,158,11,.28);}
+.bk-crypto:hover{border-color:rgba(245,158,11,.55);box-shadow:0 12px 36px rgba(245,158,11,.12);}
+.bk-bundle{background:linear-gradient(135deg,rgba(16,185,129,.09),#0d1117 60%);border-color:rgba(16,185,129,.28);}
+.bk-bundle:hover{border-color:rgba(16,185,129,.55);box-shadow:0 12px 36px rgba(16,185,129,.12);}
+[data-theme="light"] .bk-forex{background:linear-gradient(135deg,rgba(99,102,241,.06),#fff);}
+[data-theme="light"] .bk-crypto{background:linear-gradient(135deg,rgba(245,158,11,.06),#fff);}
+[data-theme="light"] .bk-bundle{background:linear-gradient(135deg,rgba(16,185,129,.05),#fff);}
+/* Lower row: crypto + bundle side by side */
+.bk-row2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+/* Card header */
+.bk-top{display:flex;align-items:flex-start;gap:14px;margin-bottom:14px;}
+.bk-icon{width:48px;height:48px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.4rem;}
+.bk-icon-f{background:rgba(99,102,241,.15);color:#818cf8;}
+.bk-icon-c{background:rgba(245,158,11,.15);color:#f59e0b;}
+.bk-icon-b{background:rgba(16,185,129,.15);color:#10b981;}
+.bk-badge{display:inline-flex;align-items:center;gap:4px;font-size:.6rem;font-weight:800;letter-spacing:.8px;text-transform:uppercase;padding:3px 9px;border-radius:50px;}
+.bk-bf{background:rgba(255,107,53,.12);color:#ff6b35;border:1px solid rgba(255,107,53,.3);}
+.bk-bc{background:rgba(245,158,11,.12);color:#f59e0b;border:1px solid rgba(245,158,11,.3);}
+.bk-bb{background:rgba(16,185,129,.12);color:#10b981;border:1px solid rgba(16,185,129,.3);}
+.bk-be{background:rgba(99,102,241,.12);color:#818cf8;border:1px solid rgba(99,102,241,.25);}
+.bk-title{font-size:clamp(.95rem,2.5vw,1.25rem);font-weight:900;color:#e6edf3;letter-spacing:-.3px;margin-bottom:3px;}
+[data-theme="light"] .bk-title{color:#0f172a;}
+.bk-en{font-size:.74rem;color:#8b949e;}
+/* Topics always 2-column */
+.bk-topics{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;list-style:none;padding:0;margin-bottom:16px;}
+.bk-topics li{font-size:.76rem;color:#8b949e;display:flex;align-items:flex-start;gap:6px;line-height:1.35;padding:2px 0;}
+[data-theme="light"] .bk-topics li{color:#475569;}
+.bk-topics li i{color:#10b981;font-size:.66rem;flex-shrink:0;margin-top:2px;}
+.bk-topics li.more{color:#6366f1;font-style:italic;font-weight:600;grid-column:1/-1;}
+/* Footer */
+.bk-footer{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;flex-direction:column;}
+.bk-price{display:flex;align-items:baseline;gap:5px;}
+.bk-pnum{font-size:2.4rem;font-weight:900;letter-spacing:-1px;line-height:1;}
+.bk-pf{color:#10b981;}
+.bk-pc{color:#f59e0b;}
+.bk-pb{color:#10b981;}
+.bk-pcur{font-size:.74rem;font-weight:700;color:#8b949e;}
+.bk-pold{font-size:.8rem;color:#484f58;text-decoration:line-through;}
+.bk-psave{font-size:.68rem;color:#10b981;font-weight:700;background:rgba(16,185,129,.1);padding:2px 7px;border-radius:50px;}
+.bk-btn{display:inline-flex;align-items:center;gap:7px;padding:10px 20px;border-radius:50px;color:#fff;font-weight:800;font-size:.82rem;transition:all .2s;margin-left:auto;cursor:pointer;}
+.bk-btn-f{background:linear-gradient(135deg,#229ED9,#1a7fbf);box-shadow:0 4px 14px rgba(34,158,217,.35);}
+.bk-btn-c{background:linear-gradient(135deg,#f59e0b,#d97706);box-shadow:0 4px 14px rgba(245,158,11,.3);}
+.bk-btn-b{background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 4px 14px rgba(16,185,129,.3);}
+/* Savings box */
+.bk-savings{background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.18);border-radius:9px;padding:9px 12px;margin-bottom:12px;}
+.bk-srow{display:flex;justify-content:space-between;font-size:.74rem;color:#8b949e;padding:2px 0;}
+.bk-sdiv{border-top:1px dashed rgba(255,255,255,.08);margin:5px 0;}
+.bk-sdeal{font-weight:800;color:#10b981;}
+.bk-sstrike{text-decoration:line-through;color:#484f58;}
+.bk-sprice{font-weight:900;color:#10b981;}
+
+/* ── MOBILE ── */
+@media(max-width:640px){
+    .wlc{padding:calc(60px + 36px + 10px) 10px 0;}
+    .wlc-headline{font-size:clamp(1.3rem,7.5vw,2rem);white-space:normal;letter-spacing:0;margin-bottom:12px;}
+    .wlc-socials{gap:6px;margin-bottom:14px;}
+    .wlc-sc-btn{padding:7px 12px;font-size:.74rem;}
+    .pdf-sec{padding:16px 10px 22px;}
+    /* 2 columns on ALL phones */
+    .bk-topics{grid-template-columns:1fr 1fr;gap:3px 10px;}
+    .bk-topics li{font-size:.72rem;}
+    .bk-row2{grid-template-columns:1fr;}
+    .bk-footer{flex-direction:column;align-items:flex-start;}
+    .bk-btn{margin-left:0;width:100%;justify-content:center;}
+    .bk-pnum{font-size:1.4rem;}
+    .bk{padding:16px 14px;}
+    .bk-top{gap:10px;margin-bottom:10px;}
+    .bk-icon{width:40px;height:40px;font-size:1.1rem;}
+    .bk-title{font-size:.95rem;}
+    .pdf-grid{gap:14px;}
+}
+@media(max-width:340px){
+    .bk-topics{grid-template-columns:1fr;}
+}
+</style>
+
+<section id="welcome">
+<div class="wlc">
+    <div class="wlc-glow"></div>
+    <div class="wlc-inner">
+        <h1 class="wlc-headline"><span class="wlc-am">እንኳን ወደ ታግ ብሪጅ በደህና መጡ!</span></h1>
+        <p style="color:rgba(255,255,255,.75);font-size:.9rem;margin:-10px 0 20px;letter-spacing:.2px;">በማህበራዊ ሚዲያወቻችን ይከተሉን</p>
+        <div class="wlc-socials">
+            <a href="https://t.me/tagbridge" target="_blank" rel="noopener noreferrer" class="wlc-sc-btn wlc-sc-tg"><i class="fab fa-telegram"></i><span style="font-size:.78rem;font-weight:600;line-height:1.3;text-align:left;">የቴሌግራም ቻናላችን<br>ይቀላቀሉ</span></a>
+            <a href="https://whatsapp.com/channel/0029VbC9h9Z4o7qIBVOmFE1j" target="_blank" rel="noopener noreferrer" class="wlc-sc-btn wlc-sc-wa"><i class="fab fa-whatsapp" style="font-size:1.1rem;"></i><span style="font-size:.78rem;font-weight:600;line-height:1.3;text-align:left;">WhatsApp<br>ቻናል</span></a>
+            <a href="https://www.tiktok.com/@tagbridge" target="_blank" rel="noopener noreferrer" class="wlc-sc-btn wlc-sc-tt"><i class="fab fa-tiktok" style="font-size:1.1rem;"></i><span style="font-size:.78rem;font-weight:600;line-height:1.3;text-align:left;">TikTok<br>ይከተሉን</span></a>
+        </div>
+    </div>
+</div>
+
+</section>
+
+<!-- CHARTS -->
+<section id="charts" class="section charts-section">
+<div class="container">
+    <div class="section-header" style="margin-bottom:12px;">
+        <div class="section-tag-pill"><i class="fas fa-chart-line"></i> <span data-am="የገበያ መረጃ" data-en="LIVE MARKETS">LIVE MARKETS</span></div>
+        <h2 class="section-title"><span class="logo-tag">Tag</span><span class="logo-bridge">Bridge</span> <span class="chart-title-rest" data-am="ቀጥታ ቻርት" data-en="Live Chart">Live Chart</span></h2>
+        <p class="section-sub" data-am="የገበያ ዓይነት ይምረጡ · ጥንድ ይምረጡ · ቻርቱን ይመልከቱ" data-en="Select a category · choose a pair · chart updates instantly">Select a category · choose a pair · chart updates instantly</p>
+    </div>
+
+    <div class="chart-controls">
+
+        <!-- Category + Pair row — all in one line -->
+        <div class="chart-selector-row">
+            <!-- Category buttons -->
+            <div class="chart-category-bar" id="chartCategoryBar">
+                <button class="chart-cat-btn active" data-cat="forex" onclick="switchChartCategory(this)">
+                    <i class="fas fa-dollar-sign"></i> <span>Forex</span>
+                </button>
+                <button class="chart-cat-btn" data-cat="crypto" onclick="switchChartCategory(this)">
+                    <i class="fab fa-bitcoin"></i> <span>Crypto</span>
+                </button>
+                <button class="chart-cat-btn" data-cat="commodity" onclick="switchChartCategory(this)">
+                    <i class="fas fa-coins"></i> <span>Commodity</span>
+                </button>
+            </div>
+
+            <!-- Pair dropdown -->
+            <div class="chart-pair-dropdown-wrap">
+                <div class="chart-pair-dropdown-icon" id="chartDropdownIcon">
+                    <i class="fas fa-coins"></i>
+                </div>
+                <select class="chart-pair-select" id="chartPairSelect" onchange="switchChartFromSelect(this)">
+                    <!-- populated by JS -->
+                </select>
+                <i class="fas fa-chevron-down chart-pair-chevron"></i>
+            </div>
+        </div>
+
+        <!-- Info bar -->
+        <div class="chart-info-bar">
+            <span id="chartPairLabel" class="chart-pair-label">XAU/USD</span>
+            <button class="chart-theme-toggle ctt-light" id="chartThemeToggle" onclick="toggleChartTheme()" title="Switch to dark chart">
+                <span class="ctt-icon">🌙</span>
+                <span class="ctt-label" id="chartThemeLabel">Dark</span>
+            </button>
+            <button class="chart-fs-btn" onclick="toggleChartFullscreen()"><i class="fas fa-expand"></i></button>
+        </div>
+    </div>
+
+    <div class="chart-container" id="chartContainer">
+        <!-- Draggable editable welcome text -->
+        <div id="chartWelcome" class="chart-welcome" style="top:20px;left:50%;transform:translateX(-50%);">
+            <span id="chartWelcomeText" class="chart-welcome-text">እንኳን ወደ ታግ ብሪጅ በደህና መጡ!</span>
+            <button class="chart-welcome-edit" onclick="chartWelcomeEdit()" title="Edit welcome text"><i class="fas fa-pen"></i></button>
+        </div>
+        <!-- Welcome text edit form (hidden) -->
+        <div id="chartWelcomeForm" class="chart-welcome-form" style="display:none;">
+            <input type="text" id="chartWelcomeInput" placeholder="Your name (e.g. Tag Bridge)" maxlength="40">
+            <button class="chart-welcome-save" onclick="chartWelcomeSave()"><i class="fas fa-check"></i></button>
+            <button class="chart-welcome-cancel" onclick="chartWelcomeCancel()"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="tvChartContainer"></div>
+    </div>
+</div>
+</section>
+
+<!-- DEMO TRADING ACCOUNT -->
+<section id="demo" class="section demo-section">
+<div class="container">
+    <div class="section-header" style="margin-bottom:10px;">
+        <h2 class="section-title"><i class="fas fa-wallet"></i> <span data-am="የትሬዲንግ መለማመጃ አካውንት" data-en="Demo Trading Account">Demo Trading Account</span></h2>
+        <p class="section-sub" data-am="በምናባዊ ገንዘብ ይለማመዱ፤ ቀጥታ የገበያ ዋጋዎችን ይጠቀሙ፣ የትሬዲንግ ውጤቶችዎንም ይከታተሉ።" data-en="Practice with virtual money — real-time prices, auto-logs to Journal">Practice with virtual money — real-time prices, auto-logs to Journal</p>
+    </div>
+
+    <!-- ── Account Summary Bar ── -->
+    <div class="dma-bar">
+        <!-- Balance (editable) -->
+        <div class="dma-card dma-card--balance">
+            <div class="dma-card-top">
+                <span class="dma-card-icon">💰</span>
+                <span class="dma-card-lbl" data-am="ቀሪ ሂሳብ" data-en="Balance">Balance</span>
+                <button class="dma-edit-btn" onclick="demoEditBalance()" title="Edit balance">
+                    <i class="fas fa-pen"></i>
+                </button>
+            </div>
+            <div class="dma-card-val" id="demoBalance">$10,000.00</div>
+            <!-- Inline edit form (hidden by default) -->
+            <div class="dma-edit-form" id="demoBalEditForm" style="display:none;">
+                <input type="number" id="demoBalInput" placeholder="Enter new balance" min="100" step="100">
+                <button class="dma-save-btn" onclick="demoSaveBalance()"><i class="fas fa-check"></i></button>
+                <button class="dma-cancel-btn" onclick="demoCancelEditBalance()"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+        <!-- Open P&L -->
+        <div class="dma-card">
+            <div class="dma-card-top">
+                <span class="dma-card-icon">📊</span>
+                <span class="dma-card-lbl" data-am="አሁን ያለ ትርፍ/ኪሳራ" data-en="Open P&amp;L">Open P&amp;L</span>
+            </div>
+            <div class="dma-card-val" id="demoOpenPL">$0.00</div>
+        </div>
+        <!-- Total P&L -->
+        <div class="dma-card">
+            <div class="dma-card-top">
+                <span class="dma-card-icon">🏆</span>
+                <span class="dma-card-lbl" data-am="ጠቅላላ ትርፍ/ኪሳራ" data-en="Total P&amp;L">Total P&amp;L</span>
+            </div>
+            <div class="dma-card-val" id="demoTotalPL">$0.00</div>
+        </div>
+        <!-- Trades -->
+        <div class="dma-card">
+            <div class="dma-card-top">
+                <span class="dma-card-icon">🔄</span>
+                <span class="dma-card-lbl" data-am="የተከናወኑ ትሬዶች" data-en="Trades">Trades</span>
+            </div>
+            <div class="dma-card-val" id="demoTradeCount">0</div>
+        </div>
+        <!-- Reset -->
+        <button class="dma-reset-btn" onclick="demoReset()">
+            <i class="fas fa-rotate-left"></i><span>Reset</span>
+        </button>
+    </div>
+
+    <!-- ── Main Trading Panel ── -->
+    <div class="dma-main">
+
+        <!-- LEFT: Place Trade -->
+        <div class="dma-box">
+            <div class="dma-box-header">
+                <i class="fas fa-chart-line"></i> Place Trade
+                <span class="dma-live-badge"><span class="dma-live-dot"></span> LIVE</span>
+            </div>
+
+            <!-- Market / Category tabs -->
+            <div class="dma-mkt-tabs">
+                <button class="dma-mkt-btn active" data-cat="forex"  onclick="demoCatSwitch(this)"><i class="fas fa-dollar-sign"></i> Forex</button>
+                <button class="dma-mkt-btn"         data-cat="crypto" onclick="demoCatSwitch(this)"><i class="fab fa-bitcoin"></i> Crypto</button>
+            </div>
+
+            <!-- Pair selector -->
+            <div class="dma-pair-row">
+                <div class="dma-pair-select-wrap">
+                    <i class="fas fa-coins dma-pair-icon" id="demoPairIcon"></i>
+                    <select id="demoPair" class="dma-pair-select" onchange="demoUpdateFormPrice()">
+                        <!-- populated by demoCatSwitch -->
+                    </select>
+                    <i class="fas fa-chevron-down dma-pair-chevron"></i>
+                </div>
+                <div class="dma-price-tag">
+                    <span class="dma-price-lbl">Live</span>
+                    <span class="dma-price-val" id="demoLivePrice">…</span>
+                </div>
+            </div>
+
+            <!-- BUY / SELL — tap to confirm & execute -->
+            <div class="dma-dir-row">
+                <button class="dma-dir-btn dma-buy active" id="demoDirBuy" onclick="demoConfirmTrade('BUY')">
+                    <i class="fas fa-arrow-trend-up"></i> BUY
+                </button>
+                <button class="dma-dir-btn dma-sell" id="demoDirSell" onclick="demoConfirmTrade('SELL')">
+                    <i class="fas fa-arrow-trend-down"></i> SELL
+                </button>
+            </div>
+
+            <!-- Trade fields -->
+            <div class="dma-fields">
+                <div class="dma-field">
+                    <label>Lot Size</label>
+                    <input type="number" id="demoLot" value="0.1" min="0.01" max="10" step="0.01">
+                </div>
+                <div class="dma-field">
+                    <label>Entry <small>(blank = market)</small></label>
+                    <input type="number" id="demoEntry" placeholder="Market" step="any">
+                </div>
+            </div>
+
+            <!-- SL/TP toggle + expandable fields -->
+            <div class="dma-sltp-wrap">
+                <button class="dma-sltp-toggle" id="demoSlTpToggle" onclick="demoToggleSlTp()">
+                    <i class="fas fa-shield-halved"></i> SL / TP
+                    <i class="fas fa-chevron-down dma-sltp-chevron" id="demoSlTpChevron"></i>
+                </button>
+                <div class="dma-sltp-fields" id="demoSlTpFields" style="display:none;">
+                    <div class="dma-field">
+                        <label>Stop Loss</label>
+                        <input type="number" id="demoSL" placeholder="Optional" step="any">
+                    </div>
+                    <div class="dma-field">
+                        <label>Take Profit</label>
+                        <input type="number" id="demoTP" placeholder="Optional" step="any">
+                    </div>
+                </div>
+            </div>
+
+            <button class="dma-place-btn" style="display:none;" id="demoPlaceHidden" onclick="demoPlaceTrade()"></button>
+        </div>
+
+        <!-- RIGHT: Open Positions -->
+        <div class="dma-box">
+            <div class="dma-box-header">
+                <i class="fas fa-list-check"></i> Open Positions
+                <span class="demo-count-badge" id="demoOpenCount">0</span>
+            </div>
+            <div class="dma-pos-list" id="demoPosTable">
+                <div class="dma-empty">
+                    <i class="fas fa-chart-candlestick"></i>
+                    <p>No open trades</p>
+                    <small>Place your first trade →</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Closed Trade History ── -->
+    <div class="dma-box dma-history-box" id="demoHistoryWrap" style="display:none;">
+        <div class="dma-box-header">
+            <i class="fas fa-clock-rotate-left"></i> Closed Trades
+            <small style="font-weight:500;color:#8b949e;margin-left:6px;">auto-logged to Journal</small>
+        </div>
+        <div class="dma-table-scroll">
+            <table class="bt-table">
+                <thead><tr>
+                    <th>#</th><th>Pair</th><th>Dir</th><th>Entry</th>
+                    <th>Exit</th><th>Lots</th><th>P&amp;L</th><th>Result</th><th>Date</th>
+                </tr></thead>
+                <tbody id="demoHistoryBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+</section>
+
+<!-- BOOKS -->
+<div class="pdf-sec" id="books-preview">
+<div class="pdf-inner">
+    <div class="pdf-hdr">
+        <div class="pdf-pill"><i class="fas fa-book-open"></i> PDF E-BOOKS</div>
+        <h2 class="pdf-htitle">የትሬዲንግ መፅሀፎች</h2>
+    </div>
+
+    <!-- ══ BOOKS: 2-col top (Forex + Crypto), Bundle full-width below ══ -->
+    <div class="bk-top-row">
+
+        <!-- FOREX BOOK -->
+        <div class="bk-premium bk-premium-forex">
+            <div class="bk-premium-left">
+                <div class="bk3d bk3d-forex">
+                    <div class="bk3d-cover">
+                        <div class="bk3d-cover-inner">
+                            <div class="bk3d-logo">TB</div>
+                            <div class="bk3d-cover-title">Forex<br>Trading</div>
+                            <div class="bk3d-cover-sub">በአማርኛ</div>
+                            <div class="bk3d-cover-lines"></div>
+                        </div>
+                    </div>
+                    <div class="bk3d-spine"></div>
+                    <div class="bk3d-shadow"></div>
+                </div>
+            </div>
+            <div class="bk-premium-right">
+                <h3 class="bk-premium-title">የፎሬክስ ትሬዲንግ</h3>
+                <p class="bk-premium-sub">Forex Trading in Amharic</p>
+                <p class="bk-premium-desc">ሙሉ በአማርኛ የተዘጋጀ የፎሬክስ ትሬዲንግ መማሪያ መፅሀፍ</p>
+
+                <!-- Collapsible details -->
+                <div class="bk-details" id="bk-details-forex" style="display:none;">
+                    <div class="bk-pt-list">
+                        <div class="bk-pt-item"><i class="fas fa-check"></i> የፎሬክስ መሰረቶች & ገበያ</div>
+                        <div class="bk-pt-item"><i class="fas fa-check"></i> ቴክኒካል ትንተና</div>
+                        <div class="bk-pt-item"><i class="fas fa-check"></i> ፋንዳሜንታል ትንተና</div>
+                        <div class="bk-pt-item"><i class="fas fa-check"></i> SMC / Price Action</div>
+                        <div class="bk-pt-item"><i class="fas fa-check"></i> ካንድልስቲክ ፓተርኖች</div>
+                        <div class="bk-pt-item"><i class="fas fa-check"></i> ሪስክ ማኔጅመንት</div>
+                        <div class="bk-pt-item"><i class="fas fa-check"></i> ትሬዲንግ ስነ-ልቦና</div>
+                        <div class="bk-pt-item"><i class="fas fa-check"></i> MT4 / MT5 አጠቃቀም</div>
+                        <div class="bk-pt-item"><i class="fas fa-check"></i> ትሬዲንግ ፕላን & ስትራቴጂ</div>
+                        <div class="bk-pt-item"><i class="fas fa-check"></i> ፕራክቲካል ትሬዲንግ</div>
+                    </div>
+                </div>
+
+                <div class="bk-premium-footer">
+                    <div class="bk-premium-price">
+                        <span class="bk-pp-num">450</span>
+                        <span class="bk-pp-cur">ETB</span>
+                    </div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <button class="bk-view-btn" onclick="event.stopPropagation();bkToggle('bk-details-forex',this)">
+                            <i class="fas fa-list"></i> ዝርዝር
+                        </button>
+                        <a href="#" onclick="window.open('https://t.me/tagbridge123?text='+encodeURIComponent('ሰላም! የፎሬክስ ትሬዲንግ መማሪያ መጽሃፍ በ 450 ብር ማዘዝ እፈልጋለሁ።'),'_blank','noopener,noreferrer');return false;" class="bk-premium-buy bk-buy-forex" onclick="event.stopPropagation()">
+                            <i class="fab fa-telegram"></i> ይዘዙ
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CRYPTO BOOK -->
+        <div class="bk-premium bk-premium-crypto">
+            <div class="bk-premium-left">
+                <div class="bk3d bk3d-crypto">
+                    <div class="bk3d-cover">
+                        <div class="bk3d-cover-inner">
+                            <div class="bk3d-logo">TB</div>
+                            <div class="bk3d-cover-title">Crypto<br>Trading</div>
+                            <div class="bk3d-cover-sub">በአማርኛ</div>
+                            <div class="bk3d-cover-lines"></div>
+                        </div>
+                    </div>
+                    <div class="bk3d-spine bk3d-spine-c"></div>
+                    <div class="bk3d-shadow"></div>
+                </div>
+            </div>
+            <div class="bk-premium-right">
+                <h3 class="bk-premium-title">የክሪፕቶ ትሬዲንግ</h3>
+                <p class="bk-premium-sub">Crypto Trading in Amharic</p>
+                <p class="bk-premium-desc">ሙሉ በሙሉ በአማርኛ የተዘጋጀ የክሪፕቶ ትሬዲንግ መማሪያ መፅሀፍ</p>
+
+                <!-- Collapsible details -->
+                <div class="bk-details" id="bk-details-crypto" style="display:none;">
+                    <div class="bk-pt-list">
+                        <div class="bk-pt-item"><i class="fas fa-check"></i> Blockchain & DeFi</div>
+                        <div class="bk-pt-item"><i class="fas fa-check"></i> ስፖት & ፊውቸር ትሬዲንግ</div>
+                        <div class="bk-pt-item"><i class="fas fa-check"></i> ማርጅን & አርቢትሬጅ</div>
+                        <div class="bk-pt-item"><i class="fas fa-check"></i> Binance አካውንት</div>
+                        <div class="bk-pt-item"><i class="fas fa-check"></i> ኮፒ ትሬዲንግ</div>
+                        <div class="bk-pt-item"><i class="fas fa-check"></i> ሪስክ ማኔጅመንት</div>
+                        <div class="bk-pt-item"><i class="fas fa-check"></i> ትሬዲንግ ስትራቴጂ</div>
+                        <div class="bk-pt-item"><i class="fas fa-check"></i> ትሬዲንግ ስነ-ልቦና</div>
+                    </div>
+                </div>
+
+                <div class="bk-premium-footer">
+                    <div class="bk-premium-price">
+                        <span class="bk-pp-num" style="color:#f59e0b;">500</span>
+                        <span class="bk-pp-cur">ETB</span>
+                    </div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <button class="bk-view-btn" onclick="event.stopPropagation();bkToggle('bk-details-crypto',this)">
+                            <i class="fas fa-list"></i> ዝርዝር
+                        </button>
+                        <a href="#" onclick="window.open('https://t.me/tagbridge123?text='+encodeURIComponent('ሰላም! የክሪፕቶ ከረንሲ ትሬዲንግ መጽሃፍ በ 500 ብር ማዘዝ እፈልጋለሁ።'),'_blank','noopener,noreferrer');return false;" class="bk-premium-buy bk-buy-crypto">
+                            <i class="fab fa-telegram"></i> ይዘዙ
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /.bk-top-row -->
+
+    <!-- ══ BUNDLE — full width below ══ -->
+    <a href="#" onclick="window.open('https://t.me/tagbridge123?text='+encodeURIComponent('ሰላም! ፎሬክስ + ክሪፕቶ ጥቅል በ 700 ብር ማዘዝ እፈልጋለሁ።'),'_blank','noopener,noreferrer');return false;" class="bk-premium bk-premium-bundle bk-bundle-full">
+        <div class="bk-bundle-inner">
+            <div class="bk-bundle-left">
+                <div class="bk-bundle-badge">🎁 BUNDLE DEAL — ምርጥ ቅናሽ</div>
+                <h3 class="bk-premium-title" style="margin-bottom:4px;">ፎሬክስ + ክሪፕቶ ጥቅል</h3>
+                <p class="bk-premium-sub" style="margin-bottom:0;">Forex + Crypto Bundle — 26% OFF</p>
+            </div>
+            <div class="bk-bundle-calc">
+                <div class="bk-bc-row"><span>Forex Book</span><span>450 ETB</span></div>
+                <div class="bk-bc-row"><span>Crypto Book</span><span>500 ETB</span></div>
+                <div class="bk-bc-divider"></div>
+                <div class="bk-bc-row bk-bc-strike"><span>ብቻቸውን</span><span>950 ETB</span></div>
+                <div class="bk-bc-row bk-bc-deal"><span>🎁 የጥቅሉ ዋጋ</span><span>700 ETB</span></div>
+            </div>
+            <div class="bk-bundle-right">
+                <div class="bk-pt-list" style="margin-bottom:12px;">
+                    <div class="bk-pt-item"><i class="fas fa-check"></i> ሁለቱም ሙሉ PDF መፅሀፎች</div>
+                    <div class="bk-pt-item"><i class="fas fa-check"></i> ነፃ VIP Academy Password ⭐</div>
+                    <div class="bk-pt-item"><i class="fas fa-check"></i> ቀጥታ Telegram ድጋፍ</div>
+                    <div class="bk-pt-item"><i class="fas fa-check"></i> 250 ETB ቁጠባ!</div>
+                </div>
+                <div class="bk-premium-footer" style="border:none;padding-top:0;">
+                    <div class="bk-premium-price">
+                        <span class="bk-pp-old">950</span>
+                        <span class="bk-pp-num" style="color:#10b981;">700</span>
+                        <span class="bk-pp-cur">ETB</span>
+                    </div>
+                    <div class="bk-premium-buy bk-buy-bundle">
+                        <i class="fab fa-telegram"></i> አሁኑኑ ይዘዙ
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+<section id="journal" class="section journal-section">
+<div class="container">
+    <div class="section-header">
+        <div class="section-tag-pill"><i class="fas fa-book-open"></i> <span data-am="PERFORMANCE TRACKER" data-en="PERFORMANCE TRACKER">PERFORMANCE TRACKER</span></div>
+        <h2 class="section-title"><i class="fas fa-book-open"></i> <span data-am="የትሬዲንግ መዝገብ" data-en="Trading Journal">ትሬዲንግ ጆርናል</span></h2>
+        <p class="section-sub" data-am="የሚያከናውኗቸውን ትሬዶች ይመዝግቡ፣ ውጤታቸውን ይተንትኑ፣ አፈጻጸምዎንም ይከታተሉ።" data-en="Log trades, track performance &amp; improve">Log trades, track performance &amp; improve</p>
+    </div>
+    <div class="journal-stats-row" id="journalStats">
+        <div class="jstat-card"><div class="jstat-icon win"><i class="fas fa-trophy"></i></div><div class="jstat-data"><div class="jstat-val" id="js-winrate">0%</div><div class="jstat-lbl" data-am="የትርፍ መቶኛ" data-en="Win Rate">Win Rate</div></div></div>
+        <div class="jstat-card"><div class="jstat-icon profit"><i class="fas fa-arrow-trend-up"></i></div><div class="jstat-data"><div class="jstat-val" id="js-totalpl">$0.00</div><div class="jstat-lbl" data-am="ጠቅላላ የተጣራ ትርፍ/ኪሳራ" data-en="Net P&amp;L">Net P&amp;L</div></div></div>
+        <div class="jstat-card"><div class="jstat-icon trades"><i class="fas fa-list-check"></i></div><div class="jstat-data"><div class="jstat-val" id="js-totaltrades">0</div><div class="jstat-lbl" data-am="ጠቅላላ ትሬዶች" data-en="Total Trades">Total Trades</div></div></div>
+        <div class="jstat-card"><div class="jstat-icon rr"><i class="fas fa-balance-scale"></i></div><div class="jstat-data"><div class="jstat-val" id="js-avgrr">0.00</div><div class="jstat-lbl" data-am="አማካይ R:R ጥምርታ" data-en="Avg R:R">Avg R:R</div></div></div>
+    </div>
+    <div class="journal-win-bar-wrap"><div class="journal-win-bar-fill" id="journalWinBar" style="width:50%;"></div></div>
+    <div class="journal-actions">
+        <button class="btn-primary" onclick="openTradeModal()"><i class="fas fa-plus"></i> <span data-am="አዲስ ትሬድ መዝግብ" data-en="Add Trade">አዲስ ትሬድ መዝግብ</span></button>
+        <button class="btn-outline" onclick="exportJournal()"><i class="fas fa-file-export"></i> Export CSV</button>
+        <label class="btn-outline btn-import-label"><i class="fas fa-file-import"></i> Import CSV<input type="file" id="importCsvInput" accept=".csv" onchange="importJournal(event)" style="display:none;"></label>
+        <button class="btn-outline danger" onclick="clearJournal()"><i class="fas fa-trash"></i> <span data-am="ሁሉን አጥፋ" data-en="Clear All">ሁሉን አጥፋ</span></button>
+    </div>
+    <div class="trade-table-wrap">
+        <table class="trade-table" id="tradeTable">
+            <thead><tr><th>Date</th><th>Instrument</th><th>Dir</th><th>Entry</th><th>Exit</th><th>SL</th><th>TP</th><th>Lots</th><th>P&amp;L ($)</th><th>R:R</th><th>Strategy</th><th>Chart</th><th>Actions</th></tr></thead>
+            <tbody id="tradeTableBody">
+                <tr class="empty-row"><td colspan="13"><i class="fas fa-journal-whills"></i><br><span data-am="ምንም የተመዘገበ ትሬድ የለም!" data-en="No trades logged yet!">No trades logged yet — start adding!</span></td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</section>
+
+<!-- BACKTESTING -->
+<section id="backtest" class="section backtest-section">
+<div class="container">
+    <div class="section-header">
+        <div class="section-tag-pill"><i class="fas fa-flask"></i> STRATEGY TESTER</div>
+        <h2 class="section-title"><i class="fas fa-chart-line"></i> <span data-am="ስትራቴጂ ባክቴስቲንግ" data-en="Strategy Backtesting">ስትራቴጂ ባክቴስቲንግ</span></h2>
+        <p class="section-sub" data-am="ያለፈ ዋጋ ላይ ስትራቴጂዎን ይሞክሩ" data-en="Test your strategy on historical data">Test strategies on simulated historical data</p>
+    </div>
+
+    <!-- Config Panel -->
+    <div class="bt-config-panel">
+        <div class="bt-config-row">
+            <div class="bt-field">
+                <label><i class="fas fa-chart-candlestick"></i> Instrument</label>
+                <select id="bt-instrument">
+                    <option value="EURUSD">EUR/USD</option>
+                    <option value="GBPUSD">GBP/USD</option>
+                    <option value="XAUUSD">XAU/USD (Gold)</option>
+                    <option value="BTCUSD">BTC/USD</option>
+                    <option value="USDJPY">USD/JPY</option>
+                </select>
+            </div>
+            <div class="bt-field">
+                <label><i class="fas fa-clock"></i> Timeframe</label>
+                <select id="bt-timeframe">
+                    <option value="1H">1 Hour</option>
+                    <option value="4H" selected>4 Hour</option>
+                    <option value="1D">Daily</option>
+                </select>
+            </div>
+            <div class="bt-field">
+                <label><i class="fas fa-brain"></i> Strategy</label>
+                <select id="bt-strategy" onchange="btUpdateStrategyFields()">
+                    <option value="ma_cross">MA Crossover (Fast/Slow EMA)</option>
+                    <option value="rsi">RSI Overbought/Oversold</option>
+                    <option value="breakout">Breakout (Highest High/Lowest Low)</option>
+                    <option value="macd">MACD Signal Line Cross</option>
+                </select>
+            </div>
+            <div class="bt-field">
+                <label><i class="fas fa-calendar"></i> Periods (Bars)</label>
+                <input type="number" id="bt-bars" value="300" min="100" max="1000" step="50">
+            </div>
+        </div>
+
+        <!-- Strategy-specific params -->
+        <div class="bt-strategy-params" id="btStrategyParams">
+            <!-- Populated by JS -->
+        </div>
+
+        <div class="bt-config-row">
+            <div class="bt-field">
+                <label><i class="fas fa-wallet"></i> Starting Balance ($)</label>
+                <input type="number" id="bt-balance" value="10000" min="100" step="100">
+            </div>
+            <div class="bt-field">
+                <label><i class="fas fa-percent"></i> Risk per Trade (%)</label>
+                <input type="number" id="bt-risk" value="1" min="0.1" max="10" step="0.1">
+            </div>
+            <div class="bt-field">
+                <label><i class="fas fa-stop-circle"></i> Stop Loss (pips)</label>
+                <input type="number" id="bt-sl" value="20" min="1" step="1">
+            </div>
+            <div class="bt-field">
+                <label><i class="fas fa-flag-checkered"></i> Take Profit (pips)</label>
+                <input type="number" id="bt-tp" value="40" min="1" step="1">
+            </div>
+        </div>
+
+        <div style="text-align:center;margin-top:14px;">
+            <button class="bt-run-btn" onclick="runBacktest()">
+                <i class="fas fa-play"></i> Run Backtest
+            </button>
+            <button class="bt-reset-btn" onclick="btReset()">
+                <i class="fas fa-redo"></i> Reset
+            </button>
+        </div>
+    </div>
+
+    <!-- Results (hidden until run) -->
+    <div class="bt-results" id="btResults" style="display:none;">
+
+        <!-- Stats Row -->
+        <div class="bt-stats-row" id="btStatsRow"></div>
+
+        <!-- ══ SPLIT CHART PANEL ══ -->
+        <div class="bt-split-wrap" id="btSplitWrap">
+
+            <!-- Toolbar -->
+            <div class="bt-toolbar">
+                <div class="bt-toolbar-left">
+                    <span class="bt-toolbar-label" id="btChartLabel">EUR/USD · 4H</span>
+                    <span class="bt-crosshair-info" id="btCrosshairInfo"></span>
+                </div>
+                <div class="bt-toolbar-right">
+                    <button class="bt-tool-btn" title="Zoom In"     onclick="btZoom(0.7)"  ><i class="fas fa-magnifying-glass-plus"></i></button>
+                    <button class="bt-tool-btn" title="Zoom Out"    onclick="btZoom(1.4)"  ><i class="fas fa-magnifying-glass-minus"></i></button>
+                    <button class="bt-tool-btn" title="Fit Screen"  onclick="btFitScreen()"><i class="fas fa-expand"></i></button>
+                    <div class="bt-tool-sep"></div>
+                    <button class="bt-tool-btn bt-replay-btn" id="btReplayBtn" title="Step Replay" onclick="btToggleReplay()"><i class="fas fa-play-circle"></i> Replay</button>
+                    <button class="bt-tool-btn" id="btReplayStepBtn" title="Next Bar" onclick="btReplayStep()" style="display:none;"><i class="fas fa-step-forward"></i></button>
+                    <button class="bt-tool-btn danger" id="btReplayStopBtn" title="Stop Replay" onclick="btStopReplay()" style="display:none;"><i class="fas fa-stop"></i></button>
+                    <div class="bt-tool-sep"></div>
+                    <button class="bt-tool-btn" title="Show Candles / Line" onclick="btToggleCandleMode()"><i class="fas fa-chart-bar" id="btCandleModeIcon"></i></button>
+                    <div class="bt-tool-sep"></div>
+                    <button class="bt-tool-btn bt-charttheme-btn" id="btChartThemeBtn" title="Toggle chart background" onclick="btToggleChartTheme()">
+                        <i class="fas fa-sun" id="btChartThemeIcon"></i>
+                        <span id="btChartThemeLabel">Light</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Top pane: Price + signals -->
+            <div class="bt-pane bt-pane-price" id="btPricePane">
+                <canvas id="btPriceCanvas"></canvas>
+            </div>
+
+            <!-- Draggable splitter -->
+            <div class="bt-splitter" id="btSplitter" title="Drag to resize">
+                <div class="bt-splitter-grip"></div>
+            </div>
+
+            <!-- Bottom pane: Equity curve -->
+            <div class="bt-pane bt-pane-equity" id="btEquityPane">
+                <div class="bt-pane-label">Equity Curve</div>
+                <canvas id="btEquityCanvas"></canvas>
+            </div>
+
+        </div>
+
+        <!-- Monthly Breakdown -->
+        <div class="bt-chart-card bt-monthly-card">
+            <div class="bt-chart-title"><i class="fas fa-calendar-week"></i> Monthly P&amp;L Breakdown</div>
+            <canvas id="btMonthlyCanvas" height="130"></canvas>
+        </div>
+
+        <!-- Trade Log -->
+        <div class="bt-tradelog-wrap">
+            <div class="bt-chart-title" style="margin-bottom:10px;">
+                <i class="fas fa-list-check"></i> Trade Log
+                <button class="bt-export-btn" onclick="btExportCSV()"><i class="fas fa-file-export"></i> Export CSV</button>
+            </div>
+            <div class="bt-table-scroll">
+                <table class="bt-table" id="btTradeTable">
+                    <thead><tr>
+                        <th>#</th><th>Entry Date</th><th>Dir</th><th>Entry</th>
+                        <th>Exit</th><th>SL</th><th>TP</th><th>Pips</th>
+                        <th>P&amp;L ($)</th><th>Balance</th><th>Result</th>
+                    </tr></thead>
+                    <tbody id="btTradeTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- ECONOMIC CALENDAR -->
+<section id="calendar-news" class="section calendar-section">
+<div class="container">
+    <div class="section-header">
+        <div class="section-tag-pill"><i class="fas fa-calendar-alt"></i> FUNDAMENTAL ANALYSIS</div>
+        <h2 class="section-title"><i class="fas fa-newspaper"></i> <span data-am="ኢኮኖሚክ ካላንደር እና ዜናዎች" data-en="Economic Calendar &amp; News">ኢኮኖሚክ ካላንደር እና ዜናዎች</span></h2>
+        <p class="section-sub" data-am="NFP፣ FOMC፣ CPI — ከፍተኛ ተፅዕኖ ያላቸው ክስተቶች" data-en="High-impact events &amp; financial news">High-impact events &amp; financial news</p>
+    </div>
+    <div class="calendar-news-grid">
+        <div class="dash-panel calendar-panel">
+            <div class="dash-panel-header">
+                <h3><i class="fas fa-calendar-check"></i> <span data-am="ቀጥታ የኢኮኖሚ ካላንደር" data-en="Live Economic Calendar">ቀጥታ የኢኮኖሚ ካላንደር</span></h3>
+                <span class="panel-badge red">High Impact</span>
+            </div>
+            <!-- TradingView Economic Calendar Widget -->
+            <div class="tradingview-widget-container" style="min-height:400px;">
+                <div class="tradingview-widget-container__widget"></div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
+                {
+                    "colorTheme": "dark",
+                    "isTransparent": true,
+                    "width": "100%",
+                    "height": 400,
+                    "locale": "en",
+                    "importanceFilter": "0,1",
+                    "countryFilter": "us,eu,gb,jp,au,ca,ch,cn"
+                }
+                </script>
+            </div>
+        </div>
+        <div class="dash-panel news-panel">
+            <div class="dash-panel-header">
+                <h3><i class="fas fa-rss"></i> <span data-am="አዳዲስ የገበያ ዜናዎች" data-en="Market News">አዳዲስ የገበያ ዜናዎች</span></h3>
+                <span class="panel-badge blue">Forex &amp; Crypto</span>
+            </div>
+            <!-- TradingView News Timeline Widget -->
+            <div class="tradingview-widget-container" style="min-height:400px;">
+                <div class="tradingview-widget-container__widget"></div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
+                {
+                    "feedMode": "market",
+                    "market": "forex",
+                    "isTransparent": true,
+                    "displayMode": "regular",
+                    "width": "100%",
+                    "height": 400,
+                    "colorTheme": "dark",
+                    "locale": "en"
+                }
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- FOREX MARKET SESSIONS -->
+<section id="market-sessions" class="section sessions-section">
+<div class="container">
+    <div class="section-header">
+        <div class="section-tag-pill"><i class="fas fa-clock"></i> MARKET HOURS</div>
+        <h2 class="section-title"><i class="fas fa-globe"></i> <span data-am="የፎሬክስ ሰዓቶች" data-en="Forex Market Sessions">Forex Market Sessions</span></h2>
+        <p class="section-sub" data-am="ቀጥታ የገበያ ሰዓቶች — EAT (UTC+3)" data-en="Live market sessions — EAT (UTC+3)">Live session status • EAT timezone (UTC+3)</p>
+    </div>
+
+    <!-- Top bar: EAT clock + market status -->
+    <div class="sess-topbar">
+        <div class="sess-clock-card">
+            <div class="sess-clock-label"><i class="fas fa-map-marker-alt"></i> Ethiopia Time (EAT / UTC+3)</div>
+            <div class="sess-clock-time" id="sessClockTime">--:--:--</div>
+            <div class="sess-clock-date" id="sessClockDate">---</div>
+        </div>
+        <div class="sess-market-status" id="sessMarketStatus">
+            <div class="sess-status-dot" id="sessStatusDot"></div>
+            <div class="sess-status-text">
+                <div class="sess-status-label">FOREX MARKET</div>
+                <div class="sess-status-value" id="sessStatusValue">--</div>
+            </div>
+        </div>
+        <div class="sess-next-open" id="sessNextOpen" style="display:none">
+            <div class="sess-clock-label"><i class="fas fa-hourglass-half"></i> Opens In</div>
+            <div class="sess-next-countdown" id="sessNextCountdown">--:--:--</div>
+            <div class="sess-clock-date" id="sessNextDate">---</div>
+        </div>
+    </div>
+
+    <!-- Session Cards -->
+    <div class="sess-grid" id="sessGrid">
+        <!-- populated by JS -->
+    </div>
+
+    <!-- Overlap banner -->
+    <div class="sess-overlap-badge" id="sessOverlapBadge" style="display:none">
+        <span class="sess-overlap-pulse"></span>
+        <span id="sessOverlapText">Sessions Overlapping</span>
+    </div>
+
+    <!-- Static overlap info -->
+    <div class="sess-info-row">
+        <div class="sess-info-pill">
+            <i class="fas fa-bolt" style="color:#f59e0b"></i>
+            <span data-am="ከፍተኛ ትሬዲንግ ጊዜ — London + New York Overlap" data-en="Best trading window — London + New York overlap">Best trading window — London + New York overlap (peak volatility)</span>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- CALCULATORS -->
+<section id="calculators" class="section calc-section">
+<div class="container">
+    <div class="section-header">
+        <div class="section-tag-pill"><i class="fas fa-calculator"></i> RISK MANAGEMENT</div>
+        <h2 class="section-title"><i class="fas fa-calculator"></i> <span data-am="9 የትሬዲንግ ካልኩሌተሮች" data-en="9 Trading Calculators">9 የትሬዲንግ ካልኩሌተሮች</span></h2>
+        <p class="section-sub" data-am="ትክክለኛ ስሌቶች — Position Size፣ Risk %፣ Pip Value፣ R:R" data-en="Accurate calculations">Accurate calculations for risk management</p>
+    </div>
+    <div class="calc-tabs">
+        <button class="calc-tab active" data-calc="possize" onclick="switchCalc(this,'possize')"><i class="fas fa-expand-arrows-alt"></i> Position Size</button>
+        <button class="calc-tab" data-calc="riskpct" onclick="switchCalc(this,'riskpct')"><i class="fas fa-percent"></i> Risk %</button>
+        <button class="calc-tab" data-calc="pip" onclick="switchCalc(this,'pip')"><i class="fas fa-arrows-left-right"></i> Pip Value</button>
+        <button class="calc-tab" data-calc="lotsize" onclick="switchCalc(this,'lotsize')"><i class="fas fa-layer-group"></i> Lot Size</button>
+        <button class="calc-tab" data-calc="rr" onclick="switchCalc(this,'rr')"><i class="fas fa-balance-scale"></i> R:R Ratio</button>
+        <button class="calc-tab" data-calc="pl" onclick="switchCalc(this,'pl')"><i class="fas fa-dollar-sign"></i> P&amp;L</button>
+        <button class="calc-tab" data-calc="compound" onclick="switchCalc(this,'compound')"><i class="fas fa-chart-line"></i> Compound</button>
+        <button class="calc-tab" data-calc="fibonacci" onclick="switchCalc(this,'fibonacci')"><i class="fas fa-swatchbook"></i> Fibonacci</button>
+        <button class="calc-tab" data-calc="sl" onclick="switchCalc(this,'sl')"><i class="fas fa-stop-circle"></i> Stop Loss</button>
+    </div>
+    <div class="calc-container" id="calcContainer"></div>
+</div>
+</section>
+
+<!-- ACADEMY PREVIEW -->
+<section id="academy-preview" class="section">
+<div class="container">
+    <div class="section-header">
+        <h2 class="section-title"><i class="fas fa-graduation-cap"></i> <span data-am="ታግ ብሪጅ አካዳሚ" data-en="Tag Bridge Academy">Tag Bridge Academy</span></h2>
+        <p class="section-sub" data-am="ፎሬክስ፣ ክሪፕቶ እና SMC — ሙሉ ትምህርት በአማርኛ ለመጽሐፍ ተማሪዎች" data-en="Forex, Crypto & SMC — Full education in Amharic for book buyers">ፎሬክስ፣ ክሪፕቶ እና SMC — ሙሉ ትምህርት በአማርኛ ለመጽሐፍ ተማሪዎች</p>
+    </div>
+
+    <!-- Two-column feature layout -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:700px;margin:0 auto 28px;">
+        <!-- Forex — green gradient -->
+        <div style="background:linear-gradient(135deg,rgba(16,185,129,.18),rgba(16,185,129,.06));border:1px solid rgba(16,185,129,.35);border-radius:18px;padding:24px 20px;text-align:center;">
+            <div style="font-size:2rem;margin-bottom:10px;">📈</div>
+            <div style="font-weight:800;font-size:1rem;color:#e6edf3;margin-bottom:8px;">Forex Market</div>
+            <div style="font-size:.76rem;color:#8b949e;line-height:1.7;text-align:left;">
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;"><i class="fas fa-check-circle" style="color:#10b981;font-size:.65rem;flex-shrink:0;"></i> Forex Foundation</div>
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;"><i class="fas fa-check-circle" style="color:#10b981;font-size:.65rem;flex-shrink:0;"></i> Technical Analysis</div>
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;"><i class="fas fa-check-circle" style="color:#10b981;font-size:.65rem;flex-shrink:0;"></i> Fundamental Analysis</div>
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;"><i class="fas fa-check-circle" style="color:#10b981;font-size:.65rem;flex-shrink:0;"></i> Risk Management</div>
+                <div style="display:flex;align-items:center;gap:6px;"><i class="fas fa-check-circle" style="color:#10b981;font-size:.65rem;flex-shrink:0;"></i> Trading Psychology</div>
+            </div>
+        </div>
+        <!-- Crypto — orange/gold gradient -->
+        <div style="background:linear-gradient(135deg,rgba(245,158,11,.18),rgba(245,158,11,.05));border:1px solid rgba(245,158,11,.35);border-radius:18px;padding:24px 20px;text-align:center;">
+            <div style="font-size:2rem;margin-bottom:10px;">₿</div>
+            <div style="font-weight:800;font-size:1rem;color:#e6edf3;margin-bottom:8px;">Crypto Market</div>
+            <div style="font-size:.76rem;color:#8b949e;line-height:1.7;text-align:left;">
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;"><i class="fas fa-check-circle" style="color:#f59e0b;font-size:.65rem;flex-shrink:0;"></i> Blockchain & DeFi</div>
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;"><i class="fas fa-check-circle" style="color:#f59e0b;font-size:.65rem;flex-shrink:0;"></i> Crypto Trading Strategy</div>
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;"><i class="fas fa-check-circle" style="color:#f59e0b;font-size:.65rem;flex-shrink:0;"></i> NFT & Web3</div>
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;"><i class="fas fa-check-circle" style="color:#f59e0b;font-size:.65rem;flex-shrink:0;"></i> Risk Management</div>
+                <div style="display:flex;align-items:center;gap:6px;"><i class="fas fa-check-circle" style="color:#f59e0b;font-size:.65rem;flex-shrink:0;"></i> Trading Psychology</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats row -->
+    <div style="display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:24px;padding:16px;background:var(--bg-secondary,#161b22);border-radius:14px;border:1px solid rgba(255,255,255,.06);max-width:600px;margin-left:auto;margin-right:auto;">
+        <div style="text-align:center;">
+            <div style="font-size:1.4rem;font-weight:900;color:#6366f1;">7</div>
+            <div style="font-size:.68rem;color:#8b949e;text-transform:uppercase;letter-spacing:.5px;">Chapters</div>
+        </div>
+        <div style="width:1px;height:32px;background:rgba(255,255,255,.08);"></div>
+        <div style="text-align:center;">
+            <div style="font-size:1.4rem;font-weight:900;color:#6366f1;">40+</div>
+            <div style="font-size:.68rem;color:#8b949e;text-transform:uppercase;letter-spacing:.5px;">Lessons</div>
+        </div>
+        <div style="width:1px;height:32px;background:rgba(255,255,255,.08);"></div>
+        <div style="text-align:center;">
+            <div style="font-size:1.4rem;font-weight:900;color:#10b981;">∞</div>
+            <div style="font-size:.68rem;color:#8b949e;text-transform:uppercase;letter-spacing:.5px;">Lifetime Access</div>
+        </div>
+        <div style="width:1px;height:32px;background:rgba(255,255,255,.08);"></div>
+        <div style="text-align:center;">
+            <div style="font-size:1.4rem;font-weight:900;color:#f59e0b;">🔒</div>
+            <div style="font-size:.68rem;color:#8b949e;text-transform:uppercase;letter-spacing:.5px;">Book Buyers Only</div>
+        </div>
+    </div>
+
+    <div style="text-align:center;">
+        <a href="/academy" style="display:inline-flex;align-items:center;gap:9px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;padding:13px 36px;border-radius:50px;font-weight:800;font-size:.95rem;text-decoration:none;box-shadow:0 4px 20px rgba(99,102,241,.4);">
+            <i class="fas fa-graduation-cap"></i> Academy ይጀምሩ
+        </a>
+        <p style="margin-top:10px;font-size:.74rem;color:#8b949e;">የTrading መጽሐፍ ሲገዙ Academy Password ይሰጥዎታል</p>
+    </div>
+</div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section contact-section">
+<div class="container">
+    <div class="section-header">
+        <div class="section-tag-pill"><i class="fas fa-comments"></i> CONTACT</div>
+        <h2 class="section-title"><i class="fas fa-envelope"></i> <span data-am="አግኙን" data-en="Contact Us">አግኙን</span></h2>
+        <p class="section-sub" data-am="መጽሐፍ ለማዘዝ ወይም ለጥያቄ ያግኙን" data-en="Order books or get support">መጽሐፍ ለማዘዝ ወይም ለጥያቄ ያግኙን</p>
+    </div>
+    <div class="contact-grid">
+        <div class="contact-card telegram-order-card">
+            <i class="fab fa-telegram-plane"></i>
+            <h3>Telegram — ትዕዛዝ</h3>
+            <p>መጽሐፍ ለማዘዝ ቀጥታ ያግኙን</p>
+            <a href="https://t.me/tagbridge123" target="_blank" rel="noopener noreferrer" class="contact-btn contact-btn--highlight"><i class="fab fa-telegram"></i> @tagbridge123</a>
+        </div>
+        <div class="contact-card whatsapp">
+            <i class="fab fa-whatsapp"></i>
+            <h3>WhatsApp</h3>
+            <p>ዜናዎች እና ምክሮች</p>
+            <a href="https://whatsapp.com/channel/0029VbC9h9Z4o7qIBVOmFE1j" target="_blank" rel="noopener noreferrer" class="contact-btn"><i class="fab fa-whatsapp"></i> Channel</a>
+        </div>
+        <div class="contact-card tiktok">
+            <i class="fab fa-tiktok"></i>
+            <h3>TikTok</h3>
+            <p>ቪዲዮዎች እና ምክሮች</p>
+            <a href="https://www.tiktok.com/@tagbridge" target="_blank" rel="noopener noreferrer" class="contact-btn"><i class="fab fa-tiktok"></i> @tagbridge</a>
+        </div>
+        <div class="contact-card bot">
+            <i class="fas fa-robot"></i>
+            <h3>Book Bot</h3>
+            <p>አውቶሜትድ የትዕዛዝ ቦት</p>
+            <a href="https://t.me/tagbridge_book_bot" target="_blank" rel="noopener noreferrer" class="contact-btn"><i class="fas fa-robot"></i> @tagbridge_book_bot</a>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+<div class="container">
+    <div class="footer-top">
+        <div class="footer-brand">
+            <div class="footer-logo">
+                <img src="/logo.png.png" alt="Tag Bridge" style="width:34px;height:34px;border-radius:8px;" onerror="this.style.display='none'">
+                <span class="logo-tag">Tag</span><span class="logo-bridge">Bridge</span>
+            </div>
+            <p>Professional trading education in Amharic.</p>
+        </div>
+        <div class="footer-links">
+            <h4>Quick Links</h4>
+            <a href="#charts">Charts</a>
+            <a href="#demo">Demo Trading</a>
+            <a href="#welcome">Books</a>
+            <a href="#journal">Journal</a>
+            <a href="#backtest">Backtest</a>
+            <a href="#calculators">Calculators</a>
+            <a href="/academy">Academy 🔒</a>
+        </div>
+        <div class="footer-social">
+            <h4>Follow Us</h4>
+            <div class="social-icons-row">
+                <a href="https://t.me/tagbridge123" target="_blank" title="Telegram"><i class="fab fa-telegram"></i></a>
+                <a href="https://www.tiktok.com/@tagbridge" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                <a href="https://whatsapp.com/channel/0029VbC9h9Z4o7qIBVOmFE1j" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2026 Tag Bridge. All rights reserved. | Educational platform — not investment advice.</p>
+    </div>
+</div>
+</footer>
+
+<button id="backToTop" class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-chevron-up"></i></button>
+
+<!-- AI BOT -->
+<div class="bot-fab" id="botFab" onclick="toggleBot()"><div class="bot-fab-pulse"></div><span class="bot-fab-icon">🤖</span><span class="bot-fab-label" id="botFabLabel">AI ረዳት</span></div>
+<div class="bot-overlay" id="botOverlay" onclick="toggleBot()"></div>
+<div class="bot-sidebar" id="botSidebar">
+    <div class="bot-header">
+        <div class="bot-header-info">
+            <div class="bot-avatar">🤖</div>
+            <div><div class="bot-name">ታግ ብሪጅ AI ረዳት</div><div class="bot-status"><span class="bot-dot"></span> Online</div></div>
+        </div>
+        <button class="bot-close" onclick="toggleBot()">✕</button>
+    </div>
+    <div class="bot-topics-bar" id="botTopicsBar">
+        <button class="topic-chip" onclick="handleTopicChip('Forex')">📊 Forex</button>
+        <button class="topic-chip" onclick="handleTopicChip('Crypto')">₿ Crypto</button>
+        <button class="topic-chip" onclick="handleTopicChip('SMC')">🧠 SMC</button>
+        <button class="topic-chip" onclick="handleTopicChip('Technical')">📈 Technical</button>
+        <button class="topic-chip" onclick="handleTopicChip('Risk')">🛡️ Risk</button>
+        <button class="topic-chip" onclick="handleTopicChip('Psychology')">🧘 Psychology</button>
+    </div>
+    <div class="bot-messages" id="botMessages"></div>
+    <div class="bot-quick-opts" id="botOpts"></div>
+    <div class="bot-input-row">
+        <input type="text" id="botInput" class="bot-input" placeholder="ጥያቄዎን ይጻፉ..." onkeydown="if(event.key==='Enter')sendBotMsg()" autocomplete="off">
+        <button class="bot-send" onclick="sendBotMsg()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+</div>
+
+<!-- TRADE MODAL -->
+<div class="modal-overlay" id="tradeModalOverlay" onclick="closeTradeModal(event)">
+<div class="modal" id="tradeModal">
+    <div class="modal-header">
+        <h3><i class="fas fa-plus"></i> <span id="modalTitle" data-am="ትሬድ ጨምር" data-en="Add Trade">ትሬድ ጨምር</span></h3>
+        <button class="modal-close" onclick="closeTradeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+        <form id="tradeForm" onsubmit="saveTrade(event)">
+            <div class="form-grid">
+                <div class="form-group"><label>Date</label><input type="date" id="tf-date" required></div>
+                <div class="form-group"><label>Instrument</label><input type="text" id="tf-pair" placeholder="EUR/USD" required></div>
+                <div class="form-group"><label>Direction</label><select id="tf-dir"><option value="BUY">BUY</option><option value="SELL">SELL</option></select></div>
+                <div class="form-group"><label>Entry</label><input type="number" id="tf-entry" step="any" required></div>
+                <div class="form-group"><label>Exit</label><input type="number" id="tf-exit" step="any"></div>
+                <div class="form-group"><label>Stop Loss</label><input type="number" id="tf-sl" step="any"></div>
+                <div class="form-group"><label>Take Profit</label><input type="number" id="tf-tp" step="any"></div>
+                <div class="form-group"><label>Lot Size</label><input type="number" id="tf-size" step="any" placeholder="0.01"></div>
+                <div class="form-group"><label>P&amp;L ($)</label><input type="number" id="tf-pl" step="any"></div>
+                <div class="form-group"><label>Strategy</label><select id="tf-strategy"><option value="">Select...</option><option value="SMC">SMC</option><option value="ICT">ICT</option><option value="Breakout">Breakout</option><option value="Trend">Trend</option><option value="Scalp">Scalp</option><option value="Other">Other</option></select></div>
+                <div class="form-group full"><label>Notes</label><textarea id="tf-notes" rows="2" placeholder="ምን ተማርኩ?"></textarea></div>
+                <div class="form-group full"><label>Chart URL</label><input type="url" id="tf-chart" placeholder="https://..."></div>
+            </div>
+            <input type="hidden" id="tf-editid">
+            <div class="modal-footer">
+                <button type="button" class="btn-outline" onclick="closeTradeModal()">Cancel</button>
+                <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Save Trade</button>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+
+<!-- SCRIPTS -->
+<script src="/indicators-data.js"></script>
+<script src="/script.js" defer></script>
+<script src="/dashboard.js" defer></script>
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+// Scroll to chart on first load
+window.addEventListener('load', function() {
+    var el = document.getElementById('charts');
+    if (el) { setTimeout(function(){ el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 400); }
+});
+</script>
+<script>
+window.OneSignalDeferred=window.OneSignalDeferred||[];
+OneSignalDeferred.push(async function(OneSignal){
+    await OneSignal.init({appId:"aaa21a8f-75d0-4328-a5d8-15a2ec8a1e27",notifyButton:{enable:false},allowLocalhostAsSecureOrigin:true,promptOptions:{slidedown:{prompts:[{type:"push",autoPrompt:true,text:{actionMessage:"📚 ታግ ብሪጅ — አዳዲስ ምክሮች ሲኖሩ እናሳውቅዎታለን!",acceptButton:"እሺ",cancelButton:"አሁን አይደለም"},delay:{pageViews:1,timeDelay:8}}]}}});
+});
+</script>
+</body>
+</html>
+
+>>>>>>> Stashed changes
