@@ -5423,27 +5423,6 @@ html:not([data-theme]) .sessions-section {
     font-size: .92rem; font-weight: 800; color: #e2e8f0; flex: 1; letter-spacing: -.2px;
 }
 
-/* Open / Closed badge */
-.sess-badge {
-    display: inline-flex; align-items: center; gap: 5px;
-    padding: 4px 11px; border-radius: 50px;
-    font-size: .6rem; font-weight: 800; letter-spacing: 1px;
-    white-space: nowrap; flex-shrink: 0;
-}
-.sess-badge.open {
-    background: rgba(16,185,129,.18); color: #34d399;
-    border: 1px solid rgba(52,211,153,.5);
-    box-shadow: 0 0 12px rgba(52,211,153,.25);
-}
-.sess-badge.closed {
-    background: rgba(239,68,68,.12); color: #f87171;
-    border: 1px solid rgba(248,113,113,.3);
-}
-.sess-badge-dot {
-    width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0;
-}
-.sess-badge.open .sess-badge-dot { animation: sess-pulse .8s infinite; }
-
 /* Open / Close times */
 .sess-times { font-size: .73rem; color: #475569; line-height: 1.9; }
 .sess-times span {
