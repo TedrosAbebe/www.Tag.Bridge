@@ -1,5 +1,5 @@
-// Tag Bridge Service Worker v16
-const CACHE_NAME = 'tagbridge-v16';
+// Tag Bridge Service Worker v17
+const CACHE_NAME = 'tagbridge-v17';
 const OFFLINE_URL = '/offline.html';
 
 const PRECACHE = [
