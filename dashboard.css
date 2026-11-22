@@ -5299,22 +5299,44 @@ img, iframe, canvas, video, table { max-width: 100% !important; }
     font-size: .72rem; color: #8b949e; margin-top: 5px; letter-spacing: .5px;
 }
 
-/* ── Overlap badge ── */
+/* ── Overlap badge — major (London + New York) ── */
 .sess-overlap-badge {
     display: inline-flex; align-items: center; gap: 10px;
-    background: linear-gradient(135deg, rgba(16,185,129,.15), rgba(6,182,212,.12));
-    border: 1px solid rgba(16,185,129,.4);
+    background: linear-gradient(135deg, rgba(239,68,68,.15), rgba(245,158,11,.1));
+    border: 1px solid rgba(239,68,68,.45);
     border-radius: 50px; padding: 12px 24px;
-    font-weight: 800; font-size: .85rem; color: #10b981;
-    box-shadow: 0 0 24px rgba(16,185,129,.15);
-    animation: sess-glow 2s ease-in-out infinite;
+    font-weight: 800; font-size: .85rem; color: #ef4444;
+    box-shadow: 0 0 24px rgba(239,68,68,.15);
+    animation: sess-glow-major 2s ease-in-out infinite;
+}
+/* minor overlap (Sydney+Tokyo, Tokyo+London) */
+.sess-overlap-badge.minor {
+    background: linear-gradient(135deg, rgba(245,158,11,.12), rgba(99,102,241,.08));
+    border-color: rgba(245,158,11,.35);
+    color: #f59e0b;
+    box-shadow: 0 0 16px rgba(245,158,11,.1);
+    animation: sess-glow-minor 2s ease-in-out infinite;
+}
+/* weekend closed */
+.sess-overlap-badge.weekend {
+    background: rgba(139,148,158,.08);
+    border-color: rgba(139,148,158,.2);
+    color: #8b949e;
+    box-shadow: none;
+    animation: none;
+}
+/* weekend card dimming */
+.sess-card.weekend {
+    opacity: .55;
+    filter: grayscale(40%);
 }
 .sess-overlap-pulse {
-    width: 10px; height: 10px; border-radius: 50%; background: #10b981;
+    width: 10px; height: 10px; border-radius: 50%; background: currentColor;
     animation: sess-pulse 1s infinite;
 }
-@keyframes sess-pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.3;transform:scale(1.6)} }
-@keyframes sess-glow  { 0%,100%{box-shadow:0 0 16px rgba(16,185,129,.15)} 50%{box-shadow:0 0 32px rgba(16,185,129,.35)} }
+@keyframes sess-pulse      { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.3;transform:scale(1.6)} }
+@keyframes sess-glow-major { 0%,100%{box-shadow:0 0 16px rgba(239,68,68,.15)} 50%{box-shadow:0 0 32px rgba(239,68,68,.4)} }
+@keyframes sess-glow-minor { 0%,100%{box-shadow:0 0 10px rgba(245,158,11,.1)} 50%{box-shadow:0 0 20px rgba(245,158,11,.25)} }
 
 /* ── Session grid ── */
 .sess-grid {
@@ -5464,21 +5486,7 @@ img, iframe, canvas, video, table { max-width: 100% !important; }
 .sess-clock-time  { font-size: 2rem; font-weight: 900; color: #6366f1; letter-spacing: 2px; font-family: monospace; }
 .sess-clock-date  { font-size: .74rem; color: #8b949e; margin-top: 3px; }
 
-/* Overlap badge */
-.sess-overlap-badge {
-    display: inline-flex; align-items: center; gap: 10px;
-    background: linear-gradient(135deg, rgba(16,185,129,.15), rgba(6,182,212,.1));
-    border: 1px solid rgba(16,185,129,.35);
-    border-radius: 50px; padding: 10px 20px;
-    font-weight: 800; font-size: .88rem; color: #10b981;
-    animation: sess-glow 2s ease-in-out infinite;
-}
-.sess-overlap-pulse {
-    width: 10px; height: 10px; border-radius: 50%; background: #10b981;
-    animation: sess-pulse 1s infinite;
-}
-@keyframes sess-pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.4)} }
-@keyframes sess-glow  { 0%,100%{box-shadow:0 0 12px rgba(16,185,129,.2)} 50%{box-shadow:0 0 24px rgba(16,185,129,.4)} }
+/* Overlap badge — styles defined above, this duplicate removed */
 
 /* Session grid */
 .sess-grid {
