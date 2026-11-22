@@ -3598,112 +3598,201 @@ function initDemo() {
 
 // ══════════════════════════════════════════════
 //  FOREX MARKET SESSIONS DASHBOARD
-//  Uses Intl.DateTimeFormat + IANA timezones — DST-aware, no hardcoded offsets
+//  v3 — fixes:
+//    1. localToUTC: reliable 2-step offset probe, Date-based comparison
+//       (avoids month/year-end arithmetic bugs in prior version)
+//    2. Sydney corrected to 09:00–18:00 local
+//    3. Weekend boundary uses America/New_York 17:00 local (DST-aware)
+//       — NOT hardcoded UTC 22:00
+//    4. Overlap: London+NY = major (🔴); others = minor (🟡)
+//    5. Math.max(0,…) guards on all countdowns
 // ══════════════════════════════════════════════
 
 const SESSIONS_DEF = [
     {
-        id:       'sydney',
-        name:     'Sydney',
-        flag:     '🇦🇺',
-        tz:       'Australia/Sydney',
-        openHour:  7,  openMin:  0,  // 07:00 Sydney local
-        closeHour: 16, closeMin: 0,  // 16:00 Sydney local
-        color:    '#06b6d4'
+        id:        'sydney',
+        name:      'Sydney',
+        flag:      '🇦🇺',
+        tz:        'Australia/Sydney',
+        openHour:   9,  openMin:  0,   // 09:00 Sydney local
+        closeHour: 18,  closeMin: 0,   // 18:00 Sydney local
+        color:     '#06b6d4'
     },
     {
-        id:       'tokyo',
-        name:     'Tokyo',
-        flag:     '🇯🇵',
-        tz:       'Asia/Tokyo',
-        openHour:  9,  openMin:  0,  // 09:00 Tokyo local
-        closeHour: 18, closeMin: 0,  // 18:00 Tokyo local
-        color:    '#f59e0b'
+        id:        'tokyo',
+        name:      'Tokyo',
+        flag:      '🇯🇵',
+        tz:        'Asia/Tokyo',
+        openHour:   9,  openMin:  0,   // 09:00 JST — no DST
+        closeHour: 18,  closeMin: 0,   // 18:00 JST
+        color:     '#f59e0b'
     },
     {
-        id:       'london',
-        name:     'London',
-        flag:     '🇬🇧',
-        tz:       'Europe/London',
-        openHour:  8,  openMin:  0,  // 08:00 London local
-        closeHour: 17, closeMin: 0,  // 17:00 London local
-        color:    '#6366f1'
+        id:        'london',
+        name:      'London',
+        flag:      '🇬🇧',
+        tz:        'Europe/London',
+        openHour:   8,  openMin:  0,   // 08:00 London local (BST/GMT auto)
+        closeHour: 17,  closeMin: 0,
+        color:     '#6366f1'
     },
     {
-        id:       'newyork',
-        name:     'New York',
-        flag:     '🇺🇸',
-        tz:       'America/New_York',
-        openHour:  8,  openMin:  0,  // 08:00 New York local
-        closeHour: 17, closeMin: 0,  // 17:00 New York local
-        color:    '#10b981'
+        id:        'newyork',
+        name:      'New York',
+        flag:      '🇺🇸',
+        tz:        'America/New_York',
+        openHour:   8,  openMin:  0,   // 08:00 ET local (EDT/EST auto)
+        closeHour: 17,  closeMin: 0,
+        color:     '#10b981'
     }
 ];
 
 let _sessInterval = null;
 
-// Get the current time components in a given IANA timezone
-function tzTime(tz, now) {
+// ── localToUTC v3 ────────────────────────────────────────────────────────────
+// Convert a local clock time (yr, mo, day, hr, mn) in a named IANA timezone
+// to a UTC Date, fully DST-aware.
+//
+// Algorithm:
+//   1. Treat the local time as if it were UTC → initial UTC estimate
+//   2. Ask Intl what that UTC instant looks like in the target timezone
+//   3. Compute the gap between what we got and what we wanted
+//   4. Subtract the gap → corrected UTC
+//   5. One verification pass handles DST-gap edge cases
+//
+// Month/year-end safety: we compare Date objects directly, never use
+// manual day-of-year arithmetic, so December→January and leap-year
+// rollovers cannot produce wrong dates.
+// ────────────────────────────────────────────────────────────────────────────
+function localToUTC(tz, yr, mo, day, hr, mn) {
+    const pad = n => String(n).padStart(2, '0');
+
+    // Build a formatter that reads any UTC instant as local time in `tz`
     const fmt = new Intl.DateTimeFormat('en-US', {
         timeZone: tz,
-        hour: 'numeric', minute: 'numeric', second: 'numeric',
-        hour12: false, year: 'numeric', month: 'numeric', day: 'numeric'
+        year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit', second: '2-digit',
+        hour12: false
     });
-    const parts = fmt.formatToParts(now);
-    const p = {};
-    parts.forEach(({ type, value }) => { p[type] = parseInt(value, 10) || 0; });
-    return p; // { year, month, day, hour, minute, second }
-}
 
-// Convert session open/close in its local timezone to UTC ms
-function sessionUTCRange(session, nowUTC) {
-    // Get today's date in the session's timezone
-    const local = tzTime(session.tz, nowUTC);
-
-    // Build a Date for open and close in session local time today
-    // We use Intl to find the UTC offset by comparing
-    function localToUTC(yr, mo, day, hr, mn) {
-        // Create a string and parse — works across DST boundaries
-        const str = `${yr}-${String(mo).padStart(2,'0')}-${String(day).padStart(2,'0')}T${String(hr).padStart(2,'0')}:${String(mn).padStart(2,'0')}:00`;
-        // Find UTC equivalent by measuring offset at this moment in the timezone
-        const probe = new Date(`${str}Z`);
-        const probeLocal = tzTime(session.tz, probe);
-        const diffMs = (probeLocal.hour * 3600 + probeLocal.minute * 60 + probeLocal.second) * 1000
-                     - (hr * 3600 + mn * 60) * 1000;
-        return new Date(probe.getTime() + diffMs);
+    // Parse the formatter output into a plain { yr, mo, da, hr, mn, sc }
+    function readLocal(utcTs) {
+        const p = {};
+        fmt.formatToParts(new Date(utcTs))
+           .forEach(({ type, value }) => { p[type] = parseInt(value, 10) || 0; });
+        // Build a comparable UTC-like timestamp from local components
+        // (we only need this for arithmetic, not for a real date)
+        return Date.UTC(p.year, p.month - 1, p.day, p.hour, p.minute, p.second);
     }
 
-    const open  = localToUTC(local.year, local.month, local.day, session.openHour,  session.openMin);
-    let   close = localToUTC(local.year, local.month, local.day, session.closeHour, session.closeMin);
+    // Step 1: initial estimate — treat local time as UTC
+    let est = Date.UTC(yr, mo - 1, day, hr, mn, 0);
 
-    // If close <= open (midnight-crossing sessions like Sydney), add 1 day to close
+    // Step 2: what does `tz` read at our estimate?
+    const want = Date.UTC(yr, mo - 1, day, hr, mn, 0); // target, same value
+    const got1 = readLocal(est);
+    const diff1 = got1 - want;   // e.g. +3600000 means timezone is 1h ahead of UTC
+    est -= diff1;                // correct: shift UTC in opposite direction
+
+    // Step 3: verification pass (needed at DST spring-forward boundaries)
+    const got2 = readLocal(est);
+    const diff2 = got2 - want;
+    if (Math.abs(diff2) > 500) est -= diff2;  // 500ms tolerance for rounding
+
+    return new Date(est);
+}
+
+// ── Weekend boundary — DST-aware using New York 17:00 local ─────────────────
+// Forex closes Friday at New York 17:00 (EST=22:00 UTC / EDT=21:00 UTC).
+// Forex opens Sunday at New York 17:00 (same logic, day offset).
+// We compute the actual UTC close/open time dynamically, never hardcoded.
+
+function _nyFridayClose(refDate) {
+    // Find the most recent or current Friday, then get NY 17:00 that day
+    const d = new Date(refDate);
+    // Walk backwards to Friday (day 5)
+    const dayOfWeek = d.getUTCDay();
+    const daysToFri = (dayOfWeek >= 5) ? (dayOfWeek - 5) : (dayOfWeek + 2);
+    d.setUTCDate(d.getUTCDate() - daysToFri);
+    // Get the year/month/day of that Friday in New York time
+    const nyFmt = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'America/New_York',
+        year: 'numeric', month: '2-digit', day: '2-digit', hour12: false
+    });
+    const p = {};
+    nyFmt.formatToParts(d).forEach(({ type, value }) => { p[type] = parseInt(value, 10) || 0; });
+    return localToUTC('America/New_York', p.year, p.month, p.day, 17, 0);
+}
+
+function _nySundayOpen(refDate) {
+    // Find the next Sunday (or current Sunday) and get NY 17:00 that day
+    const d = new Date(refDate);
+    const dayOfWeek = d.getUTCDay();
+    const daysToSun = (dayOfWeek === 0) ? 0 : (7 - dayOfWeek);
+    d.setUTCDate(d.getUTCDate() + daysToSun);
+    const nyFmt = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'America/New_York',
+        year: 'numeric', month: '2-digit', day: '2-digit', hour12: false
+    });
+    const p = {};
+    nyFmt.formatToParts(d).forEach(({ type, value }) => { p[type] = parseInt(value, 10) || 0; });
+    return localToUTC('America/New_York', p.year, p.month, p.day, 17, 0);
+}
+
+// Returns true when the Forex market is closed for the weekend
+function isForexWeekend(nowUTC) {
+    const fridayClose = _nyFridayClose(nowUTC);
+    // Sunday open: find the Sunday after this Friday close
+    const sundayRef = new Date(fridayClose.getTime() + 2 * 86400000); // +2 days = Sunday
+    const sundayOpen  = _nySundayOpen(sundayRef);
+    return nowUTC >= fridayClose && nowUTC < sundayOpen;
+}
+
+// Returns the UTC Date when the market next opens (next Sunday NY 17:00)
+function nextForexOpen(nowUTC) {
+    // Start searching from tomorrow to avoid re-finding today's Sunday if it passed
+    const tomorrow = new Date(nowUTC.getTime() + 86400000);
+    const sundayOpen = _nySundayOpen(tomorrow);
+    // If that Sunday open is still in the future, use it; else add 7 days
+    if (sundayOpen > nowUTC) return sundayOpen;
+    return new Date(sundayOpen.getTime() + 7 * 86400000);
+}
+
+function sessionUTCRange(session, nowUTC) {
+    // Get today's date in the session's own timezone
+    const fmt = new Intl.DateTimeFormat('en-US', {
+        timeZone: session.tz,
+        year: 'numeric', month: 'numeric', day: 'numeric', hour12: false
+    });
+    const parts = {};
+    fmt.formatToParts(nowUTC).forEach(({ type, value }) => {
+        parts[type] = parseInt(value, 10) || 0;
+    });
+    const { year: yr, month: mo, day: da } = parts;
+
+    const open  = localToUTC(session.tz, yr, mo, da, session.openHour,  session.openMin);
+    let   close = localToUTC(session.tz, yr, mo, da, session.closeHour, session.closeMin);
+
+    // Sydney (and any session that crosses midnight) — close is next calendar day
     if (close <= open) close = new Date(close.getTime() + 86400000);
 
-    // If current time is past close, advance both by 1 day
-    if (nowUTC > close) {
-        return {
-            open:  new Date(open.getTime()  + 86400000),
-            close: new Date(close.getTime() + 86400000)
-        };
+    // If we have already passed close for today, roll forward to tomorrow's session
+    if (nowUTC >= close) {
+        const nextOpen  = new Date(open.getTime()  + 86400000);
+        const nextClose = new Date(close.getTime() + 86400000);
+        return { open: nextOpen, close: nextClose };
     }
 
     return { open, close };
 }
 
 function fmtCountdown(ms) {
-    if (ms <= 0) return '0:00:00';
-    const totalSec = Math.floor(ms / 1000);
+    const safe = Math.max(0, ms);   // FIX #5: never negative
+    const totalSec = Math.floor(safe / 1000);
     const h = Math.floor(totalSec / 3600);
     const m = Math.floor((totalSec % 3600) / 60);
     const s = totalSec % 60;
     return `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-}
-
-function fmtLocal(utcMs, tz) {
-    return new Intl.DateTimeFormat('en-GB', {
-        timeZone: tz,
-        hour: '2-digit', minute: '2-digit', hour12: false
-    }).format(new Date(utcMs));
 }
 
 function fmtEAT(utcMs) {
@@ -3717,7 +3806,6 @@ function initMarketSessions() {
     const grid = document.getElementById('sessGrid');
     if (!grid) return;
 
-    // Build cards
     grid.innerHTML = SESSIONS_DEF.map(s => `
         <div class="sess-card" id="sess-${s.id}">
             <div class="sess-card-header">
@@ -3739,17 +3827,16 @@ function initMarketSessions() {
         </div>
     `).join('');
 
-    // Start tick
     if (_sessInterval) clearInterval(_sessInterval);
     _sessIntervalFn();
     _sessInterval = setInterval(_sessIntervalFn, 1000);
 }
 
 function _sessIntervalFn() {
-    const now    = new Date();
-    const eatTZ  = 'Africa/Addis_Ababa';
+    const now   = new Date();
+    const eatTZ = 'Africa/Addis_Ababa';
 
-    // Update EAT clock
+    // EAT clock
     const clockEl = document.getElementById('sessClockTime');
     const dateEl  = document.getElementById('sessClockDate');
     if (clockEl) {
@@ -3765,8 +3852,44 @@ function _sessIntervalFn() {
         }).format(now);
     }
 
-    let openCount  = 0;
-    const openNames = [];
+    // ── FIX #3: Weekend — all markets closed ────────────────────────
+    if (isForexWeekend(now)) {
+        const nextOpen  = nextForexOpen(now);
+        const toOpen    = nextOpen.getTime() - now.getTime();
+        const cdLabel   = `Market opens in ${fmtCountdown(toOpen)}`;
+
+        SESSIONS_DEF.forEach(s => {
+            const card    = document.getElementById(`sess-${s.id}`);
+            const badge   = document.getElementById(`sess-badge-${s.id}`);
+            const badgeTxt= document.getElementById(`sess-badge-txt-${s.id}`);
+            const cdEl    = document.getElementById(`sess-cd-${s.id}`);
+            const progEl  = document.getElementById(`sess-prog-${s.id}`);
+            // Show static EAT open/close for reference even on weekends
+            const { open, close } = sessionUTCRange(s, now);
+            const openEl  = document.getElementById(`sess-open-${s.id}`);
+            const closeEl = document.getElementById(`sess-close-${s.id}`);
+            if (openEl)  openEl.textContent  = fmtEAT(open.getTime());
+            if (closeEl) closeEl.textContent = fmtEAT(close.getTime());
+            if (card)    card.className = 'sess-card weekend';
+            if (badge)   badge.className = 'sess-badge closed';
+            if (badgeTxt) badgeTxt.textContent = 'CLOSED';
+            if (cdEl)    { cdEl.textContent = cdLabel; cdEl.className = 'sess-countdown'; }
+            if (progEl)  progEl.style.width = '0%';
+        });
+
+        const overlapBadge = document.getElementById('sessOverlapBadge');
+        const overlapText  = document.getElementById('sessOverlapText');
+        if (overlapBadge) {
+            overlapBadge.style.display = 'inline-flex';
+            overlapBadge.className = 'sess-overlap-badge weekend';
+            if (overlapText) overlapText.textContent = `🔴 Weekend — Forex Market Closed`;
+        }
+        return;
+    }
+
+    // ── Weekday: normal session update ──────────────────────────────
+    const openNames = [];   // names of currently open sessions
+    const openRanges = {};  // { name: { open, close } } for overlap calc
 
     SESSIONS_DEF.forEach(s => {
         const { open, close } = sessionUTCRange(s, now);
@@ -3781,53 +3904,74 @@ function _sessIntervalFn() {
         const progEl  = document.getElementById(`sess-prog-${s.id}`);
         if (!card) return;
 
-        // Times in EAT
         if (openEl)  openEl.textContent  = fmtEAT(open.getTime());
         if (closeEl) closeEl.textContent = fmtEAT(close.getTime());
 
         if (isOpen) {
-            openCount++;
             openNames.push(s.name);
+            openRanges[s.name] = { open, close };
             const elapsed   = now.getTime() - open.getTime();
             const duration  = close.getTime() - open.getTime();
-            const remaining = close.getTime() - now.getTime();
+            const remaining = Math.max(0, close.getTime() - now.getTime()); // FIX #5
             const pct       = Math.min(100, (elapsed / duration) * 100);
 
             card.className = 'sess-card open';
-            if (badge)    { badge.className = 'sess-badge open'; }
+            if (badge)    badge.className = 'sess-badge open';
             if (badgeTxt) badgeTxt.textContent = 'OPEN';
             if (cdEl)     { cdEl.textContent = `Closes in ${fmtCountdown(remaining)}`; cdEl.className = 'sess-countdown open'; }
             if (progEl)   progEl.style.width = pct.toFixed(1) + '%';
         } else {
-            const toOpen = open.getTime() - now.getTime();
+            const toOpen = Math.max(0, open.getTime() - now.getTime()); // FIX #5
             card.className = 'sess-card';
-            if (badge)    { badge.className = 'sess-badge closed'; }
+            if (badge)    badge.className = 'sess-badge closed';
             if (badgeTxt) badgeTxt.textContent = 'CLOSED';
             if (cdEl) {
-                const soon = toOpen < 3600000; // < 1 hour
-                cdEl.textContent  = `Opens in ${fmtCountdown(toOpen)}`;
-                cdEl.className    = `sess-countdown${soon ? ' soon' : ''}`;
+                const soon = toOpen < 3600000;
+                cdEl.textContent = `Opens in ${fmtCountdown(toOpen)}`;
+                cdEl.className   = `sess-countdown${soon ? ' soon' : ''}`;
             }
             if (progEl) progEl.style.width = '0%';
         }
     });
 
-    // Overlap detection
+    // ── FIX #4: Overlap detection — London+NY = major; others = minor ──
     const overlapBadge = document.getElementById('sessOverlapBadge');
     const overlapText  = document.getElementById('sessOverlapText');
-    if (overlapBadge) {
-        if (openCount >= 2) {
-            overlapBadge.style.display = 'inline-flex';
-            if (overlapText) overlapText.textContent = `${openNames.join(' + ')} Overlap — High Volatility!`;
-            // Add overlap class to open cards
-            SESSIONS_DEF.forEach(s => {
-                if (openNames.includes(s.name)) {
-                    const card = document.getElementById(`sess-${s.id}`);
-                    if (card) card.className = 'sess-card open overlap';
-                }
-            });
-        } else {
-            overlapBadge.style.display = 'none';
+    if (!overlapBadge) return;
+
+    const londonOpen = openNames.includes('London');
+    const nyOpen     = openNames.includes('New York');
+    const majorOverlap = londonOpen && nyOpen;
+
+    // Compute actual dynamic overlap window for London–NY
+    function overlapWindow(a, b) {
+        if (!openRanges[a] || !openRanges[b]) return null;
+        const start = Math.max(openRanges[a].open.getTime(),  openRanges[b].open.getTime());
+        const end   = Math.min(openRanges[a].close.getTime(), openRanges[b].close.getTime());
+        return start < end ? { start, end } : null;
+    }
+
+    if (majorOverlap) {
+        const win = overlapWindow('London', 'New York');
+        const remaining = win ? Math.max(0, win.end - now.getTime()) : 0;
+        overlapBadge.style.display = 'inline-flex';
+        overlapBadge.className = 'sess-overlap-badge';
+        if (overlapText) {
+            overlapText.textContent = win
+                ? `🔴 London + New York Overlap — Peak Volatility! Ends in ${fmtCountdown(remaining)}`
+                : `🔴 London + New York Overlap — Peak Volatility!`;
         }
+        // Highlight both overlap cards
+        ['london','newyork'].forEach(id => {
+            const c = document.getElementById(`sess-${id}`);
+            if (c) c.className = 'sess-card open overlap';
+        });
+    } else if (openNames.length >= 2) {
+        // Minor overlap (e.g. Sydney+Tokyo, Tokyo+London)
+        overlapBadge.style.display = 'inline-flex';
+        overlapBadge.className = 'sess-overlap-badge minor';
+        if (overlapText) overlapText.textContent = `🟡 ${openNames.join(' + ')} Overlap`;
+    } else {
+        overlapBadge.style.display = 'none';
     }
 }
