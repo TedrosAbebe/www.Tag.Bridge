@@ -3598,14 +3598,13 @@ function initDemo() {
 
 // ══════════════════════════════════════════════
 //  FOREX MARKET SESSIONS DASHBOARD
-//  v3 — fixes:
-//    1. localToUTC: reliable 2-step offset probe, Date-based comparison
-//       (avoids month/year-end arithmetic bugs in prior version)
+//  v4 — fixes:
+//    1. localToUTC: reliable 2-step offset probe, Date.UTC comparisons
 //    2. Sydney corrected to 09:00–18:00 local
-//    3. Weekend boundary uses America/New_York 17:00 local (DST-aware)
-//       — NOT hardcoded UTC 22:00
-//    4. Overlap: London+NY = major (🔴); others = minor (🟡)
-//    5. Math.max(0,…) guards on all countdowns
+//    3. Weekend boundary: NY 17:00 local DST-aware (not hardcoded UTC)
+//    4. nextForexOpen() bug fixed: no longer skips to next week on Sunday
+//    5. Overlap: London+NY = major; others = minor
+//    6. Math.max(0,…) guards on all countdowns
 // ══════════════════════════════════════════════
 
 const SESSIONS_DEF = [
@@ -3704,58 +3703,81 @@ function localToUTC(tz, yr, mo, day, hr, mn) {
 
 // ── Weekend boundary — DST-aware using New York 17:00 local ─────────────────
 // Forex closes Friday at New York 17:00 (EST=22:00 UTC / EDT=21:00 UTC).
-// Forex opens Sunday at New York 17:00 (same logic, day offset).
-// We compute the actual UTC close/open time dynamically, never hardcoded.
+// Forex opens Sunday  at New York 17:00 (same logic).
+// All computed dynamically via localToUTC — no hardcoded UTC offsets.
 
-function _nyFridayClose(refDate) {
-    // Find the most recent or current Friday, then get NY 17:00 that day
-    const d = new Date(refDate);
-    // Walk backwards to Friday (day 5)
-    const dayOfWeek = d.getUTCDay();
-    const daysToFri = (dayOfWeek >= 5) ? (dayOfWeek - 5) : (dayOfWeek + 2);
-    d.setUTCDate(d.getUTCDate() - daysToFri);
-    // Get the year/month/day of that Friday in New York time
-    const nyFmt = new Intl.DateTimeFormat('en-US', {
+// Get the NY-date components of any UTC instant
+function _nyDate(utcDate) {
+    const fmt = new Intl.DateTimeFormat('en-US', {
         timeZone: 'America/New_York',
         year: 'numeric', month: '2-digit', day: '2-digit', hour12: false
     });
     const p = {};
-    nyFmt.formatToParts(d).forEach(({ type, value }) => { p[type] = parseInt(value, 10) || 0; });
+    fmt.formatToParts(utcDate).forEach(({ type, value }) => { p[type] = parseInt(value, 10) || 0; });
+    return p; // { year, month, day }
+}
+
+// Friday 17:00 NY of the week containing refDate (walking back to Friday)
+function _nyFridayClose(refDate) {
+    const d = new Date(refDate);
+    // Walk backward in UTC days until we land on a day that is Friday in NY time
+    for (let i = 0; i < 7; i++) {
+        const nyFmt = new Intl.DateTimeFormat('en-US', {
+            timeZone: 'America/New_York', weekday: 'short', hour12: false
+        });
+        const wd = nyFmt.format(d).split(',')[0]; // "Fri", "Mon", etc.
+        if (wd === 'Fri') {
+            const p = _nyDate(d);
+            return localToUTC('America/New_York', p.year, p.month, p.day, 17, 0);
+        }
+        d.setUTCDate(d.getUTCDate() - 1);
+    }
+    // Fallback (should never reach here)
+    const p = _nyDate(refDate);
     return localToUTC('America/New_York', p.year, p.month, p.day, 17, 0);
 }
 
+// Sunday 17:00 NY — the NEXT Sunday on or after refDate, returned as UTC
+// BUG FIX v4: previously used daysToSun arithmetic that jumped an extra week
+// when refDate was already Monday (after +1 day offset in nextForexOpen).
+// Now: iterate forward day by day until we find a Sunday in NY time.
 function _nySundayOpen(refDate) {
-    // Find the next Sunday (or current Sunday) and get NY 17:00 that day
     const d = new Date(refDate);
-    const dayOfWeek = d.getUTCDay();
-    const daysToSun = (dayOfWeek === 0) ? 0 : (7 - dayOfWeek);
-    d.setUTCDate(d.getUTCDate() + daysToSun);
-    const nyFmt = new Intl.DateTimeFormat('en-US', {
-        timeZone: 'America/New_York',
-        year: 'numeric', month: '2-digit', day: '2-digit', hour12: false
-    });
-    const p = {};
-    nyFmt.formatToParts(d).forEach(({ type, value }) => { p[type] = parseInt(value, 10) || 0; });
+    for (let i = 0; i < 8; i++) {
+        const nyFmt = new Intl.DateTimeFormat('en-US', {
+            timeZone: 'America/New_York', weekday: 'short', hour12: false
+        });
+        const wd = nyFmt.format(d).split(',')[0];
+        if (wd === 'Sun') {
+            const p = _nyDate(d);
+            return localToUTC('America/New_York', p.year, p.month, p.day, 17, 0);
+        }
+        d.setUTCDate(d.getUTCDate() + 1);
+    }
+    // Fallback
+    const p = _nyDate(refDate);
     return localToUTC('America/New_York', p.year, p.month, p.day, 17, 0);
 }
 
 // Returns true when the Forex market is closed for the weekend
 function isForexWeekend(nowUTC) {
     const fridayClose = _nyFridayClose(nowUTC);
-    // Sunday open: find the Sunday after this Friday close
-    const sundayRef = new Date(fridayClose.getTime() + 2 * 86400000); // +2 days = Sunday
-    const sundayOpen  = _nySundayOpen(sundayRef);
+    // The Sunday open is always 2 days after the Friday close (same week)
+    const sundayRef  = new Date(fridayClose.getTime() + 2 * 86400000);
+    const sundayOpen = _nySundayOpen(sundayRef);
     return nowUTC >= fridayClose && nowUTC < sundayOpen;
 }
 
-// Returns the UTC Date when the market next opens (next Sunday NY 17:00)
+// Returns the UTC Date when the market next opens (this or next Sunday NY 17:00)
+// FIX v4: search directly from nowUTC, not from "tomorrow"
 function nextForexOpen(nowUTC) {
-    // Start searching from tomorrow to avoid re-finding today's Sunday if it passed
-    const tomorrow = new Date(nowUTC.getTime() + 86400000);
-    const sundayOpen = _nySundayOpen(tomorrow);
-    // If that Sunday open is still in the future, use it; else add 7 days
-    if (sundayOpen > nowUTC) return sundayOpen;
-    return new Date(sundayOpen.getTime() + 7 * 86400000);
+    // Find the Sunday 17:00 NY on or after nowUTC
+    const candidate = _nySundayOpen(nowUTC);
+    // If that Sunday open is still in the future, use it
+    if (candidate > nowUTC) return candidate;
+    // Otherwise (we're already past this Sunday's open) find next Sunday
+    const nextWeek = new Date(nowUTC.getTime() + 7 * 86400000);
+    return _nySundayOpen(nextWeek);
 }
 
 function sessionUTCRange(session, nowUTC) {
@@ -3806,26 +3828,22 @@ function initMarketSessions() {
     const grid = document.getElementById('sessGrid');
     if (!grid) return;
 
-    grid.innerHTML = SESSIONS_DEF.map(s => `
-        <div class="sess-card" id="sess-${s.id}">
-            <div class="sess-card-header">
-                <span class="sess-flag">${s.flag}</span>
-                <span class="sess-name">${s.name}</span>
-                <span class="sess-badge closed" id="sess-badge-${s.id}">
-                    <span class="sess-badge-dot"></span>
-                    <span id="sess-badge-txt-${s.id}">CLOSED</span>
-                </span>
-            </div>
-            <div class="sess-times">
-                Open: <span id="sess-open-${s.id}">--:--</span> –
-                <span id="sess-close-${s.id}">--:--</span> EAT
-            </div>
-            <div class="sess-countdown" id="sess-cd-${s.id}">--:--:--</div>
-            <div class="sess-progress-wrap">
-                <div class="sess-progress-fill" id="sess-prog-${s.id}" style="width:0%"></div>
-            </div>
-        </div>
-    `).join('');
+    grid.innerHTML = SESSIONS_DEF.map(function(s) {
+        return '<div class="sess-card" id="sess-' + s.id + '">'
+             + '<div class="sess-card-header">'
+             + '<span class="sess-flag">' + s.flag + '</span>'
+             + '<span class="sess-name">' + s.name + '</span>'
+             + '<span class="sess-badge closed" id="sess-badge-' + s.id + '">'
+             + '<span class="sess-badge-dot"></span>'
+             + '<span id="sess-badge-txt-' + s.id + '">CLOSED</span>'
+             + '</span></div>'
+             + '<div class="sess-times">Open: <span id="sess-open-' + s.id + '">--:--</span>'
+             + ' \u2013 <span id="sess-close-' + s.id + '">--:--</span> EAT</div>'
+             + '<div class="sess-countdown" id="sess-cd-' + s.id + '">--:--:--</div>'
+             + '<div class="sess-progress-wrap">'
+             + '<div class="sess-progress-fill" id="sess-prog-' + s.id + '" style="width:0%"></div>'
+             + '</div></div>';
+    }).join('');
 
     if (_sessInterval) clearInterval(_sessInterval);
     _sessIntervalFn();
@@ -3852,29 +3870,44 @@ function _sessIntervalFn() {
         }).format(now);
     }
 
-    // ── FIX #3: Weekend — all markets closed ────────────────────────
+    // ── Weekend — all markets closed ────────────────────────────────
     if (isForexWeekend(now)) {
-        const nextOpen  = nextForexOpen(now);
-        const toOpen    = nextOpen.getTime() - now.getTime();
-        const cdLabel   = `Market opens in ${fmtCountdown(toOpen)}`;
+        const nextOpen = nextForexOpen(now);
+        const toOpen   = Math.max(0, nextOpen.getTime() - now.getTime());
+
+        // Market status bar
+        const statusDot   = document.getElementById('sessStatusDot');
+        const statusLabel = document.getElementById('sessStatusLabel');
+        const statusValue = document.getElementById('sessStatusValue');
+        const nextOpenEl  = document.getElementById('sessNextOpen');
+        const nextCdEl    = document.getElementById('sessNextCountdown');
+        const nextDateEl  = document.getElementById('sessNextDate');
+        if (statusDot)   statusDot.className   = 'sess-status-dot closed';
+        if (statusLabel) statusLabel.textContent = 'FOREX MARKET';
+        if (statusValue) statusValue.textContent = 'WEEKEND — CLOSED';
+        if (nextOpenEl)  nextOpenEl.style.display = 'block';
+        if (nextCdEl)    nextCdEl.textContent = fmtCountdown(toOpen);
+        if (nextDateEl)  nextDateEl.textContent = new Intl.DateTimeFormat('en-GB', {
+            timeZone: 'Africa/Addis_Ababa', weekday: 'short', day: 'numeric',
+            month: 'short', hour: '2-digit', minute: '2-digit', hour12: false
+        }).format(nextOpen) + ' EAT';
 
         SESSIONS_DEF.forEach(s => {
-            const card    = document.getElementById(`sess-${s.id}`);
-            const badge   = document.getElementById(`sess-badge-${s.id}`);
-            const badgeTxt= document.getElementById(`sess-badge-txt-${s.id}`);
-            const cdEl    = document.getElementById(`sess-cd-${s.id}`);
-            const progEl  = document.getElementById(`sess-prog-${s.id}`);
-            // Show static EAT open/close for reference even on weekends
+            const card     = document.getElementById('sess-' + s.id);
+            const badge    = document.getElementById('sess-badge-' + s.id);
+            const badgeTxt = document.getElementById('sess-badge-txt-' + s.id);
+            const cdEl     = document.getElementById('sess-cd-' + s.id);
+            const progEl   = document.getElementById('sess-prog-' + s.id);
+            const openEl   = document.getElementById('sess-open-' + s.id);
+            const closeEl  = document.getElementById('sess-close-' + s.id);
             const { open, close } = sessionUTCRange(s, now);
-            const openEl  = document.getElementById(`sess-open-${s.id}`);
-            const closeEl = document.getElementById(`sess-close-${s.id}`);
-            if (openEl)  openEl.textContent  = fmtEAT(open.getTime());
-            if (closeEl) closeEl.textContent = fmtEAT(close.getTime());
-            if (card)    card.className = 'sess-card weekend';
-            if (badge)   badge.className = 'sess-badge closed';
+            if (openEl)   openEl.textContent  = fmtEAT(open.getTime());
+            if (closeEl)  closeEl.textContent = fmtEAT(close.getTime());
+            if (card)     card.className  = 'sess-card weekend';
+            if (badge)    badge.className = 'sess-badge closed';
             if (badgeTxt) badgeTxt.textContent = 'CLOSED';
-            if (cdEl)    { cdEl.textContent = cdLabel; cdEl.className = 'sess-countdown'; }
-            if (progEl)  progEl.style.width = '0%';
+            if (cdEl)     { cdEl.textContent = 'Weekend'; cdEl.className = 'sess-countdown'; }
+            if (progEl)   progEl.style.width = '0%';
         });
 
         const overlapBadge = document.getElementById('sessOverlapBadge');
@@ -3882,26 +3915,34 @@ function _sessIntervalFn() {
         if (overlapBadge) {
             overlapBadge.style.display = 'inline-flex';
             overlapBadge.className = 'sess-overlap-badge weekend';
-            if (overlapText) overlapText.textContent = `🔴 Weekend — Forex Market Closed`;
+            if (overlapText) overlapText.textContent = 'Weekend — Forex Market Closed';
         }
         return;
     }
 
+    // ── Weekday — hide "opens in" panel, show market OPEN ────────────
+    const nextOpenEl  = document.getElementById('sessNextOpen');
+    const statusDot   = document.getElementById('sessStatusDot');
+    const statusValue = document.getElementById('sessStatusValue');
+    if (nextOpenEl)  nextOpenEl.style.display = 'none';
+    if (statusDot)   statusDot.className = 'sess-status-dot open';
+    if (statusValue) statusValue.textContent = 'OPEN';
+
     // ── Weekday: normal session update ──────────────────────────────
-    const openNames = [];   // names of currently open sessions
-    const openRanges = {};  // { name: { open, close } } for overlap calc
+    const openNames  = [];
+    const openRanges = {};
 
     SESSIONS_DEF.forEach(s => {
         const { open, close } = sessionUTCRange(s, now);
         const isOpen = now >= open && now < close;
 
-        const card    = document.getElementById(`sess-${s.id}`);
-        const badge   = document.getElementById(`sess-badge-${s.id}`);
-        const badgeTxt= document.getElementById(`sess-badge-txt-${s.id}`);
-        const openEl  = document.getElementById(`sess-open-${s.id}`);
-        const closeEl = document.getElementById(`sess-close-${s.id}`);
-        const cdEl    = document.getElementById(`sess-cd-${s.id}`);
-        const progEl  = document.getElementById(`sess-prog-${s.id}`);
+        const card    = document.getElementById('sess-' + s.id);
+        const badge   = document.getElementById('sess-badge-' + s.id);
+        const badgeTxt= document.getElementById('sess-badge-txt-' + s.id);
+        const openEl  = document.getElementById('sess-open-' + s.id);
+        const closeEl = document.getElementById('sess-close-' + s.id);
+        const cdEl    = document.getElementById('sess-cd-' + s.id);
+        const progEl  = document.getElementById('sess-prog-' + s.id);
         if (!card) return;
 
         if (openEl)  openEl.textContent  = fmtEAT(open.getTime());
@@ -3918,17 +3959,17 @@ function _sessIntervalFn() {
             card.className = 'sess-card open';
             if (badge)    badge.className = 'sess-badge open';
             if (badgeTxt) badgeTxt.textContent = 'OPEN';
-            if (cdEl)     { cdEl.textContent = `Closes in ${fmtCountdown(remaining)}`; cdEl.className = 'sess-countdown open'; }
-            if (progEl)   progEl.style.width = pct.toFixed(1) + '%';
+            if (cdEl)   { cdEl.textContent = 'Closes in ' + fmtCountdown(remaining); cdEl.className = 'sess-countdown open'; }
+            if (progEl) progEl.style.width = pct.toFixed(1) + '%';
         } else {
-            const toOpen = Math.max(0, open.getTime() - now.getTime()); // FIX #5
+            const toOpen = Math.max(0, open.getTime() - now.getTime());
             card.className = 'sess-card';
             if (badge)    badge.className = 'sess-badge closed';
             if (badgeTxt) badgeTxt.textContent = 'CLOSED';
             if (cdEl) {
                 const soon = toOpen < 3600000;
-                cdEl.textContent = `Opens in ${fmtCountdown(toOpen)}`;
-                cdEl.className   = `sess-countdown${soon ? ' soon' : ''}`;
+                cdEl.textContent = 'Opens in ' + fmtCountdown(toOpen);
+                cdEl.className   = 'sess-countdown' + (soon ? ' soon' : '');
             }
             if (progEl) progEl.style.width = '0%';
         }
@@ -3958,19 +3999,17 @@ function _sessIntervalFn() {
         overlapBadge.className = 'sess-overlap-badge';
         if (overlapText) {
             overlapText.textContent = win
-                ? `🔴 London + New York Overlap — Peak Volatility! Ends in ${fmtCountdown(remaining)}`
-                : `🔴 London + New York Overlap — Peak Volatility!`;
+                ? 'London + New York Overlap — Peak Volatility! Ends in ' + fmtCountdown(remaining)
+                : 'London + New York Overlap — Peak Volatility!';
         }
-        // Highlight both overlap cards
-        ['london','newyork'].forEach(id => {
-            const c = document.getElementById(`sess-${id}`);
+        ['london', 'newyork'].forEach(function(id) {
+            const c = document.getElementById('sess-' + id);
             if (c) c.className = 'sess-card open overlap';
         });
     } else if (openNames.length >= 2) {
-        // Minor overlap (e.g. Sydney+Tokyo, Tokyo+London)
         overlapBadge.style.display = 'inline-flex';
         overlapBadge.className = 'sess-overlap-badge minor';
-        if (overlapText) overlapText.textContent = `🟡 ${openNames.join(' + ')} Overlap`;
+        if (overlapText) overlapText.textContent = openNames.join(' + ') + ' Overlap';
     } else {
         overlapBadge.style.display = 'none';
     }
