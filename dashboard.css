@@ -5244,25 +5244,23 @@ img, iframe, canvas, video, table { max-width: 100% !important; }
    FOREX MARKET SESSIONS — Tag Bridge Brand v6
    ══════════════════════════════════════════════ */
 
-/* Section background */
+/* Section background — match site theme exactly */
 .sessions-section {
-    background: linear-gradient(180deg, #060c1a 0%, #0a0f1f 100%);
+    background: transparent;
     position: relative; overflow: hidden;
 }
 .sessions-section::before {
     content: ''; position: absolute; inset: 0; pointer-events: none;
     background:
-        radial-gradient(ellipse 60% 40% at 20% 50%, rgba(37,99,235,.12) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 35% at 80% 50%, rgba(245,158,11,.08) 0%, transparent 60%);
+        radial-gradient(ellipse 50% 35% at 15% 50%, rgba(37,99,235,.06) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 85% 50%, rgba(245,158,11,.04) 0%, transparent 60%);
 }
-[data-theme="light"] .sessions-section {
-    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+[data-theme="dark"] .sessions-section,
+html:not([data-theme]) .sessions-section {
+    background: var(--bg, #0d1117);
 }
-[data-theme="light"] .sessions-section::before {
-    background:
-        radial-gradient(ellipse 60% 40% at 20% 50%, rgba(37,99,235,.15) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 35% at 80% 50%, rgba(245,158,11,.1) 0%, transparent 60%);
-}
+[data-theme="light"] .sessions-section { background: var(--bg, #f8fafc); }
+[data-theme="light"] .sessions-section::before { display: none; }
 
 /* ── Top bar ─────────────────────────────────── */
 .sess-topbar {
