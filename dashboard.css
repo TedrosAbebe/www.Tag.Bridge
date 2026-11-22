@@ -5460,44 +5460,72 @@ img, iframe, canvas, video, table { max-width: 100% !important; }
 /* Responsive */
 @media (max-width: 900px) {
     .sess-grid { grid-template-columns: 1fr 1fr !important; }
+    .sess-topbar { flex-direction: column; align-items: stretch; gap: 12px; }
 }
 @media (max-width: 540px) {
     .sess-grid { grid-template-columns: 1fr !important; }
-    .sess-clock-row { flex-direction: column; align-items: stretch; }
-    .sess-clock-card { width: 100%; padding: 16px; }
+    .sess-topbar { flex-direction: column; align-items: stretch; }
+    .sess-clock-card, .sess-market-status, .sess-next-open { width: 100%; }
     .sess-clock-time { font-size: 2rem; letter-spacing: 3px; }
     .sess-overlap-badge { justify-content: center; text-align: center; }
 }
 
-
-/* Clock row */
-.sess-clock-row {
+/* ── Top bar layout ── */
+.sess-topbar {
     display: flex; align-items: center; justify-content: space-between;
     gap: 16px; margin-bottom: 24px; flex-wrap: wrap;
 }
+
+/* Clock card */
 .sess-clock-card {
-    background: var(--bg-secondary, #161b22);
-    border: 1px solid rgba(99,102,241,.25);
+    background: #161b22;
+    border: 1px solid rgba(99,102,241,.2);
     border-radius: 14px; padding: 16px 24px;
-    text-align: center; min-width: 200px;
+    text-align: center; min-width: 190px; flex: 1;
 }
 [data-theme="light"] .sess-clock-card { background: #fff; border-color: #e2e8f0; }
-.sess-clock-label { font-size: .68rem; font-weight: 700; color: #8b949e; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-.sess-clock-time  { font-size: 2rem; font-weight: 900; color: #6366f1; letter-spacing: 2px; font-family: monospace; }
-.sess-clock-date  { font-size: .74rem; color: #8b949e; margin-top: 3px; }
 
-/* Overlap badge — styles defined above, this duplicate removed */
+/* Market status card */
+.sess-market-status {
+    display: flex; align-items: center; gap: 14px;
+    background: #161b22;
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 14px; padding: 16px 24px;
+    flex: 1; min-width: 200px;
+}
+[data-theme="light"] .sess-market-status { background: #fff; border-color: #e2e8f0; }
+.sess-status-dot {
+    width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0;
+    background: #64748b;
+}
+.sess-status-dot.open   { background: #10b981; box-shadow: 0 0 10px rgba(16,185,129,.5); animation: sess-pulse .9s infinite; }
+.sess-status-dot.closed { background: #ef4444; }
+.sess-status-label { font-size: .62rem; font-weight: 700; color: #8b949e; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; }
+.sess-status-value { font-size: .88rem; font-weight: 800; color: #e6edf3; }
+[data-theme="light"] .sess-status-value { color: #0f172a; }
 
-/* Session grid */
-.sess-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 14px; margin-bottom: 20px;
+/* Next open card */
+.sess-next-open {
+    background: rgba(245,158,11,.06);
+    border: 1px solid rgba(245,158,11,.2);
+    border-radius: 14px; padding: 16px 24px;
+    text-align: center; flex: 1; min-width: 190px;
+}
+.sess-next-countdown {
+    font-size: 1.4rem; font-weight: 900; color: #f59e0b;
+    font-family: 'Courier New', monospace; letter-spacing: 2px;
+    margin: 4px 0;
 }
 
-/* Session card */
-.sess-card {
-    background: var(--bg-secondary, #161b22);
+.sess-clock-label {
+    font-size: .62rem; font-weight: 700; color: #8b949e;
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;
+}
+.sess-clock-time { font-size: 1.9rem; font-weight: 900; color: #6366f1; letter-spacing: 2px; font-family: 'Courier New', monospace; }
+.sess-clock-date { font-size: .72rem; color: #8b949e; margin-top: 4px; }
+/* Overlap badge — styles defined above, this duplicate removed */
+
+/* Session grid — defined above, deduplicated */
     border: 1px solid rgba(255,255,255,.07);
     border-radius: 16px; padding: 18px 16px;
     display: flex; flex-direction: column; gap: 10px;
