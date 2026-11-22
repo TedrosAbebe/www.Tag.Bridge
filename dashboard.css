@@ -906,12 +906,8 @@ body {
 }
 .contact-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
 
-.contact-card i { font-size: 1.5rem; }
-.contact-card.telegram i { color: #0088cc; }
-.contact-card.bot i { color: var(--brand-primary); }
-.contact-card.whatsapp i { color: #25d366; }
-.contact-card.tiktok i { color: #fff; }
-[data-theme="light"] .contact-card.tiktok i { color: #000; }
+/* Contact — hide duplicate top icon (icon already inside button) */
+.contact-card > i { display: none !important; }
 
 .contact-card h3 { font-size: 0.78rem; font-weight: 700; margin: 0; }
 .contact-card p  { font-size: 0.7rem; color: var(--text-secondary); margin: 0; }
@@ -5735,30 +5731,37 @@ html:not([data-theme]) .sessions-section {
 .sess-badge {
     display: inline-flex; align-items: center; gap: 4px;
     padding: 3px 9px; border-radius: 50px;
-    font-size: .58rem; font-weight: 800; letter-spacing: .8px;
+    font-size: .6rem; font-weight: 800; letter-spacing: .8px;
     white-space: nowrap; flex-shrink: 0;
 }
 .sess-badge.open {
-    background: rgba(16,185,129,.15); color: #10b981;
-    border: 1px solid rgba(16,185,129,.35);
+    background: rgba(16,185,129,.18); color: #10b981;
+    border: 1.5px solid #10b981;
+    box-shadow: 0 0 8px rgba(16,185,129,.25);
 }
 .sess-badge.closed {
-    background: rgba(239,68,68,.1); color: #ef4444;
-    border: 1px solid rgba(239,68,68,.25);
+    background: rgba(239,68,68,.12); color: #ef4444;
+    border: 1.5px solid rgba(239,68,68,.5);
 }
-[data-theme="light"] .sess-badge.closed { background: rgba(239,68,68,.07); }
+[data-theme="light"] .sess-badge.closed {
+    background: rgba(239,68,68,.08); color: #dc2626;
+    border-color: rgba(220,38,38,.4);
+}
 .sess-badge-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
 .sess-badge.open .sess-badge-dot { animation: sess-pulse .8s infinite; }
 
-/* Times */
-.sess-times { font-size: .7rem; color: #64748b; line-height: 1.8; }
-.sess-times span { color: #94a3b8; font-weight: 700; font-family: 'Courier New', monospace; }
+/* Times — blue monospace */
+.sess-times { font-size: .7rem; color: #64748b; line-height: 1.9; }
+.sess-times span {
+    color: #3b82f6; font-weight: 700;
+    font-family: 'Courier New', monospace; letter-spacing: .5px;
+}
 [data-theme="light"] .sess-times { color: #64748b; }
-[data-theme="light"] .sess-times span { color: #334155; }
+[data-theme="light"] .sess-times span { color: #2563eb; font-weight: 800; }
 
 /* Countdown */
 .sess-countdown { font-size: .78rem; font-weight: 700; color: #64748b; font-family: 'Courier New', monospace; }
-.sess-countdown.open { color: #10b981; }
+.sess-countdown.open { color: #10b981; font-weight: 800; }
 .sess-countdown.soon { color: #f59e0b; }
 [data-theme="light"] .sess-countdown { color: #94a3b8; }
 [data-theme="light"] .sess-countdown.open { color: #059669; }
