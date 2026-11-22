@@ -3875,16 +3875,13 @@ function _sessIntervalFn() {
         const nextOpen = nextForexOpen(now);
         const toOpen   = Math.max(0, nextOpen.getTime() - now.getTime());
 
-        // Market status bar
         const statusDot   = document.getElementById('sessStatusDot');
-        const statusLabel = document.getElementById('sessStatusLabel');
         const statusValue = document.getElementById('sessStatusValue');
         const nextOpenEl  = document.getElementById('sessNextOpen');
         const nextCdEl    = document.getElementById('sessNextCountdown');
         const nextDateEl  = document.getElementById('sessNextDate');
-        if (statusDot)   statusDot.className   = 'sess-status-dot closed';
-        if (statusLabel) statusLabel.textContent = 'FOREX MARKET';
-        if (statusValue) statusValue.textContent = 'WEEKEND — CLOSED';
+        if (statusDot)   { statusDot.className = 'sess-status-dot closed'; }
+        if (statusValue) { statusValue.textContent = 'WEEKEND — CLOSED'; statusValue.className = 'sess-status-value closed'; }
         if (nextOpenEl)  nextOpenEl.style.display = 'block';
         if (nextCdEl)    nextCdEl.textContent = fmtCountdown(toOpen);
         if (nextDateEl)  nextDateEl.textContent = new Intl.DateTimeFormat('en-GB', {
@@ -3892,7 +3889,7 @@ function _sessIntervalFn() {
             month: 'short', hour: '2-digit', minute: '2-digit', hour12: false
         }).format(nextOpen) + ' EAT';
 
-        SESSIONS_DEF.forEach(s => {
+        SESSIONS_DEF.forEach(function(s) {
             const card     = document.getElementById('sess-' + s.id);
             const badge    = document.getElementById('sess-badge-' + s.id);
             const badgeTxt = document.getElementById('sess-badge-txt-' + s.id);
@@ -3900,9 +3897,9 @@ function _sessIntervalFn() {
             const progEl   = document.getElementById('sess-prog-' + s.id);
             const openEl   = document.getElementById('sess-open-' + s.id);
             const closeEl  = document.getElementById('sess-close-' + s.id);
-            const { open, close } = sessionUTCRange(s, now);
-            if (openEl)   openEl.textContent  = fmtEAT(open.getTime());
-            if (closeEl)  closeEl.textContent = fmtEAT(close.getTime());
+            const range = sessionUTCRange(s, now);
+            if (openEl)   openEl.textContent  = fmtEAT(range.open.getTime());
+            if (closeEl)  closeEl.textContent = fmtEAT(range.close.getTime());
             if (card)     card.className  = 'sess-card weekend';
             if (badge)    badge.className = 'sess-badge closed';
             if (badgeTxt) badgeTxt.textContent = 'CLOSED';
@@ -3913,9 +3910,9 @@ function _sessIntervalFn() {
         const overlapBadge = document.getElementById('sessOverlapBadge');
         const overlapText  = document.getElementById('sessOverlapText');
         if (overlapBadge) {
-            overlapBadge.style.display = 'inline-flex';
+            overlapBadge.style.display = 'flex';
             overlapBadge.className = 'sess-overlap-badge weekend';
-            if (overlapText) overlapText.textContent = 'Weekend — Forex Market Closed';
+            if (overlapText) overlapText.textContent = '🔴  Weekend — Forex Market Closed';
         }
         return;
     }
@@ -3926,7 +3923,7 @@ function _sessIntervalFn() {
     const statusValue = document.getElementById('sessStatusValue');
     if (nextOpenEl)  nextOpenEl.style.display = 'none';
     if (statusDot)   statusDot.className = 'sess-status-dot open';
-    if (statusValue) statusValue.textContent = 'OPEN';
+    if (statusValue) { statusValue.textContent = 'MARKET OPEN'; statusValue.className = 'sess-status-value open'; }
 
     // ── Weekday: normal session update ──────────────────────────────
     const openNames  = [];
