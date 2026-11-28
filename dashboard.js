@@ -3262,8 +3262,8 @@ function chartWelcomeEdit() {
     const input = document.getElementById('chartWelcomeInput');
     const text  = document.getElementById('chartWelcomeText');
     if (!form || !input) return;
-    // Pre-fill with the current full text
-    input.value = text ? text.textContent : '';
+    // Pre-fill with the current full text (convert <br> back to newlines)
+    input.value = text ? text.innerHTML.replace(/<br\s*\/?>/gi, '\n') : '';
     form.style.display = 'flex';
     input.focus();
     input.select();
@@ -3277,11 +3277,11 @@ function chartWelcomeSave() {
     const saved = chartWelcomeLoad();
     if (msg) {
         saved.msg = msg;
-        text.textContent = msg;
+        // Support multiline — convert newlines to <br>
+        text.innerHTML = msg.replace(/\n/g, '<br>');
     } else {
-        // Reset to default if cleared
         saved.msg = 'እንኳን ወደ ታግ ብሪጅ በደህና መጡ!';
-        text.textContent = saved.msg;
+        text.innerHTML = saved.msg;
     }
     chartWelcomeStore(saved);
     form.style.display = 'none';

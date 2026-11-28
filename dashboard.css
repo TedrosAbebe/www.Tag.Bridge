@@ -956,7 +956,7 @@ body {
 .bot-fab {
     position: fixed; bottom: 24px; right: 24px; z-index: 900;
     display: flex; align-items: center; gap: 8px;
-    padding: 10px 16px; border-radius: var(--radius-full);
+    padding: 12px 18px; border-radius: var(--radius-full);
     background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
     color: white; cursor: pointer; transition: var(--transition);
     box-shadow: 0 6px 24px rgba(99,102,241,0.5);
@@ -969,61 +969,7 @@ body {
     animation: fab-pulse 2.5s ease-in-out infinite;
 }
 @keyframes fab-pulse { 0%, 100% { transform: scale(1); opacity: 0; } 50% { transform: scale(1.08); opacity: 0.5; } }
-
-/* ── Bot SVG Face ── */
-.bot-fab-face { display: flex; align-items: center; justify-content: center; }
-.bot-face-svg { overflow: visible; }
-
-/* Idle float */
-.bot-fab-face { animation: bot-float 3s ease-in-out infinite; }
-@keyframes bot-float {
-    0%,100% { transform: translateY(0); }
-    50%      { transform: translateY(-4px); }
-}
-
-/* Eye blink */
-.bot-eye-left, .bot-eye-right {
-    animation: bot-blink 4s ease-in-out infinite;
-    transform-origin: center;
-}
-.bot-eye-right { animation-delay: 0.08s; }
-@keyframes bot-blink {
-    0%,45%,55%,100% { ry: 4; }
-    50%             { ry: 0.5; }
-}
-
-/* Thinking — eyes look side to side */
-.bot-fab.thinking .bot-eye-left,
-.bot-fab.thinking .bot-eye-right {
-    animation: bot-think 0.6s ease-in-out infinite alternate;
-}
-@keyframes bot-think {
-    0%   { cx: 16; }
-    100% { cx: 20; }
-}
-.bot-fab.thinking .bot-eye-right {
-    animation-name: bot-think-r;
-}
-@keyframes bot-think-r {
-    0%   { cx: 28; }
-    100% { cx: 32; }
-}
-
-/* Excited — jump + eyes grow */
-.bot-fab.excited { animation: bot-jump 0.5s ease; }
-@keyframes bot-jump {
-    0%,100% { transform: translateY(0) scale(1); }
-    40%     { transform: translateY(-10px) scale(1.1); }
-    70%     { transform: translateY(-4px) scale(1.05); }
-}
-.bot-fab.excited .bot-eye-left,
-.bot-fab.excited .bot-eye-right { ry: 5 !important; fill: #a5b4fc; }
-
-/* Happy mouth (open smile when chat opens) */
-.bot-fab.chatopen .bot-mouth {
-    d: path("M17 27 Q24 35 31 27");
-}
-
+.bot-fab-icon { font-size: 1.1rem; }
 .bot-fab-label { font-size: 0.82rem; font-weight: 700; }
 
 .bot-overlay {
@@ -4740,12 +4686,14 @@ img, iframe, canvas, video { max-width: 100%; }
     background: rgba(255,255,255,.92);
     border-color: rgba(99,102,241,.25);
 }
-.chart-welcome-form input {
+.chart-welcome-form input,
+.chart-welcome-form textarea {
     background: transparent; border: none; outline: none;
     color: #e6edf3; font-size: .78rem; font-family: inherit;
-    width: 260px;
+    width: 260px; line-height: 1.5;
 }
-[data-theme="light"] .chart-welcome-form input { color: #0f172a; }
+[data-theme="light"] .chart-welcome-form input,
+[data-theme="light"] .chart-welcome-form textarea { color: #0f172a; }
 .chart-welcome-save, .chart-welcome-cancel {
     border: none; border-radius: 6px; cursor: pointer;
     width: 26px; height: 26px; font-size: .72rem;

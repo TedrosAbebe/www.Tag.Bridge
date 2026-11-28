@@ -277,17 +277,11 @@
         </div>
         <!-- Welcome text edit form (hidden) -->
         <div id="chartWelcomeForm" class="chart-welcome-form" style="display:none;">
-            <input type="text" id="chartWelcomeInput" placeholder="Your name (e.g. Tag Bridge)" maxlength="40">
+            <textarea id="chartWelcomeInput" placeholder="ጽሑፍ ይፃፉ..." maxlength="200" rows="3" style="resize:vertical;min-height:60px;"></textarea>
             <button class="chart-welcome-save" onclick="chartWelcomeSave()"><i class="fas fa-check"></i></button>
             <button class="chart-welcome-cancel" onclick="chartWelcomeCancel()"><i class="fas fa-times"></i></button>
         </div>
         <div id="tvChartContainer"></div>
-
-        <!-- CHART MASCOT ROBOT -->
-        <div id="chartMascot" class="chart-mascot">
-            <div class="mascot-bubble" id="mascotBubble"></div>
-            <div class="mascot-body" id="mascotBody">🤖</div>
-        </div>
     </div>
 </div>
 </section>
@@ -1073,32 +1067,7 @@
 <button id="backToTop" class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-chevron-up"></i></button>
 
 <!-- AI BOT -->
-<div class="bot-fab" id="botFab" onclick="toggleBot()">
-    <div class="bot-fab-pulse"></div>
-    <div class="bot-fab-face" id="botFabFace">
-        <svg class="bot-face-svg" viewBox="0 0 48 48" width="42" height="42" xmlns="http://www.w3.org/2000/svg">
-            <!-- Head -->
-            <rect x="6" y="8" width="36" height="30" rx="8" fill="#6366f1"/>
-            <!-- Antenna -->
-            <line x1="24" y1="8" x2="24" y2="2" stroke="#818cf8" stroke-width="2.5" stroke-linecap="round"/>
-            <circle cx="24" cy="2" r="2.5" fill="#a5b4fc"/>
-            <!-- Screen face bg -->
-            <rect x="10" y="13" width="28" height="20" rx="5" fill="#0d1117"/>
-            <!-- Eyes -->
-            <ellipse class="bot-eye-left"  cx="18" cy="22" rx="4" ry="4" fill="#818cf8"/>
-            <ellipse class="bot-eye-right" cx="30" cy="22" rx="4" ry="4" fill="#818cf8"/>
-            <!-- Eye shine -->
-            <circle cx="19.5" cy="20.5" r="1.2" fill="white" opacity="0.8"/>
-            <circle cx="31.5" cy="20.5" r="1.2" fill="white" opacity="0.8"/>
-            <!-- Mouth -->
-            <path class="bot-mouth" d="M17 29 Q24 34 31 29" stroke="#10b981" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-            <!-- Ear bolts -->
-            <circle cx="6"  cy="23" r="3" fill="#4f46e5"/>
-            <circle cx="42" cy="23" r="3" fill="#4f46e5"/>
-        </svg>
-    </div>
-    <span class="bot-fab-label" id="botFabLabel">AI ረዳት</span>
-</div>
+<div class="bot-fab" id="botFab" onclick="toggleBot()"><div class="bot-fab-pulse"></div><span class="bot-fab-icon">🤖</span><span class="bot-fab-label" id="botFabLabel">AI ረዳት</span></div>
 <div class="bot-overlay" id="botOverlay" onclick="toggleBot()"></div>
 <div class="bot-sidebar" id="botSidebar">
     <div class="bot-header">
