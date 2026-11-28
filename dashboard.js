@@ -1489,6 +1489,13 @@ function toggleBot() {
     overlay.classList.toggle('open', !isOpen);
     // Hide FAB when open, show when closed — works on all browsers
     if(fab) fab.classList.toggle('bot-fab-hidden', !isOpen);
+    // Face reaction — excited on open
+    if(fab && !isOpen) {
+        fab.classList.add('excited', 'chatopen');
+        setTimeout(function() { fab.classList.remove('excited'); }, 600);
+    } else if(fab) {
+        fab.classList.remove('chatopen');
+    }
     if(!isOpen && !sidebar.dataset.initialized) {
         sidebar.dataset.initialized = '1';
         initBotGreeting();
@@ -1553,16 +1560,26 @@ async function sendBotMsg(prefill) {
     const opts = document.getElementById('botOpts');
     if(opts) opts.innerHTML = '';
     botMsg('user', text);
+    // Face thinking animation while waiting
+    const fab = document.getElementById('botFab');
+    if(fab) fab.classList.add('thinking');
     showTyping();
     try {
         const reply = await callGeminiProxy(text);
         hideTyping();
+        // Stop thinking, react excitedly when answer arrives
+        if(fab) {
+            fab.classList.remove('thinking');
+            fab.classList.add('excited');
+            setTimeout(function() { fab.classList.remove('excited'); }, 600);
+        }
         botMsg('bot', formatBotReply(reply));
         // Save to history (keep last 3 turns = 6 messages)
         botHistory.push({ user: text, bot: reply });
         if(botHistory.length > 3) botHistory.shift();
     } catch(e) {
         hideTyping();
+        if(fab) fab.classList.remove('thinking');
         const errText = e.message || 'Unknown error';
         botMsg('bot', '⚠️ ' + errText + ' / ቆየት ብለው ይሞክሩ።');
     }
