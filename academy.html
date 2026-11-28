@@ -119,9 +119,9 @@ html,body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
 .btn-support:hover{border-color:var(--primary);color:var(--primary);}
 
 /* ── Shared buttons ── */
-.btn-primary{width:100%;background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;border:none;padding:14px;border-radius:var(--radius);font-weight:800;font-size:1rem;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 20px rgba(99,102,241,0.4);}
-.btn-primary:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 8px 28px rgba(99,102,241,0.5);}
-.btn-primary:disabled{opacity:.6;cursor:not-allowed;}
+.ac-btn{width:100%;background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;border:none;padding:14px;border-radius:var(--radius);font-weight:800;font-size:1rem;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 20px rgba(99,102,241,0.4);position:relative;z-index:1;}
+.ac-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 8px 28px rgba(99,102,241,0.5);}
+.ac-btn:disabled{opacity:.6;cursor:not-allowed;}
 .btn-back{background:none;border:none;color:var(--text3);cursor:pointer;font-size:.82rem;display:flex;align-items:center;gap:5px;padding:0;margin-bottom:16px;}
 .btn-back:hover{color:var(--text2);}
 
@@ -270,7 +270,7 @@ html,body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
                 </div>
             </div>
 
-            <button class="btn-primary" id="step1Btn" onclick="goToStep(2)" disabled>
+            <button class="ac-btn" id="step1Btn" onclick="goToStep(2)" disabled>
                 ቀጥል <i class="fas fa-arrow-right"></i>
             </button>
         </div>
@@ -346,7 +346,7 @@ html,body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
                 </div>
             </div>
 
-            <button class="btn-primary" onclick="goToStep(3)">
+            <button class="ac-btn" onclick="goToStep(3)">
                 <i class="fas fa-graduation-cap"></i> ጀምር
             </button>
         </div>
@@ -384,7 +384,7 @@ html,body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
                 </div>
             </div>
 
-            <button class="btn-primary" id="step3Btn" onclick="goToStep(4)" disabled>
+            <button class="ac-btn" id="step3Btn" onclick="goToStep(4)" disabled>
                 ቀጥል <i class="fas fa-arrow-right"></i>
             </button>
         </div>
@@ -420,7 +420,7 @@ html,body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
                 </div>
             </div>
 
-            <button class="btn-primary" id="loginBtn" onclick="doLogin()">
+            <button class="ac-btn" id="loginBtn" onclick="doLogin()">
                 <i class="fas fa-unlock-keyhole"></i>
                 <span id="loginBtnTxt">ወደ Academy ግባ</span>
             </button>
