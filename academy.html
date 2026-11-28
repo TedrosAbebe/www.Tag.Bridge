@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html lang="am" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
-    <title>ታግ ብሪጅ — Trading Academy</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
-/* ═══════════════════════════════════════════
-   TAG BRIDGE ACADEMY — Styles
-═══════════════════════════════════════════ */
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>ታግ ብሪጅ — Trading Academy</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
     --bg:#0d1117;--bg2:#161b22;--bg3:#1c2333;--card:#1e2130;
@@ -27,431 +24,397 @@
     --border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.15);
     --shadow:0 8px 32px rgba(0,0,0,0.1);
 }
-html{scroll-behavior:smooth}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
-::-webkit-scrollbar{width:5px}
-::-webkit-scrollbar-thumb{background:var(--primary);border-radius:3px}
+html,body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
 
-/* ── GATE (login screen) ── */
-#gate{
-    min-height:100vh;display:flex;align-items:center;justify-content:center;
-    padding:24px;position:relative;overflow:hidden;
-}
-.gate-bg{
-    position:absolute;inset:0;
-    background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(99,102,241,0.18) 0%,transparent 70%);
-    pointer-events:none;
-}
-.gate-grid{
-    position:absolute;inset:0;
-    background-image:linear-gradient(rgba(99,102,241,0.05) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(99,102,241,0.05) 1px,transparent 1px);
-    background-size:50px 50px;
-    mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black,transparent);
-}
-.gate-card{
-    width:100%;max-width:440px;position:relative;z-index:2;
-    background:var(--bg2);border:1px solid var(--border2);
-    border-radius:var(--radius-xl);padding:40px 36px;
-    box-shadow:var(--shadow),0 0 60px rgba(99,102,241,0.1);
-    animation:fadeUp .5s ease;
-}
-@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-.gate-logo{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:28px}
-.gate-logo-icon{
-    width:52px;height:52px;border-radius:14px;
-    background:linear-gradient(135deg,var(--primary),var(--secondary));
-    display:flex;align-items:center;justify-content:center;font-size:1.4rem;
-}
-.gate-brand{font-size:1.3rem;font-weight:900;letter-spacing:-.5px}
-.gate-brand span:first-child{color:var(--primary)}
-.gate-badge{
-    display:inline-flex;align-items:center;gap:6px;
-    background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.25);
-    color:var(--primary);font-size:.72rem;font-weight:700;letter-spacing:1px;
-    padding:5px 14px;border-radius:50px;margin:0 auto 20px;
-    text-transform:uppercase;
-}
-.gate-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.5s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.gate-title{font-size:1.5rem;font-weight:800;text-align:center;margin-bottom:6px}
-.gate-sub{color:var(--text2);font-size:.88rem;text-align:center;margin-bottom:28px;line-height:1.6}
-.gate-features{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:28px}
-.gate-feat{
-    background:var(--bg3);border:1px solid var(--border);
-    border-radius:var(--radius);padding:10px 12px;
-    font-size:.75rem;font-weight:600;color:var(--text2);
-    display:flex;align-items:center;gap:7px;
-}
-.gate-feat i{color:var(--primary);font-size:.8rem}
-.form-lbl{font-size:.75rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;display:block}
-.gate-input-wrap{position:relative;margin-bottom:16px}
-.gate-input{
-    width:100%;background:var(--bg3);border:1px solid var(--border);
-    border-radius:var(--radius);padding:13px 44px 13px 16px;
-    color:var(--text);font-size:1rem;font-family:inherit;
-    letter-spacing:.1em;transition:.2s;
-}
-.gate-input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(99,102,241,0.15)}
-.toggle-pw{
-    position:absolute;right:14px;top:50%;transform:translateY(-50%);
-    background:none;border:none;cursor:pointer;color:var(--text3);font-size:.9rem;
-    transition:.2s;padding:4px;
-}
-.toggle-pw:hover{color:var(--primary)}
-.gate-btn{
-    width:100%;background:linear-gradient(135deg,var(--primary),var(--secondary));
-    color:#fff;border:none;padding:14px;border-radius:var(--radius);
-    font-weight:800;font-size:1rem;cursor:pointer;transition:.2s;
-    display:flex;align-items:center;justify-content:center;gap:8px;
-    box-shadow:0 4px 20px rgba(99,102,241,0.4);
-}
-.gate-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 8px 28px rgba(99,102,241,0.5)}
-.gate-btn:disabled{opacity:.7;cursor:not-allowed}
-.gate-error{
-    background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);
-    color:var(--red);border-radius:var(--radius);padding:11px 14px;
-    font-size:.85rem;margin-bottom:14px;display:none;
-    animation:fadeUp .3s ease;
-}
-.gate-error.show{display:flex;align-items:center;gap:8px}
-.gate-footer{text-align:center;margin-top:20px;font-size:.78rem;color:var(--text3)}
-.gate-footer a{color:var(--primary);text-decoration:none}
+/* ── GATE ── */
+#gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;position:relative;overflow:hidden;}
+.gate-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(99,102,241,0.18) 0%,transparent 70%);pointer-events:none;}
+.gate-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(99,102,241,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(99,102,241,0.05) 1px,transparent 1px);background-size:50px 50px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black,transparent);}
+.gate-card{width:100%;max-width:520px;position:relative;z-index:2;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-xl);padding:40px 36px;box-shadow:var(--shadow),0 0 60px rgba(99,102,241,0.1);}
+.gate-logo{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:28px;}
+.gate-logo-icon{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;font-size:1.4rem;}
+.gate-brand{font-size:1.3rem;font-weight:900;letter-spacing:-.5px;}
+.gate-brand span:first-child{color:var(--primary);}
+
+/* Step indicators */
+.step-dots{display:flex;gap:8px;justify-content:center;margin-bottom:24px;}
+.step-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);transition:.3s;}
+.step-dot.active{background:var(--primary);width:24px;border-radius:4px;}
+.step-dot.done{background:var(--green);}
+
+/* ── STEP 1: Course selection ── */
+.step-title{font-size:1.1rem;font-weight:800;text-align:center;margin-bottom:6px;}
+.step-sub{color:var(--text2);font-size:.86rem;text-align:center;margin-bottom:24px;line-height:1.6;}
+
+.course-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+.course-card{background:var(--bg3);border:2px solid var(--border);border-radius:var(--radius-lg);padding:24px 16px;cursor:pointer;transition:.2s;text-align:center;position:relative;overflow:hidden;}
+.course-card::before{content:'';position:absolute;inset:0;opacity:0;transition:.2s;}
+.course-card:hover,.course-card.selected{border-color:var(--primary);background:rgba(99,102,241,0.08);}
+.course-card:hover::before,.course-card.selected::before{opacity:1;}
+.course-card.selected{border-color:var(--green);background:rgba(16,185,129,0.08);}
+.course-icon{font-size:2.2rem;margin-bottom:10px;display:block;}
+.course-name{font-weight:800;font-size:.95rem;margin-bottom:4px;}
+.course-desc{font-size:.72rem;color:var(--text2);}
+.course-check{position:absolute;top:10px;right:10px;width:22px;height:22px;border-radius:50%;background:var(--green);color:#fff;font-size:.7rem;display:none;align-items:center;justify-content:center;}
+.course-card.selected .course-check{display:flex;}
+
+/* ── STEP 2: What you'll learn ── */
+.learn-header{text-align:center;margin-bottom:20px;}
+.learn-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);color:var(--green);font-size:.72rem;font-weight:700;padding:5px 14px;border-radius:50px;margin-bottom:12px;}
+.learn-items{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+.learn-item{display:flex;align-items:flex-start;gap:12px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;}
+.learn-item-icon{font-size:1.3rem;flex-shrink:0;width:36px;height:36px;border-radius:10px;background:rgba(99,102,241,0.12);display:flex;align-items:center;justify-content:center;}
+.learn-item-text strong{display:block;font-size:.88rem;font-weight:700;margin-bottom:3px;}
+.learn-item-text span{font-size:.76rem;color:var(--text2);line-height:1.5;}
+
+.books-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px;}
+.book-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;display:flex;align-items:center;gap:8px;font-size:.74rem;}
+.book-item img,.book-emoji{font-size:1.1rem;flex-shrink:0;}
+
+/* ── STEP 3: Level selection ── */
+.level-cards{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+.level-card{display:flex;align-items:center;gap:14px;background:var(--bg3);border:2px solid var(--border);border-radius:var(--radius-lg);padding:16px 18px;cursor:pointer;transition:.2s;}
+.level-card:hover,.level-card.selected{border-color:var(--primary);background:rgba(99,102,241,0.08);}
+.level-card.selected{border-color:var(--gold);}
+.level-icon{font-size:1.5rem;width:44px;height:44px;border-radius:12px;background:rgba(99,102,241,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.level-title{font-weight:800;font-size:.92rem;margin-bottom:2px;}
+.level-desc{font-size:.74rem;color:var(--text2);}
+.level-check{margin-left:auto;width:22px;height:22px;border-radius:50%;background:var(--gold);color:var(--bg);font-size:.7rem;display:none;align-items:center;justify-content:center;flex-shrink:0;}
+.level-card.selected .level-check{display:flex;}
+
+/* ── STEP 4: Password ── */
+.pw-info{background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.2);border-radius:var(--radius);padding:14px 16px;margin-bottom:20px;font-size:.84rem;color:var(--text2);text-align:center;line-height:1.6;}
+.pw-info strong{color:var(--primary);display:block;margin-bottom:4px;font-size:.88rem;}
+.pw-input-wrap{position:relative;margin-bottom:16px;}
+.pw-input{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);padding:14px 48px 14px 16px;color:var(--text);font-size:1rem;font-family:inherit;letter-spacing:.1em;transition:.2s;}
+.pw-input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(99,102,241,0.15);}
+.pw-toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text3);font-size:.9rem;}
+.pw-toggle:hover{color:var(--primary);}
+
+/* Error state */
+.gate-error{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.3);color:var(--red);border-radius:var(--radius);padding:12px 16px;font-size:.84rem;margin-bottom:14px;display:none;}
+.gate-error.show{display:block;}
+
+/* Error actions */
+.error-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+.btn-telegram{display:flex;align-items:center;justify-content:center;gap:7px;background:#229ED9;color:#fff;border:none;padding:11px 16px;border-radius:var(--radius);font-weight:700;font-size:.82rem;cursor:pointer;text-decoration:none;transition:.2s;}
+.btn-telegram:hover{background:#1a8bbf;}
+.btn-support{display:flex;align-items:center;justify-content:center;gap:7px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:11px 16px;border-radius:var(--radius);font-weight:600;font-size:.82rem;cursor:pointer;text-decoration:none;transition:.2s;}
+.btn-support:hover{border-color:var(--primary);color:var(--primary);}
+
+/* ── Shared buttons ── */
+.btn-primary{width:100%;background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;border:none;padding:14px;border-radius:var(--radius);font-weight:800;font-size:1rem;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 20px rgba(99,102,241,0.4);}
+.btn-primary:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 8px 28px rgba(99,102,241,0.5);}
+.btn-primary:disabled{opacity:.6;cursor:not-allowed;}
+.btn-back{background:none;border:none;color:var(--text3);cursor:pointer;font-size:.82rem;display:flex;align-items:center;gap:5px;padding:0;margin-bottom:16px;}
+.btn-back:hover{color:var(--text2);}
 
 /* ── ACADEMY (after login) ── */
-#academy{display:none}
-.ac-nav{
-    position:sticky;top:0;z-index:100;
-    background:rgba(13,17,23,0.9);backdrop-filter:blur(20px);
-    border-bottom:1px solid var(--border);padding:0 24px;
-    height:64px;display:flex;align-items:center;justify-content:space-between;
-}
-[data-theme="light"] .ac-nav{background:rgba(248,250,252,0.95)}
-.ac-nav-left{display:flex;align-items:center;gap:12px}
-.ac-nav-logo{font-size:1rem;font-weight:900}
-.ac-nav-logo span:first-child{color:var(--primary)}
-.ac-nav-badge{
-    background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.25);
-    color:var(--primary);font-size:.68rem;font-weight:700;
-    padding:3px 10px;border-radius:50px;
-}
-.ac-nav-right{display:flex;align-items:center;gap:10px}
-.ac-welcome{font-size:.8rem;color:var(--text2)}
-.ac-welcome strong{color:var(--text)}
-.ac-logout-btn{
-    background:var(--bg3);border:1px solid var(--border);
-    color:var(--text2);font-size:.78rem;font-weight:600;
-    padding:6px 14px;border-radius:50px;cursor:pointer;
-    transition:.2s;display:flex;align-items:center;gap:6px;
-}
-.ac-logout-btn:hover{border-color:var(--red);color:var(--red)}
-.ac-theme-btn{
-    width:34px;height:34px;border-radius:10px;
-    background:var(--bg3);border:1px solid var(--border);
-    color:var(--text2);cursor:pointer;font-size:.85rem;
-    display:flex;align-items:center;justify-content:center;
-    transition:.2s;
-}
-.ac-theme-btn:hover{color:var(--primary)}
+#academy{display:none;}
+.ac-nav{position:sticky;top:0;z-index:100;background:rgba(13,17,23,0.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;}
+[data-theme="light"] .ac-nav{background:rgba(248,250,252,0.95);}
+.ac-nav-left{display:flex;align-items:center;gap:12px;}
+.ac-nav-logo{font-size:1rem;font-weight:900;}
+.ac-nav-logo span:first-child{color:var(--primary);}
+.ac-nav-badge{background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.25);color:var(--primary);font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:50px;}
+.ac-nav-right{display:flex;align-items:center;gap:10px;}
+.ac-welcome{font-size:.8rem;color:var(--text2);}
+.ac-welcome strong{color:var(--text);}
+.ac-logout-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text2);font-size:.78rem;font-weight:600;padding:6px 14px;border-radius:50px;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:6px;}
+.ac-logout-btn:hover{border-color:var(--red);color:var(--red);}
+.ac-theme-btn{width:34px;height:34px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);color:var(--text2);cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:.2s;}
+.ac-theme-btn:hover{color:var(--primary);}
 
-/* ── HERO ── */
-.ac-hero{
-    background:linear-gradient(135deg,rgba(99,102,241,0.08),rgba(139,92,246,0.05));
-    border-bottom:1px solid var(--border);padding:48px 24px 40px;
-    text-align:center;
-}
-.ac-hero-badge{
-    display:inline-flex;align-items:center;gap:6px;
-    background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);
-    color:var(--green);font-size:.72rem;font-weight:700;
-    padding:5px 14px;border-radius:50px;margin-bottom:16px;
-    text-transform:uppercase;letter-spacing:1px;
-}
-.ac-hero h1{font-size:clamp(1.6rem,5vw,2.8rem);font-weight:900;letter-spacing:-.5px;margin-bottom:10px}
-.ac-hero h1 .grad{
-    background:linear-gradient(135deg,var(--primary),var(--accent));
-    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-.ac-hero p{color:var(--text2);font-size:1rem;max-width:540px;margin:0 auto 24px}
-.ac-hero-stats{display:flex;gap:0;justify-content:center;flex-wrap:wrap}
-.ac-stat{padding:0 24px;text-align:center;border-right:1px solid var(--border)}
-.ac-stat:last-child{border:none}
-.ac-stat-n{font-size:1.6rem;font-weight:900;color:var(--primary)}
-.ac-stat-l{font-size:.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:.5px}
+/* Academy hero */
+.ac-hero{background:linear-gradient(135deg,rgba(99,102,241,0.08),rgba(139,92,246,0.05));border-bottom:1px solid var(--border);padding:48px 24px 40px;text-align:center;}
+.ac-hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);color:var(--green);font-size:.72rem;font-weight:700;padding:5px 14px;border-radius:50px;margin-bottom:16px;text-transform:uppercase;letter-spacing:1px;}
+.ac-hero h1{font-size:clamp(1.6rem,5vw,2.8rem);font-weight:900;letter-spacing:-.5px;margin-bottom:10px;}
+.ac-hero h1 .grad{background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.ac-hero p{color:var(--text2);font-size:1rem;max-width:540px;margin:0 auto 24px;}
+.ac-hero-stats{display:flex;gap:0;justify-content:center;flex-wrap:wrap;}
+.ac-stat{padding:0 24px;text-align:center;border-right:1px solid var(--border);}
+.ac-stat:last-child{border:none;}
+.ac-stat-n{font-size:1.6rem;font-weight:900;color:var(--primary);}
+.ac-stat-l{font-size:.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;}
 
-/* ── PROGRESS ── */
-.ac-progress-bar-wrap{
-    background:var(--bg2);border-bottom:1px solid var(--border);
-    padding:14px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;
-}
-.ac-progress-label{font-size:.82rem;font-weight:600;color:var(--text2);white-space:nowrap}
-.ac-progress-track{flex:1;min-width:120px;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden}
-.ac-progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:3px;transition:.4s}
-.ac-progress-pct{font-size:.82rem;font-weight:700;color:var(--primary);white-space:nowrap}
+/* Progress */
+.ac-progress-bar-wrap{background:var(--bg2);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.ac-progress-label{font-size:.82rem;font-weight:600;color:var(--text2);white-space:nowrap;}
+.ac-progress-track{flex:1;min-width:120px;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden;}
+.ac-progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:3px;transition:.4s;}
+.ac-progress-pct{font-size:.82rem;font-weight:700;color:var(--primary);white-space:nowrap;}
 
-/* ── LAYOUT ── */
-.ac-layout{display:flex;min-height:calc(100vh - 64px)}
-.ac-sidebar{
-    width:260px;flex-shrink:0;background:var(--bg2);
-    border-right:1px solid var(--border);padding:20px 14px;
-    position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto;
-}
-.ac-sidebar-title{font-size:.68rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;padding:0 8px;margin-bottom:10px}
-.ac-chapter-btn{
-    width:100%;display:flex;align-items:center;gap:9px;
-    padding:9px 10px;border-radius:10px;border:none;background:none;
-    color:var(--text2);font-size:.82rem;font-weight:500;
-    cursor:pointer;transition:.2s;text-align:left;margin-bottom:2px;
-}
-.ac-chapter-btn:hover{background:var(--bg3);color:var(--text)}
-.ac-chapter-btn.active{background:rgba(99,102,241,0.12);color:var(--primary);font-weight:700}
-.ac-chapter-btn .ch-icon{
-    width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;
-    font-size:.8rem;flex-shrink:0;
-}
-.ac-chapter-btn.done .ch-icon::after{content:'✓'}
-.ac-chapter-btn .ch-prog{
-    margin-left:auto;font-size:.65rem;padding:2px 7px;border-radius:50px;
-    background:var(--bg3);color:var(--text3);font-weight:600;
-}
-.ac-chapter-btn.active .ch-prog{background:rgba(99,102,241,0.15);color:var(--primary)}
+/* Layout */
+.ac-layout{display:flex;min-height:calc(100vh - 64px);}
+.ac-sidebar{width:260px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);padding:20px 14px;position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto;}
+.ac-sidebar-title{font-size:.68rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;padding:0 8px;margin-bottom:10px;}
+.ac-chapter-btn{width:100%;display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:10px;border:none;background:none;color:var(--text2);font-size:.82rem;font-weight:500;cursor:pointer;transition:.2s;text-align:left;margin-bottom:2px;}
+.ac-chapter-btn:hover{background:var(--bg3);color:var(--text);}
+.ac-chapter-btn.active{background:rgba(99,102,241,0.12);color:var(--primary);font-weight:700;}
+.ac-chapter-btn .ch-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;}
+.ac-chapter-btn .ch-prog{margin-left:auto;font-size:.65rem;padding:2px 7px;border-radius:50px;background:var(--bg3);color:var(--text3);font-weight:600;}
+.ac-chapter-btn.active .ch-prog{background:rgba(99,102,241,0.15);color:var(--primary);}
+.ac-main{flex:1;overflow-x:hidden;}
 
-.ac-main{flex:1;overflow-x:hidden}
-
-/* ── CHAPTER CONTENT ── */
-.chapter-panel{display:none;padding:32px 28px;max-width:900px}
-.chapter-panel.active{display:block;animation:fadeUp .35s ease}
-.chapter-header{margin-bottom:28px}
-.chapter-cat{
-    font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;
-    color:var(--primary);margin-bottom:8px;
-}
-.chapter-title{font-size:1.8rem;font-weight:900;letter-spacing:-.5px;margin-bottom:8px}
-.chapter-desc{color:var(--text2);font-size:.95rem;line-height:1.7}
-.chapter-meta{display:flex;gap:16px;margin-top:12px;flex-wrap:wrap}
-.chapter-meta span{
-    font-size:.75rem;color:var(--text3);display:flex;align-items:center;gap:5px;
-}
-.chapter-meta i{color:var(--primary)}
-
-/* ── LESSONS ── */
-.lessons-grid{display:grid;gap:14px;margin-bottom:32px}
-.lesson{
-    background:var(--card);border:1px solid var(--border);
-    border-radius:var(--radius-lg);padding:20px;
-    transition:.2s;cursor:pointer;position:relative;overflow:hidden;
-}
-.lesson:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:var(--shadow)}
-.lesson.completed{border-color:rgba(16,185,129,0.3)}
-.lesson.completed::after{
-    content:'✓ Completed';position:absolute;top:14px;right:14px;
-    background:rgba(16,185,129,0.1);color:var(--green);
-    font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:50px;
-}
-.lesson-num{font-size:.68rem;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
-.lesson-title{font-size:1rem;font-weight:700;margin-bottom:6px}
-.lesson-body{font-size:.85rem;color:var(--text2);line-height:1.7;margin-bottom:12px}
-.lesson-tags{display:flex;gap:6px;flex-wrap:wrap}
-.lesson-tag{
-    padding:3px 10px;border-radius:50px;
-    background:var(--bg3);color:var(--text3);font-size:.68rem;font-weight:600;
-}
-.lesson-tag.hot{background:rgba(239,68,68,0.1);color:var(--red)}
-.lesson-tag.tip{background:rgba(16,185,129,0.1);color:var(--green)}
-.lesson-mark-btn{
-    margin-top:12px;background:none;border:1px solid var(--border);
-    border-radius:50px;padding:5px 14px;font-size:.75rem;font-weight:600;
-    color:var(--text2);cursor:pointer;transition:.2s;
-}
-.lesson-mark-btn:hover{border-color:var(--green);color:var(--green)}
-.lesson.completed .lesson-mark-btn{border-color:var(--green);color:var(--green);background:rgba(16,185,129,0.08)}
-
-/* ── KEY CONCEPTS BOX ── */
-.key-box{
-    background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.2);
-    border-radius:var(--radius-lg);padding:20px;margin-bottom:24px;
-}
-.key-box h4{font-size:.85rem;font-weight:800;color:var(--primary);margin-bottom:12px;display:flex;align-items:center;gap:7px}
-.key-box ul{list-style:none;display:flex;flex-direction:column;gap:7px}
-.key-box li{font-size:.85rem;color:var(--text2);display:flex;align-items:flex-start;gap:8px;line-height:1.5}
-.key-box li::before{content:'→';color:var(--primary);flex-shrink:0;margin-top:1px}
-
-/* ── FORMULA BOX ── */
-.formula-box{
-    background:var(--bg3);border:1px solid var(--border);border-left:3px solid var(--primary);
-    border-radius:0 var(--radius) var(--radius) 0;padding:16px 18px;margin:16px 0;
-    font-family:'Courier New',monospace;font-size:.88rem;color:var(--text);line-height:1.6;
-}
-
-/* ── WARNING/TIP BOXES ── */
-.warn-box{background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:var(--radius);padding:14px 16px;margin:14px 0;font-size:.85rem;color:var(--text2);display:flex;gap:10px}
-.warn-box i{color:var(--gold);flex-shrink:0;margin-top:2px}
-.tip-box{background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.2);border-radius:var(--radius);padding:14px 16px;margin:14px 0;font-size:.85rem;color:var(--text2);display:flex;gap:10px}
-.tip-box i{color:var(--green);flex-shrink:0;margin-top:2px}
-
-/* ── CHAPTER NAV BUTTONS ── */
-.chapter-nav-btns{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
-.ch-nav-btn{
-    display:flex;align-items:center;gap:7px;padding:10px 20px;
-    border-radius:50px;border:1px solid var(--border);
-    background:var(--bg3);color:var(--text2);font-size:.85rem;font-weight:600;
-    cursor:pointer;transition:.2s;
-}
-.ch-nav-btn:hover{border-color:var(--primary);color:var(--primary)}
-.ch-nav-btn.primary{background:linear-gradient(135deg,var(--primary),var(--secondary));border-color:transparent;color:#fff;box-shadow:0 4px 16px rgba(99,102,241,0.35)}
-.ch-nav-btn.primary:hover{transform:translateY(-1px)}
-
-/* ── MARKET / LEVEL CHOICE BUTTONS ── */
-.market-choice-btn{
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    gap:4px;padding:16px 10px;
-    background:var(--bg3);border:1.5px solid var(--border2);
-    border-radius:var(--radius-lg);cursor:pointer;transition:.2s;
-    color:var(--text);font-size:.88rem;
-}
-.market-choice-btn small{display:block;font-size:.7rem;color:var(--text2);font-weight:400;}
-.market-choice-btn:hover,.market-choice-btn.selected{
-    border-color:var(--primary);background:rgba(99,102,241,0.1);color:var(--primary);
-    box-shadow:0 0 0 3px rgba(99,102,241,0.12);
-}
-.level-choice-btn{
-    display:flex;align-items:center;gap:10px;padding:12px 16px;
-    background:var(--bg3);border:1.5px solid var(--border);
-    border-radius:var(--radius);cursor:pointer;transition:.2s;
-    color:var(--text2);font-size:.88rem;font-weight:600;text-align:left;
-    width:100%;
-}
-.level-choice-btn small{color:var(--text3);font-weight:400;margin-left:auto;}
-.level-choice-btn:hover,.level-choice-btn.selected{
-    border-color:var(--primary);background:rgba(99,102,241,0.1);color:var(--primary);
-}
-.level-choice-btn i{color:var(--primary);width:16px;flex-shrink:0;}
-
-/* ── MOBILE ── */
-.ac-menu-btn{display:none;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:7px 10px;cursor:pointer;color:var(--text2)}
+/* Chapter content */
+.chapter-panel{display:none;padding:32px 28px;max-width:900px;}
+.chapter-panel.active{display:block;animation:fadeUp .35s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.chapter-cat{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--primary);margin-bottom:8px;}
+.chapter-title{font-size:1.8rem;font-weight:900;letter-spacing:-.5px;margin-bottom:8px;}
+.chapter-desc{color:var(--text2);font-size:.95rem;line-height:1.7;}
+.chapter-meta{display:flex;gap:16px;margin-top:12px;flex-wrap:wrap;}
+.chapter-meta span{font-size:.75rem;color:var(--text3);display:flex;align-items:center;gap:5px;}
+.chapter-meta i{color:var(--primary);}
+.key-box{background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.2);border-radius:var(--radius-lg);padding:20px;margin-bottom:24px;}
+.key-box h4{font-size:.85rem;font-weight:800;color:var(--primary);margin-bottom:12px;display:flex;align-items:center;gap:7px;}
+.key-box ul{list-style:none;display:flex;flex-direction:column;gap:7px;}
+.key-box li{font-size:.85rem;color:var(--text2);display:flex;align-items:flex-start;gap:8px;line-height:1.5;}
+.key-box li::before{content:'→';color:var(--primary);flex-shrink:0;margin-top:1px;}
+.formula-box{background:var(--bg3);border:1px solid var(--border);border-left:3px solid var(--primary);border-radius:0 var(--radius) var(--radius) 0;padding:16px 18px;margin:16px 0;font-family:'Courier New',monospace;font-size:.88rem;color:var(--text);line-height:1.6;}
+.warn-box{background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:var(--radius);padding:14px 16px;margin:14px 0;font-size:.85rem;color:var(--text2);display:flex;gap:10px;}
+.warn-box i{color:var(--gold);flex-shrink:0;margin-top:2px;}
+.tip-box{background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.2);border-radius:var(--radius);padding:14px 16px;margin:14px 0;font-size:.85rem;color:var(--text2);display:flex;gap:10px;}
+.tip-box i{color:var(--green);flex-shrink:0;margin-top:2px;}
+.lessons-grid{display:grid;gap:14px;margin-bottom:32px;}
+.lesson{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;transition:.2s;cursor:pointer;position:relative;overflow:hidden;}
+.lesson:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:var(--shadow);}
+.lesson.completed{border-color:rgba(16,185,129,0.3);}
+.lesson.completed::after{content:'✓ Completed';position:absolute;top:14px;right:14px;background:rgba(16,185,129,0.1);color:var(--green);font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:50px;}
+.lesson-num{font-size:.68rem;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+.lesson-title{font-size:1rem;font-weight:700;margin-bottom:6px;}
+.lesson-body{font-size:.85rem;color:var(--text2);line-height:1.7;margin-bottom:12px;}
+.lesson-tags{display:flex;gap:6px;flex-wrap:wrap;}
+.lesson-tag{padding:3px 10px;border-radius:50px;background:var(--bg3);color:var(--text3);font-size:.68rem;font-weight:600;}
+.lesson-mark-btn{margin-top:12px;background:none;border:1px solid var(--border);border-radius:50px;padding:5px 14px;font-size:.75rem;font-weight:600;color:var(--text2);cursor:pointer;transition:.2s;}
+.lesson-mark-btn:hover{border-color:var(--green);color:var(--green);}
+.lesson.completed .lesson-mark-btn{border-color:var(--green);color:var(--green);background:rgba(16,185,129,0.08);}
+.chapter-nav-btns{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap;}
+.ch-nav-btn{display:flex;align-items:center;gap:7px;padding:10px 20px;border-radius:50px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-size:.85rem;font-weight:600;cursor:pointer;transition:.2s;}
+.ch-nav-btn:hover{border-color:var(--primary);color:var(--primary);}
+.ch-nav-btn.primary{background:linear-gradient(135deg,var(--primary),var(--secondary));border-color:transparent;color:#fff;box-shadow:0 4px 16px rgba(99,102,241,0.35);}
+.ac-menu-btn{display:none;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:7px 10px;cursor:pointer;color:var(--text2);}
 @media(max-width:768px){
-    .ac-sidebar{display:none;position:fixed;inset:64px 0 0 0;width:100%;z-index:50;height:calc(100vh - 64px)}
-    .ac-sidebar.open{display:block}
-    .ac-menu-btn{display:flex;align-items:center;gap:6px;font-size:.78rem}
-    .chapter-panel{padding:20px 16px}
-    .ac-hero{padding:32px 16px 24px}
-    .ac-hero-stats{gap:8px}
-    .ac-stat{padding:0 14px}
-    .gate-card{padding:28px 20px}
-    .gate-features{grid-template-columns:1fr}
-    .ac-nav-right .ac-welcome{display:none}
+    .ac-sidebar{display:none;position:fixed;inset:64px 0 0 0;width:100%;z-index:50;height:calc(100vh - 64px);}
+    .ac-sidebar.open{display:block;}
+    .ac-menu-btn{display:flex;align-items:center;gap:6px;font-size:.78rem;}
+    .chapter-panel{padding:20px 16px;}
+    .ac-hero{padding:32px 16px 24px;}
+    .gate-card{padding:28px 20px;}
+    .course-cards{grid-template-columns:1fr 1fr;}
+    .books-grid{grid-template-columns:1fr;}
+    .error-actions{grid-template-columns:1fr;}
 }
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════
-     GATE — Login Screen
-═══════════════════════════════════════ -->
+<!-- ══════════════════════════════════
+     GATE — Multi-step Onboarding
+══════════════════════════════════ -->
 <div id="gate">
     <div class="gate-bg"></div>
     <div class="gate-grid"></div>
     <div class="gate-card">
+
         <div class="gate-logo">
             <div class="gate-logo-icon">🎓</div>
-            <div class="gate-brand"><span>Tag</span><span>Bridge</span></div>
+            <div class="gate-brand"><span>Tag</span><span style="color:var(--accent)">Bridge</span></div>
         </div>
 
-        <!-- STEP 1: Welcome + Category -->
+        <!-- Step dots -->
+        <div class="step-dots">
+            <div class="step-dot active" id="dot1"></div>
+            <div class="step-dot" id="dot2"></div>
+            <div class="step-dot" id="dot3"></div>
+            <div class="step-dot" id="dot4"></div>
+        </div>
+
+        <!-- ═══ STEP 1: Choose Course ═══ -->
         <div id="step1">
-            <h2 class="gate-title" style="font-size:1.2rem;line-height:1.5;margin-bottom:12px;">
-                እንኳን ወደ Tag Bridge Academy<br>በደህና መጡ!
-            </h2>
-            <p class="gate-sub" style="font-size:.84rem;line-height:1.7;margin-bottom:20px;">
-                የForex ገበያ፣ የCrypto ገበያ እና Blockchain ቴክኖሎጂን በቀላሉ እና በነፃ ይማሩ።
-                እንዲሁም ጠቃሚ የትምህርት ቪዲዮዎችን ያገኛሉ።<br><br>
-                ለመጀመር ከታች የሚማሩትን የገበያ ዓይነት ይምረጡ።
-            </p>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
-                <button class="market-choice-btn" id="mBtn-forex" onclick="selectMarket('forex',this)">
-                    <i class="fas fa-chart-line" style="font-size:1.4rem;margin-bottom:6px;display:block;"></i>
-                    <strong>Forex Market</strong>
-                    <small>ምንዛሬ ትሬዲንግ</small>
-                </button>
-                <button class="market-choice-btn" id="mBtn-crypto" onclick="selectMarket('crypto',this)">
-                    <i class="fab fa-bitcoin" style="font-size:1.4rem;margin-bottom:6px;display:block;"></i>
-                    <strong>Crypto Market</strong>
-                    <small>ክሪፕቶ ትሬዲንግ</small>
-                </button>
+            <h2 class="step-title">እንኳን ወደ Tag Bridge Academy<br>በደህና መጡ! 👋</h2>
+            <p class="step-sub">ለምን ዓይነት ትሬዲንግ ትምህርት ፍላጎት አሎት?</p>
+
+            <div class="course-cards">
+                <div class="course-card" id="card-forex" onclick="selectCourse('forex',this)">
+                    <span class="course-icon">📈</span>
+                    <div class="course-name">Forex Market</div>
+                    <div class="course-desc">ምንዛሬ ትሬዲንግ</div>
+                    <div class="course-check"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="course-card" id="card-crypto" onclick="selectCourse('crypto',this)">
+                    <span class="course-icon">₿</span>
+                    <div class="course-name">Crypto Market</div>
+                    <div class="course-desc">ክሪፕቶ ትሬዲንግ</div>
+                    <div class="course-check"><i class="fas fa-check"></i></div>
+                </div>
             </div>
+
+            <button class="btn-primary" id="step1Btn" onclick="goToStep(2)" disabled>
+                ቀጥል <i class="fas fa-arrow-right"></i>
+            </button>
         </div>
 
-        <!-- STEP 2: Password (after market selection) -->
+        <!-- ═══ STEP 2: What you'll learn ═══ -->
         <div id="step2" style="display:none;">
-            <button onclick="document.getElementById('step2').style.display='none';document.getElementById('step1').style.display='block';" style="background:none;border:none;color:#8b949e;cursor:pointer;font-size:.8rem;margin-bottom:14px;display:flex;align-items:center;gap:5px;padding:0;">
-                <i class="fas fa-arrow-left"></i> ወደ ኋላ ተመለስ
+            <button class="btn-back" onclick="goToStep(1)"><i class="fas fa-arrow-left"></i> ወደ ኋላ</button>
+
+            <div class="learn-header">
+                <div class="learn-badge"><i class="fas fa-check-circle"></i> <span id="courseSelectedMsg">Forex Market ምርጫዎ ተቀብሏል</span></div>
+                <h2 class="step-title" style="margin-bottom:4px;">ምን ምን ይማሩ?</h2>
+                <p class="step-sub" style="margin-bottom:16px;">ሙሉ curriculum ቅድሚያ ይመልከቱ</p>
+            </div>
+
+            <div class="learn-items">
+                <div class="learn-item">
+                    <div class="learn-item-icon">🎬</div>
+                    <div class="learn-item-text">
+                        <strong>6+ ቪዲዮ ትምህርቶች</strong>
+                        <span>ከጀማሪ እስከ ፕሮፌሽናል — ሙሉ Amharic ቪዲዮዎች</span>
+                    </div>
+                </div>
+                <div class="learn-item">
+                    <div class="learn-item-icon">🤝</div>
+                    <div class="learn-item-text">
+                        <strong>ቀጥታ Mentorship</strong>
+                        <span>ቀጥታ ጥያቄና መልስ — Telegram live sessions</span>
+                    </div>
+                </div>
+                <div class="learn-item">
+                    <div class="learn-item-icon">📚</div>
+                    <div class="learn-item-text">
+                        <strong>Trading Books — Amharic & English</strong>
+                        <span>ዓለም አቀፍ የሚፈለጉ መጽሐፎች ዝርዝር</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Books grid -->
+            <div class="books-grid">
+                <div class="book-item"><span class="book-emoji">📗</span> Tag Bridge Trading Book (AM)</div>
+                <div class="book-item"><span class="book-emoji">📘</span> Trading in the Zone — Mark Douglas</div>
+                <div class="book-item"><span class="book-emoji">📙</span> The Disciplined Trader</div>
+                <div class="book-item"><span class="book-emoji">📕</span> Market Wizards — Jack Schwager</div>
+                <div class="book-item"><span class="book-emoji">📒</span> Japanese Candlestick Charting</div>
+                <div class="book-item"><span class="book-emoji">📔</span> How to Day Trade for a Living</div>
+                <div class="book-item"><span class="book-emoji">📓</span> One Good Trade — Mike Bellafiore</div>
+                <div class="book-item"><span class="book-emoji">📗</span> The Art of Currency Trading</div>
+            </div>
+
+            <div class="learn-items">
+                <div class="learn-item">
+                    <div class="learn-item-icon">💡</div>
+                    <div class="learn-item-text">
+                        <strong>Simple Trading Strategy</strong>
+                        <span>ቀላል ና ውጤታማ strategies — real examples</span>
+                    </div>
+                </div>
+                <div class="learn-item">
+                    <div class="learn-item-icon">🗺️</div>
+                    <div class="learn-item-text">
+                        <strong>Trading Zones (Supply & Demand)</strong>
+                        <span>SMC, Order Blocks, Fair Value Gaps — in Amharic</span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="goToStep(3)">
+                <i class="fas fa-graduation-cap"></i> ጀምር
             </button>
-            <p id="marketSelectedMsg" style="font-size:.88rem;margin-bottom:14px;color:var(--green);font-weight:700;text-align:center;"></p>
-            <p class="gate-sub" style="font-size:.84rem;line-height:1.7;margin-bottom:18px;">
-                እባክዎ ትምህርቱን ከመጀመራችን በፊት የTrading መጽሐፍ ሲገዙ
-                የተላከልዎትን Password ያስገቡ።
-            </p>
-            <label class="form-lbl" for="pwInput">Academy Password</label>
-            <div class="gate-input-wrap">
-                <input type="password" id="pwInput" class="gate-input"
+        </div>
+
+        <!-- ═══ STEP 3: Knowledge Level ═══ -->
+        <div id="step3" style="display:none;">
+            <button class="btn-back" onclick="goToStep(2)"><i class="fas fa-arrow-left"></i> ወደ ኋላ</button>
+            <h2 class="step-title" style="margin-bottom:6px;">የኋላ ልምድዎ ምን ያህል ነው?</h2>
+            <p class="step-sub">ትምህርቱ ለዕድሜዎ ደረጃ ይስተካከላሉ</p>
+
+            <div class="level-cards">
+                <div class="level-card" id="lvl-beginner" onclick="selectLevel('beginner',this)">
+                    <div class="level-icon">🌱</div>
+                    <div>
+                        <div class="level-title">ጀማሪ — Beginner</div>
+                        <div class="level-desc">ስለ ትሬዲንግ ምንም ዕውቀት የሌለኝ</div>
+                    </div>
+                    <div class="level-check"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="level-card" id="lvl-intermediate" onclick="selectLevel('intermediate',this)">
+                    <div class="level-icon">📊</div>
+                    <div>
+                        <div class="level-title">መካከለኛ — Intermediate</div>
+                        <div class="level-desc">ትንሽ ዕውቀት አለኝ፣ ብዙ ልቀናበር</div>
+                    </div>
+                    <div class="level-check"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="level-card" id="lvl-advanced" onclick="selectLevel('advanced',this)">
+                    <div class="level-icon">👑</div>
+                    <div>
+                        <div class="level-title">ከፍተኛ — Advanced</div>
+                        <div class="level-desc">ጥሩ ዕውቀት አለኝ፣ ስልቴን ልሻሻል</div>
+                    </div>
+                    <div class="level-check"><i class="fas fa-check"></i></div>
+                </div>
+            </div>
+
+            <button class="btn-primary" id="step3Btn" onclick="goToStep(4)" disabled>
+                ቀጥል <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+
+        <!-- ═══ STEP 4: Password ═══ -->
+        <div id="step4" style="display:none;">
+            <button class="btn-back" onclick="goToStep(3)"><i class="fas fa-arrow-left"></i> ወደ ኋላ</button>
+
+            <div class="pw-info">
+                <strong><i class="fas fa-lock"></i> የ Academy መዳረሻ ፓስወርድ</strong>
+                ከዚህ በፊት የTrading መጽሐፍ ሲወስዱ የተሰጠዎትን ፓስወርድ ያስገቡ
+            </div>
+
+            <div class="pw-input-wrap">
+                <input type="password" id="pwInput" class="pw-input"
                     placeholder="TB-XXXX-XXXX-XXXX"
                     autocomplete="current-password"
                     onkeydown="if(event.key==='Enter')doLogin()">
-                <button class="toggle-pw" onclick="togglePw()" title="Show/hide">
+                <button class="pw-toggle" onclick="togglePw()" title="Show/hide">
                     <i class="fas fa-eye" id="pwEyeIcon"></i>
                 </button>
             </div>
+
             <div class="gate-error" id="gateError">
-                <i class="fas fa-circle-xmark"></i>
-                <span id="gateErrorMsg">ያስገቡት Password ትክክል አይደለም። እባክዎ ትክክለኛውን Password ያስገቡ ወይም የTag Bridge Support ያግኙ።</span>
+                <div id="gateErrorMsg">ያስገቡት Password ትክክል አይደለም።</div>
+                <div class="error-actions" style="margin-top:12px;">
+                    <a href="https://t.me/tagbridge123?text=Bundle%20700%20ETB%20%E1%8B%AD%E1%8B%98%E1%8B%9A%E1%88%85%E1%88%88%E1%89%B1%20%E2%80%94%20Forex%20%2B%20Crypto%20Academy%20Password%20%E1%8B%A8%E1%8A%A8%E1%89%A0%E1%88%8D%E1%8A%9D" target="_blank" class="btn-telegram">
+                        <i class="fab fa-telegram"></i> Bundle ይዘዙ — 700 ETB
+                    </a>
+                    <a href="https://t.me/tagbridge123" target="_blank" class="btn-support">
+                        <i class="fas fa-headset"></i> Support ያናግሩ
+                    </a>
+                </div>
             </div>
-            <button class="gate-btn" id="loginBtn" onclick="doLogin()">
+
+            <button class="btn-primary" id="loginBtn" onclick="doLogin()">
                 <i class="fas fa-unlock-keyhole"></i>
                 <span id="loginBtnTxt">ወደ Academy ግባ</span>
             </button>
-            <div style="text-align:center;margin-top:12px;">
-                <a href="https://t.me/tagbridge123" target="_blank" rel="noopener noreferrer"
-                   style="display:inline-flex;align-items:center;gap:7px;background:#229ED9;color:#fff;border-radius:50px;padding:8px 20px;font-size:.8rem;font-weight:700;text-decoration:none;">
-                    <i class="fab fa-telegram"></i> Support — @tagbridge123
+
+            <div style="text-align:center;margin-top:16px;">
+                <a href="/" style="font-size:.78rem;color:var(--text3);text-decoration:none;">
+                    <i class="fas fa-arrow-left"></i> Back to Tag Bridge
                 </a>
             </div>
-            <div class="gate-footer" style="margin-top:14px;">
-                <p>Password የለዎትም? <a href="https://t.me/tagbridge123" target="_blank">መጽሐፍ ይዘዙ →</a></p>
-                <p style="margin-top:6px"><a href="/"><i class="fas fa-arrow-left"></i> Back to Tag Bridge</a></p>
-            </div>
         </div>
 
-        <!-- STEP 3: Knowledge Level (shown AFTER successful login, BEFORE opening lessons) -->
-        <div id="step3" style="display:none;">
-            <p id="marketSelectedMsg2" style="font-size:.88rem;margin-bottom:12px;color:var(--green);font-weight:700;text-align:center;"></p>
-            <h2 class="gate-title" style="font-size:1.1rem;margin-bottom:16px;" id="knowledgeQ">
-                ከዚህ በፊት ስለ Forex Trading ምን ያህል ዕውቀት አለዎት?
-            </h2>
-            <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:4px;">
-                <button class="level-choice-btn" onclick="selectLevel('beginner',this)">
-                    <i class="fas fa-seedling"></i> ምንም ዕውቀት የለኝም <small>(Beginner)</small>
-                </button>
-                <button class="level-choice-btn" onclick="selectLevel('intermediate',this)">
-                    <i class="fas fa-chart-simple"></i> ትንሽ ዕውቀት አለኝ <small>(Intermediate)</small>
-                </button>
-                <button class="level-choice-btn" onclick="selectLevel('advanced',this)">
-                    <i class="fas fa-crown"></i> ጥሩ ዕውቀት አለኝ <small>(Advanced)</small>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
+    </div><!-- /gate-card -->
+</div><!-- /gate -->
 
-<!-- ═══════════════════════════════════════
-     ACADEMY — Content (shown after login)
-═══════════════════════════════════════ -->
+<!-- ══════════════════════════════════
+     ACADEMY — Content
+══════════════════════════════════ -->
 <div id="academy">
-
-    <!-- Nav -->
     <nav class="ac-nav">
         <div class="ac-nav-left">
             <button class="ac-menu-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i> Chapters</button>
-            <div class="ac-nav-logo"><span>Tag</span><span>Bridge</span></div>
+            <div class="ac-nav-logo"><span>Tag</span><span style="color:var(--accent)">Bridge</span></div>
             <span class="ac-nav-badge">ACADEMY</span>
         </div>
         <div class="ac-nav-right">
@@ -461,101 +424,90 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
         </div>
     </nav>
 
-    <!-- Hero -->
     <div class="ac-hero">
         <div class="ac-hero-badge"><i class="fas fa-star"></i> Exclusive for Book Buyers</div>
         <h1>ታግ ብሪጅ <span class="grad">Trading Academy</span></h1>
         <p>Professional Forex & Crypto trading education — from beginner to advanced, all in Amharic.</p>
         <div class="ac-hero-stats">
-            <div class="ac-stat"><div class="ac-stat-n">7</div><div class="ac-stat-l">Chapters</div></div>
-            <div class="ac-stat"><div class="ac-stat-n">40+</div><div class="ac-stat-l">Lessons</div></div>
+            <div class="ac-stat"><div class="ac-stat-n" id="heroChapters">13</div><div class="ac-stat-l">Chapters</div></div>
+            <div class="ac-stat"><div class="ac-stat-n">70+</div><div class="ac-stat-l">Lessons</div></div>
             <div class="ac-stat"><div class="ac-stat-n">SMC</div><div class="ac-stat-l">Included</div></div>
             <div class="ac-stat"><div class="ac-stat-n">∞</div><div class="ac-stat-l">Lifetime Access</div></div>
         </div>
     </div>
 
-    <!-- Progress -->
     <div class="ac-progress-bar-wrap">
         <span class="ac-progress-label"><i class="fas fa-chart-simple" style="color:var(--primary)"></i> Your Progress</span>
         <div class="ac-progress-track"><div class="ac-progress-fill" id="progressFill" style="width:0%"></div></div>
         <span class="ac-progress-pct" id="progressPct">0%</span>
     </div>
 
-    <!-- Layout -->
     <div class="ac-layout">
-
-        <!-- Sidebar -->
         <aside class="ac-sidebar" id="acSidebar">
             <div class="ac-sidebar-title">Course Chapters</div>
             <div id="chapterNav"></div>
         </aside>
-
-        <!-- Main content -->
         <main class="ac-main" id="acMain"></main>
     </div>
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════
-//  ACADEMY CONTENT DATA
-// ═══════════════════════════════════════════════════
-// ═══════════════════════════════════════════════════
-//  ACADEMY CONTENT DATA (Loaded securely via /api/academy-lessons)
-// ═══════════════════════════════════════════════════
-let CHAPTERS = [];
-
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 //  STATE
-// ═══════════════════════════════════════════════════
-const STATE_KEY  = 'tb-academy-progress';
+// ═══════════════════════════════════════════
+let selectedCourse = '';
+let selectedLevel  = '';
+let CHAPTERS = [];
+const STATE_KEY = 'tb-academy-progress';
 let completedLessons = {};
-try { completedLessons = JSON.parse(sessionStorage.getItem(STATE_KEY) || localStorage.getItem(STATE_KEY) || '{}'); } catch(e) {}
-
-function saveState() {
-    try { localStorage.setItem(STATE_KEY, JSON.stringify(completedLessons)); } catch(e) {}
-}
-
-// ═══════════════════════════════════════════════════
-//  AUTH
-// ═══════════════════════════════════════════════════
+try { completedLessons = JSON.parse(localStorage.getItem(STATE_KEY) || '{}'); } catch(e) {}
 let currentTheme = localStorage.getItem('tb-ac-theme') || 'dark';
+document.documentElement.setAttribute('data-theme', currentTheme);
 
-// ── STEP FLOW ──
-let selectedMarket = 'forex';
-let selectedLevel  = 'beginner';
-
-function selectMarket(market) {
-    selectedMarket = market;
-    document.querySelectorAll('.market-choice-btn').forEach(b => b.classList.remove('selected'));
-    if (event && event.currentTarget) event.currentTarget.classList.add('selected');
-    const q = market === 'forex'
-        ? 'ከዚህ በፊት ስለ Forex Trading ምን ያህል ዕውቀት አለዎት?'
-        : 'ከዚህ በፊት ስለ Crypto Trading ምን ያህል ዕውቀት አለዎት?';
-    document.getElementById('knowledgeQ').textContent = q;
-    document.getElementById('marketSelectedMsg').textContent =
-        market === 'forex' ? '✅ የForex ገበያን ለመማር መርጠዋል።' : '✅ የCrypto ገበያን ለመማር መርጠዋል።';
-    setTimeout(() => {
-        document.getElementById('step1').style.display = 'none';
-        document.getElementById('step2').style.display = 'block';
-    }, 250);
+// ═══════════════════════════════════════════
+//  STEP NAVIGATION
+// ═══════════════════════════════════════════
+function goToStep(n) {
+    for(let i=1;i<=4;i++) {
+        const el = document.getElementById('step'+i);
+        if(el) el.style.display = (i===n) ? 'block' : 'none';
+        const dot = document.getElementById('dot'+i);
+        if(dot) {
+            dot.className = 'step-dot';
+            if(i < n) dot.classList.add('done');
+            else if(i === n) dot.classList.add('active');
+        }
+    }
 }
 
-function selectLevel(level) {
+function selectCourse(course, el) {
+    selectedCourse = course;
+    document.querySelectorAll('.course-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('step1Btn').disabled = false;
+    const msg = course === 'forex'
+        ? '✅ Forex Market ምርጫዎ ተቀብሏል'
+        : '✅ Crypto Market ምርጫዎ ተቀብሏል';
+    document.getElementById('courseSelectedMsg').textContent = msg;
+    try { localStorage.setItem('tb-ac-course', course); } catch(e) {}
+}
+
+function selectLevel(level, el) {
     selectedLevel = level;
-    document.querySelectorAll('.level-choice-btn').forEach(b => b.classList.remove('selected'));
-    if (event && event.currentTarget) event.currentTarget.classList.add('selected');
-    try { localStorage.setItem('tb-ac-level', level); localStorage.setItem('tb-ac-market', selectedMarket); } catch(e) {}
-    setTimeout(() => {
-        document.getElementById('step2').style.display = 'none';
-        document.getElementById('step3').style.display = 'block';
-    }, 250);
+    document.querySelectorAll('.level-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('step3Btn').disabled = false;
+    try { localStorage.setItem('tb-ac-level', level); } catch(e) {}
 }
 
+// ═══════════════════════════════════════════
+//  AUTH
+// ═══════════════════════════════════════════
 function togglePw() {
     const i = document.getElementById('pwInput');
     const e = document.getElementById('pwEyeIcon');
-    if (i.type === 'password') { i.type = 'text'; e.className = 'fas fa-eye-slash'; }
-    else                       { i.type = 'password'; e.className = 'fas fa-eye'; }
+    if(i.type === 'password') { i.type='text'; e.className='fas fa-eye-slash'; }
+    else                      { i.type='password'; e.className='fas fa-eye'; }
 }
 
 function showGateError(msg) {
@@ -563,53 +515,47 @@ function showGateError(msg) {
     document.getElementById('gateErrorMsg').textContent = msg;
     el.classList.add('show');
 }
-
 function hideGateError() { document.getElementById('gateError').classList.remove('show'); }
 
 async function doLogin() {
-    const pw  = document.getElementById('pwInput').value.trim();
+    const pw = document.getElementById('pwInput').value.trim();
     const btn = document.getElementById('loginBtn');
     const txt = document.getElementById('loginBtnTxt');
-    if (!pw) { showGateError('Please enter your access password.'); return; }
+    if(!pw) { showGateError('Password ያስገቡ።'); return; }
     hideGateError();
-    btn.disabled = true;
-    txt.textContent = 'Verifying...';
-
+    btn.disabled = true; txt.textContent = 'Verifying...';
     try {
         const res  = await fetch('/api/academy-login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            method:'POST', headers:{'Content-Type':'application/json'},
             body: JSON.stringify({ password: pw })
         });
         const data = await res.json();
-        if (!res.ok) {
-            showGateError(data.error || 'Invalid password. Please try again.');
-            btn.disabled = false; txt.textContent = 'Enter Academy';
+        if(!res.ok) {
+            showGateError(data.error || 'ያስገቡት Password ትክክል አይደለም።');
+            btn.disabled=false; txt.textContent='ወደ Academy ግባ';
             return;
         }
-        // Store token in sessionStorage (cleared when tab closes)
         sessionStorage.setItem('tb-academy-token', data.token);
         sessionStorage.setItem('tb-academy-buyer', data.buyer || 'Student');
-        await openAcademy(data.buyer || 'Student');
-        btn.disabled = false; txt.textContent = 'Enter Academy';
+        await openAcademy(data.buyer || 'Student', data.bookType);
+        btn.disabled=false; txt.textContent='ወደ Academy ግባ';
     } catch(e) {
-        showGateError('Connection error. Please check your internet and try again.');
-        btn.disabled = false; txt.textContent = 'Enter Academy';
+        showGateError('ግንኙነት ችግር — እባክዎ ይሞክሩ።');
+        btn.disabled=false; txt.textContent='ወደ Academy ግባ';
     }
 }
 
 async function verifyStoredToken() {
     const token = sessionStorage.getItem('tb-academy-token');
-    if (!token) return false;
+    if(!token) return false;
     try {
         const res  = await fetch('/api/academy-verify', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            method:'POST', headers:{'Content-Type':'application/json'},
             body: JSON.stringify({ token })
         });
         const data = await res.json();
-        if (data.valid) {
-            await openAcademy(data.buyer || sessionStorage.getItem('tb-academy-buyer') || 'Student');
+        if(data.valid) {
+            await openAcademy(data.buyer || sessionStorage.getItem('tb-academy-buyer') || 'Student', data.bookType);
             return true;
         }
     } catch(e) {}
@@ -623,50 +569,52 @@ function doLogout() {
     document.getElementById('academy').style.display = 'none';
     document.getElementById('gate').style.display = 'flex';
     document.getElementById('pwInput').value = '';
+    hideGateError();
+    goToStep(1);
 }
 
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 //  ACADEMY UI
-// ═══════════════════════════════════════════════════
-async function openAcademy(buyer) {
+// ═══════════════════════════════════════════
+async function openAcademy(buyer, bookType) {
     document.getElementById('gate').style.display = 'none';
     document.getElementById('academy').style.display = 'block';
     document.getElementById('buyerName').textContent = buyer;
-    applyTheme(currentTheme);
+    applyAcTheme(currentTheme);
 
     const token = sessionStorage.getItem('tb-academy-token');
-    if (!CHAPTERS || CHAPTERS.length === 0) {
+    if(!CHAPTERS || CHAPTERS.length === 0) {
         const main = document.getElementById('acMain');
-        if (main) {
-            main.innerHTML = '<div style="text-align:center;padding:80px 20px;color:var(--text2);font-weight:600;"><i class="fas fa-circle-notch fa-spin" style="font-size:2.2rem;color:var(--primary);margin-bottom:14px;display:block;"></i>Loading authorized academy lessons...</div>';
-        }
+        if(main) main.innerHTML = '<div style="text-align:center;padding:80px 20px;color:var(--text2);"><i class="fas fa-circle-notch fa-spin" style="font-size:2rem;color:var(--primary);margin-bottom:14px;display:block;"></i>Loading lessons...</div>';
         try {
-            const res = await fetch('/api/academy-lessons', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+            const res  = await fetch('/api/academy-lessons', {
+                method:'POST', headers:{'Content-Type':'application/json'},
                 body: JSON.stringify({ token })
             });
             const data = await res.json();
-            if (data.valid && Array.isArray(data.chapters)) {
+            if(data.valid && Array.isArray(data.chapters)) {
                 CHAPTERS = data.chapters;
             } else {
                 doLogout();
-                showGateError(data.error || 'Authorization expired. Please re-enter your access password.');
+                showGateError(data.error || 'Session expired — please login again.');
                 return;
             }
-        } catch (e) {
-            console.error('Failed to load lessons', e);
-        }
+        } catch(e) { console.error('Failed to load lessons', e); }
     }
 
+    // Update stats
+    const heroChapters = document.getElementById('heroChapters');
+    if(heroChapters) heroChapters.textContent = CHAPTERS.length;
+
     buildSidebar();
-    loadChapter('ch1');
+    if(CHAPTERS.length > 0) loadChapter(CHAPTERS[0].id);
     updateProgress();
 }
 
 function buildSidebar() {
     const nav = document.getElementById('chapterNav');
-    nav.innerHTML = CHAPTERS.map((ch, i) =>
+    if(!nav) return;
+    nav.innerHTML = CHAPTERS.map(ch =>
         `<button class="ac-chapter-btn" id="nav-${ch.id}" onclick="loadChapter('${ch.id}')">
             <span class="ch-icon" style="background:${ch.color}22;color:${ch.color}">${ch.icon}</span>
             <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${ch.cat.split('—')[0].trim()}</span>
@@ -676,139 +624,130 @@ function buildSidebar() {
     updateAllChapterProgress();
 }
 
-function loadChapter(id, scroll) {
-    // Sidebar active state
+function loadChapter(id) {
     document.querySelectorAll('.ac-chapter-btn').forEach(b => b.classList.remove('active'));
     const navBtn = document.getElementById('nav-'+id);
-    if (navBtn) navBtn.classList.add('active');
-
-    // Build or show panel
+    if(navBtn) navBtn.classList.add('active');
     const main = document.getElementById('acMain');
-    let panel  = document.getElementById('panel-'+id);
-
-    if (!panel) {
+    let panel = document.getElementById('panel-'+id);
+    if(!panel) {
         panel = document.createElement('div');
         panel.className = 'chapter-panel';
         panel.id = 'panel-'+id;
         panel.innerHTML = buildChapterHTML(id);
         main.appendChild(panel);
     }
-
     document.querySelectorAll('.chapter-panel').forEach(p => p.classList.remove('active'));
     panel.classList.add('active');
-
-    if (scroll !== false) window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    // Close mobile sidebar
-    const sb = document.getElementById('acSidebar');
-    if (sb) sb.classList.remove('open');
+    window.scrollTo({ top:0, behavior:'smooth' });
 }
 
 function buildChapterHTML(id) {
     const ch = CHAPTERS.find(c => c.id === id);
-    if (!ch) return '<p>Chapter not found.</p>';
-    const idx = CHAPTERS.findIndex(c => c.id === id);
-
-    const conceptsHTML = ch.concepts.map(c =>
-        `<li>${c}</li>`
-    ).join('');
-
-    const lessonsHTML = ch.lessons_data.map((l, li) => {
-        const lKey = id + '_' + li;
-        const done = !!completedLessons[lKey];
-        return `
-        <div class="lesson ${done ? 'completed' : ''}" id="lesson-${lKey}">
-            <div class="lesson-num">Lesson ${l.n}</div>
-            <div class="lesson-title">${l.t}</div>
-            <div class="lesson-body">${l.body}</div>
-            ${l.formula ? `<div class="formula-box">${l.formula.replace(/\n/g,'<br>')}</div>` : ''}
-            ${l.warn ? `<div class="warn-box"><i class="fas fa-triangle-exclamation"></i><span>${l.warn}</span></div>` : ''}
-            ${l.tip  ? `<div class="tip-box"><i class="fas fa-lightbulb"></i><span>${l.tip}</span></div>` : ''}
-            <div class="lesson-tags">${l.tags.map(t=>`<span class="lesson-tag">${t}</span>`).join('')}</div>
-            <button class="lesson-mark-btn" onclick="toggleLesson('${lKey}', this)">
-                ${done ? '✓ Completed' : 'Mark as Complete'}
-            </button>
-        </div>`;
-    }).join('');
-
-    const prevCh = idx > 0 ? CHAPTERS[idx-1] : null;
-    const nextCh = idx < CHAPTERS.length-1 ? CHAPTERS[idx+1] : null;
-
+    if(!ch) return '<p>Chapter not found</p>';
+    const idx = CHAPTERS.indexOf(ch);
+    const prev = idx > 0 ? CHAPTERS[idx-1] : null;
+    const next = idx < CHAPTERS.length-1 ? CHAPTERS[idx+1] : null;
     return `
-    <div class="chapter-header">
-        <div class="chapter-cat">${ch.cat}</div>
-        <h1 class="chapter-title">${ch.title}</h1>
-        <p class="chapter-desc">${ch.desc}</p>
-        <div class="chapter-meta">
-            <span><i class="fas fa-book"></i> ${ch.lessons} Lessons</span>
-            <span><i class="fas fa-clock"></i> ~${ch.duration}</span>
-            <span><i class="fas fa-signal"></i> Professional</span>
+        <div class="chapter-header">
+            <div class="chapter-cat">${ch.cat}</div>
+            <div class="chapter-title">${ch.title}</div>
+            <div class="chapter-desc">${ch.desc || ''}</div>
+            <div class="chapter-meta">
+                <span><i class="fas fa-book-open"></i> ${ch.lessons} Lessons</span>
+                <span><i class="fas fa-clock"></i> ${ch.duration || ''}</span>
+            </div>
         </div>
-    </div>
-    <div class="key-box">
-        <h4><i class="fas fa-key"></i> Key Concepts in This Chapter</h4>
-        <ul>${conceptsHTML}</ul>
-    </div>
-    <div class="lessons-grid">${lessonsHTML}</div>
-    <div class="chapter-nav-btns">
-        ${prevCh ? `<button class="ch-nav-btn" onclick="loadChapter('${prevCh.id}')"><i class="fas fa-arrow-left"></i> ${prevCh.cat.split('—')[0].trim()}</button>` : ''}
-        ${nextCh ? `<button class="ch-nav-btn primary" onclick="loadChapter('${nextCh.id}')">Next: ${nextCh.cat.split('—')[0].trim()} <i class="fas fa-arrow-right"></i></button>` : '<div style="flex:1;text-align:center;font-size:.9rem;color:var(--green);padding:12px"><i class="fas fa-trophy"></i> You completed the full Academy! Congratulations 🎉</div>'}
+        ${ch.concepts ? `<div class="key-box"><h4><i class="fas fa-key"></i> Key Concepts</h4><ul>${ch.concepts.map(c=>`<li>${c}</li>`).join('')}</ul></div>` : ''}
+        <div class="lessons-grid">
+            ${(ch.lessons_data||[]).map(l => buildLessonHTML(id, l)).join('')}
+        </div>
+        <div class="chapter-nav-btns">
+            ${prev ? `<button class="ch-nav-btn" onclick="loadChapter('${prev.id}')"><i class="fas fa-arrow-left"></i> ${prev.title}</button>` : ''}
+            ${next ? `<button class="ch-nav-btn primary" onclick="loadChapter('${next.id}')">${next.title} <i class="fas fa-arrow-right"></i></button>` : '<button class="ch-nav-btn primary" style="opacity:.5" disabled>Course Complete! 🎉</button>'}
+        </div>`;
+}
+
+function buildLessonHTML(chId, l) {
+    const key = chId + '-' + l.n;
+    const done = completedLessons[key];
+    return `<div class="lesson${done?' completed':''}" id="lesson-${key}">
+        <div class="lesson-num">Lesson ${l.n}</div>
+        <div class="lesson-title">${l.t}</div>
+        <div class="lesson-body">${l.body||''}</div>
+        ${l.formula ? `<div class="formula-box">${l.formula.replace(/\n/g,'<br>')}</div>` : ''}
+        ${l.warn ? `<div class="warn-box"><i class="fas fa-triangle-exclamation"></i><span>${l.warn}</span></div>` : ''}
+        ${l.tip  ? `<div class="tip-box"><i class="fas fa-lightbulb"></i><span>${l.tip}</span></div>` : ''}
+        ${l.tags ? `<div class="lesson-tags">${l.tags.map(t=>`<span class="lesson-tag">${t}</span>`).join('')}</div>` : ''}
+        <button class="lesson-mark-btn" onclick="toggleLesson('${key}',this)">
+            ${done ? '✓ Completed' : 'Mark as Complete'}
+        </button>
     </div>`;
 }
 
 function toggleLesson(key, btn) {
-    completedLessons[key] = !completedLessons[key];
-    saveState();
-    const card = document.getElementById('lesson-'+key);
-    if (card) card.classList.toggle('completed', completedLessons[key]);
-    btn.textContent = completedLessons[key] ? '✓ Completed' : 'Mark as Complete';
-    updateProgress();
+    if(completedLessons[key]) { delete completedLessons[key]; }
+    else completedLessons[key] = true;
+    try { localStorage.setItem(STATE_KEY, JSON.stringify(completedLessons)); } catch(e) {}
+    const el = document.getElementById('lesson-'+key);
+    if(el) {
+        el.classList.toggle('completed', !!completedLessons[key]);
+        btn.textContent = completedLessons[key] ? '✓ Completed' : 'Mark as Complete';
+    }
     updateAllChapterProgress();
-}
-
-function updateProgress() {
-    const total     = CHAPTERS.reduce((s, ch) => s + ch.lessons_data.length, 0);
-    const completed = Object.values(completedLessons).filter(Boolean).length;
-    const pct       = total > 0 ? Math.round((completed / total) * 100) : 0;
-    const fill = document.getElementById('progressFill');
-    const pctEl= document.getElementById('progressPct');
-    if (fill) fill.style.width = pct + '%';
-    if (pctEl) pctEl.textContent = pct + '%';
+    updateProgress();
 }
 
 function updateAllChapterProgress() {
-    CHAPTERS.forEach((ch, chIdx) => {
-        const total = ch.lessons_data.length;
-        const done  = ch.lessons_data.filter((_, li) => completedLessons[ch.id+'_'+li]).length;
+    CHAPTERS.forEach(ch => {
+        const done = (ch.lessons_data||[]).filter(l => completedLessons[ch.id+'-'+l.n]).length;
         const el = document.getElementById('prog-'+ch.id);
-        if (el) el.textContent = done + '/' + total;
+        if(el) el.textContent = done + '/' + ch.lessons;
         const btn = document.getElementById('nav-'+ch.id);
-        if (btn) btn.classList.toggle('done', done === total);
+        if(btn) btn.classList.toggle('done', done === ch.lessons && ch.lessons > 0);
     });
+}
+
+function updateProgress() {
+    const total = CHAPTERS.reduce((s,ch) => s + ch.lessons, 0);
+    const done  = Object.keys(completedLessons).filter(k => completedLessons[k]).length;
+    const pct   = total > 0 ? Math.round(done/total*100) : 0;
+    const fill  = document.getElementById('progressFill');
+    const pctEl = document.getElementById('progressPct');
+    if(fill)  fill.style.width = pct + '%';
+    if(pctEl) pctEl.textContent = pct + '%';
 }
 
 function toggleSidebar() {
     document.getElementById('acSidebar').classList.toggle('open');
 }
 
-function applyTheme(t) {
-    document.documentElement.setAttribute('data-theme', t);
-    const icon = document.getElementById('acThemeIcon');
-    if (icon) icon.className = t === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
-}
-
 function toggleAcTheme() {
     currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    localStorage.setItem('tb-ac-theme', currentTheme);
-    applyTheme(currentTheme);
+    applyAcTheme(currentTheme);
+}
+function applyAcTheme(t) {
+    document.documentElement.setAttribute('data-theme', t);
+    const icon = document.getElementById('acThemeIcon');
+    if(icon) icon.className = t === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    try { localStorage.setItem('tb-ac-theme', t); } catch(e) {}
 }
 
-// ═══════════════════════════════════════════════════
-//  INIT
-// ═══════════════════════════════════════════════════
+// Init
 document.addEventListener('DOMContentLoaded', async () => {
-    applyTheme(currentTheme);
-    // Auto-login if valid token in session
+    applyAcTheme(currentTheme);
+    // Restore saved course/level selections
+    const savedCourse = localStorage.getItem('tb-ac-course');
+    const savedLevel  = localStorage.getItem('tb-ac-level');
+    if(savedCourse) {
+        const c = document.getElementById('card-'+savedCourse);
+        if(c) selectCourse(savedCourse, c);
+    }
+    if(savedLevel) {
+        const l = document.getElementById('lvl-'+savedLevel);
+        if(l) selectLevel(savedLevel, l);
+    }
+    // Auto-login if valid token
     await verifyStoredToken();
 });
 </script>
