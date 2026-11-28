@@ -161,8 +161,6 @@ function updateTickerItem(id, price, chg) {
     const pe = el.querySelector('.tick-price'), ce = el.querySelector('.tick-chg');
     if (pe) pe.textContent = price != null ? fmt$(price) : '--';
     if (ce) { ce.textContent = chg != null ? fmtChg(chg) : ''; ce.className = 'tick-chg '+(chg >= 0 ? 'up' : 'down'); }
-    // Trigger mascot reaction on gold price update
-    if (id === 'tick-gold' && chg != null) mascotReact(chg >= 0 ? 'up' : 'down');
 }
 
 function updateMarketCard(mcId, spId, coin) {
@@ -370,17 +368,7 @@ function switchChartFromSelect(sel) {
     loadTVChart(sym);
 }
 
-function switchChart(btn) {
-    // Legacy — kept for any old calls
-    document.querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
-    if (btn) btn.classList.add('active');
-    const sym   = btn?.dataset.sym;
-    const label = btn?.dataset.label;
-    const pe    = document.getElementById('chartPairLabel');
-    if (pe && label) pe.textContent = label;
-    if (sym) loadTVChart(sym);
-}
-
+// Legacy switchChart stub — merged into single definition above
 // Chart-local theme: starts as 'light' (white background by default)
 let chartTheme = localStorage.getItem('tb-chart-theme') || 'light';
 

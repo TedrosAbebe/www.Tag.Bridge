@@ -1001,8 +1001,6 @@ body {
 .bot-name { font-weight: 700; font-size: 0.92rem; }
 .bot-status { font-size: 0.72rem; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
 .bot-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--brand-green); }
-.bot-close { background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 1.1rem; padding: 4px; transition: var(--transition); }
-.bot-close:hover { color: var(--brand-red); }
 
 .bot-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; min-height: 0; }
 
@@ -1108,8 +1106,9 @@ body {
 
 @media (max-width: 768px) {
     :root { --nav-height: 60px; --section-pad: 60px; }
-
     .nav-logo .logo-text { display: none; }
+}
+
 /* Hide FAB when bot sidebar is open — JS controls this via class */
 .bot-fab-hidden { display: none !important; }
 

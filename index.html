@@ -24,8 +24,6 @@
 <link rel="manifest" href="/manifest.json">
 <title>ታግ ብሪጅ | Tag Bridge — የፎሬክስ ትሬዲንግ በአማርኛ</title>
 <!-- v2.1 -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link rel="stylesheet" href="/styles.css">
@@ -40,11 +38,11 @@
 </div>
 
 <!-- TIKTOK BANNER -->
-<div id="browserBanner" style="display:block;background:#ff6600;color:white;text-align:center;padding:10px 16px;font-size:.82rem;font-weight:700;position:fixed;top:0;left:0;right:0;z-index:9999;line-height:1.5;">
+<div id="browserBanner" style="display:none;background:#ff6600;color:white;text-align:center;padding:10px 16px;font-size:.82rem;font-weight:700;position:fixed;top:0;left:0;right:0;z-index:9999;line-height:1.5;">
 ☝️ ለማዘዝ፦ ከላይ <strong>••• → Open in browser</strong> ይጫኑ
 <button onclick="document.getElementById('browserBanner').style.display='none'" style="background:none;border:none;color:white;font-size:1.1rem;margin-left:10px;cursor:pointer;vertical-align:middle;">✕</button>
 </div>
-<script>(function(){var ua=navigator.userAgent||'';if(!/TikTok|BytedanceWebview|musical_ly|Instagram|FBAN|FBAV/i.test(ua))document.getElementById('browserBanner').style.display='none';})();</script>
+<script>(function(){var ua=navigator.userAgent||'';if(/TikTok|BytedanceWebview|musical_ly|Instagram|FBAN|FBAV/i.test(ua))document.getElementById('browserBanner').style.display='block';})();</script>
 
 <!-- NAVBAR -->
 <nav class="navbar" id="mainNav">
@@ -57,11 +55,12 @@
         <ul class="nav-links" id="navLinks">
             <li><a href="#charts" class="nav-link active" onclick="setActiveNav(this)"><i class="fas fa-chart-candlestick"></i> <span data-am="ቻርቶች" data-en="Charts">Charts</span></a></li>
             <li><a href="#demo" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-graduation-cap"></i> <span data-am="ዴሞ" data-en="Demo">Demo</span></a></li>
-            <li><a href="#welcome" class="nav-link nav-link--forex-highlight" onclick="setActiveNav(this)"><i class="fas fa-book-bookmark"></i> <span data-am="መጽሐፍ" data-en="Books">Books</span></a></li>
+            <li><a href="#books-preview" class="nav-link nav-link--forex-highlight" onclick="setActiveNav(this)"><i class="fas fa-book-bookmark"></i> <span data-am="መጽሐፍ" data-en="Books">Books</span></a></li>
             <li><a href="#journal" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-book-open"></i> <span data-am="ጆርናል" data-en="Journal">Journal</span></a></li>
             <li><a href="#backtest" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-flask"></i> <span data-am="ባክቴስት" data-en="Backtest">Backtest</span></a></li>
             <li><a href="#calculators" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-calculator"></i> <span data-am="ካልኩሌተሮች" data-en="Calcs">Calcs</span></a></li>
             <li><a href="#calendar-news" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-calendar-alt"></i> <span data-am="ቀን" data-en="Calendar">Calendar</span></a></li>
+            <li><a href="#market-sessions" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-clock"></i> <span data-am="ሰዓቶች" data-en="Sessions">Sessions</span></a></li>
             <li><a href="#contact" class="nav-link" onclick="setActiveNav(this)"><i class="fas fa-envelope"></i> <span data-am="አግኙን" data-en="Contact">Contact</span></a></li>
             <li><a href="/academy" class="nav-link nav-link--academy-lock"><i class="fas fa-graduation-cap"></i> Academy 🔒</a></li>
         </ul>
@@ -607,6 +606,8 @@
             </div>
         </div>
     </a>
+</div><!-- /pdf-sec -->
+
 <section id="journal" class="section journal-section">
 <div class="container">
     <div class="section-header">
