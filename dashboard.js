@@ -161,6 +161,8 @@ function updateTickerItem(id, price, chg) {
     const pe = el.querySelector('.tick-price'), ce = el.querySelector('.tick-chg');
     if (pe) pe.textContent = price != null ? fmt$(price) : '--';
     if (ce) { ce.textContent = chg != null ? fmtChg(chg) : ''; ce.className = 'tick-chg '+(chg >= 0 ? 'up' : 'down'); }
+    // Trigger mascot reaction on gold price update
+    if (id === 'tick-gold' && chg != null) mascotReact(chg >= 0 ? 'up' : 'down');
 }
 
 function updateMarketCard(mcId, spId, coin) {
@@ -1718,6 +1720,51 @@ function initSWBanner() {
 // ══════════════════════════════════════════════
 //  12. INIT
 // ══════════════════════════════════════════════
+
+// ══════════════════════════════════════════════
+//  CHART MASCOT ROBOT
+// ══════════════════════════════════════════════
+(function() {
+    let _mascotTimer = null;
+    let _mascotBubbleTimer = null;
+    const BUBBLES_UP   = ['📈 ወጣ!', '🚀 ጠንካራ!', '💪 Bullish!', '✅ አዎ!'];
+    const BUBBLES_DOWN = ['📉 ወረደ!', '😱 ጠንቀቅ!', '⚠️ Bearish!', '🔴 ስጠንቀቅ!'];
+
+    window.mascotReact = function(direction) {
+        const el = document.getElementById('chartMascot');
+        const body = document.getElementById('mascotBody');
+        const bubble = document.getElementById('mascotBubble');
+        if (!el || !body) return;
+
+        // Clear pending timers
+        clearTimeout(_mascotTimer);
+        clearTimeout(_mascotBubbleTimer);
+
+        // Remove old classes
+        el.classList.remove('anim-up', 'anim-down');
+
+        // Force reflow so animation restarts
+        void el.offsetWidth;
+
+        // Apply new animation
+        el.classList.add(direction === 'up' ? 'anim-up' : 'anim-down');
+
+        // Show bubble
+        if (bubble) {
+            const msgs = direction === 'up' ? BUBBLES_UP : BUBBLES_DOWN;
+            bubble.textContent = msgs[Math.floor(Math.random() * msgs.length)];
+            bubble.classList.add('show');
+            _mascotBubbleTimer = setTimeout(function() {
+                bubble.classList.remove('show');
+            }, 2200);
+        }
+
+        // Return to idle after animation
+        _mascotTimer = setTimeout(function() {
+            el.classList.remove('anim-up', 'anim-down');
+        }, 800);
+    };
+})();
 
 document.addEventListener('DOMContentLoaded', () => {
     // Theme & lang

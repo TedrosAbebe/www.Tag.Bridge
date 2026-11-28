@@ -4703,6 +4703,76 @@ img, iframe, canvas, video { max-width: 100%; }
 .chart-welcome-cancel:hover { background: rgba(239,68,68,.3); }
 
 /* ══════════════════════════════════════════════
+   CHART MASCOT ROBOT
+   ══════════════════════════════════════════════ */
+.chart-mascot {
+    position: absolute;
+    bottom: 18px;
+    right: 18px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;
+    user-select: none;
+}
+.mascot-body {
+    font-size: 2.4rem;
+    line-height: 1;
+    animation: mascot-idle 2.4s ease-in-out infinite;
+    filter: drop-shadow(0 4px 12px rgba(99,102,241,.4));
+    cursor: default;
+}
+.mascot-bubble {
+    background: rgba(99,102,241,.15);
+    border: 1px solid rgba(99,102,241,.35);
+    border-radius: 12px 12px 12px 2px;
+    padding: 5px 10px;
+    font-size: .7rem;
+    font-weight: 700;
+    color: #818cf8;
+    margin-bottom: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity .3s, transform .3s;
+    max-width: 140px;
+    text-align: center;
+    white-space: normal;
+}
+.mascot-bubble.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+/* Idle gentle bounce */
+@keyframes mascot-idle {
+    0%,100% { transform: translateY(0) rotate(-2deg); }
+    50%      { transform: translateY(-6px) rotate(2deg); }
+}
+/* Price up — jump */
+@keyframes mascot-up {
+    0%   { transform: translateY(0) scale(1); }
+    30%  { transform: translateY(-18px) scale(1.15) rotate(-5deg); }
+    60%  { transform: translateY(-8px) scale(1.05) rotate(3deg); }
+    100% { transform: translateY(0) scale(1); }
+}
+/* Price down — shake */
+@keyframes mascot-down {
+    0%,100% { transform: translateX(0) rotate(0); }
+    20%     { transform: translateX(-6px) rotate(-8deg); }
+    40%     { transform: translateX(6px) rotate(8deg); }
+    60%     { transform: translateX(-4px) rotate(-5deg); }
+    80%     { transform: translateX(4px) rotate(5deg); }
+}
+.chart-mascot.anim-up   .mascot-body { animation: mascot-up   0.7s ease forwards; }
+.chart-mascot.anim-down .mascot-body { animation: mascot-down 0.7s ease forwards; }
+
+@media (max-width: 540px) {
+    .mascot-body { font-size: 1.8rem; }
+    .chart-mascot { bottom: 10px; right: 10px; }
+}
+
+/* ══════════════════════════════════════════════
    SL/TP TOGGLE — compact expandable
    ══════════════════════════════════════════════ */
 .dma-sltp-wrap { margin-top: 4px; }
