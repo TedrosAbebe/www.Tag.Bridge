@@ -1504,10 +1504,11 @@ function toggleBot() {
 
 function initBotGreeting() {
     botMsg('bot', currentLang==='am'
-        ? 'ሰላም! 👋 እኔ ታግ ብሪጅ AI ረዳት ነኝ። ስለ ፎሬክስ፣ ክሪፕቶ፣ SMC፣ ቴክኒካል እና ፈንደመንታል ትንታኔ፣ ወይም የስጋት አስተዳደር ጥያቄዎችን በነፃነት ይጠይቁኝ!'
-        : 'Hello! 👋 I\'m the Tag Bridge AI Assistant. Ask me anything about Forex, Crypto, Smart Money Concepts (SMC), Technical & Fundamental analysis, or Risk Management!');
+        ? 'ሰላም! 👋 እኔ ታግ ብሪጅ AI ረዳት ነኝ። ስለ ፎሬክስ፣ ክሪፕቶ፣ SMC፣ ቴክኒካል እና ፈንደመንታል ትንታኔ፣ Economic News impact፣ ወይም የስጋት አስተዳደር ጥያቄዎችን በነፃነት ይጠይቁኝ!'
+        : 'Hello! 👋 I\'m the Tag Bridge AI Assistant. Ask me anything about Forex, Crypto, SMC, Technical & Fundamental analysis, Economic News impact, or Risk Management!');
     setQuickOpts([
         '📊 What is Forex trading?',
+        '📰 ዛሬ ምን High-Impact News አለ?',
         '🧠 Explain Smart Money Concepts (SMC)',
         '📐 How to calculate Position Size?',
         '📈 What is RSI Divergence?',
@@ -1610,7 +1611,43 @@ LANGUAGE RULE:
 - Never truncate or cut off answers — complete every explanation fully.
 - When the user says "continue" or "ቀጥል", resume your previous explanation from where it stopped. Do NOT restart the welcome message.
 
-TAG BRIDGE WEBSITE (https://www-tag-bridge.vercel.app):
+ECONOMIC CALENDAR & NEWS EXPERTISE:
+You have deep knowledge of economic events and their market impact. When asked about news or economic events:
+
+1. UPCOMING/RECENT HIGH-IMPACT EVENTS — explain what they are and when they typically occur:
+   - NFP (Non-Farm Payrolls): First Friday of every month, 15:30 EAT — Major USD mover, 50-200+ pip moves on EUR/USD, GBP/USD, Gold
+   - FOMC Meeting: 8 times per year — Sets US interest rates, biggest USD driver. Rate hike = USD up, Gold down. Rate cut = USD down, Gold up
+   - CPI (Inflation Data): Monthly — High CPI = Fed may hike rates = USD up
+   - GDP: Quarterly — Strong GDP = currency strengthens
+   - ECB Rate Decision: 8 times per year — Moves EUR pairs
+   - BOE Rate Decision: 8 times per year — Moves GBP pairs
+   - BOJ Policy: Affects JPY pairs significantly
+
+2. MARKET IMPACT ANALYSIS — when user asks about a specific news event:
+   - Explain which currencies/pairs are affected
+   - Explain direction (bullish/bearish for which currency)
+   - Give pip range expectations (approximate historical impact)
+   - Advise on risk management around news (avoid trading 30 min before high-impact)
+   - Explain the "buy the rumor, sell the news" concept when relevant
+
+3. TAG BRIDGE WEBSITE NEWS SECTION:
+   - The website has a live Economic Calendar (TradingView widget) showing real-time events
+   - The website has a live Market News feed (TradingView timeline widget)
+   - Direct users to scroll to "ኢኮኖሚክ ካላንደር እና ዜናዎች" section on the website for real-time data
+   - You cannot read the live widget data yourself, but you can explain the events based on your knowledge
+
+4. WHEN USER ASKS "ዛሬ ምን news አለ?" or "What news today?":
+   - Explain you cannot access real-time data directly
+   - Direct them to the Economic Calendar section on the website
+   - Explain what to look for (red = high impact, orange = medium)
+   - Describe the most common weekly events by day
+
+TYPICAL WEEKLY ECONOMIC CALENDAR (EAT times):
+- Monday: Usually quiet — good for technical setups
+- Tuesday: RBA (Australia), sometimes CPI data
+- Wednesday: ADP (US jobs preview), sometimes FOMC minutes — 20:00 EAT
+- Thursday: BOE, ECB decisions (when scheduled), US Jobless Claims — 15:30 EAT
+- Friday: NFP (first Friday) — 15:30 EAT, most volatile day
 - Live Chart: Real-time Forex, Crypto, Commodity charts via TradingView
 - Demo Trading: Paper trading with live prices, BUY/SELL confirmation, auto-logs to Journal
 - Trading Journal: Log and track trades, win rate, Net P&L, R:R ratio
